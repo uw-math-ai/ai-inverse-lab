@@ -344,14 +344,36 @@ def transition_matrix(W, mu):
         raise ValueError("Assumption violated: mu_x < sum_y w_xy for some x")
     return P + torch.diag(stay.clamp_min(0.0))
 
-def exact_first_passage_literal(P, B, t_max):
+def _transition_with_absorption(P, q):
+    P = torch.as_tensor(P, dtype=torch.float64).cpu()
+    if P.ndim != 2 or P.shape[0] != P.shape[1]:
+        raise ValueError("P must be a square transition matrix")
+    if q is None:
+        return P
+
+    q = torch.as_tensor(q, dtype=torch.float64).cpu().flatten()
+    if q.numel() == 1:
+        q = q.expand(P.shape[0])
+    if q.numel() != P.shape[0]:
+        raise ValueError(f"q has {q.numel()} entries, expected 1 or {P.shape[0]}")
+    if not torch.isfinite(q).all() or (q < 0).any():
+        raise ValueError("absorption probabilities q must be finite and nonnegative")
+    if (q > torch.diagonal(P)).any():
+        raise ValueError("q_x must not exceed the holding probability p_xx")
+    return P - torch.diag(q)
+
+
+def exact_first_passage_literal(P, B, t_max, q=None):
     '''
-    r(1, x, y) = p_xy
-    r(t, x, y) = sum_{z != y} p_xz * r(t-1, z, y),   t >= 2
+    Exact first-passage distribution for a walk with optional absorption q.
+
+    If q is supplied, it gives one absorption probability per vertex (or one
+    shared probability). Absorption replaces part of the holding probability;
+    its lost transition mass is not conditioned out.
 
     Returns r with r[t-1, i, j] = r(t, B[i], B[j]), shape (t_max, |B|, |B|).
     '''
-    P = P.cpu().double()
+    P = _transition_with_absorption(P, q)
     n = P.shape[0]
 
     @lru_cache(maxsize=None)
@@ -365,22 +387,24 @@ def exact_first_passage_literal(P, B, t_max):
                          for t in range(1, t_max + 1)], dtype=torch.float64)
 
 @torch.no_grad()
-def empirical_first_passage(P, B, t_max, n_walks=10**6, batch=10**6, seed=0):
+def empirical_first_passage(P, B, t_max, n_walks=10**6, batch=10**6, seed=0, q=None):
     '''
     Returns r' with
         r'[t-1, i, j] = (# walks from B[i] that first hit B[j] at step t) / n_walks.
 
     Each ordered pair (i, j) gets its own independent n_walks walks. Walks that
-    have not hit the target by step t_max are censored (tau = inf) and dropped.
+    are absorbed or have not hit the target by step t_max contribute no finite
+    first-passage count. Absorbed walks are not conditioned out.
     '''
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     gen = torch.Generator(device=device).manual_seed(seed)
-    P, B = P.to(device), B.to(device)
+    P = _transition_with_absorption(P, q).to(device)
+    B = B.to(device)
     nB = len(B)
     n_pairs = nB * nB
 
     cdf = torch.cumsum(P, dim=1).float()
-    cdf[:, -1] = 1.0
+    cdf[:, -1] = P.sum(dim=1).float().clamp(max=1.0)
     starts  = B.repeat_interleave(nB)
     targets = B.repeat(nB)
     counts = torch.zeros(n_pairs, t_max + 1, dtype=torch.long, device=device)
@@ -395,11 +419,12 @@ def empirical_first_passage(P, B, t_max, n_walks=10**6, batch=10**6, seed=0):
 
         for s in range(1, t_max + 1):
             u = torch.rand(n_pairs, m, 1, generator=gen, device=device)
-            nxt = (u > cdf[state]).sum(dim=-1)
-            state = torch.where(alive, nxt, state)
-            new_hit = alive & (state == tgt)
+            nxt = (u > cdf[state.clamp_max(P.shape[0] - 1)]).sum(dim=-1)
+            survived = nxt < P.shape[0]
+            new_hit = alive & survived & (nxt == tgt)
             hit_time[new_hit] = s
-            alive &= ~new_hit
+            alive &= survived & ~new_hit
+            state = torch.where(alive, nxt, state)
             if not alive.any():
                 break
         offs = torch.arange(n_pairs, device=device)[:, None] * (t_max + 1)
