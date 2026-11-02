@@ -144,7 +144,7 @@ def main() -> None:
         "gpt-4o-mini", model_provider="openai",
         max_tokens=MAX_OUTPUT_TOKENS, max_retries=0, timeout=60,
     )
-    output_path = Path(__file__).with_name("response.md")
+    output_path = Path(__file__).with_name("README.md")
     graph = build_graph(model, output_path)
     output_path.write_text(
         "# Mathematical research workflow\n\n## Problem\n\n" + format_math(PROBLEM)
