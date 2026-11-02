@@ -173,6 +173,164 @@ class GridGraph:
         return transition_matrix(self.W, self.mu)
 
 
+class Graph:
+    '''
+    A weighted, undirected graph specified by arbitrary hashable vertex labels
+    and an explicit edge list.
+
+    vertices : unique, hashable labels; matrix index i corresponds to vertices[i].
+    edges    : iterable of (u, v) pairs; zero-weight edges are removed from the walk.
+    B        : observed vertex labels.
+    w        : scalar, {(u, v): weight} mapping, callable w(u, v), "random",
+               or a symmetric n x n matrix.
+    mu       : "constant", "deg", "weighted_deg", or one positive value per vertex.
+
+    The W, mu, deg, B, and transition_matrix() interface matches GridGraph.
+    '''
+
+    def __init__(self, vertices, edges, B, w=1.0, mu="deg", mu_val=1.0,
+                 w_default=1.0, w_low=0.1, w_high=1.0, w_seed=0):
+        self.vertices = list(vertices)
+        if not self.vertices:
+            raise ValueError("vertices must contain at least one vertex")
+        try:
+            self.index = {vertex: i for i, vertex in enumerate(self.vertices)}
+        except TypeError as exc:
+            raise ValueError("vertex labels must be hashable") from exc
+        if len(self.index) != len(self.vertices):
+            raise ValueError("vertices contains duplicate labels")
+
+        self.n = len(self.vertices)
+        self.edges = self._build_edges(edges)
+        self.W = self._build_weights(w, w_default, w_low, w_high, w_seed)
+        self.deg = (self.W > 0).sum(dim=1).to(torch.float64)
+        self.mu = self._build_mu(mu, mu_val)
+        self.B = self._build_B(B)
+        self._check_connected()
+        self._check_assumption()
+
+    def _build_edges(self, edges):
+        result = []
+        seen = set()
+        for edge in edges:
+            if len(edge) != 2:
+                raise ValueError(f"each edge must contain two vertices: {edge}")
+            u, v = edge
+            if u not in self.index or v not in self.index:
+                raise ValueError(f"edge {(u, v)} contains a vertex not in vertices")
+            i, j = self.index[u], self.index[v]
+            if i == j:
+                raise ValueError(f"self-loops are not supported: {edge}")
+            pair = (min(i, j), max(i, j))
+            if pair in seen:
+                raise ValueError(f"duplicate edge: {edge}")
+            seen.add(pair)
+            result.append(pair)
+        return sorted(result)
+
+    def _build_weights(self, w, w_default, w_low, w_high, w_seed):
+        if isinstance(w, (torch.Tensor, np.ndarray)) and np.ndim(w) == 2:
+            W = torch.as_tensor(w, dtype=torch.float64).clone()
+            if W.shape != (self.n, self.n):
+                raise ValueError(f"W has shape {tuple(W.shape)}, expected ({self.n}, {self.n})")
+            if not torch.allclose(W, W.T):
+                raise ValueError("W must be symmetric")
+            mask = torch.zeros(self.n, self.n, dtype=torch.bool)
+            for i, j in self.edges:
+                mask[i, j] = mask[j, i] = True
+            if (W[~mask] != 0).any():
+                raise ValueError("W is nonzero on a pair that is not in edges")
+            if (W < 0).any():
+                raise ValueError("edge weights must be nonnegative")
+            return W
+
+        if isinstance(w, str):
+            if w != "random":
+                raise ValueError("w must be a number, dict, callable, 'random' or an n x n array")
+            if w_low < 0 or w_high < w_low:
+                raise ValueError("random weight bounds must satisfy 0 <= w_low <= w_high")
+            gen = torch.Generator().manual_seed(w_seed)
+            values = w_low + (w_high - w_low) * torch.rand(
+                len(self.edges), generator=gen, dtype=torch.float64
+            )
+            edge_weights = dict(zip(self.edges, values.tolist()))
+            get_weight = lambda i, j: edge_weights[(i, j)]
+        elif isinstance(w, dict):
+            edge_weights = {}
+            for edge, value in w.items():
+                if len(edge) != 2:
+                    raise ValueError(f"weight key must contain two vertices: {edge}")
+                u, v = edge
+                if u not in self.index or v not in self.index:
+                    raise ValueError(f"weight key {edge} contains a vertex not in vertices")
+                pair = tuple(sorted((self.index[u], self.index[v])))
+                if pair not in self.edges:
+                    raise ValueError(f"weight key {edge} is not an edge")
+                edge_weights[pair] = float(value)
+            get_weight = lambda i, j: edge_weights.get((i, j), float(w_default))
+        elif callable(w):
+            get_weight = lambda i, j: float(w(self.vertices[i], self.vertices[j]))
+        else:
+            get_weight = lambda i, j: float(w)
+
+        W = torch.zeros(self.n, self.n, dtype=torch.float64)
+        for i, j in self.edges:
+            weight = get_weight(i, j)
+            if weight < 0:
+                raise ValueError("edge weights must be nonnegative")
+            W[i, j] = W[j, i] = weight
+        return W
+
+    def _build_mu(self, mu, mu_val):
+        if isinstance(mu, str):
+            if mu == "constant":
+                mu = torch.full((self.n,), float(mu_val), dtype=torch.float64)
+            elif mu == "deg":
+                mu = self.deg.clone()
+            elif mu == "weighted_deg":
+                mu = self.W.sum(dim=1)
+            else:
+                raise ValueError("mu must be 'constant', 'deg', 'weighted_deg' or an array of length n")
+        else:
+            mu = torch.as_tensor(mu, dtype=torch.float64).flatten()
+            if mu.numel() != self.n:
+                raise ValueError(f"mu has {mu.numel()} entries, expected {self.n}")
+        if (mu <= 0).any():
+            raise ValueError("vertex centrality mu must be positive")
+        return mu
+
+    def _build_B(self, B):
+        try:
+            indices = [self.index[vertex] for vertex in B]
+        except (KeyError, TypeError) as exc:
+            raise ValueError("B must contain vertex labels from vertices") from exc
+        if len(set(indices)) != len(indices):
+            raise ValueError("B contains duplicate vertices")
+        return torch.tensor(indices, dtype=torch.long)
+
+    def _check_connected(self):
+        seen, frontier = {0}, [0]
+        while frontier:
+            x = frontier.pop()
+            for y in torch.nonzero(self.W[x]).flatten().tolist():
+                if y not in seen:
+                    seen.add(y)
+                    frontier.append(y)
+        if len(seen) != self.n:
+            raise ValueError("graph is not connected")
+
+    def _check_assumption(self):
+        bad = torch.nonzero(self.mu < self.W.sum(dim=1) - 1e-12).flatten().tolist()
+        if bad:
+            raise ValueError(
+                f"Assumption 1 (ii) violated at vertices {bad}: mu_x < sum_y w_xy"
+            )
+
+    def transition_matrix(self):
+        '''P (n x n) for this graph; see transition_matrix(W, mu).'''
+        return transition_matrix(self.W, self.mu)
+
+
 def transition_matrix(W, mu):
     '''
     W size: n x n
@@ -304,6 +462,68 @@ def plot_graph(grid, B, values=None, title=None, ax=None, cmap="viridis", W=None
 
     for i, (x, y) in enumerate(xy):
         ax.annotate(str(i), (x, y), xytext=(6, 6), textcoords="offset points", fontsize=8)
+    ax.set_aspect("equal")
+    ax.margins(0.25)
+    ax.axis("off")
+    if title:
+        ax.set_title(title)
+    return ax
+
+
+def plot_general_graph(graph, B=None, values=None, title=None, ax=None,
+                       cmap="viridis", positions=None, show_weights=True):
+    '''Plot a Graph using a circular layout or caller-supplied {vertex: (x, y)} positions.'''
+    if not isinstance(graph, Graph):
+        raise TypeError("graph must be a Graph instance")
+    if positions is None:
+        angles = np.linspace(0, 2 * np.pi, graph.n, endpoint=False)
+        xy = np.column_stack((np.cos(angles), np.sin(angles)))
+    else:
+        if set(positions) != set(graph.vertices):
+            raise ValueError("positions must provide one coordinate for every graph vertex")
+        xy = np.asarray([positions[vertex] for vertex in graph.vertices], dtype=float)
+        if xy.shape != (graph.n, 2):
+            raise ValueError(f"positions must have shape ({graph.n}, 2)")
+
+    B_idx = set(graph.B.tolist()) if B is None else {
+        graph.index[vertex] for vertex in B
+    }
+    if ax is None:
+        _, ax = plt.subplots(figsize=(6, 6))
+
+    max_weight = float(graph.W.max())
+    for i, j in graph.edges:
+        weight = float(graph.W[i, j])
+        if weight <= 0:
+            continue
+        linewidth = 1.5 if max_weight == 0 else 0.5 + 3.5 * weight / max_weight
+        ax.plot(*xy[[i, j]].T, color=EDGE_COLOR, lw=linewidth, zorder=1)
+        if show_weights:
+            ax.annotate(f"{weight:.2f}", xy[[i, j]].mean(axis=0),
+                        ha="center", va="center", fontsize=7,
+                        bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none"))
+
+    if values is None:
+        colors = [B_COLOR if i in B_idx else X_COLOR for i in range(graph.n)]
+        ax.scatter(*xy.T, s=180, c=colors, edgecolors="black", linewidths=1, zorder=2)
+        ax.scatter([], [], s=80, c=B_COLOR, edgecolors="black", label="vertex in $B$")
+        ax.scatter([], [], s=80, c=X_COLOR, edgecolors="black",
+                   label=r"vertex in $X \setminus B$")
+        ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=False)
+    else:
+        values = np.asarray(torch.as_tensor(values).cpu(), dtype=float)
+        if values.shape != (graph.n,):
+            raise ValueError(f"values must have shape ({graph.n},)")
+        scatter = ax.scatter(*xy.T, s=200, c=values, cmap=cmap,
+                             edgecolors="black", linewidths=1, zorder=2)
+        plt.colorbar(scatter, ax=ax, fraction=0.046, pad=0.04)
+        observed = sorted(B_idx)
+        ax.scatter(*xy[observed].T, s=200, facecolors="none",
+                   edgecolors="black", linewidths=2.5, zorder=3)
+
+    for i, vertex in enumerate(graph.vertices):
+        ax.annotate(str(vertex), xy[i], xytext=(6, 6),
+                    textcoords="offset points", fontsize=8)
     ax.set_aspect("equal")
     ax.margins(0.25)
     ax.axis("off")
