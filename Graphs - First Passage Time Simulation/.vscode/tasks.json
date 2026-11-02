@@ -1,0 +1,7 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {"label":"Forward Simulation: dashboard","type":"shell","command":"${workspaceFolder}/.venv/bin/python","args":["app.py","--port","8765"],"options":{"cwd":"${workspaceFolder}"},"isBackground":true,"problemMatcher":[]},
+    {"label":"Forward Simulation: tests","type":"shell","command":"${workspaceFolder}/.venv/bin/python","args":["-m","unittest","discover","-s","tests","-v"],"options":{"cwd":"${workspaceFolder}"},"group":"test","problemMatcher":[]}
+  ]
+}
