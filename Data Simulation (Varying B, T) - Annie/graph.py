@@ -1,7 +1,8 @@
+from functools import lru_cache
+
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from multiprocessing import Process
 import os
 
 class GridGraph:
@@ -214,6 +215,7 @@ def empirical_first_passage(P, B, t_max, n_walks=10**6, batch=10**6, seed=0):
     Each ordered pair (i, j) gets its own independent n_walks walks. Walks that
     have not hit the target by step t_max are censored (tau = inf) and dropped.
     '''
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     gen = torch.Generator(device=device).manual_seed(seed)
     P, B = P.to(device), B.to(device)
     nB = len(B)
@@ -256,7 +258,6 @@ def frne(r, r_emp):
 
 B_COLOR, X_COLOR, EDGE_COLOR = "white", "#4cc3e6", "black"
 EXACT_COLOR, EMP_COLOR = "#2a6fdb", "#e8833a"
-
 
 def plot_graph(grid, B, values=None, title=None, ax=None, cmap="viridis", W=None):
     '''
@@ -369,4 +370,3 @@ def summarize(P, B, r_emp, r_lit, paper_frne=None):
           torch.allclose(torch.diagonal(r[0]), torch.diagonal(P.cpu())[B_cpu]))
     print("probability mass observed by t = 2T-1 (exact):\n", r.sum(0).numpy().round(4))
     print("probability mass observed by t = 2T-1 (empirical):\n", r_emp.sum(0).numpy().round(4))
-
