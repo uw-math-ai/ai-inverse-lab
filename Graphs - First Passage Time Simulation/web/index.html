@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A reproducible first-passage Monte Carlo laboratory for weighted graphs.">
+  <title>Forward Simulation · Math AI Lab</title>
+  <link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/" aria-label="Forward Simulation home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 8 25 8 16 25Z M7 8 16 16 25 8 M16 16 16 25"/><circle cx="7" cy="8" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="16" cy="25" r="3"/></svg><span>MATH AI LAB</span></a><span class="divider">/</span><span class="workspace">Research workspace</span><a class="method-link" href="/readme.md" target="_blank" rel="noopener">Read the methodology ↗</a><span class="local-badge"><i></i> Local laboratory</span></header>
+<main>
+  <div class="page-heading"><div><div class="eyebrow">INFORMATION DIFFUSION / EXPERIMENTS</div><h1>Forward simulation<span>.</span></h1><p>From random walks to reliable observations.</p></div><div class="paper-note">Based on Gao, Li &amp; Yang<br><a href="https://arxiv.org/abs/2603.20710v1" target="_blank" rel="noopener">Vertex Centrality Reconstruction · §5 ↗</a></div></div>
+  <div id="error" class="error" role="alert" hidden></div>
+  <div class="laboratory">
+    <aside class="panel setup">
+      <div class="panel-heading"><h2>Set up an experiment</h2><span class="step-number">01</span></div>
+      <form id="experiment-form">
+        <label for="name">Experiment name</label><input id="name" name="name" value="Baseline · eight vertices" maxlength="120" required>
+        <label for="graph">Fixed graph</label><select id="graph" name="graph"><option value="paper8">01 · Eight-vertex ladder</option><option value="paper9">02 · Nine-vertex grid</option></select>
+        <p id="graph-description" class="hint"></p>
+        <div class="field-row"><div><label for="T">Maximum steps <em>T</em></label><input id="T" name="T" type="number" value="17" min="1" max="1000" step="1" required></div><div><label for="N">Trials per pair <em>N</em></label><input id="N" name="N" type="number" value="10000" min="1" max="10000000" step="1" required></div></div>
+        <button id="paper-preset" type="button" class="text-button">Use paper settings: T = 17, N = 10⁶ ↗</button>
+        <div class="rule"></div>
+        <label for="q-mode">Potential <em>q(x)</em></label><select id="q-mode"><option value="zero">Zero · paper baseline</option><option value="uniform">Uniform killing rate</option><option value="vertex">Set each vertex</option></select>
+        <div id="uniform-field" hidden><label for="uniform-q">Rate at every vertex</label><input id="uniform-q" type="number" min="0" max="1000000" step="any" value="0.1" required></div>
+        <div id="vertex-fields" class="vertex-fields" hidden></div>
+        <p class="hint">Fixed throughout a run. Nonnegative q removes walkers through a cemetery state.</p>
+        <details class="advanced"><summary>Reproducibility &amp; time step</summary><label for="seed">Random seed</label><input id="seed" type="number" min="0" max="9007199254740991" step="1" value="2026" required><label for="dt">Step size h</label><input id="dt" value="auto" placeholder="auto or a number, e.g. 0.5" required><p class="hint">Auto chooses h ≤ 1 with nonnegative transition probabilities. Physical cutoff = T × h.</p></details>
+        <div id="kernel-note" class="kernel-note" aria-live="polite">Unit step · paper baseline</div>
+        <button id="run-button" type="submit" class="primary-button"><span>▶</span> Run experiment</button>
+        <div class="form-actions"><button type="button" id="save-config" class="text-button">↓ Save config</button><label for="import-config" class="text-button import-label">↑ Import config</label><input id="import-config" type="file" accept="application/json,.json" hidden></div>
+        <p class="footnote">N independent walks for each of the 9 ordered observed pairs.</p>
+      </form>
+    </aside>
+    <section class="workspace-main" aria-label="Experiment results">
+      <div id="progress-panel" class="progress-panel" hidden><div><strong id="progress-title">Running experiment</strong><span id="progress-text" aria-live="polite"></span></div><progress id="progress-bar" max="1" value="0"></progress><button id="cancel-run" type="button" class="secondary-button">Cancel run</button></div>
+      <div class="result-heading"><div><span class="eyebrow" id="result-eyebrow">READY WHEN YOU ARE</span><h2 id="result-name">Explore the forward problem</h2><p id="result-config" class="hint">Configure a run to compare sampled arrivals with the exact recurrence.</p></div><div id="exports" class="export-actions" hidden><a id="export-csv" class="secondary-button" href="#">↓ CSV</a><a id="export-json" class="secondary-button" href="#">↓ JSON</a></div></div>
+      <div class="metrics"><div class="metric"><span>FROBENIUS RELATIVE ERROR</span><strong id="metric-frne">—</strong><small>All observed pairs · finite bins</small></div><div class="metric"><span>MAX. ABSOLUTE ERROR</span><strong id="metric-absolute">—</strong><small>Largest bin discrepancy</small></div><div class="metric"><span>MEAN NO-HIT PROBABILITY</span><strong id="metric-tail">—</strong><small>Killed + unarrived at T · exact</small></div><div class="metric"><span>COMPUTATION TIME</span><strong id="metric-runtime">—</strong><small>Exact reference + Monte Carlo</small></div></div>
+      <div class="visual-row">
+        <section class="panel distribution-panel"><div class="panel-heading"><div><h2>First-passage distribution</h2><p class="hint">Compare r′ with the exact reference r</p></div><span class="step-number">02</span></div><div class="chart-toolbar"><div class="pair-selectors"><label for="source">From</label><select id="source" aria-label="Starting vertex"></select><span>→</span><label for="target">To</label><select id="target" aria-label="Target vertex"></select></div><div class="segmented" role="group" aria-label="Distribution view"><button type="button" id="view-pmf" aria-pressed="true">PMF</button><button type="button" id="view-cdf" aria-pressed="false">CDF</button></div></div><div class="legend"><span><i class="line exact"></i>Exact recurrence</span><span><i class="dot empirical"></i>Monte Carlo</span><span id="ci-legend">Whiskers: 95% pointwise CI</span></div><div id="distribution-chart" class="chart-container"><div class="empty-chart"><span class="empty-icon">↝</span><h3>Every walk tells a story.</h3><p>Run an experiment to see when walkers first arrive.</p></div></div><p id="pair-note" class="chart-note">First passage begins at t = 1. Selecting the same vertex measures its first return.</p></section>
+        <section class="panel graph-panel"><div class="panel-heading"><div><h2>Experiment graph</h2><p id="graph-caption" class="hint">Fixed topology and weights</p></div></div><div id="graph-view"></div><div class="graph-legend"><span><i class="vertex observed"></i>Observed B</span><span><i class="vertex interior"></i>Interior X ∖ B</span></div><div id="graph-facts" class="graph-facts"></div><p id="potential-caption" class="hint"></p><details><summary>Inspect transition kernel</summary><div id="kernel-table" class="table-scroll"><p class="hint">Available after a completed run.</p></div></details></section>
+      </div>
+      <div class="analysis-row"><section class="panel"><div class="panel-heading"><div><h2>Where the probability goes</h2><p class="hint" id="outcomes-caption">Outcomes for the selected pair</p></div></div><div id="outcomes"><p class="empty-note">Arrival + killed before arrival + alive without arrival = 1.</p></div></section><section class="panel"><div class="panel-heading"><div><h2>Convergence with sample count</h2><p class="hint">Nested samples from this experiment</p></div></div><div id="convergence-chart"><p class="empty-note">Sample checkpoints will compare observed FRNE with its expected RMS value.</p></div></section></div>
+      <details id="data-details" class="panel data-details"><summary>Inspect the selected pair’s arrival bins</summary><div id="data-table" class="table-scroll"><p class="hint">Run an experiment to populate the table.</p></div></details>
+    </section>
+  </div>
+  <section class="panel history-panel"><div class="panel-heading"><div><div class="eyebrow">YOUR EXPERIMENT NOTEBOOK</div><h2>Run history</h2><p class="hint">Compare test cases. Completed experiments are saved on this machine.</p></div><button type="button" id="refresh-history" class="secondary-button">↻ Refresh</button></div><div class="table-scroll"><table><thead><tr><th>Experiment</th><th>Graph</th><th>T / N</th><th>Potential</th><th>h</th><th>FRNE</th><th>Status</th><th>Actions</th></tr></thead><tbody id="history-body"><tr><td colspan="8" class="empty-note">No experiments yet. Start with the paper baseline.</td></tr></tbody></table></div></section>
+  <footer><span>FORWARD SIMULATION LAB <span class="footer-dot">·</span> First-passage data for inverse problems</span><span>Exact recurrence. Seeded sampling. Reproducible results.</span></footer>
+</main>
+</body>
+</html>
