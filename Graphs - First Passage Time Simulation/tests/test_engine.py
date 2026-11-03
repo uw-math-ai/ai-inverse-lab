@@ -22,6 +22,22 @@ class GraphTests(unittest.TestCase):
         self.assertEqual(graph.observed, (0,1,2))
         self.assertEqual(graph.mu, (2.,3.,2.,3.,4.,3.,2.,3.,2.))
 
+    def test_exploratory_graph_presets(self):
+        expected = {
+            'path7': (7, 6, (0,3,6)),
+            'cycle8': (8, 8, (0,3,6)),
+            'star7': (7, 6, (0,1,2)),
+            'lollipop8': (8, 10, (0,3,7)),
+        }
+        for graph_id, (vertices, edges, observed) in expected.items():
+            with self.subTest(graph=graph_id):
+                graph = GRAPHS[graph_id]
+                self.assertEqual(graph.size, vertices)
+                self.assertEqual(len(graph.edges), edges)
+                self.assertEqual(graph.observed, observed)
+                self.assertEqual(graph.mu, tuple(float(d) for d in graph.as_dict()['degrees']))
+                self.assertEqual(len(graph.as_dict()['vertices']), vertices)
+
     def test_paper_unit_kernels_and_detailed_balance(self):
         for graph_id in GRAPHS:
             config = parse_config({'graph':graph_id})
@@ -60,6 +76,24 @@ class ValidationTests(unittest.TestCase):
         a = build_kernel(parse_config({'q':.2}))[0]
         b = build_kernel(parse_config({'q':[.2]*8}))[0]
         np.testing.assert_array_equal(a,b)
+
+    def test_observation_set_and_analysis_metadata(self):
+        cfg = parse_config({'graph':'path7','observed':[0,6],
+                            'analysis_type':'B_size','case_label':'Endpoints'})
+        self.assertEqual(cfg.observation_set, (0,6))
+        self.assertEqual(cfg.as_dict()['B_size'], 2)
+        self.assertEqual(cfg.as_dict()['analysis_type'], 'B_size')
+        for observed in ([], [0,0], [7], [True], ['0']):
+            with self.subTest(observed=observed), self.assertRaises(ValueError):
+                parse_config({'graph':'path7','observed':observed})
+
+    def test_simulation_uses_configured_observation_set(self):
+        result = simulate(parse_config({'graph':'path7','observed':[0,6],
+                                        'T':3,'N':20,'analysis_type':'B_size',
+                                        'case_label':'Two endpoints'}))
+        self.assertEqual(result['observed'], [0,6])
+        self.assertEqual(np.asarray(result['counts']).shape, (3,2,2))
+        self.assertEqual(result['graph']['observed'], [0,6])
 
 
 class ExactTests(unittest.TestCase):

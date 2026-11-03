@@ -30,8 +30,12 @@ Vertices are labeled in **row-major order**, left to right and then top to botto
 | --- | --- | --- | --- | --- |
 | `paper8` | 2 rows × 4 columns; horizontal and vertical nearest neighbors (10 edges) | `{1,2,3}` (top row except leftmost) | `w = 0.25` | `μ = 1` |
 | `paper9` | 3 rows × 3 columns; horizontal and vertical nearest neighbors (12 edges) | `{0,1,2}` (top row) | `w = 1` | `μ(x) = degree(x)` |
+| `path7` | Seven-vertex path | `{0,3,6}` | `w = 1` | `μ(x) = degree(x)` |
+| `cycle8` | Eight-vertex cycle | `{0,3,6}` | `w = 1` | `μ(x) = degree(x)` |
+| `star7` | Seven-vertex star, center vertex `0` | `{0,1,2}` | `w = 1` | `μ(x) = degree(x)` |
+| `lollipop8` | Four-clique on `0,1,2,3` with path `3-4-5-6-7` | `{0,3,7}` | `w = 1` | `μ(x) = degree(x)` |
 
-These were transcribed directly from Figures 1 and 4. No diagonal edges, wraparound edges, or graph self-loops are added. A positive holding probability is a transition, not an extra graph edge.
+The first two presets were transcribed directly from Figures 1 and 4. No graph self-loops are added; a positive holding probability is a transition, not an extra graph edge.
 
 The graph, weights, measures, and observation set remain fixed within each preset. `q`, maximum time, sample count, and random seed are experiment inputs.
 

@@ -7,6 +7,11 @@ const probability = value => percent(value*100,2);
 let graphs = [], runs = [], result = null, selectedId = null, view = 'pmf', refreshing = false;
 const cache = new Map();
 const activeStatuses = ['queued','running','cancelling'];
+const selectedGraphKey = 'forward-sim-selected-graph';
+const selectedRunKey = 'forward-sim-selected-run';
+const baseGraphId = id => id.split('--',1)[0];
+const analysisLabels={baseline:'Baseline',B_placement:'B placement',B_size:'B size',T_sweep:'T sweep',custom:'Custom'};
+const observedFromForm=()=>[...$('observed-fields').querySelectorAll('input:checked')].map(input=>Number(input.value));
 
 async function api(path, body) {
   const response = await fetch(path, body === undefined ? {} : {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -23,7 +28,12 @@ function configuration() {
   if ($('q-mode').value === 'uniform') q = Number($('uniform-q').value);
   if ($('q-mode').value === 'vertex') q = graph.vertices.map(vertex => Number($(`q-${vertex.id}`).value));
   return {name:$('name').value,graph:graph.id,T:Number($('T').value),N:Number($('N').value),q,
-    seed:Number($('seed').value),dt:$('dt').value.trim().toLowerCase() === 'auto' ? 'auto' : Number($('dt').value)};
+    seed:Number($('seed').value),dt:$('dt').value.trim().toLowerCase() === 'auto' ? 'auto' : Number($('dt').value),
+    observed:observedFromForm(),analysis_type:$('analysis-type').value,case_label:$('case-label').value};
+}
+function observedFields(values) {
+  const graph=graphConfig(),chosen=values || graph.observed;
+  $('observed-fields').innerHTML=graph.vertices.map(vertex=>`<label><input type="checkbox" value="${vertex.id}" ${chosen.includes(vertex.id)?'checked':''}>v${vertex.id}</label>`).join('');
 }
 function vertexFields(values) {
   const graph = graphConfig();
@@ -39,14 +49,17 @@ function qMode() {
 }
 function updatePreview() {
   if (!graphs.length) return;
-  const graph = graphConfig(), cfg = configuration();
-  $('graph-description').textContent = graph.id === 'paper8' ? '2 × 4 ladder · w = 0.25 · μ = 1 · B = {1, 2, 3}' : '3 × 3 grid · w = 1 · μ = degree · B = {0, 1, 2}';
+  const graph = graphConfig(), cfg = configuration(), observed=cfg.observed;
+  const measure = graph.mu.every(value => value === 1) ? '1' : 'degree';
+  $('graph-description').textContent = `${graph.name} · w = ${graph.edge_weight} · μ = ${measure}`;
+  $('B-size').textContent=`|B| = ${observed.length}`;
   const q = Array.isArray(cfg.q) ? cfg.q : Array(graph.vertices.length).fill(cfg.q);
   const rate = Math.max(...graph.vertices.map((vertex,i) => vertex.degree*graph.edge_weight/vertex.mu + q[i]));
   const h = cfg.dt === 'auto' ? Math.min(1,1/rate) : cfg.dt;
   const valid = q.every(value => Number.isFinite(value) && value >= 0 && value <= 1e6) && h > 0 && h <= 1 && h*rate <= 1+1e-12;
-  $('kernel-note').textContent = valid ? `h = ${number(h,6)} · Physical cutoff = ${number(cfg.T*h,6)} · ${number(cfg.N*9,0)} total walks` : 'This potential / step size is invalid. Use q ≥ 0 and a sufficiently small h, or choose auto.';
-  if (!result) { drawGraph(graph,q); populatePairs(graph.observed); }
+  $('kernel-note').textContent = valid && observed.length ? `h = ${number(h,6)} · Physical cutoff = ${number(cfg.T*h,6)} · ${number(cfg.N*observed.length**2,0)} total walks` : 'Choose at least one observed vertex and use a valid potential / step size.';
+  $('walk-count-note').textContent=`N independent walks for each of ${observed.length**2} ordered pairs in B × B.`;
+  if (!result) { drawGraph({...graph,observed},q); populatePairs(observed); }
 }
 function populatePairs(observed) {
   const oldSource = $('source').value, oldTarget = $('target').value;
@@ -57,13 +70,14 @@ function populatePairs(observed) {
 }
 function drawGraph(graph,q) {
   const width=280,height=170, marginX=34, marginY=28;
-  const position = vertex => [marginX+vertex.column*(width-2*marginX)/(graph.columns-1), marginY+vertex.row*(height-2*marginY)/(graph.rows-1)];
+  const position = vertex => [marginX+vertex.x*(width-2*marginX), marginY+vertex.y*(height-2*marginY)];
   const maxQ = Math.max(...q,0);
   const edges = graph.edges.map(([a,b]) => {const [x1,y1]=position(graph.vertices[a]),[x2,y2]=position(graph.vertices[b]);return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#b9c9b4" stroke-width="1.7"/>`;}).join('');
   const nodes = graph.vertices.map(vertex => {const [x,y]=position(vertex), observed=graph.observed.includes(vertex.id);return `<g><title>Vertex ${vertex.id}; μ=${vertex.mu}; q=${q[vertex.id]}; ${observed?'observed':'interior'}</title>${q[vertex.id]>0?`<circle cx="${x}" cy="${y}" r="14" fill="#dc9c61" opacity="${.12+.3*q[vertex.id]/maxQ}"/>`:''}<circle cx="${x}" cy="${y}" r="7" fill="${observed?'#fff':'#dbe8d6'}" stroke="${observed?'#2a7654':'#9eb294'}" stroke-width="${observed?2:1.2}"/><text x="${x}" y="${y+23}" text-anchor="middle" font-size="10" fill="#7a8e70">${vertex.id}</text></g>`;}).join('');
   $('graph-view').innerHTML = `<svg viewBox="0 0 ${width} ${height+20}" role="img" aria-label="${esc(graph.name)}, observed vertices ${graph.observed.join(', ')}"><title>${esc(graph.name)} with fixed edge weights and vertex measures</title>${edges}${nodes}</svg>`;
   $('graph-caption').textContent = `${graph.name} · ${result?'selected result':'configuration preview'}`;
-  $('graph-facts').innerHTML = `<div><span>VERTICES / EDGES</span><strong>${graph.vertices.length} / ${graph.edges.length}</strong></div><div><span>OBSERVED VERTICES</span><strong>{${graph.observed.join(', ')}}</strong></div><div><span>EDGE WEIGHT w</span><strong>${graph.edge_weight}</strong></div><div><span>VERTEX MEASURE μ</span><strong>${graph.id==='paper8'?'Constant · 1':'Degree of each vertex'}</strong></div>`;
+  const measure = graph.mu.every(value => value === 1) ? 'Constant · 1' : 'Degree of each vertex';
+  $('graph-facts').innerHTML = `<div><span>VERTICES / EDGES</span><strong>${graph.vertices.length} / ${graph.edges.length}</strong></div><div><span>OBSERVED VERTICES</span><strong>{${graph.observed.join(', ')}}</strong></div><div><span>EDGE WEIGHT w</span><strong>${graph.edge_weight}</strong></div><div><span>VERTEX MEASURE μ</span><strong>${measure}</strong></div>`;
   $('potential-caption').textContent = maxQ>0 ? `Amber halos indicate q > 0. q = [${q.map(value=>number(value,3)).join(', ')}].` : 'Zero potential · original paper walk when h = 1.';
 }
 function selectedPair() {
@@ -74,16 +88,56 @@ function selectedPair() {
 }
 function renderResult(data) {
   result=data; cache.set(data.id,data); selectedId=data.id;
+  const graphId=baseGraphId(data.config.graph);
+  if(graphs.some(graph=>graph.id===graphId)){
+    $('graph').value=graphId;$('analysis-type').value=data.config.analysis_type||'baseline';$('case-label').value=data.config.case_label||'Baseline';
+    $('T').value=data.config.T;$('N').value=data.config.N;observedFields(data.observed);
+    localStorage.setItem(selectedGraphKey,graphId);localStorage.setItem(selectedRunKey,data.id);
+  }
   $('result-eyebrow').textContent='COMPLETED EXPERIMENT';
   $('result-name').textContent=data.config.name;
-  $('result-config').textContent=`${data.graph.name} · T=${data.config.T} steps · N=${number(data.config.N,0)} per pair · seed ${data.config.seed} · h=${number(data.config.dt,6)}`;
+  $('result-config').textContent=`${analysisLabels[data.config.analysis_type]||'Baseline'} · ${data.config.case_label||'Baseline'} · B={${data.observed.join(', ')}} · |B|=${data.observed.length} · T=${data.config.T} · N=${number(data.config.N,0)} · seed ${data.config.seed} · h=${number(data.config.dt,6)}`;
   $('metric-frne').textContent=percent(data.metrics.frne_percent,3);
   $('metric-absolute').textContent=number(data.metrics.max_absolute_error,5);
   $('metric-tail').textContent=probability(data.metrics.mean_no_hit_exact);
   $('metric-runtime').textContent=`${number(data.metrics.elapsed_seconds,2)} s`;
   $('exports').hidden=false;
   $('export-csv').href=`/api/runs/${data.id}/csv`; $('export-json').href=`/api/runs/${data.id}/json`;
-  populatePairs(data.observed);drawGraph(data.graph,data.config.q);drawPair();drawConvergence();drawKernel();
+  updatePreview();populatePairs(data.observed);drawGraph(data.graph,data.config.q);drawPair();drawConvergence();drawKernel();drawComparison();populateSavedRuns();
+}
+
+function populateSavedRuns(){
+  const graphId=$('graph').value,current=$('saved-run').value||selectedId;
+  const items=runs.filter(run=>run.status==='completed'&&baseGraphId(run.config.graph)===graphId);
+  const order=['baseline','T_sweep','B_placement','B_size','custom'];
+  const groups=order.map(type=>{
+    const family=items.filter(run=>(run.config.analysis_type||'baseline')===type).sort((a,b)=>{
+      if(type==='T_sweep'||type==='baseline')return a.config.T-b.config.T;
+      if(type==='B_size')return (a.config.observed||[]).length-(b.config.observed||[]).length||String(a.config.case_label).localeCompare(String(b.config.case_label));
+      return String(a.config.case_label||a.config.name).localeCompare(String(b.config.case_label||b.config.name));
+    });
+    if(!family.length)return '';
+    return `<optgroup label="${analysisLabels[type]}">${family.map(run=>{const c=run.config,b=c.observed||[];return `<option value="${run.id}">${esc(c.case_label||c.name)} · B={${b.join(',')}} · |B|=${b.length} · T=${c.T}</option>`;}).join('')}</optgroup>`;
+  }).join('');
+  $('saved-run').innerHTML='<option value="">New configuration</option>'+groups;
+  if(items.some(run=>run.id===current))$('saved-run').value=current;
+}
+function drawComparison(){
+  if(!result)return;
+  const type=result.config.analysis_type||'baseline',graphId=baseGraphId(result.config.graph);
+  let family=runs.filter(run=>run.status==='completed'&&baseGraphId(run.config.graph)===graphId&&((run.config.analysis_type||'baseline')===type||(run.config.analysis_type||'baseline')==='baseline'));
+  const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),baseB=result.observed;
+  if(type==='T_sweep')family=family.filter(run=>same(run.config.observed||[],baseB));
+  if(type==='B_placement')family=family.filter(run=>(run.config.observed||[]).length===baseB.length&&run.config.T===result.config.T);
+  if(type==='B_size')family=family.filter(run=>run.config.T===result.config.T);
+  if(type==='baseline'||family.length<2){$('comparison-panel').hidden=true;return;}
+  $('comparison-panel').hidden=false;$('comparison-title').textContent=`${result.graph.name} · ${analysisLabels[type]}`;
+  $('comparison-scope').textContent=type==='T_sweep'?'Changed: T. Held fixed: graph, B, N, seed, q, and h.':type==='B_placement'?'Changed: positions in B. Held fixed: graph, |B|, T, N, seed, q, and h.':'Changed: |B|. Held fixed: graph, T, N, seed, q, and h. Runs with the same |B| remain separate replicates.';
+  family.sort((a,b)=>type==='T_sweep'?a.config.T-b.config.T:(a.config.observed||[]).length-(b.config.observed||[]).length);
+  const vals=family.map(run=>run.metrics?.frne_percent||0),max=Math.max(...vals,.001),w=700,h=145,left=45,bottom=35,bw=Math.min(52,(w-left-20)/family.length*.55);
+  const x=i=>left+(i+.5)*(w-left-20)/family.length,y=v=>10+(h-10-bottom)*(1-v/max);
+  $('comparison-chart').innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="FRNE comparison">${family.map((run,i)=>`<rect class="comparison-bar" x="${x(i)-bw/2}" y="${y(vals[i])}" width="${bw}" height="${h-bottom-y(vals[i])}"><title>${run.config.case_label}: ${vals[i]}%</title></rect><text class="axis-label" x="${x(i)}" y="${h-17}" text-anchor="middle">${type==='T_sweep'?'T='+run.config.T:type==='B_size'?'|B|='+(run.config.observed||[]).length:'B'+(i+1)}</text>`).join('')}<text class="axis-label" x="8" y="15">FRNE %</text></svg>`;
+  $('comparison-table').innerHTML=`<table><thead><tr><th>Category</th><th>Case</th><th>B</th><th>|B|</th><th>T</th><th>N</th><th>FRNE</th><th>Mean no-hit</th></tr></thead><tbody>${family.map(run=>`<tr><td>${analysisLabels[run.config.analysis_type||'baseline']}</td><td>${esc(run.config.case_label||run.config.name)}</td><td>{${(run.config.observed||[]).join(', ')}}</td><td>${(run.config.observed||[]).length}</td><td>${run.config.T}</td><td>${number(run.config.N,0)}</td><td>${percent(run.metrics?.frne_percent,3)}</td><td>${probability(run.metrics?.mean_no_hit_exact)}</td></tr>`).join('')}</tbody></table>`;
 }
 function drawPair() {
   if (!result) return;
@@ -138,13 +192,13 @@ function drawKernel() {
 }
 function potentialLabel(q) {const max=Math.max(...q),min=Math.min(...q);return max===0?'q = 0':min===max?`q = ${number(max,3)}`:`Vertex rates · max ${number(max,3)}`;}
 function drawHistory() {
-  $('history-body').innerHTML=runs.length ? runs.map(run=>`<tr class="${run.id===selectedId?'selected':''}"><td class="history-name" title="${esc(run.config.name)}">${esc(run.config.name)}<span class="history-date">${esc(new Date(run.created_at).toLocaleString())}</span></td><td>${run.config.graph==='paper8'?'8 · ladder':'9 · grid'}</td><td>${run.config.T} / ${number(run.config.N,0)}</td><td>${potentialLabel(run.config.q)}</td><td>${number(run.config.dt,4)}</td><td>${run.metrics?percent(run.metrics.frne_percent,3):'—'}</td><td><span class="status ${run.status}">${run.status}</span></td><td><div class="history-actions"><button type="button" class="text-button" data-view="${run.id}">View</button><button type="button" class="text-button" data-clone="${run.id}">Reuse</button>${activeStatuses.includes(run.status)?`<button type="button" class="text-button" data-cancel="${run.id}">Cancel</button>`:''}</div></td></tr>`).join(''):'<tr><td colspan="8" class="empty-note">No experiments yet. Start with the paper baseline.</td></tr>';
+  $('history-body').innerHTML=runs.length ? runs.map(run=>{const graph=graphs.find(item=>item.id===baseGraphId(run.config.graph)),b=run.config.observed||[];return `<tr class="${run.id===selectedId?'selected':''}"><td class="history-name" title="${esc(run.config.name)}">${esc(run.config.name)}<span class="history-date">${esc(new Date(run.created_at).toLocaleString())}</span></td><td>${esc(graph?.name || run.config.graph)}</td><td><span class="analysis-badge">${analysisLabels[run.config.analysis_type||'baseline']}</span><br>${esc(run.config.case_label||'Baseline')}</td><td>{${b.join(', ')}}</td><td>${b.length}</td><td>${run.config.T}</td><td>${number(run.config.N,0)}</td><td>${run.metrics?percent(run.metrics.frne_percent,3):'—'}</td><td><span class="status ${run.status}">${run.status}</span></td><td><div class="history-actions"><button type="button" class="text-button" data-view="${run.id}">View</button><button type="button" class="text-button" data-clone="${run.id}">Reuse</button>${activeStatuses.includes(run.status)?`<button type="button" class="text-button" data-cancel="${run.id}">Cancel</button>`:''}</div></td></tr>`;}).join(''):'<tr><td colspan="10" class="empty-note">No experiments yet. Start with the paper baseline.</td></tr>';
 }
 function showProgress(job) {
   $('progress-panel').hidden=!job || !activeStatuses.includes(job.status);
   if(!job)return;
   $('progress-title').textContent=`${job.status==='queued'?'Queued':job.status==='cancelling'?'Cancelling':'Running'} · ${job.config.name}`;
-  $('progress-text').textContent=`${percent((job.progress?.fraction||0)*100,1)} · ${number(job.progress?.completed_trials||0,0)} / ${number(job.config.N*9,0)} walks`;
+  $('progress-text').textContent=`${percent((job.progress?.fraction||0)*100,1)} · ${number(job.progress?.completed_trials||0,0)} / ${number(job.config.N*(job.config.observed||[]).length**2,0)} walks`;
   $('progress-bar').value=job.progress?.fraction||0;
   $('cancel-run').disabled=job.status==='cancelling';
   if(job.status==='failed') showError(job.error || 'Experiment failed.');
@@ -162,25 +216,28 @@ async function refresh() {
   refreshing=true;
   try {
     runs=(await api('/api/runs')).runs;
-    if(!selectedId && runs.length) selectedId=runs[0].id;
+    if(!selectedId && runs.length)selectedId=(runs.find(run=>run.id===localStorage.getItem(selectedRunKey))||runs.find(run=>run.status==='completed'&&baseGraphId(run.config.graph)===$('graph').value)||runs[0]).id;
     const selected=runs.find(run=>run.id===selectedId);
     if(selected){showProgress(selected);if(selected.status==='completed' && !cache.has(selectedId))await selectRun(selectedId);}
-    drawHistory();
+    populateSavedRuns();drawHistory();if(result)drawComparison();
   }finally{refreshing=false;}
 }
+async function selectGraph() {
+  localStorage.setItem(selectedGraphKey,$('graph').value);result=null;selectedId=null;vertexFields();observedFields();populateSavedRuns();qMode();
+}
 function hydrate(cfg) {
-  $('graph').value=cfg.graph;
+  $('graph').value=baseGraphId(cfg.graph);$('analysis-type').value=cfg.analysis_type||'baseline';$('case-label').value=cfg.case_label||'Baseline';
   $('name').value=cfg.name || 'Imported experiment';$('T').value=cfg.T ?? 17;$('N').value=cfg.N ?? 10000;$('seed').value=cfg.seed ?? 2026;
   $('dt').value=cfg.dt_mode==='auto'?'auto':cfg.dt ?? 'auto';
   const q=cfg.q ?? 0;
-  if(Array.isArray(q)){vertexFields(q);$('q-mode').value=q.every(v=>v===0)?'zero':q.every(v=>v===q[0])?'uniform':'vertex';$('uniform-q').value=q[0];}
+  observedFields(cfg.observed);if(Array.isArray(q)){vertexFields(q);$('q-mode').value=q.every(v=>v===0)?'zero':q.every(v=>v===q[0])?'uniform':'vertex';$('uniform-q').value=q[0];}
   else {vertexFields();$('q-mode').value=q===0?'zero':'uniform';$('uniform-q').value=q;}
   qMode();$('experiment-form').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function inputConfig(cfg) {
   if (!cfg || typeof cfg !== 'object' || Array.isArray(cfg)) throw new Error('Import a JSON configuration object.');
   const clean = {...cfg};
-  delete clean.dt_mode; delete clean.physical_horizon;
+  delete clean.dt_mode; delete clean.physical_horizon; delete clean.B_size;
   return clean;
 }
 async function cancel(id) {clearError();await api(`/api/runs/${id}/cancel`,{});await refresh();}
@@ -190,10 +247,11 @@ $('experiment-form').addEventListener('submit',async event=>{
   try{const cfg=configuration();await api('/api/validate',cfg);const job=await api('/api/runs',cfg);selectedId=job.id;showProgress(job);await refresh();}
   catch(error){showError(error);}finally{$('run-button').disabled=false;}
 });
-$('graph').addEventListener('change',()=>{vertexFields();qMode();});
+$('graph').addEventListener('change',()=>selectGraph().catch(showError));
+$('saved-run').addEventListener('change',event=>{if(event.target.value)selectRun(event.target.value).catch(showError);});
 $('q-mode').addEventListener('change',qMode);
 $('experiment-form').addEventListener('input',updatePreview);
-$('paper-preset').addEventListener('click',()=>{$('T').value=17;$('N').value=1000000;$('q-mode').value='zero';$('dt').value='auto';$('name').value=`Paper baseline · ${$('graph').value==='paper8'?'eight':'nine'} vertices`;qMode();});
+$('paper-preset').addEventListener('click',()=>{$('T').value=17;$('N').value=1000000;$('q-mode').value='zero';$('dt').value='auto';$('name').value=`Baseline · ${graphConfig().name}`;qMode();});
 $('source').addEventListener('change',drawPair);$('target').addEventListener('change',drawPair);
 for(const mode of ['pmf','cdf'])$(`view-${mode}`).addEventListener('click',()=>{view=mode;for(const m of ['pmf','cdf'])$(`view-${m}`).setAttribute('aria-pressed',String(m===view));drawPair();});
 $('refresh-history').addEventListener('click',()=>refresh().catch(showError));
@@ -211,5 +269,5 @@ $('import-config').addEventListener('change',async event=>{
   const file=event.target.files[0];if(!file)return;
   try{if(file.size>65536)throw new Error('Import a configuration file smaller than 64 KB.');const imported=JSON.parse(await file.text());const cfg=inputConfig(imported.config||imported);await api('/api/validate',cfg);hydrate(cfg);clearError();}catch(error){showError(error);}finally{event.target.value='';}
 });
-async function init(){graphs=(await api('/api/graphs')).graphs;vertexFields();qMode();await refresh();setInterval(()=>{if(runs.some(run=>activeStatuses.includes(run.status)))refresh().catch(showError);},1000);}
+async function init(){graphs=(await api('/api/graphs')).graphs;const saved=localStorage.getItem(selectedGraphKey);if(graphs.some(graph=>graph.id===saved))$('graph').value=saved;vertexFields();observedFields();qMode();await refresh();setInterval(()=>{if(runs.some(run=>activeStatuses.includes(run.status)))refresh().catch(showError);},1000);}
 init().catch(showError);

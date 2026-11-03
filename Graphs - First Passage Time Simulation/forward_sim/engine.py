@@ -59,7 +59,7 @@ def simulate(config: Experiment, progress: Callable[[dict], None] | None = None,
              cancelled: Callable[[], bool] | None = None) -> dict:
     started = time.perf_counter()
     K, kill, P = build_kernel(config)
-    observed = config.graph.observed
+    observed = config.observation_set
     b, n, T, N = len(observed), config.graph.size, config.T, config.N
     exact = exact_first_passage(K, T, observed)
     forward, exact_killed, exact_censored = exact_outcomes(K, kill, T, observed)
@@ -134,10 +134,14 @@ def simulate(config: Experiment, progress: Callable[[dict], None] | None = None,
                           "censored_exact": float(exact_censored[i,j]), "censored_count": int(censored[i,j]),
                           "no_hit_exact": float(tail_exact[i,j]), "no_hit_empirical": float(tail_empirical[i,j]),
                           "no_hit_ci95": [float(tail_low[i,j]), float(tail_high[i,j])]})
+    graph_data = config.graph.as_dict()
+    graph_data["observed"] = list(observed)
+    for vertex in graph_data["vertices"]:
+        vertex["observed"] = vertex["id"] in observed
     return {
-        "schema_version": 1, "engine_version": __version__,
+        "schema_version": 2, "engine_version": __version__,
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "config": config.as_dict(), "graph": config.graph.as_dict(),
+        "config": config.as_dict(), "graph": graph_data,
         "environment": {"python": platform.python_version(), "numpy": np.__version__,
                         "rng": "PCG64 / SeedSequence([seed, source, target])", "batch_size": 20000},
         "time_convention": "T is maximum step; first arrivals at t=1,...,T; physical time=t*dt",

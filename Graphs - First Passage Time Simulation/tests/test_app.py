@@ -43,7 +43,7 @@ class ApiTests(unittest.TestCase):
             status,_,data=self.request(path)
             self.assertEqual(status,200);self.assertTrue(data)
         _,_,data=self.request('/api/graphs')
-        self.assertEqual(len(json.loads(data)['graphs']),2)
+        self.assertEqual(len(json.loads(data)['graphs']),6)
         with self.assertRaises(HTTPError) as error:
             self.request('/../app.py')
         self.assertEqual(error.exception.code,404)

@@ -9,11 +9,14 @@ from .engine import wilson
 def csv_text(result: dict) -> str:
     stream = io.StringIO(newline="")
     writer = csv.writer(stream)
-    writer.writerow(["run_id", "graph", "T", "N", "seed", "dt", "q", "source", "target",
+    writer.writerow(["run_id", "graph", "analysis_type", "case_label", "B", "B_size",
+                     "T", "N", "seed", "dt", "q", "source", "target",
                      "outcome", "step", "physical_time", "count", "r_exact", "r_empirical",
                      "ci95_lower", "ci95_upper"])
     cfg = result["config"]
-    base = [result.get("id", ""), cfg["graph"], cfg["T"], cfg["N"], cfg["seed"], cfg["dt"], json.dumps(cfg["q"])]
+    base = [result.get("id", ""), cfg["graph"], cfg.get("analysis_type", "baseline"),
+            cfg.get("case_label", "Baseline"), json.dumps(result["observed"]),
+            len(result["observed"]), cfg["T"], cfg["N"], cfg["seed"], cfg["dt"], json.dumps(cfg["q"])]
     for i, source in enumerate(result["observed"]):
         for j, target in enumerate(result["observed"]):
             for t in range(cfg["T"]):
