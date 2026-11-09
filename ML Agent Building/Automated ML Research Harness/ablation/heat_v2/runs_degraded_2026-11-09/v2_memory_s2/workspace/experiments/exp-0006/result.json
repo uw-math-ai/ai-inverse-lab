@@ -1,0 +1,50 @@
+{
+ "exp_id": "exp-0006",
+ "idea_id": "idea-003",
+ "mode": "method_eval",
+ "fraction": 0.1,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.02139317877654436,
+  "r2": 0.9955627991546382,
+  "rmse": 0.027792784908398753
+ },
+ "n_train_used": 300,
+ "n_val_used": 150,
+ "fit_seconds": 0.013870477676391602,
+ "predict_seconds": 0.39308857917785645,
+ "latency_ms_per_sample": 2.6205905278523765,
+ "warnings": [],
+ "kind": "hybrid",
+ "family": "hybrid",
+ "label": "hybrid[ridge/log+logy->LM10]",
+ "forward_evals": 9974,
+ "forward_evals_fit": 200,
+ "diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200,
+   "initializer_fit_seconds": 0.005278110504150391
+  },
+  "last_chi2_per_dof": 0.9559891396691207,
+  "last_solve_seconds": 0.39194178581237793,
+  "last_iters": 10
+ },
+ "val_per_target_rel_l2": [
+  0.026285727286681587,
+  0.006118766087953072,
+  0.004917333858065359,
+  0.03247553843203062
+ ],
+ "uncertainty": {
+  "coverage_1sigma": 0.7166666666666667,
+  "coverage_2sigma": 0.96,
+  "mean_std": 0.01917822418179965,
+  "z_rms": 0.9972390903237298
+ },
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_memory_s2\\workspace\\experiments\\exp-0006\\val_pred.npy",
+ "status": "ok",
+ "elapsed": 2.1961474418640137
+}

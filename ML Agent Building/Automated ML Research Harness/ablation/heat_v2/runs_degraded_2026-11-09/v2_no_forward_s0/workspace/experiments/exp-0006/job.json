@@ -1,0 +1,44 @@
+{
+ "mode": "method_eval",
+ "exp_id": "exp-0006",
+ "idea_id": "idea-006",
+ "method": {
+  "kind": "custom_ml",
+  "code": "import numpy as np\nfrom sklearn.compose import TransformedTargetRegressor\nfrom sklearn.neural_network import MLPRegressor\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\n\ndef _to_r(y):\n    return 1.0 / np.clip(y, 1e-3, None)\n\ndef _to_k(r):\n    return 1.0 / np.clip(r, 0.5, 2.0)\n\ndef build_model(params, task, seed):\n    inner = make_pipeline(StandardScaler(), MLPRegressor(hidden_layer_sizes=(512, 256), alpha=1e-4, learning_rate_init=1e-3, max_iter=400, early_stopping=True, n_iter_no_change=20, random_state=seed))\n    return TransformedTargetRegressor(regressor=inner, func=_to_r, inverse_func=_to_k, check_inverse=False)\n",
+  "params": {},
+  "features": "raw",
+  "scaler": "none",
+  "pca": 0,
+  "target_transform": "none"
+ },
+ "fraction": 0.1,
+ "val_subsample": 150,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s0\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 0,
+ "feature_shape": null,
+ "stage": "screen",
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "simulator_hash": "d287f853686c",
+ "forward_access": false,
+ "max_forward_evals": 3000000,
+ "plan_artifact": "plan-00094",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s0\\workspace\\experiments\\exp-0006",
+ "device": "cpu"
+}

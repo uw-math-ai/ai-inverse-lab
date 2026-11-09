@@ -1,0 +1,69 @@
+{
+ "exp_id": "exp-0019",
+ "idea_id": "ensemble",
+ "mode": "final_v2",
+ "fraction": 1.0,
+ "device": "cpu",
+ "test": {
+  "rel_l2": 0.022481336162390383,
+  "r2": 0.9954624121119879,
+  "rmse": 0.029581032023820907
+ },
+ "fit_seconds": 119.69619846343994,
+ "predict_seconds": 0.011033773422241211,
+ "latency_ms_per_sample": 0.014711697896321615,
+ "test_bootstrap": {
+  "mean": 0.022428385004913672,
+  "std": 0.0006994131501172437,
+  "ci95": [
+   0.021289708020109346,
+   0.02367556957987291
+  ],
+  "n_boot": 200
+ },
+ "test_per_target_rel_l2": [
+  0.032782306597908296,
+  0.010008543740348782,
+  0.009218150147406179,
+  0.02806639080611468
+ ],
+ "member_test": [
+  {
+   "label": "torch_mlp/raw+logy+aug2",
+   "rel_l2": 0.025509209561700445
+  },
+  {
+   "label": "torch_mlp/log+logy+aug1",
+   "rel_l2": 0.0257560127819424
+  },
+  {
+   "label": "torch_mlp/raw+logy+aug2",
+   "rel_l2": 0.02674016243009396
+  },
+  {
+   "label": "torch_mlp/raw+logy+aug1",
+   "rel_l2": 0.024587604013715365
+  }
+ ],
+ "test_sample_rel_error_quantiles": {
+  "0.5": 0.015629214797423446,
+  "0.9": 0.03581408414453282,
+  "0.99": 0.07571404621800673
+ },
+ "shift": {
+  "k_low_0.3": {
+   "rel_l2": 0.07958486722231536,
+   "r2": 0.9567513214424404,
+   "rmse": 0.0991146270903287
+  },
+  "noise_x3": {
+   "rel_l2": 0.05911059738393571,
+   "r2": 0.9694545715691755,
+   "rmse": 0.0787581615783784
+  }
+ },
+ "reload_max_abs_diff": 0.0,
+ "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s0\\final\\model.pkl",
+ "status": "ok",
+ "elapsed": 121.53915309906006
+}

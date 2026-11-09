@@ -1,7 +1,0 @@
-__pycache__/
-.cache/
-runs/*/data/
-runs/*/workspace/
-runs/*/llm_scratch/
-runs/*/final/*.pkl
-runs/*/final/*.npy

@@ -1,0 +1,248 @@
+{
+  "pipeline": "v2",
+  "members": [
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.0,
+        "lr": 0.0005559633623803135,
+        "weight_decay": 0.0001,
+        "epochs": 250,
+        "batch_size": 128,
+        "activation": "tanh"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "log",
+      "noise_aug": 2,
+      "noise_scale": 1.0
+    },
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.0,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 179,
+        "batch_size": 128,
+        "activation": "gelu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "log",
+      "noise_aug": 1,
+      "noise_scale": 1.0
+    },
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.0,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 250,
+        "batch_size": 128,
+        "activation": "gelu"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "log",
+      "noise_aug": 2,
+      "noise_scale": 1.0
+    },
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          256,
+          256
+        ],
+        "dropout": 0.0,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 117,
+        "batch_size": 128,
+        "activation": "gelu"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "log",
+      "noise_aug": 1,
+      "noise_scale": 1.0
+    }
+  ],
+  "member_info": [
+    {
+      "label": "torch_mlp/raw+logy+aug2",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "dd7e93a417bb"
+    },
+    {
+      "label": "torch_mlp/log+logy+aug1",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "e2800083a72b"
+    },
+    {
+      "label": "torch_mlp/raw+logy+aug2",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "c07c6bb699b5"
+    },
+    {
+      "label": "torch_mlp/raw+logy+aug1",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "9cea3821e3bb"
+    }
+  ],
+  "weights": [
+    2.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.022481336162390383,
+    "r2": 0.9954624121119879,
+    "rmse": 0.029581032023820907
+  },
+  "test_bootstrap": {
+    "mean": 0.022428385004913672,
+    "std": 0.0006994131501172437,
+    "ci95": [
+      0.021289708020109346,
+      0.02367556957987291
+    ],
+    "n_boot": 200
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.07958486722231536,
+      "r2": 0.9567513214424404,
+      "rmse": 0.0991146270903287
+    },
+    "noise_x3": {
+      "rel_l2": 0.05911059738393571,
+      "r2": 0.9694545715691755,
+      "rmse": 0.0787581615783784
+    }
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    false,
+    false,
+    false,
+    false
+  ],
+  "reproducibility": {
+    "seed": 0,
+    "data_seed": 5,
+    "data_cache_key": "dbbb3d2541fda500",
+    "test_split_sha1": "5b49be1eb2715949",
+    "spec_hash": "a7592704f6",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "harness_version": "2.0.0"
+  },
+  "research_lineage": {
+    "idea-011": {
+      "proposal_chain": [
+        "P-011",
+        "P-003"
+      ],
+      "entry": "E-03",
+      "gate": "gate-00138",
+      "citations": [
+        "ts:thm:17546409",
+        "ts:thm:22398568"
+      ],
+      "label": "torch_mlp/raw+logy+aug2",
+      "origin": "refine"
+    },
+    "idea-013": {
+      "proposal_chain": [
+        "P-013",
+        "P-005"
+      ],
+      "entry": "E-06",
+      "gate": "gate-00142",
+      "citations": [],
+      "label": "torch_mlp/log+logy+aug1",
+      "origin": "refine"
+    },
+    "idea-004": {
+      "proposal_chain": [
+        "P-011",
+        "P-003"
+      ],
+      "entry": "E-03",
+      "gate": "gate-00076",
+      "citations": [
+        "ts:thm:17546409",
+        "ts:thm:22398568"
+      ],
+      "label": "torch_mlp/raw+logy+aug2",
+      "origin": "research"
+    },
+    "idea-014": {
+      "proposal_chain": [
+        "P-013",
+        "P-005"
+      ],
+      "entry": "E-06",
+      "gate": "gate-00144",
+      "citations": [],
+      "label": "torch_mlp/raw+logy+aug1",
+      "origin": "refine"
+    }
+  }
+}

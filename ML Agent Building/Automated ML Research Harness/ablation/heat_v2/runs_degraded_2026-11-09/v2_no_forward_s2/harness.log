@@ -1,0 +1,58 @@
+2026-11-09 01:00:26,638 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-09 01:00:26,641 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-09 01:00:26,641 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-09 01:00:26,641 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-09 01:00:26,647 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
+2026-11-09 01:00:26,726 INFO problem context: forward model: not available | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde=parabolic (heat / diff
+2026-11-09 01:00:26,726 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-09 01:00:28,848 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.1s)
+2026-11-09 01:00:28,850 INFO baseline val rel_l2 = 0.3307
+2026-11-09 01:00:28,850 INFO === stage: research | compute used 2/400s | wall 2s
+2026-11-09 01:00:30,569 WARNING [researcher-mathematical] LLM call for literature queries (mathematical) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:30,585 WARNING [researcher-exploratory] LLM call for literature queries (exploratory) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:30,585 WARNING [researcher-ml] LLM call for literature queries (ml) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:30,644 WARNING [researcher-experimental] LLM call for literature queries (experimental) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:32,340 WARNING [research-critic] LLM call for research critique round 1 failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:33,956 WARNING [researcher-experimental] LLM call for revise (experimental) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:34,006 WARNING [researcher-mathematical] LLM call for revise (mathematical) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:34,043 WARNING [researcher-exploratory] LLM call for revise (exploratory) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:34,208 WARNING [researcher-ml] LLM call for revise (ml) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:35,935 WARNING [research-critic] LLM call for research critique round 2 failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:00:35,939 INFO research loop: 2 rounds, 8 active, 0 abandoned — quality criteria met after 2 rounds (every active proposal >= 0.75 quality, no blocking issues, critic converged)
+2026-11-09 01:00:35,939 INFO === stage: portfolio | compute used 2/400s | wall 9s
+2026-11-09 01:00:35,941 INFO portfolio: E-01 ridge/log+logy, E-02 kernel_ridge/log+pca32, E-03 torch_mlp/log+logy, E-04 kernel_ridge/sqrt+pca32, E-05 torch_mlp/log+logy+aug1, E-06 random-search x2, E-07 torch_mlp/raw
+2026-11-09 01:00:35,941 INFO === stage: gate | compute used 2/400s | wall 9s
+2026-11-09 01:00:35,956 INFO gate: 8/8 executable methods approved
+2026-11-09 01:00:35,956 INFO === stage: screen | compute used 2/400s | wall 9s
+2026-11-09 01:00:38,013 INFO   exp-0002 idea-002  ridge/log+logy               f=0.10 rel_l2=0.03931 r2=0.9851 rmse=0.05107 (2.0s)
+2026-11-09 01:00:38,031 INFO   exp-0003 idea-003  kernel_ridge/log+pca32       f=0.10 rel_l2=0.0553 r2=0.9707 rmse=0.07184 (2.1s)
+2026-11-09 01:00:38,042 INFO   exp-0005 idea-005  kernel_ridge/sqrt+pca32      f=0.10 rel_l2=0.05237 r2=0.9736 rmse=0.06803 (2.1s)
+2026-11-09 01:00:38,189 INFO   exp-0007 idea-007  extra_trees/log+pca64        f=0.10 rel_l2=0.1898 r2=0.6635 rmse=0.2465 (2.2s)
+2026-11-09 01:00:40,499 INFO   exp-0008 idea-008  extra_trees/sqrt+pca16       f=0.10 rel_l2=0.1766 r2=0.707 rmse=0.2294 (2.5s)
+2026-11-09 01:00:42,404 INFO   exp-0004 idea-004  torch_mlp/log+logy           f=0.10 rel_l2=0.05089 r2=0.9753 rmse=0.06611 (6.4s)
+2026-11-09 01:00:43,124 INFO   exp-0006 idea-006  torch_mlp/log+logy+aug1      f=0.10 rel_l2=0.04534 r2=0.9804 rmse=0.05891 (7.1s)
+2026-11-09 01:00:44,160 INFO   exp-0009 idea-009  torch_mlp/raw                f=0.10 rel_l2=0.0605 r2=0.9656 rmse=0.0786 (6.1s)
+2026-11-09 01:00:44,160 INFO screen: 8/8 methods survive (no cross-family ranking at unequal fidelity)
+2026-11-09 01:00:44,162 INFO === stage: evaluate | compute used 33/400s | wall 18s
+2026-11-09 01:00:46,266 INFO   exp-0010 idea-002  ridge/log+logy               f=1.00 rel_l2=0.03332 r2=0.9898 rmse=0.04394 (2.1s)
+2026-11-09 01:00:46,845 INFO   exp-0014 idea-003  kernel_ridge/log+pca32       f=1.00 rel_l2=0.03062 r2=0.9914 rmse=0.04038 (2.6s)
+2026-11-09 01:00:46,854 INFO   exp-0013 idea-005  kernel_ridge/sqrt+pca32      f=1.00 rel_l2=0.02946 r2=0.992 rmse=0.03885 (2.7s)
+2026-11-09 01:00:49,435 INFO   exp-0017 idea-007  extra_trees/log+pca64        f=1.00 rel_l2=0.1149 r2=0.8787 rmse=0.1515 (2.6s)
+2026-11-09 01:00:49,533 INFO   exp-0016 idea-008  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.1084 r2=0.8917 rmse=0.143 (3.3s)
+2026-11-09 01:00:54,885 INFO   exp-0015 idea-009  torch_mlp/raw                f=1.00 rel_l2=0.03097 r2=0.9912 rmse=0.04085 (10.7s)
+2026-11-09 01:00:55,978 INFO   exp-0012 idea-004  torch_mlp/log+logy           f=1.00 rel_l2=0.02915 r2=0.9922 rmse=0.03845 (11.8s)
+2026-11-09 01:00:58,678 INFO   exp-0011 idea-006  torch_mlp/log+logy+aug1      f=1.00 rel_l2=0.02828 r2=0.9926 rmse=0.0373 (14.5s)
+2026-11-09 01:00:58,679 INFO evaluate: best idea-006 torch_mlp/log+logy+aug1 val rel_l2=0.028283
+2026-11-09 01:00:58,679 INFO === stage: refine | compute used 83/400s | wall 32s
+2026-11-09 01:01:08,716 INFO   exp-0021 idea-013  torch_mlp/log+logy           f=1.00 rel_l2=0.03242 r2=0.9903 rmse=0.04275 (10.0s)
+2026-11-09 01:01:11,414 INFO   exp-0020 idea-012  torch_mlp/log+logy           f=1.00 rel_l2=0.02845 r2=0.9925 rmse=0.03752 (12.7s)
+2026-11-09 01:01:15,349 INFO   exp-0018 idea-010  torch_mlp/log+logy+aug1      f=1.00 rel_l2=0.02813 r2=0.9927 rmse=0.03709 (16.6s)
+2026-11-09 01:01:18,218 INFO   exp-0019 idea-011  torch_mlp/sqrt+logy+aug1     f=1.00 rel_l2=0.02773 r2=0.9929 rmse=0.03656 (19.5s)
+2026-11-09 01:01:18,221 INFO refine round 1: 4 children, best gain 1.96%
+2026-11-09 01:01:18,221 INFO === stage: predictions | compute used 142/400s | wall 52s
+2026-11-09 01:01:18,228 INFO prediction checks: {'supported': 6, 'contradicted': 0, 'inconclusive': 0, 'untestable': 1}
+2026-11-09 01:01:18,229 INFO === stage: final | compute used 142/400s | wall 52s
+2026-11-09 01:02:02,181 INFO   exp-0022 ensemble  FINAL                        f=1.00 rel_l2=0.02298 r2=0.9953 rmse=0.03023 (43.9s)
+2026-11-09 01:02:02,184 INFO FINAL ensemble ['torch_mlp/sqrt+logy+aug1', 'torch_mlp/log+logy', 'torch_mlp/log+logy+aug1'] | val rel_l2=0.026202 | test {'rel_l2': 0.02298, 'r2': 0.99525, 'rmse': 0.03023} (95% CI [0.02146, 0.02454])
+2026-11-09 01:02:02,190 INFO === stage: report | compute used 185/400s | wall 96s
+2026-11-09 01:02:03,715 WARNING [reporter-v2] LLM call for report discussion failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)

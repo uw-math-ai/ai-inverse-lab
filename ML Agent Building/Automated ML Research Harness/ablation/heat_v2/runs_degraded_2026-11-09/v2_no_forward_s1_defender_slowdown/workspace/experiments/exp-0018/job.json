@@ -1,0 +1,74 @@
+{
+ "mode": "final_v2",
+ "exp_id": "exp-0018",
+ "idea_id": "idea-006",
+ "members_v2": [
+  {
+   "kind": "library",
+   "method": "ridge",
+   "params": {
+    "alpha": 0.01
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 0.1
+  }
+ ],
+ "member_ids": [
+  "idea-006"
+ ],
+ "forward_access_members": [
+  false
+ ],
+ "weights": [
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s1\\data\\dataset.npz",
+ "seed": 1,
+ "data_seed": 5,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s1\\final",
+ "run_id": "heat_v2_no_forward_s1_20261109_102435",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "max_forward_evals": null,
+ "bootstrap": 200,
+ "data_cache_key": "dbbb3d2541fda500",
+ "spec_hash": "8e97e94bdd",
+ "harness_version": "2.0.0",
+ "lineage": {
+  "idea-006": {
+   "proposal_chain": [
+    "P-011"
+   ],
+   "entry": "E-05",
+   "gate": "gate-00118",
+   "citations": [],
+   "label": "ridge/raw+logy",
+   "origin": "research"
+  }
+ },
+ "plan_artifact": "plan-00195",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s1\\workspace\\experiments\\exp-0018",
+ "device": "cpu"
+}

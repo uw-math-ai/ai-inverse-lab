@@ -1,0 +1,191 @@
+{
+  "pipeline": "v2",
+  "members": [
+    {
+      "kind": "hybrid",
+      "params": {
+        "transform": "log",
+        "iters": 9,
+        "tikhonov": 0,
+        "extra_starts": 1,
+        "estimator": "posterior_mean",
+        "posterior_samples": 64
+      },
+      "init": {
+        "kind": "library",
+        "method": "kernel_ridge",
+        "params": {
+          "alpha": 0.001,
+          "gamma_mult": 1.0
+        },
+        "features": "raw",
+        "scaler": "standard",
+        "pca": 0,
+        "target_transform": "log",
+        "noise_aug": 1,
+        "noise_scale": 1.0
+      }
+    },
+    {
+      "kind": "physics",
+      "params": {
+        "transform": "log",
+        "multistart": 1,
+        "iters": 30,
+        "tikhonov": 0.0,
+        "estimator": "mode",
+        "posterior_samples": 128
+      }
+    },
+    {
+      "kind": "hybrid",
+      "params": {
+        "transform": "log",
+        "iters": 10,
+        "tikhonov": 0.8467506352525123,
+        "extra_starts": 0,
+        "estimator": "posterior_mean",
+        "posterior_samples": 64
+      },
+      "init": {
+        "kind": "library",
+        "method": "kernel_ridge",
+        "params": {
+          "alpha": 0.001,
+          "gamma_mult": 1.0
+        },
+        "features": "raw",
+        "scaler": "standard",
+        "pca": 0,
+        "target_transform": "log",
+        "noise_aug": 1,
+        "noise_scale": 1.0
+      }
+    }
+  ],
+  "member_info": [
+    {
+      "label": "hybrid[kernel_ridge/raw+logy+aug1->LM9]",
+      "kind": "hybrid",
+      "family": "hybrid",
+      "uses_forward": true,
+      "method_hash": "b34a44fac30b"
+    },
+    {
+      "label": "physics-MLE[log,ms=1,it=30]",
+      "kind": "physics",
+      "family": "physics",
+      "uses_forward": true,
+      "method_hash": "74dff9ec37c0"
+    },
+    {
+      "label": "hybrid[kernel_ridge/raw+logy+aug1->LM10]",
+      "kind": "hybrid",
+      "family": "hybrid",
+      "uses_forward": true,
+      "method_hash": "6bf2843cddad"
+    }
+  ],
+  "weights": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.018339493334415383,
+    "r2": 0.9969879422681689,
+    "rmse": 0.024131178667821166
+  },
+  "test_bootstrap": {
+    "mean": 0.018400537002405924,
+    "std": 0.000535445579984816,
+    "ci95": [
+      0.017286424611054233,
+      0.019530964906253695
+    ],
+    "n_boot": 200
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.08692245438424415,
+      "r2": 0.9481864877882431,
+      "rmse": 0.10825282434667131
+    },
+    "noise_x3": {
+      "rel_l2": 0.05156004885592256,
+      "r2": 0.9768515721864355,
+      "rmse": 0.06869791270097056
+    }
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    true,
+    true,
+    true
+  ],
+  "reproducibility": {
+    "seed": 1,
+    "data_seed": 5,
+    "data_cache_key": "dbbb3d2541fda500",
+    "test_split_sha1": "5b49be1eb2715949",
+    "spec_hash": "9f0f28a432",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "harness_version": "2.0.0"
+  },
+  "research_lineage": {
+    "idea-012": {
+      "proposal_chain": [
+        "P-020",
+        "P-013",
+        "P-005"
+      ],
+      "entry": "E-03",
+      "gate": "gate-00180",
+      "citations": [],
+      "label": "hybrid[kernel_ridge/raw+logy+aug1->LM9]",
+      "origin": "refine"
+    },
+    "idea-010": {
+      "proposal_chain": [],
+      "entry": "E-09",
+      "gate": "gate-00124",
+      "citations": [],
+      "label": "physics-MLE[log,ms=1,it=30]",
+      "origin": "baseline"
+    },
+    "idea-011": {
+      "proposal_chain": [
+        "P-020",
+        "P-013",
+        "P-005"
+      ],
+      "entry": "E-03",
+      "gate": "gate-00178",
+      "citations": [],
+      "label": "hybrid[kernel_ridge/raw+logy+aug1->LM10]",
+      "origin": "refine"
+    }
+  }
+}

@@ -1,0 +1,1002 @@
+PAGE 1
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR
+INFORMATION DIFFUSION
+YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+ABSTRACT. We consider an inverse problem in information diffusion modeled by random walks on
+combinatorial graphs. The problem concerns reconstruction of vertex centrality from the distribution
+of the first passage times observed on a subset of vertices. We adapt the boundary control method to
+obtain a direct algorithm that computes the unobserved vertex centrality. The algorithm is numerically
+implemented and validated on small graphs.
+1.INTRODUCTION
+1.1.Background.Information diffusion studies spatiotemporal propagation of information in a
+social system. Here, “information” is interpreted in the broad sense such as infectious diseases,
+news, or ideas. Examples of information diffusion include the spread of infectious diseases through
+contact networks, the dissemination of news or opinions on social media platforms, and the prop-
+agation of signals or activities in biological or technological networks. In this paper, we study
+the mathematical modeling of information diffusion on a network from the perspective of inverse
+problems. We are interested in explicitly reconstructing certain network parameters from partial
+observation on a sub-network.
+Let us begin by setting up the model. A network on which information propagates is modeled
+mathematically as a combinatorial graph, which consists of a setXof vertices and a setEof edges.
+In information diffusion,Xrepresents the collection of individuals or agents, andErepresents
+interactions between them. If two verticesx, y∈Xare connected by an edge, we writex∼y,
+and represent the edge by{x, y}. In this paper, we focus on a special class of graphs. A graph is
+calledfiniteif|X|and|E|are both finite, where| · |denotes the cardinality of a set. A graph is
+calledundirectedif{x, y}={y, x}for allx, y∈X. A graph is calledsimpleif it has no self-loops
+and there is at most one edge between any pair of vertices. A graph is calledconnectedif any
+two vertices can be connected by a sequence of edges. Henceforth, all the graphs in this paper are
+assumed to be finite, undirected, simple and connected.
+We assign some weights on the vertices and edges. The weight on vertices is defined by the
+function
+µ:X→R >0
+whereR >0 denotes the set of positive real numbers. For eachx∈X, the valueµ(x)is called the
+vertex centrality, and characterizes the influence of the vertexxin the network. The weight on the
+edges is defined by a function
+w:X×X− →R ≥0,
+Key words and phrases.vertex centrality reconstruction, distributions of the first passage times, random walk,
+graphs.
+The research of Y . Gao was supported by NSFC grant 12371187 and NSF of Jilin Province (Outstanding Youth Fund)
+20240101006JJ. The research of Y . Yang is partially supported by the NSF grants DMS-2237534 and DMS-2220373.
+1
+arXiv:2603.20710v1  [math-ph]  21 Mar 2026
+
+PAGE 2
+2 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+satisfyingw(x, y) =w(y, x), whereR ≥0 denotes the set of non-negative real numbers. For each
+pair of verticesx, y∈X, the valuew(x, y)is called theedge weight, and characterizes the strength
+of the connection betweenxandy. We require thatw(x, y)>0for allx∼y, andw(x, y) = 0for
+x≁y. Here,E=
+
+{x, y} ∈X×X|w(x, y)>0
+	
+. Throughout the paper, we will denote the
+graph with these weight functions by the quadrupleG:= (X,E, µ, w). For the brevity of notation,
+we often writeµ(x)asµ x, andw(x, y)asw x,y.
+The dynamics in information diffusion can be modeled in various ways. In this paper, we adopt
+a widely-used model where the propagation of information is regarded as a diffusion process (for
+example, see [13, 14, 18]). To study the diffusion process onG, we introduce thegraph Laplacian
+∆whose action on a real-valued functionu:X− →Ris defined by
+∆u(x) := 1 µ(x) X y∈X
+y∼x
+w(x, y)(u(y)−u(x)), x∈X.
+We remark that two types of graph Laplacian are of vital significance in graph theory: the combina-
+torial Laplacian whenµ≡1, and the normalized Laplacian whenw≡1andµ(x) = deg(x). We
+define the discrete first-order time derivative ofuas
+Dtu(t, x) =u(t+ 1, x)−u(t, x), t= 0,1,2, . . .andx∈X.
+If we observe the information diffusion only at discrete times, then its dynamics are governed by
+the following discrete-time graph heat equation:
+Dtu(t, x) = ∆u(t, x),(t, x)∈N 0 ×X,
+whereN 0 denotes the set of non-negative integers. Moreover, if the initial distribution of the infor-
+mation is described by a functiong:X→R, then we can complement the graph heat equation
+with the initial condition
+u(0, x) =g(x).
+The solutionuof this initial value problem describes the expected information level at timetand
+vertexx.
+Let us introduce notations for some inner products. For a subset of verticesΩ⊂Xand functions
+f, h: Ω− →R, we denote byℓ2(Ω)theℓ 2-space of real-valued functions equipped with the inner
+product:
+⟨f, h⟩Ω :=
+X
+x∈Ω
+µxf(x)h(x).
+An important fact, which will be used later, is that the graph Laplacian∆is a self-adjoint operator
+onℓ 2(X), that is,
+(∆f, h)X = (f,∆h) X for allf, h:X→R.
+More generally, let us denoteZ T :={0,1, . . . , T−1}and consider time dependent functions
+u, v:Z T ×Ω→R, whereT∈N 0 \ {0}. The inner product on the spaceℓ2(ZT ×Ω)is defined by
+⟨u, v⟩ZT ×Ω :=
+T−1X
+t=0
+⟨u(t), v(t)⟩Ω =
+T−1X
+t=0
+X
+x∈Ω
+µxu(t, x)v(t, x).
+
+PAGE 3
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 3
+1.2.Problem Formulation.It is well known that the discrete-time graph heat equation is closely
+connected to random walks on graphs. Here, we follow the exposition in [12] to describe the
+relation: Suppose the vertex centralityµand edge weightwsatisfy1≥ 1 µx P y∈X
+y∼x
+wxy for allx∈X.
+We define
+pxy := wxy
+µx
+forx∼y,andp xx := 1− 1 µx X y∈X
+y∼x
+wxy.(1.1)
+Then{p xy :y∈X}is a discrete probability distribution for eachx∈X. LetH x0 t be the discrete-
+time random walk with the state spaceXand one-step transition probability{p xy :x, y∈X},
+which starts atx 0 ∈Xat timet= 0, then
+pxy =P(H x0 t+1 =y|H x0 t =x).
+The random variableH x0 t represents the vertex at which the information resides at timet.
+Moreover, for any functiong:X→R, the expectation
+u(t, x) :=E(g(Hx t )) = X
+y∈X
+P(H x t =y)g(y)(1.2)
+satisfies the following initial value problem for the graph heat equation:(
+Dtu(t, x)−∆u(t, x) = 0,(t, x)∈N 0 ×X,
+u(0, x) =g(x), x∈X. (1.3)
+Now, we can define the quantity that will be used as the measurement. Fixx∈X, and letH x t be
+the random walk as above that starts atx. We define thefirst passage timefory∈Xas
+τ(x, y) := inf{s≥1|H x s =y},
+which is the minimal time it takes for the random walk that starts atxto arrive aty. Note thatτ(x, y)
+is a random variable defined on the set of all possible paths, taking values inZ>0 ∪ {∞}. We define
+thedistribution of the first passage timesas:
+r(t, x, y) :=P({τ(x, y) =t}), t= 1,2,3, . . . .
+The inverse problem we are interested in is the following: Suppose information propagates in a
+networkGas random walks, and the transition probabilities are structured as in (1.1), whereµis
+the vertex centrality, andwis the known edge weight function. LetB⊂Xbe a fixed subset of
+vertices where observation can be made. If we release multiple information sources inBand collect
+the distribution of first passage times of the information arriving atB, can we estimate the vertex
+centralityµ? The problem can be made more precise using the notations we have introduced as
+follows:
+Given(X,E, µ|B, w)and the datar| Z2T \{0}×B×B for someT <∞, how can we recoverµ| X\B ?
+Here, we assumeµ| B is known sinceBis the set of observation, and it remains to recoverµ| X\B
+on the unobserved part of the network. The uniqueness ofµ| X\B has been established (among
+other results) in [12, Theorem 1.5] under suitable geometric conditions. However, the proof is non-
+constructive, thus does not readily give a reconstruction method. In this paper, we focus on the
+reconstruction problem. Our central result is an explicit reconstruction formula forµ| X\B derived
+based on the boundary control method. The formula further leads to a direct, non-iterative algorithm
+(see Algorithm 1), which is numerically validated using simulations. Following [12], the major
+assumption for our derivation is:
+
+PAGE 4
+4 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+Assumption 1.LetG:= (X,E, µ, w)be a finite, undirected, connected, simple graph, andB⊂X
+a subset of vertices. Suppose
+(i) there does not exist a nonzero eigenfunction of−∆vanishing onB;
+(ii) the edge weight satisfiesµ x ≥ P
+y∈X
+y∼x
+wxy for allx∈X.
+The condition (ii) is needed simply to ensure that the transition probabilitiesp xx defined in (1.1)
+are non-negative. The condition (i) is a unique continuation principle on the graph. It ensures the
+exact controllability of the graph heat equation with controls localized inBin [12, Proposition 5.3],
+which provides the foundation for our reconstruction method, see Lemma 2.3.
+1.3.Literature Review.Most inverse problems concerning random walks and Markov chains on
+graphs focus on the recovery of transition probabilities under a prescribed graph topology. These
+include recursive reconstruction of Markov transition probabilities from boundary measurements
+[28], as well as the determination of transition probabilities from input–output travel time data
+on classes of directed graphs with loops [19]. From a statistical and algorithmic perspective, a
+convergent algorithm for recovering transition probabilities based on the relative net number of
+traversals along edges was proposed in [22]. Related identifiability results have been established
+for various graph structures: in [16], it was shown that a simple Markov chain on the integers
+is uniquely determined—among chains differing from a reference chain only on a finite set—by
+the joint distribution of first hitting times and locations, while an analogous uniqueness result for
+nondegenerate simple Markov chains on certain classes of finite rooted trees was proved in [17].
+In applied settings, partial observations of visiting frequencies and transition rates have been used
+to infer both initial states and transition probabilities of Markov chains, with applications to traffic
+monitoring systems [25]. The work that is most relevant to our paper is [12], which proves that,
+under suitable geometric conditions, the graph structure and the transition probabilities are uniquely
+determined by the distributions of the first passage times. These works demonstrate that random
+walk observables can encode sufficient information to recover transition mechanisms, forming the
+foundation for inverse problems on graphs driven by stochastic dynamics.
+The reconstruction approach employed in this work is a variant of the boundary control method
+pioneered by Belishev [2]. The boundary control method was originally developed for inverse
+problems associated with the continuous wave equation. Its central idea is that boundary excita-
+tions generate waves whose interior dynamics encode geometric and analytic information about the
+underlying domain and coefficients, and that this information can be accessed through suitably de-
+signed boundary controls and measurements. When combined with Tataru’s unique continuation
+results [31,32], the boundary control method has proven to be a powerful tool for establishing iden-
+tifiability of coefficients in evolution equations. In particular, a boundary control framework was
+developed for the continuous heat equation in [1] to recover the heat conductivity, which may be
+viewed as a continuous analogue of the approach pursued here, albeit with different types of mea-
+surements. A key advantage of the boundary control method lies in its constructive nature: it often
+yields explicit operator identities that relate measured boundary data, either directly or indirectly,
+to the unknown quantities of interest. Numerical implementations based on the boundary control
+method have been developed for continuous wave equations [6,7,15,23,26,27,29,30,33–35] and for
+continuous heat equations [1]. We refer the reader to the surveys and monograph [4, 5, 21] for com-
+prehensive overviews of the boundary control method and its applications to continuous evolution
+equations.
+
+PAGE 5
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 5
+The boundary control method has also been adapted to study inverse problems on graphs. The
+development includes determining planar metric trees and their edge densities from spectral data [3,
+8], detecting cycles on metric graphs from boundary measurement [9], computing vertex centrality
+on combinatorial graphs from spectral data [24], and detecting network blockage [11]. The present
+work follows this line of research by developing a boundary control framework for the graph heat
+equation to address an inverse problem arising in the context of information diffusion.
+1.4.The Contribution.This paper’s major contribution is an explicit reconstruction formula and
+a corresponding algorithm for computing the vertex centralityµ| X\B from the distribution of first
+passage times observed on a subset of vertices, see Algorithm 1. By adapting the boundary control
+method to the graph heat equation, we obtain a closed-form reconstruction formula, from which a di-
+rect, non-iterative algorithm is derived. The effectiveness of the proposed algorithm is demonstrated
+through numerical experiments. This approach has potential applications in identifying unknown
+graph structures in models of information diffusion.
+Along the derivation of the reconstruction formula, we also obtain new uniqueness results as a
+byproduct. In particular, we establish uniqueness for the recovery of (the orthogonal projection of)
+the vertex centrality under weaker geometric assumptions; see Theorem 3.2 and Corollary 3.3. Al-
+though the uniqueness of vertex centrality can be deduced from [12, Theorem 1.5], the proof therein
+relies on a stronger geometric hypothesis known as the two-points condition. In contrast, our Corol-
+lary 3.3 establishes a generic uniqueness result under the sole requirement of the unique continuation
+principle stated in Assumption 1 (i). Since the two-points condition implies the unique continuation
+principle [12, Proposition 2.6], our result demonstrates new cases where generic uniqueness holds
+under weaker assumptions.
+The paper is structured as follows: Section 2 proves Blagovescenskii-type identities that link
+the data and several inner products on the graph. Section 3 utilizes the identities to derive the
+reconstruction procedure. Section 4 summarizes the reconstruction algorithm, and discusses details
+of implementation. Section 5 presents numerical experiments on small graphs to validate and assess
+the algorithm.
+2. BLAGOVESCENSKII-TYPEIDENTITY
+This section establishes an explicit expression for the solution to the nonhomogeneous heat equa-
+tion (2.1) following the approach of [12], and a Blagovescenskii-type Identity. The expression of
+the solution is given in terms of distributions of the first passage times on the vertex observation set
+B⊂Xfor discrete timest∈Z 2T \ {0}.
+2.1.Representation of Graph Heat Solutions onB.LetU=U f (t, x)denote the solution of the
+following nonhomogeneous heat equation onXwith the zero initial condition:(
+DtU(t, x)−∆U(t, x) =f(t, x),(t, x)∈Z 2T ×X,
+U(0, x) = 0, x∈X. (2.1)
+Let us identifyℓ 2(ZT ×B)with the subspace ofℓ 2(Z2T ×X)consisting of functions that are
+compactly supported onZ T ×B, that is,
+ℓ2(ZT ×B) ∼= {f∈ℓ 2(Z2T ×X)|supp(f)⊂Z T ×B}.
+Specifically, we identifyf∈ℓ 2(ZT ×B)with its zero extension inℓ 2(Z2T ×X). We will denote
+such extension again byf. Henceforth, we will only consider sourcesf∈ℓ 2(ZT ×B)when solving
+forU f.
+
+PAGE 6
+6 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+The next lemma, proved in [12, Lemma 3.4, Theorem 1.5], gives an explicit representation ofUf
+in terms offand the datar| Z2T \{0}×B×B.
+Lemma 2.1.[12, Lemma 3.4, Theorem 1.5] The solutionU f |Z2T ×B withf∈ℓ 2(ZT ×B)can be
+written in terms offandr(t, x, y)|Z2T \{0}×B×B as follows:
+U f (t, x) =
+
+
+
+0, t= 0,
+f(0, x), t= 1,
+P
+y∈B
+f(t−2, y)·r(1, x, y) +
+t−2P
+s=1
+P
+y∈B
+
+f(s−1, y)
+
+r(t−s, x, y)
++
+t−sP
+j=2
+P
+1≤t1<t2<···<tj =t−s
+r(t1, x, y)·
+jQ
+i=2
+r(ti −t i−1, y, y)
+
++f(t−1, x), t≥2
+(2.2)
+for(t, x)∈Z 2T ×B.
+Proof.We begin by noting that the initial condition for the heat equation (2.1) isU f (0, x) = 0for
+allx∈X. Following the approach in [12, Lemma 3.4], the solutionU f can be expressed as a linear
+combination of fundamental solutionsu y :Z 2T ×X→Rto the homogeneous heat equation with
+Dirac initial conditions (
+Dtuy(t, x)−∆uy(t, x) = 0,(t, x)∈Z 2T ×X,
+uy(0, x) =δy(x), x∈X (2.3)
+for each fixedy∈B. Here,δ y(x) = 1ifx=y, andδ y(x) = 0ifx̸=y. Specifically, fors∈Z +,
+we have
+U f (t, x) =
+tX
+s=1
+X
+y∈B
+f(s−1, y)u y(t−s, x),(t, x)∈Z 2T \ {0} ×X,(2.4)
+withU f (0, x) = 0forx∈X.
+Based on the definition ofuin (1.2), the fundamental solutionsu y admit a probabilistic represen-
+tation in terms of the first passage time distributionsr, which is established in the proof of [12, The-
+orem 1.5]:
+uy(t, x) =E(δy(H x t )) =P(H x t =y)
+=
+
+
+
+r(1, x, y), t= 1,
+r(t, x, y) +
+tP
+j=2
+P
+1≤t1<t2<···<tj =t
+r(t1, x, y)·
+jQ
+i=2
+r(ti −t i−1, y, y), t∈ {2, . . . ,2T−1}
+(2.5)
+for allx∈Xandy∈B.
+The expression (2.5) decomposes the event{H x t =y}according tojdistinct visiting times to
+the vertexy. The termr(t, x, y)corresponds to the walk first reachingyexactly at timet. For
+j≥2, the inner sum accounts for sequences where the walk visitsyat exactlyjdistinct times
+t1 <· · ·< tj =t, withr(t 1, x, y)representing the probability of the first arrival atyat timet1 from
+x, and each factorr(t i −t i−1, y, y)giving the probability of the first return toy(exactly at timet i)
+fromyat timet i−1 with2≤i≤j.
+
+PAGE 7
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 7
+Substituting the equality (2.5) into the equality (2.4) fort∈Z 2T \ {0}, and observing that X
+y∈B
+f(t−1, y)δ y(x) =f(t−1, x)
+sincefis supported onZ T ×B, we obtain (2.2).
+□
+Remark 2.2.The nested summations in(2.2)make the computational cost grow exponentially in
+T. To see this, let us count the number of basic arithmetic operations (i.e, addition, subtraction,
+multiplication and division). We will ignore the computational cost to evaluate functions. Fixtand
+x∈B. The dominant cost in(2.2)comes from the combinatorial block
+t−1X
+s=1
+X
+y∈B
+t−sX
+j=2
+X
+1≤t1<···<tj =t−s
+r(t1, x, y)
+jY
+i=2
+r(ti −t i−1, y, y).
+Form:=t−s, there are2 m−1 −1summands, and the sum of the multiplication counts overj
+equals Pm j=2(j−1)  m−1 j−1  = (m−1)2 m−2. Hence, for fixedt, x, the number of multiplications
+contributed by the combinatorial block is
+|B|
+t−1X
+m=1
+(m−1)2 m−2 =|B|   (t−3)2 t−2 + 1  .
+Summing overx∈Bandt∈Z 2T \ {0}, the total arithmetic complexity is
+2T−1X
+t=1
+|B|2  (t−3)2 t−2 + 1  =|B| 2  2T+ 1 + (2T−5)2 2T−2  .
+The analysis shows that the computational cost of the nested summations in(2.2)is at least on the
+order ofO(|B| 2T2 2T ). Since Lemma 2.3 below requiresT≥ |X|, the computational complexity
+scales in|X|at least asO(|B| 2|X|2 2|X|). This exponential growth in|X|becomes a crucial limiting
+factor for the size of the graphs in the numerical experiments in Section 5.
+From the proof of Lemma 2.1, we observe that fort∈Z 2T \ {0}andx, y∈B, both the fun-
+damental solutionu y(t, x)to the equation (2.3), and the solutionU f (t, x)to the nonhomogeneous
+heat equation (2.1) can be determined byr(t, x, y)|Z2T \{0}×B×B.
+2.2.Blagovescenskii-type Identity.Recall thatU f denotes the solution of the non-homogeneous
+heat equation (2.1) withf∈ℓ 2(ZT ×B). In particular,U f |Z2T ×B can be obtained fromfand the
+datar| Z2T \{0}×B×B by Lemma 2.1.
+We introduce a few linear operators that will be used later. First, define thesource-to-solution
+map
+Λµ :ℓ 2(ZT ×B)→ℓ 2(ZT ×B)
+f7→U f |ZT ×B. (2.6)
+Note that by Lemma 2.1, the operatorΛ µ can be explicitly computed using the datar| Z2T \{0}×B×B.
+Next, define
+W:ℓ 2(ZT ×B)→ℓ 2(X),
+f7→U f (T,·).
+Wis clearly a linear operator. Itsℓ 2-adjoint is denoted byW ∗. The following result, established
+in [12], shows thatWis surjective whenTis sufficiently large.
+
+PAGE 8
+8 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+Lemma 2.3.[12, Proposition 5.3] Suppose the graph satisfies Assumption 1 andT≥ |X|. Then
+
+U f (T,·)|f∈ℓ 2(ZT ×B) 	 =ℓ 2(X).
+For a functionu(t, x), we introduce the time reversal operator:
+RT−1 :ℓ 2(ZT ×B)→ℓ 2(ZT ×B),
+u(t,·)7→u(T−1−t,·), t∈Z T .
+The operatorR 2T−1 is defined likewise:
+R2T−1 :ℓ 2(Z2T ×B)→ℓ 2(Z2T ×B),
+u(t,·)7→u(2T−1−t,·), t∈Z 2T .
+We also define the temporal projection operator onB:
+PT :ℓ 2(Z2T ×B)→ℓ 2(ZT ×B),
+u7→u| ZT ×B.
+LetU f1 andU f2 denote the solutions of the heat equation (2.1) with sourcesf1, f2 ∈ℓ 2(ZT ×B),
+respectively. The next proposition shows that the inner product of these solutions onXat timet=T
+can be represented byf 1 andf 2. This type of result, known as the Blagovescenskii identity [10],
+plays a crucial role in the framework of the boundary control method. Henceforgth, for a function
+u(t, x), we writeu(t)for the spatial functionu(t,·).
+Proposition 2.4.For anyf 1, f2 ∈ℓ 2(ZT ×B), we have
+⟨U f1(T), Uf2(T)⟩ X =⟨W f1, W f2⟩X =⟨f 1, PT R2T−1 U f2⟩ZT ×B.(2.7)
+In particular,W ∗W f2 =P T R2T−1 U f2 for anyf 2 ∈ℓ 2(ZT ×B).
+Proof.The first equality follows from the definition ofW. It remains to prove the second equality.
+DefineI(s, t) :=⟨U f1(s), Uf2(t)⟩X. Direct computation yields
+(Ds −D t)I(s, t) =⟨DsU f1(s), Uf2(t)⟩X − ⟨Uf1(s), DtU f2(t)⟩X
+=⟨∆U f1(s) +f 1(s), Uf2(t)⟩X − ⟨Uf1(s),∆U f2(t) +f 2(t)⟩X
+=⟨∆U f1(s), Uf2(t)⟩X +⟨f 1(s), Uf2(t)⟩X
+− ⟨Uf1(s),∆U f2(t)⟩X − ⟨Uf1(s), f2(t)⟩X.
+By the self-adjointness of the operator∆with respect to⟨·,·⟩ X, we have⟨∆U f1(s), Uf2(t)⟩X =
+⟨U f1(s),∆U f2(t)⟩X. Therefore, the terms involving∆cancel, and we obtain:
+(Ds −D t)I(s, t) =⟨f1(s), Uf2(t)⟩X − ⟨Uf1(s), f2(t)⟩X
+=⟨f 1(s), Uf2(t)⟩B − ⟨Uf1(s), f2(t)⟩B,0≤s, t≤2T−1
+where the second inequality holds sincesupp(f 1),supp(f 2)⊂Z T ×B.
+Let us denote the right hand side asF(s, t) :=⟨f 1(s), Uf2(t)⟩B − ⟨Uf1(s), f2(t)⟩B. From the
+definitions ofD s andD t, we obtain the recurrence relation
+I(s+ 1, t)−I(s, t)−(I(s, t+ 1)−I(s, t)) =F(s, t),0≤s, t≤2T−1.
+In other words,
+I(s+ 1, t) =I(s, t+ 1) +F(s, t),0≤s, t≤2T−1.(2.8)
+
+PAGE 9
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 9
+We now prove by induction that for1≤s≤2T−1and0≤t≤2T−s,
+I(s, t) =
+s−1X
+j=0
+F(j, t+s−1−j).(2.9)
+By the definition ofI(s, t), we have
+I(0, t) =⟨Uf1(0), Uf2(t)⟩X = 0, t≥0.
+For the base cases= 1in (2.9), it follows from equality (2.8) that
+I(1, t) =I(0, t+ 1) +F(0, t) =F(0, t),0≤t≤2T−1,
+which agrees with (2.9). Now we assume that (2.9) holds fors≤kand prove the cases=k+ 1.
+Indeed, using the recursive relation (2.8), we obtain
+I(k+ 1, t) =I(k, t+ 1) +F(k, t)
+=
+k−1X
+j=0
+F(j, t+ 1 +k−1−j) +F(k, t)
+=
+kX
+j=0
+F(j, t+k−j),0≤t≤2T−k−1,
+which justifies the cases=k+ 1.
+Substituting the definitions ofI(s, t)andF(s, t)into (2.9) yields
+⟨U f1(s), Uf2(t)⟩X =
+s−1X
+j=0
+
+⟨f1(j), Uf2(t+s−1−j)⟩ B − ⟨Uf1(j), f2(t+s−1−j)⟩ B 
+for1≤s≤2T−1and0≤t≤2T−s. Finally, takings=t=Tand usingsupp(f 2)⊂Z T ×B,
+we obtain
+⟨U f1(T), Uf2(T)⟩ X =
+T−1X
+j=0
+⟨f1(j), Uf2(2T−1−j)⟩ B =⟨f 1, PT R2T−1 U f2⟩ZT ×B.
+This proves the second equality in (2.7). The representation ofW ∗Wfollows from the adjoint
+relation⟨W f1, W f2⟩X =⟨f 1, W∗W f2⟩ZT ×B and the arbitrariness off 1, f2 ∈ℓ 2(ZT ×B).□
+Next, we introduce a class of functions defined onXthat will be used.
+Definition 2.5.A functionφ:X→Ris said to be harmonic onX\B, if
+∆φ(x) = 0for allx∈X\B.
+Remark 2.6.Given a functionφ:X→R, we can determine whether it is harmonic onX\B
+without knowingµ| X\B . This is because∆φ(x) = 0if and only if
+0 =µ x∆φ(x) =
+X
+y∈X
+y∼x
+wx,y(u(y)−u(x)),
+where the right-hand side does not involveµ.
+
+PAGE 10
+10 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+Let us introduce another spatial projection operator
+PB :ℓ 2(X)→ℓ 2(B), φ7→φ| B.
+The next proposition shows that the inner product betweenU f (T)and a functionφthat is harmonic
+onX\Bcan be computed from the source-to-solution mapΛ µ.
+Proposition 2.7.Letφbe harmonic onX\B, and suppose the graph satisfies Assumption 1. Then
+for anyf∈ℓ 2(ZT ×B), we have
+⟨U f (T), φ⟩X =⟨W f, φ⟩X =⟨f, RT−1 ΛµRT−1 PB∆φ+P Bφ⟩ZT ×B.(2.10)
+Consequently,
+W ∗φ=R T−1 ΛµRT−1 PB∆φ+P Bφ∈ℓ 2(ZT ×B).(2.11)
+Proof.The first equality in (2.10) follows from the definition ofW. To prove the second inequality
+in (2.10), defineJ(t) :=⟨U f (t), φ⟩X. Then
+DtJ(t) =⟨D tU f (t), φ⟩X
+=⟨∆U f (t) +f(t), φ⟩X
+=⟨U f (t),∆φ⟩ X +⟨f(t), φ⟩X
+=⟨U f (t),∆φ⟩ (X\B)∪B +⟨f(t), φ⟩X
+=⟨U f (t), PB∆φ⟩B +⟨f(t), PBφ⟩B, t∈Z 2T .
+Here, the second equality holds sinceU f solves (2.1), the third equality holds since∆is self-adjoint
+with respect to the inner product onX, and the last equality holds since∆φ= 0onX\Band
+supp(f)⊂Z T ×B. AsJ(0) =⟨U f (0), φ⟩X = 0, we obtain the following recurrence relation from
+the definition ofD t:
+J(t+ 1)−J(t) =⟨U f (t), PB∆φ⟩B +⟨f(t), PBφ⟩B, t∈Z 2T .
+Therefore, we have
+J(T) =J(0) +
+T−1X
+j=0
+[J(j+ 1)−J(j)]
+=
+T−1X
+j=0
+
+⟨U f (j), PB∆φ⟩B +⟨f(j), PBφ⟩B 
+=⟨U f , PB∆φ⟩ZT ×B +⟨f, PBφ⟩ZT ×B
+=⟨Λ µf, PB∆φ⟩ZT ×B +⟨f, PBφ⟩ZT ×B
+=⟨f, RT−1 ΛµRT−1 PB∆φ⟩ZT ×B +⟨f, PBφ⟩ZT ×B
+=⟨f, RT−1 ΛµRT−1 PB∆φ+P Bφ⟩ZT ×B.
+Here, the fourth equality uses the definition of the source-to-solution mapΛ µ, and the fifth em-
+ploys the adjoint propertyΛ ∗ µ =R T−1 ΛµRT−1 , which is proved in Appendix A. This proves the
+second inequality in (2.10). Finally, the equality (2.11) follows from the relation⟨W f, φ⟩ X =
+⟨f, W∗φ⟩ZT ×B.□
+
+PAGE 11
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 11
+Although Proposition 2.7 holds for anyφthat is harmonic onX\B, it suffices to consider just a
+few basis functions. Indeed, if we index the vertices inX\Basx 1, . . . , x|X\B| and those inBas
+x|X\B|+1 , . . . , x|X|, then the unique solution of the boundary value problem (uniqueness guaranteed
+by [24, Lemma 10.1])
+∆u(x) = 0, x∈X\B, u| B =g
+is a linear combination ofφ (j) that satisfies
+∆φ(j)(x) = 0forx∈X\B, φ (j)|B =δ (j).(2.12)
+Here,δ (j) denotes the function onBdefined by
+δ(j)(x) :=
+(
+1ifx=x |X\B|+j ,
+0ifx∈B\ {x |X\B|+j }.
+3. RECONSTRUCTIONPROCEDURE
+In this section, we derive the procedure to reconstruct the unknown vertex centralityµ| X\B .
+3.1.Construction of controls.We begin by constructing suitable control functions onB. Here, a
+control functionh 0 is a function inℓ 2(ZT ×B)such thatU h0(T) :=U h0(T,·)is a prescribed spatial
+function.
+Proposition 3.1.Suppose the graph satisfy Assumption 1 andT≥ |X|. For anyψthat is harmonic
+onX\B, the function
+h0 := (W ∗W) †W ∗ψ∈ℓ 2(ZT ×B)(3.1)
+satisfiesU h0(T, x) =ψ(x)for allx∈X, where(·) † denotes the pseudo-inverse.
+Proof.By Lemma 2.3, the operatorWis surjective, so the linear systemU h(T) =W h=ψadmits
+solutions. The solutionh 0 given in (3.1) is the minimum norm solution.
+□
+Note that by Proposition 2.4 and Proposition 2.7, bothW ∗WandW ∗ψcan be computed from
+Λµ. As the latter is computable from the datar| Z2T \{0}×B×B by Lemma 2.1, we see thath 0 can be
+explicitly computed from the data without knowingµ| X\B .
+3.2.Reconstruction of the vertex centrality onX\B.The rest of the approach closely follows
+the idea in our earlier work [24], so we just outline the idea here.
+Define the space spanned by products of functions that are harmonic onX\B:
+Q:= span{(φψ)| X\B :φ, ψ∈ℓ 2(X),∆φ(x) = ∆ψ(x) = 0, x∈X\B}.
+Note thatQis a subspace ofℓ 2(X\B), and the definition ofQis independent ofµ X\B since
+the functions that are harmonic onX\Bare independent ofµ| X\B , see Remark 2.6. Given two
+functionsφ, ψthat are harmonic onX\B, we have
+X
+x∈B∪(X\B)
+µxψ(x)φ(x) =⟨ψ, φ⟩X =⟨U h0(T), φ⟩X =⟨W h0, φ⟩X =⟨h 0, W∗φ⟩ZT ×B,
+whereh 0 is chosen as in Proposition 3.1. This implies X
+x∈X\B
+µxψ(x)φ(x) =⟨h 0, W∗φ⟩ZT ×B − X
+x∈B
+µxψ(x)φ(x).(3.2)
+
+PAGE 12
+12 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+As the right hand side can be computed from the datar| Z2T \{0}×B×B and the knownµ| B, we can
+takeφ, ψ=φ (j) withj= 1,2, . . . ,|B|, respectively, to obtain a linear system, from whichµ|X\B
+can be solved. In summary, we have proved:
+Theorem 3.2.LetG= (X,E, µ, w)satisfy Assumption 1. Suppose(X,E, µ| B, w)are given, and
+T≥ |X|. Then the orthogonal projection ofµ| X\B onto the subspaceQ⊂ℓ 2(X\B)can be
+explicitly reconstructed from the datar| Z2T \{0}×B×B.
+Theorem 3.2 only reconstructs the orthogonal projection ofµ| X\B ontoQ. To recover the full
+vertex centralityµ| X\B , we need additional conditions onX\Band the edge weight functionw.
+Let us again index the vertices inX\Basx 1, . . . , x|X\B| and those inBasx |X\B|+1 , . . . , x|X|. Using
+the indexing, a functiong∈ℓ 2(X)can be identified with a vector⃗ g= (g(x1), . . . , g(x|X|))⊤ ∈R |X|
+via the isomorphism
+ℓ2(X)∋g↔⃗ g:=
+
+⃗ gX\B
+⃗ gB
+
+∈R |X\B| ×R |B|,(3.3)
+where(·) ⊤ denotes transpose. Let⃗ φ(j) denote the vector representation of the unique solution to the
+boundary value problem (2.12). We define the space of functions that are harmonic onX\Bin the
+vector form as:
+⃗H:= span  ⃗ φ(j) ∈R |X| :j= 1,2, . . . ,|B| 	 .(3.4)
+Construct a matrix
+H∈R |X\B|× |B|(|B|+1) 2
+whose columns are the vectors⃗ φ|(j) X\B ⊙⃗ φ|(k) X\B with1≤j≤k≤ |B|, where⊙denotes the
+Hadamard product. By Lemma 5.2 and Remark 5.3 in [24], we have
+Q=ℓ 2(X\B)if an only ifrank(H) =|X\B|.(3.5)
+Note that a necessary condition forrank(H) =|X\B|is |B|(|B|+1) 2 ≥ |X\B|, which requires the
+setBto contain sufficient vertices.
+Using the vertex ordering, we can list the edges lexicographically and view the edge weight
+functionwas a vector with positive entries, that isw∈R |E| + . Since the Laplacian operator is defined
+in terms ofw, the matrixH=H(w)can be regarded as a matrix-valued function ofw∈R |E| + .
+Applying [24, Proposition 5.4], we obtain the following reconstruction for a generic set ofω.
+Corollary 3.3.LetG= (X,E, w, µ)satisfy Assumption 1. Suppose(X,E, µ| B, w)are given,
+T≥ |X|and |B|(|B|+1) 2 ≥ |X\B|. IfQ=ℓ 2(X\B)holds for at least one edge weightw, then it
+holds for all edge weights except a set of measure zero inR|E| + . As a result, Theorem 3.2 reconstructs
+µ|X\B for all edge weights except a set of measure zero inR |E| + .
+Proof.Letβdenote an arbitrary selection of|X\B|columns fromH. Define
+Sβ :={w∈R |E| + : det(H:,β) = 0,andµ x ≥ X
+y∈X
+y∼x
+wxy}.
+
+PAGE 13
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 13
+Asdet(H :,β)is a rational function ofw, its zero setS β is either the entireR |E| + or a set of measure
+zero. The collection ofwthat ensuresrank(H)<|X\B|is
+{w∈R |E| + : rank(H)<|X\B|,andµ x ≥ X
+y∈X
+y∼x
+wxy}
+={w∈R |E| + : det(H:,β) = 0,∀β,andµ x ≥ X
+y∈X
+y∼x
+wxy}
+=
+\
+β
+Sβ,
+which is a finite intersection ofSβ. IfQ=ℓ 2(X\B)for at least onew, thenrank(H) =|X\B|for
+suchwby (3.5), hence the intersection cannot be the entire space, which must be a set of measure
+zero. WhenQ=ℓ 2(X\B), the orthogonal projection ofµ| X\B ontoQis justµ| X\B itself.□
+Numerical reconstruction ofµ| X\B is summarized in Algorithm 1 in Section 4.
+4. RECONSTRUCTION ALGORITHM
+This section presents the implementation and validation of the reconstruction procedure, summa-
+rized in Algorithm 1. Recall that the graphG= (X,E, µ, w)satisfies Assumption 1.
+We introduce a vectorization process that converts functions on graphs into vectors for the im-
+plementation of Algorithm 1. For a time-independent functiong∈ℓ 2(X), we continue to use the
+vectorization described in (3.3).
+For a time-dependent functionu∈ℓ 2(ZT ×X), we use the lexicographical order to identify
+u↔⃗ u:=(u(0, x1), u(0, x2),· · ·, u(0, x|X|), u(1, x1), u(1, x2),· · ·, u(1, x|X|), . . . ,
+u(T−1, x 1), u(T−1, x2), . . . , u(T−1, x|X|))⊤.
+Similarly, we can vectorize a function inℓ 2(ZT ×(X\B))orℓ 2(ZT ×B)following the ordering
+of vertices inXas above. Sometimes, we need to extendg∈ℓ 2(B)to a function inℓ 2(ZT ×B)
+that is constant in the variablet. Following the lexicographical order, such extension is vectorized
+as1 T ⊗⃗ g, where1T := (1, . . . ,1)⊤ ∈R T denotes the vector of all 1’s, and⊗is the vector tensor
+product. Based on this ordering of the vertices, linear operators in the algorithm are realized as
+matrices. We put a square parenthesis[·]around the linear operator to denote its matrix realization.
+Implementation of Algorithm 1 consists of the following steps:
+Step 1: Assemble
+− →
+U f and the matrix[Λ µ].Given anyf∈ℓ 2(ZT ×B)with the vectorization ⃗f∈
+RT|B| and the datar| Z2T \{0}×B×B, we use the formula (2.2) to obtainU f |Z2T ×B and its vectorization− →
+U f ∈R 2T|B| . Since the matrix[Λ µ]∈R T|B|×T|B| satisfies[Λ µ] ⃗f= [P T ] − → U f by (2.6), ranging ⃗fover
+all the standard basis vectors inR T|B| gives[Λ µ].
+Step 2: Construct the matrix[W ∗W].For anyf∈ℓ 2(ZT ×B)with vectorization ⃗f∈R T|B| ,
+the matrix[W ∗W]∈R T|B|×T|B| is determined by the following relation in Proposition 2.4:
+[W ∗W] ⃗f= [P T ][R2T−1 ] − → U f (4.1)
+where[P T ]∈R T|B|×2T|B| and[R 2T−1 ]∈R 2T|B|×2T|B| . Ranging ⃗fover all the standard basis vectors
+inR T|B| gives the matrix[W ∗W].
+
+PAGE 14
+14 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+Algorithm 1:Reconstruction Algorithm forµ| X\B .
+Input:G= (X,E, µ, w)that satisfies the assumptions in Corollary 3.3; the distribution of the
+first passage timesr| Z2T \{0}×B×B.
+1:ComputeU f |Z2T ×B from the distributions of the first passage times via
+U f (t, x) =
+
+
+
+0, t= 0,
+f(0, x), t= 1,
+P
+y∈B
+f(t−2, y)·r(1, x, y) +
+t−2P
+s=1
+P
+y∈B
+
+f(s−1, y)
+
+r(t−s, x, y)
++
+t−sP
+j=2
+P
+1≤t1<t2<···<tj =t−s
+r(t1, x, y)·
+jQ
+i=2
+r(ti −t i−1, y, y)
+
++f(t−1, x), t≥2
+for(t, x)∈Z 2T ×B(see (2.2)).
+2:Compute the operatorW ∗Wby varyingfinW ∗W f(t, x) =PT R2T−1 U f for(t, x)∈Z T ×B, see
+(2.7).
+3:Compute the functionsW ∗φ(j) (j= 1,· · ·,|B|) by
+W ∗φ(j) =R T−1 ΛµRT−1 PB∆φ(j) +P Bφ(j),
+see (2.11) and (2.12).
+4:Computeh (j) 0 = (W ∗W) †W ∗φ(j) for eachj= 1,· · ·,|B|, see (3.1).
+5:Solve the linear equations with1≤j≤k≤ |B|:
+X
+x∈X\B
+µxφ(j)(x)φ(k)(x) =⟨h (j) 0 , W∗φ(k)⟩ZT ×B − X
+x∈B
+µxφ(j)(x)φ(k)(x),
+see (3.2).
+6:returnµ| X\B .
+Output:The vertex centralityµ| X\B .
+Step 3: Compute the matrix-vector product[W ∗]⃗ φ(j) forj= 1,2, . . . ,|B|.For eachj, the
+solutionφ (j) of (2.12) is vectorized as⃗ φ(j) ∈R |X|. We use (2.11) to get
+[W ∗]⃗ φ(j) = [RT−1 ][Λµ][RT−1 ]   1T ⊗[P B][∆]⃗ φ(j) +1 T ⊗[P B]⃗ φ(j).
+Here,[R T−1 ]∈R T|B|×T|B| ,[Λ µ]∈R T|B|×T|B| ,[P B]∈R |B|×|X| ,[∆]∈R |X|×|X| . The tensor product
+1T ⊗ ·extends a vectorized spatial function to a vectorized spatial-temporal function.
+Step 4: Determine the control function ⃗h(j) 0 for each⃗ φ(j).Using Proposition 3.1, we compute
+⃗h(j) 0 := [W ∗W] †[W ∗]⃗ φ(j) ∈R T|B| (4.2)
+for eachj= 1,2, . . . ,|B|. This is possible as the matrix[W∗W]and the vector[W ∗]⃗ φ(j) have been
+obtained in the previous steps.
+Step 5: Reconstruct⃗ µX\B .For1≤j≤k≤ |B|, we solve the following linear system arising
+from (3.2):
+(⃗ φ(j) X\B ⊙⃗ φ(k) X\B )⊤⃗ µX\B = ⃗h(j)⊤ 0 [W ∗]⃗ φ(k) −(⃗ φ(j) B ⊙⃗ φ(k) B )⊤⃗ µB,1≤j≤k≤ |B|.(4.3)
+Note that the coefficient matrix of this linear system isH⊤. If this equation admits a unique solution,
+we can recover⃗ µX\B . Otherwise, the minimum norm solution gives the orthogonal projection of
+⃗ µX\B ontoQ.
+
+PAGE 15
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 15
+5. NUMERICAL EXPERIMENT
+In this section, we validate the algorithm on several numerical examples using MATLAB and
+Python. The experimental equipment used is a laptop with the following hardware specifications:
+CPU: Intel(R) Core(TM) i7-10510U @1.80GHz and RAM: 16.0 GB.
+Given a graphG= (X,E, µ, w)with known vertex centrality and edge weight, we first simulate
+anempirical distribution of the first passage times, denoted by
+r′(t, x, y),(t, x, y)∈Z 2T \ {0} ×B×B.
+The simulation is done by the Monte Carlo method, and the empirical distribution is used later as
+the approximate measurement data to validate Algorithm 1. For a fixed pair of verticesx, y∈B,
+we first simulate the functionτ(x, y). Each simulation sets up a random walk that begins atx, then
+randomly selects the next adjacent vertex to be visited according to the transition probabilities (1.1).
+Ifyis visited, the current step count is recorded asτ(x, y)and the simulation is terminated. Ifyis
+never visited within time2T−1,τ(x, y)is set to infinity. Therefore, the possible values forτ(x, y)
+are1,2, . . . ,2T−1and∞. We repeat such simulation10 6 times and record the histogram of the
+possible values. The histogram witht <∞givesr ′(t, x, y)for fixedx, y∈B. Repeating this
+process for allx, y∈Byieldsr ′(t, x, y)with(t, x, y)∈Z2T \ {0} ×B×B, which is used as
+approximate data in the following experiments.
+We would like to evaluate the discrepancy of the empirical distribution of the first passage times
+r′|Z2T \{0}×B×B related to the genuine distributionr| Z2T \{0}×B×B. For this purpose, given a ground-
+truth vertex centralityµonXand the edge weightwonE, we compute the transition probabilities
+pxy by (1.1), then computerbased on the following recursive relation (e.g, see [20, Chapter 4.8] for
+an account):
+r(t, x, y) =
+
+
+
+pxy, t= 1,P
+X∋z̸=y
+pxz ·r(t−1, z, y), t= 2,3, . . . x, y∈X.
+The discretized empirical and genuine distributions of the first passage times are denoted by[r′],[r]∈
+R(2T−1)×|B|×|B| , respectively. We will use the Frobenius relative norm error (FRNE)
+FRNE = ∥[r]−[r ′]∥F
+∥[r]∥F
+∗100%
+as a metric to quantify the relative discrepancy between the empirical and genuine distributions.
+On the other hand, denote the discretized ground-truth vertex centrality and the reconstruction by
+⃗ µx and⃗ µ′ x, respectively. We will use both the absolute error
+Error :=|⃗ µx −⃗ µ′ x|
+and theL 2-relative norm error (L2RNE)
+L2RNE := ∥⃗ µx −⃗ µ′ x∥2
+∥⃗ µx∥2
+∗100%
+to quantify the accuracy of the reconstruction.
+In the following, Algorithm 1 is validated using numerical experiments. The graphs in these
+experiments are limited in size primarily due to the algorithmic complexity, which grows expo-
+nentially in the number of vertices|X|, see Remark 2.2. Another limiting factor for the size of the
+graphs comes from the Monte Carlo simulation to generater′. It is well known that the Monte Carlo
+simulation converges at the rate ofO(N − 1 2 ), whereNis the number of samples. This slow rate of
+convergence requires a significant number of random simulations to obtain a reasonably accurater ′
+
+PAGE 16
+16 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+as the approximate data. In our experiments, we run the simulation10 6 times for each fixed pair of
+x, y∈Bin order to gain three significant digits of accuracy.
+5.1.Experiment 1: a graph with eight vertices.This experiment tests Algorithm 1 when the
+ground-truthµis a constant. We choose|B|= 3,|X\B|= 5,w x,y = 0.25, T= 9, and the ground-
+truth vertex centrality isµ x = 1for allx∈X. Note that the choice of these values satisfies the
+assumption in Corollary 3.3. The graph is shown in Fig. 1. The empirical and genuine distributions
+are computed as explained above. The FRNE between[r ′]and[r]is0.248499%.
+FIGURE1.XandBin Experiment 1.
+Following Algorithm 1, we compute the vector
+− →
+U f ∈R 54 and the matrix[Λ µ]∈R 27×27 by
+(2.2), the matrix[W ∗W]∈R 27×27 by (4.2), and the matrixH∈R 5×6 by (4.3). In particular, we
+observe that[W ∗W]andHare ill-conditioned. Their singular values are shown in Fig. 2. The ill-
+conditioning indicates that suitable regularization is needed when solving the least-squares problem
+(4.2) for ⃗h0 and the least-squares problem (4.3) for⃗ µ|X\B . Here, we utilize the rank-revealing QR
+method (with column pivoting) to solve these least-squares problems. Specifically, given a matrix
+A= [W ∗W]orH ⊤, this method performs a column-pivoted QR decomposition onAand zeros
+out the diagonal entries in the triangular matrix that are under a certain threshold “tol”, reducing
+the problem to a simpler triangular form that can be solved for the minimum-norm solution. In
+the experiments, this method is implemented using the MATLAB command ‘lsqminnorm’ with the
+threshold ‘tol = 0.0005’. The reconstruction and the error of vertex centrality are shown in Fig. 3.
+The relative reconstruction error isL 2RNE = 0.507423%.
+0 5 10 15 20 25
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+4
+1 2 3 4 5
+0
+0.2
+0.4
+0.6
+0.8
+1
+1.2
+FIGURE2.The singular values of[W ∗W]andHin Experiment 1. The minimum singular
+values are1.6083∗10 −5 and1.5844∗10 −17, respectively.
+
+PAGE 17
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 17
+0.995
+1
+1.005
+1.01
+0.995
+1
+1.005
+1.01
+0
+0.005
+0.01
+FIGURE3.The ground-truthµ x, the reconstructedµ ′ x and the absolute errors in Experiment 1.
+5.2.Experiment 2: the graph with nine vertices.This experiment tests Algorithm 1 when the
+ground-truthµis varying. We choose|B|= 3,|X\B|= 6,w x,y = 1, T= 9, and the ground-truth
+vertex centrality isµ x = deg(x)for allx∈X, where the degreedeg(x)is defined as the number
+of edges connected to the vertexx. Note that the choice of these values satisfies the assumption in
+Corollary 3.3. The graph is shown in Fig. 4. The FRNE between[r ′]and[r]is0.188348%.
+FIGURE4.XandBin Experiment 2.
+This time, we have
+− →
+U f ∈R 54,[Λ µ]∈R 27×27 by (2.2),[W ∗W]∈R 27×27 by (4.2), andH∈R 6×6
+by (4.3). The matrices[W ∗W]andHremain slightly ill-conditioned. Their singular values are
+shown in Fig. 5. The rank-revealing QR method (with column pivoting) is employed again to solve
+the least-squares problems for ⃗h0 with the threshold ‘tol = 0.0012’ and⃗ µ|X\B , respectively. The
+reconstruction and the error of vertex centrality are shown in Fig. 6. The relative reconstruction
+error isL 2RNE = 4.570132%.
+0 5 10 15 20 25
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+1 2 3 4 5 6
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+FIGURE5.The singular values of[W ∗W]andHin Experiment 2. The minimum singular
+values are1.0922∗10 −4 and0.0023, respectively.
+
+PAGE 18
+18 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+2
+2.5
+3
+3.5
+4
+2
+2.5
+3
+3.5
+4
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+FIGURE6.The ground-truthµ x, the reconstructedµ ′ x and the absolute errors in Experiment 2.
+APPENDIXA.
+In this appendix, we characterize the adjoint of the operatorΛ µ. For the subsetB⊂X, the
+adjointΛ ∗ µ acts on functions defined on the space-time domainZ T ×B. We demonstrate that its
+action coincides with the time-reversal operator andΛ µ itself. To establish this, we define the
+backward time difference operatorD ∗ t by
+D∗ t v(t,·) :=v(t−1,·)−v(t,·)fort≥1.
+LetU f be the solution to the heat equation (2.1). Now consider a functionvsatisfying the following
+terminal-value problem
+(
+D∗ t v(t, x)−∆v(t, x) =g(t, x),(t, x)∈Z T \ {0} ×X,
+v(T−1, x) = 0, x∈X, (A.1)
+where the sourceghas support contained inZ T ×B.
+Because of the definitionΛ µf=U f |ZT ×B, andsupp(g)⊂Z T ×B, we extend the domain of
+integration⟨g, Uf ⟩fromBto the entire set of verticesXwithout changing the value whent∈Z T
+in the following. Recallv, we have
+⟨g,Λ µf⟩ ZT ×B =⟨g, Uf ⟩ZT ×B
+=⟨g, Uf ⟩ZT ×X
+=⟨g(0,·), U f (0,·)⟩ X +⟨D ∗ t v(t, x)−∆v(t, x), Uf (t, x)⟩{1,2,...,T−1}×X
+=⟨v(t−1, x)−v(t, x)−∆v(t, x), Uf (t, x)⟩{1,2,...,T−1}×X
+=⟨v(t−1, x), Uf (t, x)){1,2,...,T−1}×X −(v(t, x), Uf (t, x)⟩{1,2,...,T−1}×X
+−(∆v(t, x), Uf (t, x)){1,2,...,T−1}×X
+=⟨v(t, x), Uf (t+ 1, x)){0,1,...,T−2}×X −(v(t, x), Uf (t, x)⟩{1,2,...,T−1}×X
+− ⟨v(t, x),∆Uf (t, x)⟩{1,2,...,T−1}×X
+=⟨v(t, x), Uf (t+ 1, x)−U f (t, x)−∆U f (t, x)⟩{0,1,...,T−1}×X
+− ⟨v(T−1, x), Uf (T, x)⟩X
+=⟨v, f⟩ZT ×X
+=⟨v, f⟩ZT ×B,(A.2)
+where the self-adjoint of∆onXis used.
+
+PAGE 19
+VERTEX CENTRALITY RECONSTRUCTION IN AN INVERSE PROBLEM FOR INFORMATION DIFFUSION 19
+To express this adjoint relationship in explicit form, we recall the time reversal operatorR T−1 ,
+defined byR T−1 u(t,·) =u(T−1−t,·)on the discrete time intervalZ T . Now consider the following
+initial-value problem
+(
+DtV(t, x)−∆V(t, x) =R T−1 g(t, x),(t, x)∈Z T ×X,
+V(0, x) = 0, x∈X, (A.3)
+where the sourcegsatisfiessupp(g)⊂Z T ×B.
+Letvbe the solution to the backward problem (A.1). By comparing the definitions, one observes
+thatv(t, x) =RT−1 V(t, x)for all(t, x). Indeed, applyingRT−1 to the forward problem (A.3) yields
+the backward problem forv. Consequently, we have
+RT−1 (Λµ(RT−1 g)) =R T−1 V| ZT ×B =v| ZT ×B.
+Substituting this relation into the inner product identity (A.2) yields
+⟨g,Λ µf⟩ {0,1,...,T−1}×B =⟨v, f⟩ZT ×B
+=⟨R T−1 ΛµRT−1 g, f⟩ZT ×B.
+Since this holds for allgandfwith support inZ T ×B, it follows that the equality holds for all test
+functionsfandgwith support inZ T ×B, we conclude that the adjoint ofΛ µ on this space is given
+by
+Λ∗ µ =R T−1 ΛµRT−1 .
+REFERENCES
+[1] S. A. Avdonin, M. I. Belishev, and Y . S. Rozhkov. The BC-method in the inverse problem for the heat equation.
+Journal of Inverse and Ill-posed Problems, 5(4):309–322, 1997.
+[2] M. I. Belishev. An approach to multidimensional inverse problems for the wave equation.Dokl. Akad. Nauk SSSR,
+297(3):524–527, 1987.
+[3] M. I. Belishev. Boundary spectral inverse problem on a class of graphs (trees) by the BC method.Inverse Problems,
+20(3):647–672, 2004.
+[4] M. I. Belishev. Recent progress in the boundary control method. Inverse Problems, 23(5):R1–R67, 2007.
+[5] M. I. Belishev. Boundary control and tomography of Riemannian manifolds (the BC-method). Russian
+Mathematical Surveys, 72(4):581, 2017.
+[6] M. I. Belishev and V . Y . Gotlib. Dynamical variant of the BC-method: theory and numerical testing. J. Inverse
+Ill-Posed Probl., 7(3):221–240, 1999.
+[7] M. I. Belishev, I. B. Ivanov, I. V . Kubyshkin, and V . S. Semenov. Numerical testing in determination of sound
+speed from a part of boundary by the BC-method. J. Inverse Ill-Posed Probl., 24(2):159–180, 2016.
+[8] M. I. Belishev and A. F. Vakulenko. Inverse problems on graphs: recovering the tree of strings by the BC-method.
+J. Inverse Ill-Posed Probl., 14(1):29–46, 2006.
+[9] M. I. Belishev and N. Wada. On revealing graph cycles via boundary measurements. Inverse Problems,
+25(10):105011, 21, 2009.
+[10] A. S. Blagoveshchenskii. The Inverse Problem in the Theory of Seismic WavePropagation, pages 55–67. Springer
+US, Boston, MA, 1967.
+[11] E. Bl ˚asten, F. Zouari, M. Louati, and M. S. Ghidaoui. Blockage detection in networks: The area reconstruction
+method. Mathematics in Engineering, 1(4):849–880, 2019.
+[12] E. Bl ˚asten, H. Isozaki, M. Lassas, and J. Lu. Inverse problems for discrete heat equations and random walks for a
+class of graphs. SIAM J. Discrete Math., 37(2):831–863, 2023.
+[13] R. M. Christley, G. L. Pinchbeck, R. G. Bowers, D. Clancy, N. P. French, R. Bennett, and J. Turner. Infection
+in social networks: using network analysis to identify high-risk individuals. American Journal of Epidemiology,
+162(10):1024–1031, 2005.
+[14] N. Datta and T. C. Dorlas. Random walks on a complete graph: a model for infection. Journal of Applied
+Probability, 41(4):1008–1021, 2004.
+
+PAGE 20
+20 YIXIAN GAO, SONGSHUO LI, AND Y ANG Y ANG
+[15] M. V . de Hoop, P. Kepley, and L. Oksanen. Recovery of a smooth metric via wave field and coordinate transfor-
+mation reconstruction. SIAM J. Appl. Math., 78(4):1931–1953, 2018.
+[16] V . De la Pe˜na, H. Gzyl, and P. McDonald. Hitting time and inverse problems for Markov chains.J. Appl. Probab.,
+45(3):640–649, 2008.
+[17] V . de la Pena, H. Gzyl, and P. McDonald. Inverse problems for random walks on trees: network tomography.
+Statist. Probab. Lett., 78(18):3176–3183, 2008.
+[18] M. Draief and A. Ganesh. A random walk model for infection on graphs: spread of epidemics & rumours with
+mobile agents. Discrete Event Dynamic Systems, 21(1):41–61, 2011.
+[19] F. A. Gr ¨unbaum and L. F. Matusevich. An identification problem for multiterminal networks: solving for the traffic
+matrix and input-output measurements. Internet Math., 3(2):233–252, 2006.
+[20] O. C. Ibe. 4 - discrete-time markov chains. In O. C. Ibe, editor,Markov Processes for Stochastic Modeling (Second
+Edition), pages 59–84. Elsevier, Oxford, second edition edition, 2013.
+[21] A. Katchalov, Y . Kurylev, and M. Lassas.Inverse boundary spectral problems. Chapman and Hall/CRC, 2001.
+[22] C. Knox and A. Moradifam. Electrical networks with prescribed current and applications to random walks on
+graphs. Inverse Probl. Imaging, 13(2):353–375, 2019.
+[23] J. Korpela, M. Lassas, and L. Oksanen. Discrete regularization and convergence of the inverse problem for1 + 1
+dimensional wave equation. Inverse Probl. Imaging, 13(3):575–596, 2019.
+[24] S. Li, Y . Gao, R. Geng, and Y . Yang. Vertex weight reconstruction in the Gel’fand’s inverse problem on connected
+weighted graphs. Inverse Probl. Imaging, 19(5):965–1003, 2025.
+[25] T. Morimura, T. Osogami, and T. Id ´e. Solving inverse problem of markov chain with partial observations. In
+Proceedings of the 27th International Conference on Neural Information Processing Systems - V olume2, NIPS’13,
+page 1655–1663, Red Hook, NY , USA, 2013. Curran Associates Inc.
+[26] L. Oksanen, T. Yang, and Y . Yang. Linearized boundary control method for an acoustic inverse boundary value
+problem. Inverse Problems, 38(11):Paper No. 114001, 26, 2022.
+[27] L. Oksanen, T. Yang, and Y . Yang. Linearized boundary control method for density reconstruction in acoustic
+wave equations. Inverse Problems, 40(12):Paper No. 125031, 27, 2024.
+[28] S. K. Patch. Recursive recovery of a family of Markov transition probabilities from boundary value data. J. Math.
+Phys., 36(7):3395–3412, 1995.
+[29] L. Pestov, V . Bolgova, and A. Danilin. Numerical recovering of a speed of sound by the BC-method in 3D. In
+Acoustical Imaging: V olume31, pages 201–209. Springer, 2012.
+[30] L. Pestov, V . Bolgova, and O. Kazarina. Numerical recovering of a density by the BC-method. Inverse Problems
+& Imaging, 4(4):703, 2010.
+[31] D. Tataru. Unique continuation for solutions to PDE’s; between H ¨ormander’s theorem and Holmgren’s theorem.
+Comm. Partial Differential Equations, 20(5-6):855–884, 1995.
+[32] D. Tataru. Unique continuation for operators with partially analytic coefficients. J. Math. Pures Appl. (9),
+78(5):505–521, 1999.
+[33] T. Yang and Y . Yang. A stable non-iterative reconstruction algorithm for the acoustic inverse boundary value
+problem. Inverse Probl. Imaging, 16(1):1–18, 2022.
+[34] T. Yang and Y . Yang. Linearized boundary control method for damping reconstruction in an acoustic inverse
+boundary value problem. https://arxiv.org/abs/2603.08888, 2026.
+[35] Y . Yang. A formula for time-to-frequency wave boundary data conversion by the boundary control method.
+https://arxiv.org/abs/2602.13612, 2026.
+SCHOOL OFMATHEMATICS ANDSTATISTICS,ANDCENTER FORMATHEMATICS ANDINTERDISCIPLINARY
+SCIENCES, NORTHEASTNORMALUNIVERSITY, CHANGCHUN, JILIN130024, CHINA
+Email address:gaoyx643@nenu.edu.cn
+SCHOOL OFMATHEMATICS ANDSTATISTICS,ANDCENTER FORMATHEMATICS ANDINTERDISCIPLINARY
+SCIENCES, NORTHEASTNORMALUNIVERSITY, CHANGCHUN, JILIN130024, CHINA
+Email address:liss342@nenu.edu.cn
+DEPARTMENT OFCOMPUTATIONALMATHEMATICSSCIENCE ANDENGINEERING, MICHIGANSTATEUNIVER-
+SITY, EASTLANSING, MI 48824, USA
+Email address:yangy5@msu.edu

@@ -1,0 +1,36 @@
+{
+ "exp_id": "exp-0021",
+ "idea_id": "idea-013",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.03241869069973563,
+  "r2": 0.9903253543834541,
+  "rmse": 0.042751703186849246
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 7.589159965515137,
+ "predict_seconds": 0.0020139217376708984,
+ "latency_ms_per_sample": 0.0026852289835611978,
+ "warnings": [],
+ "kind": "library",
+ "family": "data-driven",
+ "label": "torch_mlp/log+logy",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.04577997523646451,
+  0.017948393407404464,
+  0.01634527462405122,
+  0.03837938385892149
+ ],
+ "train": {
+  "rel_l2": 0.017470363202014377
+ },
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s2\\workspace\\experiments\\exp-0021\\val_pred.npy",
+ "status": "ok",
+ "elapsed": 9.314536333084106
+}

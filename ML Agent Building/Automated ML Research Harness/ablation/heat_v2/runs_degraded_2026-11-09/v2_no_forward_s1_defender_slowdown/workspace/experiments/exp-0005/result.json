@@ -1,0 +1,11 @@
+{
+ "exp_id": "exp-0005",
+ "idea_id": "idea-002",
+ "mode": "method_eval",
+ "fraction": 0.1,
+ "device": "cpu",
+ "status": "error",
+ "error": "TypeError: cannot unpack non-iterable NoneType object",
+ "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\mlharness\\runner.py\", line 424, in main\n    result.update(run_method_eval(job, data, out_dir))\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\mlharness\\runner.py\", line 250, in run_method_eval\n    model.fit(Xs, ys)\n  File \"C:\\Users\\kusha\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\sklearn\\base.py\", line 1336, in wrapper\n    return fit_method(estimator, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\kusha\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\sklearn\\compose\\_target.py\", line 293, in fit\n    self.regressor_.fit(X, y_trans, **routed_params.regressor.fit)\n  File \"C:\\Users\\kusha\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\sklearn\\base.py\", line 1336, in wrapper\n    return fit_method(estimator, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\kusha\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\sklearn\\pipeline.py\", line 621, in fit\n    self._final_estimator.fit(Xt, y, **last_step_params[\"fit\"])\n  File \"C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s1\\workspace\\experiments\\exp-0005\\code_exp_0005.py\", line 36, in fit\n    m, mode, gm, a, fac = best[1]\n    ^^^^^^^^^^^^^^^^^^^\nTypeError: cannot unpack non-iterable NoneType object\n",
+ "elapsed": 26.483941316604614
+}

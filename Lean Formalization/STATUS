@@ -1,0 +1,44 @@
+Updated: 2026-11-09 (America/Los_Angeles)
+Goal: reusable Tau Ceti prerequisites for arXiv:2603.20710v1.
+Local scope: all task files, checkouts, tools and caches stay in Lean Formalization/.
+
+Opened PRs:
+- #34660 https://github.com/TauCetiProject/TauCeti/pull/34660
+  Finite-time first-passage factorization/convolution; commit c325d5de1d.
+  Local build, source guards, header/text style, 14 environment linters, and
+  local compiled axiom/module checks pass. Remote build pending; no-stacking workflow failed on
+  a repository-wide 2000-open-PR pagination cap, not a detected stack.
+  Failure run: https://github.com/TauCetiProject/TauCeti/actions/runs/42677115064
+  Report: https://github.com/TauCetiProject/TauCeti/pull/34660#issuecomment-6748551062
+  Base: upstream main; this PR has exactly one new commit and one source file.
+Landed PRs: none.
+
+Completed preparation:
+- PROOF_AUDIT.md records dependencies, exact library pins, roadmap boundaries,
+  and three proof/coordinate issues in the paper (two checked rational examples).
+- Lean 4.36.0-rc2 installed locally; GitHub access verified and personal fork made.
+- FirstPassage.lean implements a checked finite-time entrance convolution.
+- A Gram Moore-Penrose exact-preimage candidate also compiles without warnings;
+  its integrated module passed all 14 environment linters and local axiom audit.
+  Independent review found no specific unfinished roadmap target authorizing
+  this added capability. Preserved in candidates/, not submitted upstream.
+- Good-citizen review posted on #34367:
+  https://github.com/TauCetiProject/TauCeti/pull/34367#issuecomment-6748371249
+  The suggested Mathlib simplification was separately checked by Lean.
+- TauCetiReview CLI requires POSIX fcntl and cannot run here. Local trusted Lean
+  checkers were invoked directly without changing their sources/settings.
+
+In progress:
+- Monitor/fix CI and review feedback on #34660.
+- Preserve the checked Gram candidate pending a valid roadmap target.
+- Await remote content build and external review; no dependent PR opened.
+- Reassess finite-data reconstruction scope after the entrance API review.
+
+Central estimate: 5 active working days for the currently identified
+existing-roadmap prerequisite work, approximately 2026-11-16 if work continues
+daily, plus external review/merge latency. Full graph/control/reconstruction
+formalization has no defensible date until a human-owned roadmap covers it and
+the paper's coordinate conventions are settled. No roadmap exhaustion claimed.
+
+Policy: one topic per PR; dependent PRs wait until prerequisites merge; no roadmap
+PRs/issues opened by the agent; no unverified proofs submitted as complete.

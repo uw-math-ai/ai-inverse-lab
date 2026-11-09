@@ -1,0 +1,3141 @@
+{
+ "run_id": "heat_v2_no_literature_s2_20261109_113933",
+ "stop_reason": "quality criteria met after 2 rounds (every active proposal >= 0.75 quality, no blocking issues, critic converged)",
+ "rounds": [
+  {
+   "round": 1,
+   "actions": [
+    {
+     "researcher": "researcher-mathematical",
+     "persona": "mathematical",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-001"
+    },
+    {
+     "researcher": "researcher-mathematical",
+     "persona": "mathematical",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-002"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-003"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-004"
+    },
+    {
+     "researcher": "researcher-experimental",
+     "persona": "experimental",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-005"
+    },
+    {
+     "researcher": "researcher-experimental",
+     "persona": "experimental",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-006"
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-007"
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-008"
+    }
+   ],
+   "critique": "fdbk-00044",
+   "mean_quality": 0.709,
+   "active": [
+    "P-001",
+    "P-002",
+    "P-003",
+    "P-004",
+    "P-005",
+    "P-006",
+    "P-007",
+    "P-008"
+   ],
+   "pilots": [
+    "P-001",
+    "P-004"
+   ]
+  },
+  {
+   "round": 2,
+   "actions": [
+    {
+     "researcher": "researcher-mathematical",
+     "persona": "mathematical",
+     "action": "revise",
+     "target": "P-001",
+     "origin": "llm",
+     "response": "The pilot results answer most of the critique. I revise the framing and diagnostics and keep the method unchanged.\n\n(1) CRB is median-based and frequentist. Agreed. The pilot gives val rel_l2 = 0.0190 on 60 samples, against a median-CRB floor of 0.0186. I now state the hypothesis relative to E_prior[CRB rel error], not the median floor. I also request mean and median per-sample relative error. Mean rel_l2 is the operative number.\n\n(2) '1.5x CRB' is ill-posed. Agreed and dropped. The fixed <0.03 threshold is the test.\n\n(3) Starting points. The physics spec exposes only the 'multistart' count, s",
+     "new_id": "P-009"
+    },
+    {
+     "researcher": "researcher-mathematical",
+     "persona": "mathematical",
+     "action": "revise",
+     "target": "P-002",
+     "origin": "llm",
+     "response": "I accept the duplicate finding and the blocking issues. I re-scope P-002 so it no longer overlaps P-007 and no longer needs a learned component.\n\n(1) Duplicate of P-007, confounded init. P-002 is now a pure-physics paired ablation. It uses exactly P-001's settings (log transform, multistart 4, iters 40) and changes only estimator=mode to estimator=posterior_mean. Init and optimizer are identical across the two arms, so any difference is attributable to the estimator alone. This also removes the counterexample in which outlier removal by a learned init masquerades as an MMSE gain. P-007 keeps t",
+     "new_id": "P-010"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "revise",
+     "target": "P-003",
+     "origin": "llm",
+     "response": "(1) Tikhonov vs posterior_mean inconsistency: accepted. I set tikhonov=0 and estimator=mode, so this arm is a pure MLE refinement with no hidden Gaussian prior. The MMSE question is left entirely to P-007/P-002. (2) Init inside the basin is untested: accepted. The P-004 pilot reached 0.047 rel_l2 with only 300 training samples, which implies per-parameter errors of a few percent. That is well inside the region where Gauss-Newton converges quadratically, given median Fisher condition 48. I ask the harness to log the per-sample chi^2/dof after the final iteration. The arm is falsified for this r",
+     "new_id": "P-011"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "revise",
+     "target": "P-004",
+     "origin": "llm",
+     "response": "Pilot evidence first: with only 300 training samples and noise_scale=1.0, the pilot reached val rel_l2 0.047 on 60 val samples. This also bears on the noise_scale convention dispute. If 1.0 were an absolute std, the augmentation noise would be O(1) on temperatures that are mostly << 1, and the model could not have reached 0.047. So noise_scale is evidently relative to sigma, P-004/P-006's convention is consistent, and arms using 0.001 under a relative convention are mis-scaled to near-zero augmentation. Point by point: (1) The fixed 3000 samples are self-imposed: accepted. I add a separate new",
+     "new_id": "P-012"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-013"
+    },
+    {
+     "researcher": "researcher-experimental",
+     "persona": "experimental",
+     "action": "revise",
+     "target": "P-005",
+     "origin": "heuristic-fallback",
+     "response": "Revised: incorporated critic assumptions",
+     "new_id": "P-014"
+    },
+    {
+     "researcher": "researcher-experimental",
+     "persona": "experimental",
+     "action": "abandon",
+     "target": "P-006",
+     "origin": "heuristic-fallback",
+     "response": "Accepted: merged into the duplicate."
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "abandon",
+     "target": "P-007",
+     "origin": "llm",
+     "response": "I accept every critic point. (1) Effect size: the truncation argument gives a 1-5% overall gain, so my >=5% claim was optimistic. The right primary falsifier is a >=2% overall gain and a >=10% gain on the bound-adjacent stratum, not the shared rel_l2<=0.03 claim. (2) ESS: 128 importance-sampling draws are only adequate if ESS is reported. That needs a harness diagnostic, not a second arm. (3) Proposal quality: a Laplace proposal centred at a mode pinned on a bound wastes about half its mass outside the box. A truncated or unconstrained-centred proposal is the fix, and it belongs in whichever a"
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "revise",
+     "target": "P-008",
+     "origin": "llm",
+     "response": "Point by point. (a) The bare harness 'log' transform is undefined or noise-dominated on near-zero or negative edge-sensor readings. Agreed, so I no longer use it. The revised arm uses custom_ml with an asinh(u/c) feature map, c=3*sigma=0.003. asinh is defined for negative readings and is approximately linear for |u| << c, so noise-only channels keep Gaussian noise rather than log-amplified noise. It is approximately log(2u/c) for u >> c, which keeps the decay-linearization idea. This removes the numerical failure mode the critic identified, and the preprocessing is now well-defined without nee",
+     "new_id": "P-015"
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-016"
+    }
+   ],
+   "critique": "fdbk-00076",
+   "mean_quality": 0.919,
+   "active": [
+    "P-009",
+    "P-010",
+    "P-011",
+    "P-012",
+    "P-014",
+    "P-015",
+    "P-013",
+    "P-016"
+   ]
+  }
+ ],
+ "proposals": {
+  "P-001": {
+   "id": "P-001",
+   "root_id": "P-001",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Log-space MLE via multistart Levenberg-Marquardt through the forward model attains near-CRB accuracy",
+   "hypothesis": "Because noise is tiny (sigma=1e-3), the Fisher condition number is moderate (~48), and the CRB rel_l2 floor is ~0.019, the likelihood is locally well-conditioned and close to Gaussian in log k. A bounded LM solver working in log-parameter space with a few multistarts should converge to the global MLE for nearly all samples. Its val rel_l2 should then be within about 1.5x of the CRB floor, i.e. below 0.03.",
+   "motivation": "The forward operator F: k -> sensor traces is smooth on the box [0.5,2]^4, since an explicit FD solution is a rational/polynomial map of k. The harness-computed Fisher information shows all four parameters are locally identifiable. In this small-noise regime the MLE is asymptotically efficient, so it should approach the CRB. The log transform matters for two reasons: diffusion time scales roughly like 1/k, so log k flattens the curvature, and it enforces positivity. Multistart guards against secondary minima. These can occur because k1 and k4 are only weakly seen through the decayed tails of the pulse, and because the outer segments couple to the inner ones.",
+   "assumptions": [
+    "context.forward exactly matches the data-generating simulator, including the explicit FD scheme, 40 points, 200 steps and the sensor indices",
+    "Noise is i.i.d. Gaussian with sigma=1e-3, so the least-squares objective is the negative log-likelihood",
+    "The explicit scheme is stable over the whole box (dt*k_max/dx^2 <= 1/2), so F is smooth with no blow-up",
+    "The forward-call budget allows about 4 starts x 30 iterations per sample over 750 validation samples within 120s spread across workers"
+   ],
+   "evidence": [
+    {
+     "claim": "Cram\u00e9r\u2013Rao relative std per parameter is 0.005-0.022, giving a CRB rel_l2 floor of about 0.0186, well below the 0.05 target",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "A Fisher condition number of median 48 indicates the Jacobian is not ill-posed locally; Gauss-Newton steps are well-defined",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 are least determined; near the bounds the posterior may be truncated, and the MLE then ends up on the boundary, which can bias the estimates",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Run on validation data. If val rel_l2 >= 0.03, or if more than 5% of samples have per-sample relative error > 0.1 (which would indicate local minima or non-convergence), the hypothesis that the MLE is near-efficient here is refuted.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "Each LM iteration needs a forward call plus a Jacobian (about 5 forward-equivalents) on a 40x200 explicit scheme, which is cheap and vectorisable across samples. Using 4 starts x 40 iterations x 750 samples should fit within the per-experiment limit if the forward is batched. If the time limit is hit, reduce to multistart=2, iters=25.",
+    "est_seconds": null
+   },
+   "if_fails": "If the error is dominated by a few outliers, the misfit landscape is multimodal, which motivates a hybrid learned initializer. If the error is uniformly above the CRB, the forward model available to us differs from the data generator (model error) or the bounds clip the estimates, and we should check the residual norm against sqrt(n_obs)*sigma.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "asymptotic efficiency maximum likelihood nonlinear least squares small noise",
+    "identifiability piecewise constant conductivity heat equation point measurements"
+   ],
+   "tags": [],
+   "family": "physics",
+   "method_label": "physics-MLE[log,ms=4,it=40]",
+   "memory_refs": [],
+   "artifact_id": "prop-00035",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 4,
+     "iters": 40,
+     "tikhonov": 0,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-002": {
+   "id": "P-002",
+   "root_id": "P-002",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "MMSE posterior mean beats the MLE for the weakly identified boundary segments k1, k4 under the box prior",
+   "hypothesis": "rel_l2 is a squared-error loss, so the Bayes-optimal estimator is the posterior mean, not the mode. For k1 and k4 the CRB std is about 2% and the uniform box prior truncates the likelihood near 0.5 and 2.0. A hybrid approach should therefore reduce val rel_l2 by at least 10% relative to the best pure-physics MLE arm, with the gain concentrated in k1 and k4. The hybrid uses a learned torch_mlp initializer, then LM refinement in log space, then an importance-sampled posterior mean on the Laplace approximation.",
+   "motivation": "Decision theory says that under squared loss with a known prior the MMSE estimator minimises expected loss, and the MLE is suboptimal wherever the posterior is non-Gaussian or truncated. The boundary segments see the pulse only after it has diffused through the inner segments, which gives a flatter likelihood in k1 and k4. The learned initializer removes the multistart cost and the risk of local minima. A net trained on 3000 simulated pairs gives about 0.05-0.1 error, which is well inside the basin of attraction for Gauss-Newton given cond ~48. The posterior-mean step then corrects for boundary truncation.",
+   "assumptions": [
+    "The Laplace (Gauss-Newton) approximation in log space is accurate enough to act as an importance-sampling proposal; this needs a small-noise, near-Gaussian posterior",
+    "The prior is exactly i.i.d. uniform on [0.5,2] as stated",
+    "The MLP initializer lands within the basin of the global minimum for almost all samples",
+    "The 'raw' features with standard scaling are adequate; the traces are smooth and the noise is small"
+   ],
+   "evidence": [
+    {
+     "claim": "k1 and k4 have CRB relative std 3-4x larger than k2 and k3, so most of the rel_l2 budget comes from them, and that is where the estimator choice matters",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "When the posterior std is about 2% of a range of 1.5, truncation affects only samples whose true k lies within about 0.05 of a bound (roughly 7% of the prior mass per side), so the MMSE gain may be small",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare against the physics MLE arm (proposal 1) on validation data. Per-parameter RMSE for k1 and k4 must drop, and overall val rel_l2 must be at least 10% lower. If the hybrid is not better, or is better only through fewer outliers with no gain on k1 and k4, the MMSE-truncation hypothesis is refuted.",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_physics",
+    "improvement": 0.1,
+    "expect": "better"
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "MLP training on 3000x(4 sensors x ~200 times) on CPU takes about 20-40s. LM with 20 iterations from a good init is cheaper than multistart. 128 importance samples cost forward calls only (no Jacobian), which batch well.",
+    "est_seconds": null
+   },
+   "if_fails": "If there is no gain over the MLE, the posterior is effectively Gaussian and untruncated for most samples, so the MLE is already near-Bayes and the remaining error is at the CRB floor, which is irreducible. If the hybrid is worse, the Laplace proposal is poor (heavy importance-weight degeneracy) or the initializer causes convergence to wrong basins.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "posterior mean versus MAP truncated uniform prior squared error loss",
+    "importance sampling Laplace approximation Bayesian inverse problems PDE"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug2->LM20]",
+   "memory_refs": [],
+   "artifact_id": "prop-00036",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 200,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 0.001
+    },
+    "params": {
+     "transform": "log",
+     "iters": 20,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   }
+  },
+  "P-003": {
+   "id": "P-003",
+   "root_id": "P-003",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Amortized MLP initializer + few-step Gauss-Newton/LM refinement with MMSE correction (hybrid)",
+   "hypothesis": "A torch_mlp trained on simulated pairs lands inside the basin of the per-sample likelihood. A short bounded LM refinement in log-k through the exact forward model (8 iterations, mild Tikhonov), followed by a posterior-mean estimate under the box prior, will reach val rel_l2 <= 0.035. That is within about 2x the CRB floor of 0.0186, and at least 25% better than the best purely data-driven model.",
+   "motivation": "The forward model is available, noise is known and Gaussian (sigma=1e-3), and there are only 4 parameters. That makes the per-sample likelihood sharp and fairly well conditioned: median Fisher condition number 48, with CRB relative std of 0.5\u20132.2%. A learned map's error is set by approximation error and finite training data, not by the noise floor. A physics refinement removes most of that approximation error at a cost of a few Jacobian solves per sample. The learned initializer avoids LM multistart cost and local minima. The weakly identified k1 and k4 (edge segments, sensors at indices 5 and 35) have posteriors that can be truncated by the [0.5, 2] box. There the MMSE estimate should beat the mode on squared-error metrics.",
+   "assumptions": [
+    "The MLP initializer has per-parameter error small enough (roughly <10%) to lie in the LM basin of attraction.",
+    "The harness forward model is the same simulator that generated the data (40-point explicit FD, 200 steps), so there is no model discrepancy.",
+    "8 LM iterations on 750 val samples plus training fits within the 120 s per-experiment limit.",
+    "The Laplace approximation is adequate for importance sampling, given the small CRB std."
+   ],
+   "evidence": [
+    {
+     "claim": "CRB rel_l2 floor of about 0.0186 is well below the 0.05 target, so an efficient estimator can succeed.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Fisher condition number median 48 suggests that Gauss-Newton steps are stable in most of the prior.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have about 3\u20134x larger relative CRB std. Their posteriors may hit the bounds, so the mode can be biased and the MMSE is preferable.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Explicit FD with a fixed step may have stiff or near-unstable regimes at k=2. This could make Jacobians noisy near the upper bound.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare val rel_l2 of the hybrid against its own initializer alone and against the CRB floor. The hypothesis is falsified if the hybrid's val rel_l2 is > 0.035, or if it improves on the initializer by less than 25%.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "MLP training takes about 15\u201330 s on CPU. LM uses about 8 Jacobian evaluations per sample, each roughly 5 forward runs of a 40x200 explicit scheme, which is cheap. Importance sampling adds 64 forward runs per sample. Should fit in 120 s; if not, drop to the mode estimator.",
+    "est_seconds": null
+   },
+   "if_fails": "If the refinement does not help, either the initializer lies outside the basin (check per-sample objective decrease), or the forward model and data differ (model discrepancy), or the budget truncates the iterations. If mode beats posterior_mean, the Laplace/IS step is mis-specified near the bounds.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "amortized initialization Gauss-Newton refinement parameter estimation PDE",
+    "MMSE vs MAP box-constrained prior inverse problems"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug1->LM8]",
+   "memory_refs": [],
+   "artifact_id": "prop-00037",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 1,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 8,
+     "tikhonov": 0.01,
+     "extra_starts": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-004": {
+   "id": "P-004",
+   "root_id": "P-004",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Purely amortized inverse map: MLP on log-k targets with noise-matched augmentation",
+   "hypothesis": "A torch_mlp trained on raw sensor time series has two key features: log-conductivity targets, which match the multiplicative scale of a diffusion coefficient, and on-the-fly Gaussian noise augmentation at the true sigma, which regularizes toward the noisy-data posterior. It will reach val rel_l2 < 0.05 without any forward-model calls at inference. It will be at least 2x better than ridge on the same features, showing that the inverse map is materially nonlinear.",
+   "motivation": "The map from (k1..k4) to temperatures is smooth but nonlinear: diffusion time scales go roughly as 1/k, so log-k linearizes much of the dependence. With 3000 samples in a 4-D parameter space, a well-regularized MLP should approximate the conditional mean E[k|y]. Under squared loss, that is the Bayes-optimal estimator. This tests whether amortization alone is enough, which matters as the cheap fallback and as the baseline the hybrid must beat.",
+   "assumptions": [
+    "3000 training samples are enough for an MLP to approximate the posterior mean over a 4-D prior to a few-percent error.",
+    "The noise_scale parameter is expressed relative to the true noise std (1.0 = sigma). If it is absolute, the augmentation is mis-scaled.",
+    "Raw features with standard scaling keep the informative early-time and late-time decay information. Log features could blow up on near-zero late-time readings."
+   ],
+   "evidence": [
+    {
+     "claim": "The Bayes risk is bounded below by roughly the CRB floor of 0.0186, so 0.05 leaves room for about 2.5x approximation inefficiency.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The mean predictor scores 0.33, so the signal is strong relative to the target.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The edge segments k1 and k4 are weakly observed. A data-driven model with limited data may regress them toward the prior mean, inflating rel_l2.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Measure val rel_l2 and per-parameter relative errors, and compare against a ridge run on the same features. The hypothesis is falsified if val rel_l2 is >= 0.05, or if the ratio of MLP to ridge rel_l2 is > 0.5.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "CPU training on 3000x(4 sensors x ~200 times) with 250 epochs takes about 30\u201360 s. There are no forward calls.",
+    "est_seconds": null
+   },
+   "if_fails": "If the error concentrates in k1 and k4, the shortfall is a data and identifiability limit rather than an architecture limit. That points to the physics refinement (proposal 1) or to simulating more training data via context.forward. If ridge is close to the MLP, the map is near-linear in log-k, and a linearized Gauss-Newton estimator would suffice.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "neural network amortized estimation diffusion coefficient piecewise constant",
+    "noise augmentation simulation-based inference regression"
+   ],
+   "tags": [],
+   "family": "data-driven",
+   "method_label": "torch_mlp/raw+logy+aug2",
+   "memory_refs": [],
+   "artifact_id": "prop-00038",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      512
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 1e-05,
+     "epochs": 250,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0,
+    "target_transform": "log",
+    "noise_aug": 2,
+    "noise_scale": 1.0
+   }
+  },
+  "P-005": {
+   "id": "P-005",
+   "root_id": "P-005",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Learned initializer plus forward-model LM refinement reaches the noise-limited (CRB) regime",
+   "hypothesis": "The remaining error after a kernel-ridge initializer is mainly an optimization or approximation error, not an information limit. Refining each sample with a few bounded Levenberg-Marquardt iterations through the exact forward model, in log-k space, should then bring test rel_l2 down to about 1-1.5x the Cram\u00e9r\u2013Rao floor (\u22480.019-0.028). That is well under the 0.05 target and clearly better than any purely data-driven arm.",
+   "motivation": "Several facts point the same way. The simulator is the exact data-generating model: same explicit finite-difference scheme, 40 nodes, 200 steps, same sensor indices. The noise is i.i.d. Gaussian with known sigma=0.001. So the Gaussian likelihood is exactly specified, and least squares is the MLE. The diagnostics give a median Fisher condition number of 48 and a CRB rel_l2 floor of 0.0186. The local problem is therefore well posed, and an efficient estimator should land near the floor. The main risk for pure LM is multimodality or slow convergence from the prior centre, because k1 and k4 are weakly determined: the sensors sit inside segments and the Gaussian pulse starts at 0.5, so the outer segments see little flux early on. A learned initializer that already sits in the right basin removes that risk. The log transform respects positivity and evens out curvature across [0.5, 2].",
+   "assumptions": [
+    "The harness forward model is the same discretization that generated the data, so there is no model-form error.",
+    "The noise is exactly i.i.d. Gaussian with sigma=0.001, so least squares is the MLE.",
+    "The kernel-ridge initializer lands within the LM basin of attraction for most samples.",
+    "The CRB computed at 32 prior draws is representative of the whole prior box.",
+    "The forward-call budget allows about 750 samples x 15 iterations within 120s."
+   ],
+   "evidence": [
+    {
+     "claim": "The CRB rel_l2 floor is 0.0186, below the 0.05 target, so the target is information-theoretically reachable.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The median Fisher condition number is 48, so the local Gauss-Newton steps are well conditioned.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have 3-4x larger CRB std than k2 and k3, so the outer segments may have flat likelihood directions where a poor start stalls.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The mean predictor gets 0.33, so the signal is strong compared with the prior spread.",
+     "stance": "supports",
+     "source": "diagnostics"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare val rel_l2 of the hybrid with (a) the kernel-ridge init alone and (b) the CRB floor 0.0186. The hypothesis is refuted on any of three outcomes. First, hybrid val rel_l2 > 0.035 (more than 1.9x CRB). Second, the gain over the init alone is under 20%. Third, the per-parameter errors for k1 and k4 exceed 2x their CRB std, which would indicate convergence failures or model mismatch. The diagnostic is the distribution of normalized residuals per sample: if the MLE is correct, chi^2/dof should be \u22481, and samples far above that show non-convergence.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "Kernel ridge on 3000x(4 sensors x ~200 times) is cheap. The LM cost is about 750 x (15 iters x Jacobian) forward solves on a 40-node, 200-step explicit scheme, which should fit in tens of seconds. If the budget is tight, drop extra_starts to 0.",
+    "est_seconds": null
+   },
+   "if_fails": "Each failure mode points to a different cause. If the error is far above the CRB while chi^2/dof is \u22481, the CRB at 32 draws is unrepresentative, likely near the box edges where clipping or bias dominate; the fix is the posterior_mean estimator. If chi^2/dof >> 1, either convergence failed (fix: more iterations or starts) or the forward model mismatches the data generator, which is a simulation-fidelity issue. If the error barely improves over the init, the init was already at the noise floor.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "Cram\u00e9r\u2013Rao bound attainment of nonlinear least squares at moderate SNR",
+    "identifiability of piecewise constant conductivity from interior point sensors heat equation"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[kernel_ridge/raw+logy->LM15]",
+   "memory_refs": [],
+   "artifact_id": "prop-00039",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "kernel_ridge",
+     "params": {
+      "alpha": 0.001,
+      "gamma_mult": 1.0
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 0,
+     "noise_scale": 0.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 15,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-006": {
+   "id": "P-006",
+   "root_id": "P-006",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Control: an amortized neural inverse map trained with noise augmentation falls short of forward-model refinement",
+   "hypothesis": "This is a competing explanation tested as a control. With 3000 training draws, a noise-augmented MLP from raw sensor traces to log k may already approach the CRB, which would make forward-model refinement unnecessary. Our counter-prediction is that it will not. The MLP should reach rel_l2 below 0.05 but stay at least 25% worse than the hybrid arm, because the learning error at n=3000 in 4-D is not negligible next to the 1.9% floor, especially for the weakly determined k1 and k4.",
+   "motivation": "The inverse map is smooth, 4-D and well conditioned, so an MLP should learn it well. Noise augmentation (fresh sigma=0.001 draws on each pass) teaches the network the actual measurement distribution instead of memorising 3000 fixed noise realizations. That is a sensor-model-aware regularizer. If this arm matches the hybrid, the 'physics refinement is needed' explanation is falsified, and we save forward-model budget. Running it gives the team a clean ablation that separates the information limit from the estimator limit.",
+   "assumptions": [
+    "The training features are generated with the same noise model as val and test.",
+    "noise_scale=1.0 adds noise relative to the specified sigma, so the effective noise variance at train time is about the true noise variance, with no mismatch.",
+    "Standard scaling of raw traces keeps the small-amplitude late-time information that discriminates k1 and k4.",
+    "150-300 epochs on 3000 samples fit within the per-experiment limit on CPU."
+   ],
+   "evidence": [
+    {
+     "claim": "The low-dimensional (4-D) target and the good conditioning suggest a smooth inverse map that is learnable from 3000 samples.",
+     "stance": "supports",
+     "source": "reasoning"
+    },
+    {
+     "claim": "Reaching 0.0186 requires a learning error well below 1% per parameter, which is hard at n=3000 without physics structure.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    },
+    {
+     "claim": "The CRB std for k1 and k4 is 2.2% and 1.8% versus about 0.5-0.6% for k2 and k3, so learned-map errors will concentrate on the outer segments.",
+     "stance": "supports",
+     "source": "diagnostics"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare val rel_l2 with the hybrid arm, and check per-parameter relative errors against the CRB stds. The counter-prediction is falsified if the MLP val rel_l2 is within 10% of the hybrid. The noise-augmentation part is tested separately: an identical run with noise_aug=0 should be worse. If it is not, the noise-realization overfitting explanation is falsified.",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_hybrid",
+    "improvement": 0.25,
+    "expect": "worse"
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "A CPU MLP on 3000x~800 features for 250 epochs with 2x augmentation should take about 30-60s. It needs no forward-model calls.",
+    "est_seconds": null
+   },
+   "if_fails": "If the MLP matches or beats the hybrid, the amortized map is already efficient. In that case the hybrid's LM step adds nothing, or is hurt by clipping at the bounds. The team should then favour cheap amortized ensembles, possibly with posterior-mean-style averaging. If the MLP misses even 0.05, the representation (raw traces) or sample size is the bottleneck, and forward-model-based estimation is required.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "amortized neural estimators versus maximum likelihood efficiency parameter estimation PDE",
+    "noise augmentation simulation-based inference regression"
+   ],
+   "tags": [],
+   "family": "data-driven",
+   "method_label": "torch_mlp/raw+logy+aug2",
+   "memory_refs": [],
+   "artifact_id": "prop-00040",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      256,
+      128
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 1e-05,
+     "epochs": 250,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0,
+    "target_transform": "log",
+    "noise_aug": 2,
+    "noise_scale": 1.0
+   }
+  },
+  "P-007": {
+   "id": "P-007",
+   "root_id": "P-007",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Minimum-MSE (posterior-mean) refinement beats MLE when the error metric is squared: hybrid learned-init + Laplace/importance-sampled MMSE",
+   "hypothesis": "We usually treat this as a point-estimation (MLE/least-squares) problem, but the metric is a squared relative error averaged over the prior. That makes the Bayes-optimal estimator the posterior mean, not the mode. Hypothesis: a hybrid method beats MAP/MLE refinement from the same initializer by at least 5% relative in val rel_l2, and reaches val rel_l2 <= 0.03. The hybrid is an amortized torch_mlp initializer, followed by bounded LM in log-conductivity space and a posterior-mean estimator from importance sampling on the Laplace approximation under the box prior. The gain should come mostly from the poorly determined end segments k1 and k4, where the posterior is widest and most truncated by the [0.5, 2] box.",
+   "motivation": "The diagnostics put the CRB rel_l2 floor near 0.0186. The per-parameter relative std for k1 and k4 (0.022 and 0.018) is 3-4x that of k2 and k3, so the end segments dominate the error. When the posterior is wide and clipped by a box prior, the mode sits on or near the boundary while the mean is pulled inward. MLE then incurs avoidable squared error, exactly the quantity rel_l2 measures. This borrows the Bayesian decision-theory view (choose the estimator that matches the loss) and applies it to PDE parameter identification, where LM/MLE is the default. Working in log space respects positivity and makes the Laplace approximation more Gaussian for a scale-type parameter like conductivity. The learned initializer avoids local minima from multimodal misfits, so we need fewer LM multistarts and stay within compute.",
+   "assumptions": [
+    "The forward model available through context.forward matches the data-generating simulator, so there is no model discrepancy.",
+    "The noise is i.i.d. Gaussian with sigma = 0.001, as stated, so the Gaussian likelihood is correctly specified.",
+    "The posterior is unimodal near the learned initializer, so a Laplace proposal centred at the LM optimum has adequate importance-sampling efficiency with 128 samples.",
+    "A log transform makes the local posterior closer to Gaussian than linear space does.",
+    "rel_l2 is computed on the raw conductivities, averaged over samples."
+   ],
+   "evidence": [
+    {
+     "claim": "The CRB rel_l2 floor is about 0.0186, well below the 0.05 success threshold, so an efficient estimator should succeed.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 are least determined (relative std about 0.02), so this is where box truncation and mode-versus-mean differences matter most.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Fisher condition number median 48 is moderate. LM should converge, and the local posterior is plausibly near-Gaussian, which would shrink the MMSE gain.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Under squared loss the posterior mean minimises Bayes risk. The mode is optimal only under 0-1 loss.",
+     "stance": "supports",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Run the identical hybrid spec twice on val, once with estimator='mode' and once with estimator='posterior_mean'. Compare overall val rel_l2 and per-parameter errors for k1 and k4. The hypothesis is falsified if posterior_mean fails to improve on mode by at least 5% relative overall, or if overall val rel_l2 exceeds 0.03.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "The forward solve is an explicit FD scheme with 40 points and 200 steps, so each call is cheap. LM uses about 20 iterations plus 1 extra start per sample, and importance sampling adds 128 forward calls per sample, applied to 750 val samples. Parallelising across 6 workers should keep this within the 120 s per-experiment limit. If it times out, drop posterior_samples to 64.",
+    "est_seconds": null
+   },
+   "if_fails": "If mode and posterior_mean are statistically tied, the posterior is effectively Gaussian and untruncated at this noise level. The estimator choice is then irrelevant, and the remaining error is either near the CRB floor (good) or due to initializer failures or local minima, which we can check via the share of samples whose LM misfit chi-square is much larger than the number of observations. If posterior_mean is worse, the Laplace proposal is poorly matched: the weights are degenerate, the posterior is non-Gaussian, or log space is the wrong parameterization.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "posterior mean versus MAP estimator box-constrained prior squared loss inverse problems",
+    "Laplace approximation importance sampling efficiency PDE parameter estimation",
+    "identifiability of piecewise constant conductivity from interior point measurements heat equation"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug2->LM20]",
+   "memory_refs": [],
+   "artifact_id": "prop-00041",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 200,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 20,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   }
+  },
+  "P-008": {
+   "id": "P-008",
+   "root_id": "P-008",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Amortized MMSE without a forward model: a noise-augmented neural regressor on log-temperature features reaches the 0.05 target",
+   "hypothesis": "Using the forward model at inference may be unnecessary here. With MSE loss, a network trained on simulated (observation, k) pairs directly estimates E[k | observation], the same Bayes-optimal target as proposal 1. Hypothesis: torch_mlp with log-transformed features, log targets, and noise augmentation matched to sigma = 0.001 reaches val rel_l2 < 0.05 with zero forward-model calls at inference. Its error should stay within a factor of 2 of the hybrid's. The log feature transform matters because heat-kernel decay makes sensor signals span orders of magnitude, and log(u) turns diffusion-time scaling (u roughly exp(-k t / L^2)) into an approximately linear function of k. Raw features should do measurably worse, by at least 15% relative.",
+   "motivation": "This challenges the assumption that physics-based refinement is needed to get near the CRB floor. The idea comes from the spectral, WKB-style view of parabolic PDEs: late-time and far-sensor signals decay exponentially at rates set by conductivity-weighted eigenvalues, so the log of the signal is the natural coordinate. The prior has only 4 dimensions and there are 3000 training samples, so the inverse map is smooth and low-dimensional and the sample count may suffice. Noise augmentation makes the network learn the posterior mean under the actual noise model rather than overfitting to one noise realization. Feature space is the main untested axis between purely data-driven baselines and physics-based methods.",
+   "assumptions": [
+    "Sensor readings are mostly positive and well above the noise level, so the harness's log feature transform is stable. If the transform does not clip or shift near-zero readings, early-time readings near zero will inject noise.",
+    "noise_scale is expressed in the units of the stated noise std, or close enough to add noise of about sigma = 0.001.",
+    "3000 training samples are enough for a smooth 4-dimensional inverse map, with test samples drawn from the same uniform prior.",
+    "A network trained with MSE on log targets approximates the posterior mean well enough. Log-target training gives the geometric mean, which biases the estimate slightly low; at about 2% relative std this bias is negligible."
+   ],
+   "evidence": [
+    {
+     "claim": "The mean-predictor baseline is 0.33 and the CRB floor is 0.019, so there is a wide band in which a learned regressor can land under 0.05.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The end segments k1 and k4 are weakly identified. A finite-sample regressor may underfit their subtle signal and shrink toward the prior mean, inflating their error.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Parabolic decay gives log(u) an approximately affine dependence on the diffusivity-time product, which simplifies the regression.",
+     "stance": "supports",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Train the same spec with features='log' and with features='raw', everything else fixed, and evaluate both on val. The hypothesis is falsified if the log-feature model's val rel_l2 is 0.05 or higher, or if it fails to beat the raw-feature model by at least 15% relative. Also compare against the hybrid from proposal 1: a gap larger than 2x falsifies the claim that amortized MMSE is competitive.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "This uses a CPU MLP on about 3000 x (4 sensors x T times) features with noise augmentation (about 4x data), training for 300 epochs with early stopping. It should take well under 60 s and needs no forward calls at inference.",
+    "est_seconds": null
+   },
+   "if_fails": "If log features are no better than raw, either the harness's log transform is dominated by near-zero, noise-dominated readings (which would argue for a custom feature such as log(u + c) or late-time-only windows), or the decay-linearization argument does not hold for discontinuous k. If both variants are far above 0.05, the inverse map is too nonlinear for 3000 samples, and the forward-model refinement in proposal 1 is necessary rather than optional. The per-parameter breakdown shows whether k1 and k4 are the bottleneck.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "amortized inference neural network posterior mean PDE coefficient estimation",
+    "log-transformed observations parabolic inverse problem conductivity recovery",
+    "noise augmentation simulation-based inference regression"
+   ],
+   "tags": [],
+   "family": "data-driven",
+   "method_label": "torch_mlp/log+logy+aug3",
+   "memory_refs": [],
+   "artifact_id": "prop-00042",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      512
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 0.0001,
+     "epochs": 300,
+     "batch_size": 128,
+     "activation": "silu"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0,
+    "target_transform": "log",
+    "noise_aug": 3,
+    "noise_scale": 1.0
+   }
+  },
+  "P-009": {
+   "id": "P-009",
+   "root_id": "P-001",
+   "parent_id": "P-001",
+   "version": 2,
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "round": 2,
+   "origin": "llm",
+   "action": "revise",
+   "title": "Log-space MLE via multistart Levenberg-Marquardt through the forward model attains the noise-limited (Cram\u00e9r-Rao) accuracy",
+   "hypothesis": "The forward model matches the generator to within the noise, so the bounded log-space LM MLE converges to the global minimum for almost all samples. Its full-validation rel_l2 is below 0.03 and within about 15% of the prior-averaged CRB rel error. In the pilot the ratio is 0.0190 / 0.0186 \u2248 1.02, using the median floor as a proxy.",
+   "motivation": "The forward map is a smooth polynomial in k. Fisher conditioning is moderate (median 48) and the noise is small, so the MLE is asymptotically efficient. Three pilot results support this. The pilot rel_l2 of 0.0190 sits at the floor. The final chi2/dof of 0.944 is consistent with fitting down to the noise. The Gauss-Newton uncertainty is calibrated (z_rms 0.98, coverage 0.70 / 0.958). All three point to near-Gaussian, effectively unimodal local likelihoods. The full-scale run anchors the portfolio and defines best_physics.",
+   "assumptions": [
+    "context.forward reproduces the generator. Verified empirically: residual std at the true k is 0.000995 vs sigma 0.001 over 200 samples, with model_mismatch=false.",
+    "Noise is i.i.d. Gaussian with sigma=1e-3. Least squares is then the negative log-likelihood. This is consistent with the chi2/dof results.",
+    "The explicit scheme is stable on the whole box. This is empirical, from the consistency check; dt and T are not known to us.",
+    "The 60-sample pilot is representative of the 750-sample validation set with respect to outliers and bound hits."
+   ],
+   "evidence": [
+    {
+     "claim": "Pilot val rel_l2 = 0.0190 on 60 samples, against a CRB rel_l2 floor estimate of 0.0186",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Residual std at the true k is 0.000995 vs nominal 0.001 over 200 samples; model_mismatch=false",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Gauss-Newton uncertainty is calibrated: 1-sigma coverage 0.70, 2-sigma coverage 0.958, z_rms 0.98, final chi2/dof 0.944",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The CRB floor is a median over only 32 draws, and the 60-sample pilot is small, so the full-scale value may move by roughly 10-20%",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Run on the full validation set. The hypothesis is refuted under any of these conditions:\n- val rel_l2 >= 0.03.\n- More than 5% of samples have per-sample relative error > 0.1, which would indicate local minima.\n- More than 5% of samples have final chi2/dof > 1.5, which would indicate non-convergence.\n\nAlso report:\n- mean and median per-sample relative error\n- per-parameter RMSE\n- fraction of estimates within 1e-3 of a bound in log space, per parameter\n- 1-sigma and 2-sigma coverage\n\nThese are needed to interpret P-002.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "Scaled from the pilot: about 345 forward evaluations per sample, roughly 45 s wall time for 750 samples. This is well within the limit and needs no reduction.",
+    "est_seconds": null
+   },
+   "if_fails": "If failure comes from a small set of outliers with high chi2, the landscape is multimodal for some k1/k4 configurations. That supports the learned-init hybrids (P-005/P-007). If errors are uniformly above the CRB with chi2 near 1, the 32-draw CRB underestimates the prior-averaged floor, and no estimator can reach 0.019. If many estimates sit on a bound, truncation bias matters, which strengthens P-002.",
+   "status": "conjectured",
+   "response_to_critic": "The pilot results answer most of the critique. I revise the framing and diagnostics and keep the method unchanged.\n\n(1) CRB is median-based and frequentist. Agreed. The pilot gives val rel_l2 = 0.0190 on 60 samples, against a median-CRB floor of 0.0186. I now state the hypothesis relative to E_prior[CRB rel error], not the median floor. I also request mean and median per-sample relative error. Mean rel_l2 is the operative number.\n\n(2) '1.5x CRB' is ill-posed. Agreed and dropped. The fixed <0.03 threshold is the test.\n\n(3) Starting points. The physics spec exposes only the 'multistart' count, so I cannot choose between a grid and random starts. With iters=40, the pilot reached chi2/dof = 0.944. That is consistent with global convergence on the pilot subset, so start placement appears not to matter here. I ask the harness to log which start won.\n\n(4) Bound pinning. Added to the falsifiable test: report the fraction of estimates within 1e-3 of log(0.5) or log(2.0), per parameter.\n\n(5) Stability and T/dt. The harness fit_report gives residual std at the true k of 0.000995 over 200 samples, against a nominal 0.001, with model_mismatch=false. Any instability or blow-up at k=2 would infla",
+   "abandon_reason": "",
+   "next_queries": [
+    "Prior-averaged CRB rel error over >=500 draws, computed via context.jacobian",
+    "Per-sample error vs true k1/k4 magnitude, stratified"
+   ],
+   "tags": [],
+   "family": "physics",
+   "method_label": "physics-MLE[log,ms=4,it=40]",
+   "memory_refs": [],
+   "artifact_id": "prop-00065",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 4,
+     "iters": 40,
+     "tikhonov": 0,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-010": {
+   "id": "P-010",
+   "root_id": "P-002",
+   "parent_id": "P-002",
+   "version": 2,
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "round": 2,
+   "origin": "llm",
+   "action": "revise",
+   "title": "Paired ablation: box-prior posterior mean vs mode from an identical physics solver; any gain is confined to bound-adjacent k1/k4",
+   "hypothesis": "rel_l2 is a squared-type loss, so the box-truncated posterior mean is Bayes-optimal. Posteriors are near-Gaussian (P-001 pilot: z_rms 0.98), so the gain over the mode comes almost entirely from samples whose true k1 or k4 lies within 2 Gauss-Newton sigma of 0.5 or 2.0. Predictions:\n- Overall val rel_l2 improves over the paired P-001 mode arm by about 2%, with a plausible range of 0-5%.\n- In the bound-adjacent stratum, per-parameter RMSE for k1/k4 improves by at least 10%.\n- In the interior stratum, the change is under 2%.",
+   "motivation": "This is a clean decision-theoretic test of mode vs MMSE with init and optimizer held fixed. It resolves the P-002/P-007 disagreement about effect size without the learned-init confound, at near-zero extra cost. It also tells the team whether posterior_mean should be the default estimator in the final hybrid.",
+   "assumptions": [
+    "The Laplace approximation in log space is a good importance-sampling proposal. This is supported by the calibrated coverage in the P-001 pilot.",
+    "The prior is exactly i.i.d. uniform on [0.5, 2].",
+    "Multistart LM finds the same global mode in both arms, so differences reflect the estimator only.",
+    "128 importance samples give low-variance means; ESS will be checked."
+   ],
+   "evidence": [
+    {
+     "claim": "In the P-001 pilot, Gauss-Newton uncertainty is calibrated (z_rms 0.98, 1-sigma coverage 0.70, 2-sigma coverage 0.958): posteriors are near-Gaussian, which bounds the possible MMSE gain to bound-adjacent samples",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have CRB relative std 3-4x larger than k2/k3, so truncation effects, where present, are largest there",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Under squared loss the posterior mean minimises Bayes risk, and it may undercut the frequentist CRB near bounds (the Van Trees regime)",
+     "stance": "supports",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare paired with P-001 (estimator=mode, same settings) on the same validation set. Stratify per parameter by distance of the true k to the nearest bound: within 2 Gauss-Newton sigma vs outside. The hypothesis is refuted under any of these conditions:\n- In the bound-adjacent stratum, k1/k4 RMSE does not improve by at least 10%.\n- The interior stratum changes by more than 2% in either direction, which would point to importance-sampling noise or a non-Gaussian posterior.\n- Overall rel_l2 gets worse.\n\nReport the importance-sampling ESS/N distribution.",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_physics",
+    "improvement": 0.02,
+    "expect": "better"
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "Estimated at about 470 forward evaluations per sample, roughly 60 s for 750 validation samples. There is no MLP training and no augmentation, so the noise_scale ambiguity does not arise.",
+    "est_seconds": null
+   },
+   "if_fails": "If there is no gain even in the bound-adjacent stratum, the truncation is too small at sigma=1e-3 to matter. The MLE is then effectively Bayes-optimal here, and the final model should use estimator=mode for simplicity. If the result is worse with low ESS, the Laplace proposal degenerates near bounds. If the interior stratum shifts, the posteriors are less Gaussian than the coverage suggested.",
+   "status": "conjectured",
+   "response_to_critic": "I accept the duplicate finding and the blocking issues. I re-scope P-002 so it no longer overlaps P-007 and no longer needs a learned component.\n\n(1) Duplicate of P-007, confounded init. P-002 is now a pure-physics paired ablation. It uses exactly P-001's settings (log transform, multistart 4, iters 40) and changes only estimator=mode to estimator=posterior_mean. Init and optimizer are identical across the two arms, so any difference is attributable to the estimator alone. This also removes the counterexample in which outlier removal by a learned init masquerades as an MMSE gain. P-007 keeps the hybrid version.\n\n(2) Runtime 145.6 s over the limit. Resolved. Without MLP training the cost is P-001's roughly 345 forward evaluations per sample plus 128 importance-sampling forward calls per sample, about 470 per sample. That is roughly 60 s for 750 samples. The pilot showed physics solves are cheap.\n\n(3) noise_scale convention conflict. No longer applicable to this arm: there is no library component and no augmentation. The question still matters for the other arms. Separately, the critic's sqrt(2)\u00b7sigma point is valid: augmenting already-noisy training data double-counts noise.\n\n(4) Th",
+   "abandon_reason": "",
+   "next_queries": [
+    "Harness behaviour of the importance-sampling step at box boundaries (zero-weighting vs truncated proposal)",
+    "Harness definition of noise_scale (relative vs absolute), for the other arms"
+   ],
+   "tags": [],
+   "family": "physics",
+   "method_label": "physics-MMSE[log,ms=4,it=40]",
+   "memory_refs": [],
+   "artifact_id": "prop-00066",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 4,
+     "iters": 40,
+     "tikhonov": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   }
+  },
+  "P-011": {
+   "id": "P-011",
+   "root_id": "P-003",
+   "parent_id": "P-003",
+   "version": 2,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 2,
+   "origin": "llm",
+   "action": "revise",
+   "title": "Cheap hybrid: shared MLP initializer + 4 unregularized Gauss-Newton/LM steps in log-k (MLE mode)",
+   "hypothesis": "Starting from the P-004 MLP initializer, 4 bounded, unregularized LM iterations in log-k through the exact forward model will have two effects. First, val rel_l2 will reach <= 0.035, within about 2x the CRB floor of 0.0186. Second, error will drop by at least 25% relative to the identical initializer on the same val samples. The reason is that the initializer lands in the quadratic-convergence region, so most of the attainable refinement gain occurs in the first few steps.",
+   "motivation": "If Gauss-Newton converges quadratically from a few-percent init, iterations 5-20 contribute almost nothing. A 4-step arm then quantifies how cheaply the physics correction can be bought. Comparing it with the 20-step P-002/P-007 arms gives the iteration-count curve the critic requested.",
+   "assumptions": [
+    "The MLP init has per-parameter relative error mostly below 10%, consistent with the 300-sample pilot at 0.047.",
+    "context.forward matches the data generator. Verified by P-001's chi^2-at-truth control; if that control fails, this arm is uninterpretable.",
+    "Positivity and bounds are handled by the log transform plus bounded LM projection."
+   ],
+   "evidence": [
+    {
+     "claim": "The P-004 pilot reached val rel_l2 0.047 on 60 val samples with only 300 training samples, so the full-data init should be at least that good.",
+     "stance": "supports",
+     "source": "resu-00051"
+    },
+    {
+     "claim": "Median Fisher condition 48 implies well-posed Gauss-Newton steps over most of the prior.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Explicit FD near k=2 could give poorly scaled Jacobians and slow convergence there.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Measure val rel_l2 of the hybrid and, on the same val samples, of its initializer alone. Also log the final per-sample chi^2/dof. The hypothesis is falsified if (a) hybrid val rel_l2 > 0.035, (b) the paired improvement over the initializer is < 25%, or (c) more than 10% of samples end with chi^2/dof > 1.5, which would indicate non-convergence or a basin failure.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "Expect about 4 Jacobians x 750 val samples, roughly half the forward cost of the 8-iteration version. MLP training is about 15-30 s and is shareable with P-004. Estimated well under 90 s.",
+    "est_seconds": null
+   },
+   "if_fails": "If (a) fails but chi^2 is near 1, the method is at an information limit above 0.035, so the CRB floor estimate is optimistic. If chi^2 is high, either 4 steps are insufficient (compare with the 20-step P-002/P-007) or the forward model is mismatched (check P-001's chi^2 at the truth). If (b) fails while (a) passes, the initializer was already near-efficient, which strengthens the amortized arms.",
+   "status": "conjectured",
+   "response_to_critic": "(1) Tikhonov vs posterior_mean inconsistency: accepted. I set tikhonov=0 and estimator=mode, so this arm is a pure MLE refinement with no hidden Gaussian prior. The MMSE question is left entirely to P-007/P-002. (2) Init inside the basin is untested: accepted. The P-004 pilot reached 0.047 rel_l2 with only 300 training samples, which implies per-parameter errors of a few percent. That is well inside the region where Gauss-Newton converges quadratically, given median Fisher condition 48. I ask the harness to log the per-sample chi^2/dof after the final iteration. The arm is falsified for this reason if more than 10% of samples have chi^2/dof > 1.5. (3) The 25% paired-comparison clause: restated as a paired comparison on identical val samples against this arm's own initializer (iters=0), not against a separate run. (4) Overlap with P-002/P-007: accepted. The distinctive content is now explicitly the minimal-iteration budget, iters=4 versus their 20. This tests whether nearly all of the gain comes in the first few Gauss-Newton steps, which matters for compute-per-sample. Questions: (a) Does the estimator use the bounds for k1/k4? Only through bounded LM projection. Exploiting the box ",
+   "abandon_reason": "",
+   "next_queries": [
+    "local quadratic convergence radius of Gauss-Newton for parabolic coefficient identification",
+    "chi-square goodness of fit diagnostic for nonlinear least squares parameter estimates"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug2->LM4]",
+   "memory_refs": [],
+   "artifact_id": "prop-00067",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       512
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 1e-05,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 4,
+     "tikhonov": 0.0,
+     "extra_starts": 0,
+     "estimator": "mode",
+     "posterior_samples": 32
+    }
+   }
+  },
+  "P-012": {
+   "id": "P-012",
+   "root_id": "P-004",
+   "parent_id": "P-004",
+   "version": 2,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 2,
+   "origin": "llm",
+   "action": "revise",
+   "title": "Purely amortized inverse map: MLP on log-k targets with noise-matched augmentation (given 3000 samples; shared initializer)",
+   "hypothesis": "A torch_mlp on raw sensor series with log-k targets and Gaussian noise augmentation at the stated sigma reaches val rel_l2 < 0.05 with no forward calls at inference, and is at least 2x better than ridge on the same features. The 300-sample pilot (0.047) already sits under the target, so at 3000 samples I predict 0.025-0.035.",
+   "motivation": "Under squared loss the MLP approximates the conditional mean, the Bayes-optimal estimator. Log-k linearizes the 1/k diffusion time-scale dependence. The pilot shows the target is reachable even at 10% of the data. The full run establishes the data-driven reference, and the same trained model is the initializer in P-003.",
+   "assumptions": [
+    "noise_scale is relative to sigma (supported by the pilot result).",
+    "Early stopping uses an internal split of train/val, never test.",
+    "The rel_l2 error is dominated by k1/k4 because of their weaker identifiability."
+   ],
+   "evidence": [
+    {
+     "claim": "The pilot reached rel_l2 0.0469 on 60 val samples with 300 training samples.",
+     "stance": "supports",
+     "source": "resu-00051"
+    },
+    {
+     "claim": "The CRB floor of 0.0186 leaves about 2.5x room for inefficiency under 0.05.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The pilot used only 60 val samples, so its 0.047 has a few-percent-relative standard error and could hide a value just above 0.05 at full fidelity.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Measure full val rel_l2 and per-parameter relative errors, plus ridge (alpha tuned) on the same features as a paired control. The hypothesis is falsified if val rel_l2 >= 0.05 or the MLP/ridge ratio > 0.5.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "No forward calls. Training 150 epochs on 3000 samples on CPU takes about 15-40 s. Ridge adds about 1 s.",
+    "est_seconds": null
+   },
+   "if_fails": "If val rel_l2 >= 0.05 with the error concentrated in k1/k4, the cause is a data and identifiability limit; the simulation-enlarged proposal and P-003 test the two remedies. If ridge comes within 2x, the inverse map is nearly linear in these features, and cheap linear plus LM is the efficient frontier.",
+   "status": "conjectured",
+   "response_to_critic": "Pilot evidence first: with only 300 training samples and noise_scale=1.0, the pilot reached val rel_l2 0.047 on 60 val samples. This also bears on the noise_scale convention dispute. If 1.0 were an absolute std, the augmentation noise would be O(1) on temperatures that are mostly << 1, and the model could not have reached 0.047. So noise_scale is evidently relative to sigma, P-004/P-006's convention is consistent, and arms using 0.001 under a relative convention are mis-scaled to near-zero augmentation. Point by point: (1) The fixed 3000 samples are self-imposed: accepted. I add a separate new proposal (below) that trains on more than 12k fresh context.forward simulations, so data limit versus method limit can be separated without changing this arm's identity as the 'given data only' baseline. (2) sqrt(2)*sigma effective noise: acknowledged. The augmented copies carry about 1.41 sigma, which mildly over-smooths, mostly on k1/k4. I keep noise_scale=1.0 because the pilot validated it, and P-006's noise_aug=0 arm is the ablation. The new proposal removes this issue entirely by adding fresh noise to clean simulations. (3) Log-target MSE estimates E[log k|y], not E[k|y]: acknowledged. T",
+   "abandon_reason": "",
+   "next_queries": [
+    "sample complexity of neural posterior mean estimators in low-dimensional parameter inference"
+   ],
+   "tags": [],
+   "family": "data-driven",
+   "method_label": "torch_mlp/raw+logy+aug2",
+   "memory_refs": [],
+   "artifact_id": "prop-00068",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      512
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 1e-05,
+     "epochs": 150,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0,
+    "target_transform": "log",
+    "noise_aug": 2,
+    "noise_scale": 1.0
+   }
+  },
+  "P-013": {
+   "id": "P-013",
+   "root_id": "P-013",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 2,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Simulation-enlarged amortized MMSE: MLP trained on ~12k fresh forward simulations with exact per-epoch noise resampling",
+   "hypothesis": "The gap between the amortized MLP and the CRB floor is mainly a finite-data effect, not an architecture or amortization limit. Training the same MLP on 3000 given samples plus about 12000 fresh prior draws simulated with context.forward, with fresh N(0, sigma^2) noise resampled every epoch on the clean simulations so that train noise exactly matches the test noise model, will reach val rel_l2 < 0.03. It will also be at least 20% better, on the same val samples, than P-004 trained on the 3000 given samples only.",
+   "motivation": "The critic's missing control: without it, a failure of P-004 cannot be distinguished as a data limit or a method limit. Resampling noise on clean simulations also removes the sqrt(2)*sigma inflation that comes from augmenting already-noisy data. This is the cleanest available approximation to E[k|y] under the stated prior and likelihood. If it approaches the hybrid arms, inference needs zero forward calls per test sample.",
+   "assumptions": [
+    "context.forward returns noise-free observations with the same flattened layout as X. The code checks the shape and falls back to the given data only on mismatch.",
+    "The forward budget allows about 12k evaluations. The code catches budget errors and trains on whatever was simulated.",
+    "Simulations from the uniform prior are allowed under 'models may only be trained on simulated data'."
+   ],
+   "evidence": [
+    {
+     "claim": "The 300-sample pilot gave 0.047. Error falling with sample size suggests a data-limited regime.",
+     "stance": "supports",
+     "source": "resu-00051"
+    },
+    {
+     "claim": "The CRB floor is 0.0186, so an estimator near E[k|y] should sit around 0.02-0.025.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "If context.forward differs from the data generator, the extra simulations would add model discrepancy and could hurt.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Measure val rel_l2 and per-parameter errors, paired against P-004 on identical val samples, and record how many simulations were actually used. The hypothesis is falsified if val rel_l2 >= 0.03 or the paired improvement over P-004 is < 20%, provided at least 10k simulations were used. If fewer were used, the result is inconclusive, not a falsification.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "12k forward runs batched in chunks of 1000, about 4x fewer than an 8-iteration LM over 750 samples. Training is 40 epochs x about 59 batches of 256 x a 512-wide MLP on about 800 inputs, roughly 20-40 s on CPU. Inference makes zero forward calls. Estimated 50-90 s total.",
+    "est_seconds": null
+   },
+   "if_fails": "If error does not improve with 5x more data, P-004's gap is not a data limit. Either the architecture or feature scaling is inefficient (try PCA or a time-window or log features), or amortization is inherently worse than per-sample refinement here, which supports P-003/P-002. If it is worse than P-004, suspect a mismatch between context.forward and the data generator, and cross-check with P-001's chi^2-at-truth control.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "simulation-based inference neural posterior mean estimation sample efficiency",
+    "amortized inference versus per-instance optimization gap in PDE parameter identification"
+   ],
+   "tags": [],
+   "family": "physics-custom",
+   "method_label": "custom-solver(fwd)",
+   "memory_refs": [],
+   "artifact_id": "prop-00069",
+   "method": {
+    "kind": "custom_solver",
+    "uses_forward": true,
+    "params": {
+     "n_sim": 12000,
+     "epochs": 40,
+     "seed": 0
+    }
+   }
+  },
+  "P-014": {
+   "id": "P-014",
+   "root_id": "P-005",
+   "parent_id": "P-005",
+   "version": 2,
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "round": 2,
+   "origin": "heuristic-fallback",
+   "action": "revise",
+   "title": "Learned initializer plus forward-model LM refinement reaches the noise-limited (CRB) regime",
+   "hypothesis": "The remaining error after a kernel-ridge initializer is mainly an optimization or approximation error, not an information limit. Refining each sample with a few bounded Levenberg-Marquardt iterations through the exact forward model, in log-k space, should then bring test rel_l2 down to about 1-1.5x the Cram\u00e9r\u2013Rao floor (\u22480.019-0.028). That is well under the 0.05 target and clearly better than any purely data-driven arm.",
+   "motivation": "Several facts point the same way. The simulator is the exact data-generating model: same explicit finite-difference scheme, 40 nodes, 200 steps, same sensor indices. The noise is i.i.d. Gaussian with known sigma=0.001. So the Gaussian likelihood is exactly specified, and least squares is the MLE. The diagnostics give a median Fisher condition number of 48 and a CRB rel_l2 floor of 0.0186. The local problem is therefore well posed, and an efficient estimator should land near the floor. The main risk for pure LM is multimodality or slow convergence from the prior centre, because k1 and k4 are weakly determined: the sensors sit inside segments and the Gaussian pulse starts at 0.5, so the outer segments see little flux early on. A learned initializer that already sits in the right basin removes that risk. The log transform respects positivity and evens out curvature across [0.5, 2].",
+   "assumptions": [
+    "The harness forward model is the same discretization that generated the data, so there is no model-form error.",
+    "The noise is exactly i.i.d. Gaussian with sigma=0.001, so least squares is the MLE.",
+    "The kernel-ridge initializer lands within the LM basin of attraction for most samples.",
+    "The CRB computed at 32 prior draws is representative of the whole prior box.",
+    "The forward-call budget allows about 750 samples x 15 iterations within 120s.",
+    "Compare against P-001 on identical val samples, so that the init effect (KRR vs multistart) is isolated at matched LM settings."
+   ],
+   "evidence": [
+    {
+     "claim": "The CRB rel_l2 floor is 0.0186, below the 0.05 target, so the target is information-theoretically reachable.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The median Fisher condition number is 48, so the local Gauss-Newton steps are well conditioned.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have 3-4x larger CRB std than k2 and k3, so the outer segments may have flat likelihood directions where a poor start stalls.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The mean predictor gets 0.33, so the signal is strong compared with the prior spread.",
+     "stance": "supports",
+     "source": "diagnostics"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare val rel_l2 of the hybrid with (a) the kernel-ridge init alone and (b) the CRB floor 0.0186. The hypothesis is refuted on any of three outcomes. First, hybrid val rel_l2 > 0.035 (more than 1.9x CRB). Second, the gain over the init alone is under 20%. Third, the per-parameter errors for k1 and k4 exceed 2x their CRB std, which would indicate convergence failures or model mismatch. The diagnostic is the distribution of normalized residuals per sample: if the MLE is correct, chi^2/dof should be \u22481, and samples far above that show non-convergence.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "Kernel ridge on 3000x(4 sensors x ~200 times) is cheap. The LM cost is about 750 x (15 iters x Jacobian) forward solves on a 40-node, 200-step explicit scheme, which should fit in tens of seconds. If the budget is tight, drop extra_starts to 0.",
+    "est_seconds": null
+   },
+   "if_fails": "Each failure mode points to a different cause. If the error is far above the CRB while chi^2/dof is \u22481, the CRB at 32 draws is unrepresentative, likely near the box edges where clipping or bias dominate; the fix is the posterior_mean estimator. If chi^2/dof >> 1, either convergence failed (fix: more iterations or starts) or the forward model mismatches the data generator, which is a simulation-fidelity issue. If the error barely improves over the init, the init was already at the noise floor.",
+   "status": "conjectured",
+   "response_to_critic": "Revised: incorporated critic assumptions",
+   "abandon_reason": "",
+   "next_queries": [
+    "Cram\u00e9r\u2013Rao bound attainment of nonlinear least squares at moderate SNR",
+    "identifiability of piecewise constant conductivity from interior point sensors heat equation"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[kernel_ridge/raw+logy->LM15]",
+   "memory_refs": [],
+   "artifact_id": "prop-00070",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "kernel_ridge",
+     "params": {
+      "alpha": 0.001,
+      "gamma_mult": 1.0
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 0,
+     "noise_scale": 0.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 15,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-015": {
+   "id": "P-015",
+   "root_id": "P-008",
+   "parent_id": "P-008",
+   "version": 2,
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "round": 2,
+   "origin": "llm",
+   "action": "revise",
+   "title": "Variance-stabilised asinh(u/3\u03c3) sensor features let a purely amortized MLP reach rel_l2 < 0.05 without forward calls at inference",
+   "hypothesis": "An MLP regressor on asinh(u/c) features, with c = 3*sigma = 0.003, log-conductivity targets, and the training noise as provided, reaches val rel_l2 < 0.05. The feature map compresses the multi-decade dynamic range of the far-sensor signals while staying linear and Gaussian-noise-preserving in noise-dominated channels. We expect it to match or beat the raw-feature amortized arm (P-004), with the largest gains on k1 and k4, whose information lives in small-amplitude edge-sensor readings.",
+   "motivation": "This revises my earlier log-feature idea after the critic pointed out that log(u) is ill-defined on noisy near-zero readings. asinh(x/c) is the standard variance-stabilising transform in astronomy and flow cytometry for signals with additive Gaussian noise plus a large dynamic range. It borrows across traditions: it behaves like log for strong signal and stays linear near the noise floor. The k1/k4-informative edge-sensor readings are small relative to the centre sensors. Under standard scaling of raw features their relative variations are compressed, while asinh expands them. The transform is fixed and cheap and needs no forward calls.",
+   "assumptions": [
+    "Features are raw sensor temperatures (the harness 'raw' set) in the same units as sigma = 0.001.",
+    "The training features already contain i.i.d. N(0, 0.001^2) noise, so no further augmentation is needed for the MSE-trained network to approximate E[log k | data].",
+    "The train, val and test splits are drawn from the same uniform prior.",
+    "The harness can fit and pickle a sklearn Pipeline that contains a FunctionTransformer wrapping a function defined in the agent code. If pickling fails, the run should fail loudly rather than silently.",
+    "The log-target geometric-mean bias is negligible at about 2-3% relative error."
+   ],
+   "evidence": [
+    {
+     "claim": "The mean-predictor baseline is 0.33 and the CRB floor is 0.0186, so a learned regressor has a wide band below 0.05 in which to land.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 are least determined (CRB relative std 0.022 and 0.018), so finite-sample amortized estimators will shrink them toward the prior mean.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "asinh(x/c) is approximately x/c for |x| << c and approximately log(2x/c) for x >> c. It is defined for negative noisy readings, which removes the NaN and noise-amplification failure of log features.",
+     "stance": "supports",
+     "source": "reasoning"
+    },
+    {
+     "claim": "If the window is in a transient multi-mode regime, the log-linearity heuristic may not hold, and asinh may give no advantage over raw features.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Evaluate on val. The primary falsifier is val rel_l2 >= 0.05. The secondary, indicative falsifier is val rel_l2 worse than P-004 (raw-feature torch_mlp), noting the learner confound. Report per-parameter errors: if the k1 and k4 errors are no better relative to P-004 than the k2 and k3 errors are, the edge-sensor dynamic-range mechanism is not operating.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "sklearn MLP (256,256) with early stopping on 3000 samples, no augmentation, no forward calls. Estimated 20-40 s on one CPU worker.",
+    "est_seconds": null
+   },
+   "if_fails": "If the arm stays above 0.05 while P-004 (raw) also fails, the bottleneck is samples or capacity rather than feature geometry, which the new simulation-augmented proposal tests directly. If asinh loses to raw, the decisive information is in the large-amplitude centre-sensor transients and dynamic-range compression discards useful resolution. If it wins mainly on k2 and k3 rather than k1 and k4, the edge-sensor mechanism is wrong even though the transform helps.",
+   "status": "conjectured",
+   "response_to_critic": "Point by point. (a) The bare harness 'log' transform is undefined or noise-dominated on near-zero or negative edge-sensor readings. Agreed, so I no longer use it. The revised arm uses custom_ml with an asinh(u/c) feature map, c=3*sigma=0.003. asinh is defined for negative readings and is approximately linear for |u| << c, so noise-only channels keep Gaussian noise rather than log-amplified noise. It is approximately log(2u/c) for u >> c, which keeps the decay-linearization idea. This removes the numerical failure mode the critic identified, and the preprocessing is now well-defined without needing the histogram check first. I still request the reading histogram (fraction of readings below 3 sigma) as zero-cost context for interpretation. (b) WKB applies only to late-time single-mode decay, and the window may be transient and multi-mode. Agreed, so I downgrade it from a mechanism claim to a motivating heuristic. The hypothesis now rests only on the weaker claim that a variance-stabilising, dynamic-range-compressing map helps an MLP; it does not need exact log-linearity. (c) The 15% threshold was arbitrary, so I dropped it. The primary prediction is val rel_l2<0.05. The secondary com",
+   "abandon_reason": "",
+   "next_queries": [
+    "fraction of train sensor readings below 3*sigma per sensor",
+    "per-parameter val errors for P-004 raw-feature arm"
+   ],
+   "tags": [],
+   "family": "data-driven",
+   "method_label": "custom-ml",
+   "memory_refs": [],
+   "artifact_id": "prop-00073",
+   "method": {
+    "kind": "custom_ml",
+    "params": {},
+    "features": "raw",
+    "scaler": "none",
+    "pca": 0
+   }
+  },
+  "P-016": {
+   "id": "P-016",
+   "root_id": "P-016",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "round": 2,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Is the amortized gap a data limit? Train the inverse MLP on 3000 provided + 12000 freshly simulated prior draws via context.forward",
+   "hypothesis": "Most of the gap between the amortized MLP and the CRB-limited hybrid is finite-sample approximation error, not an intrinsic limit of amortization. Training the same simple MLP on 5x more simulated (noisy observation, k) pairs from the prior, using context.forward plus N(0, sigma^2) noise, reduces val rel_l2 by at least 25% relative to the best 3000-sample data-driven arm, and reaches val rel_l2 < 0.04 with no forward calls at inference.",
+   "motivation": "This is the critic's missing control. It challenges the framing that 'data-driven vs physics' is a fixed method choice: the constraint permits training on simulated data, and the simulator is available, so the training-set size is a free design variable. Simulation-based inference treats this as the central lever for amortized posterior means. The design also adds a forward-model consistency check as a side effect. If context.forward differs from the data-generating simulator (the critic's shared unverified assumption), the simulated data will hurt rather than help, so the experiment simultaneously separates a data limit from a model-discrepancy problem.",
+   "assumptions": [
+    "context.forward(theta) returns noise-free observations whose flattened layout matches the feature vector X. The code falls back to training on X only if the shapes differ.",
+    "Training on the provided data plus simulated data, drawn from the prior with forward(theta) + N(0, 0.001^2) noise, is permitted by the constraint that 'models may only be trained on simulated data'.",
+    "A forward-call budget of 12000 batched evaluations is affordable. The FD solver is 40 points x 200 steps, so it is cheap if vectorised.",
+    "The val and test splits are drawn from the same uniform prior as the simulated draws."
+   ],
+   "evidence": [
+    {
+     "claim": "With a 4-parameter prior and a CRB floor of 0.0186, the remaining amortized error is plausibly approximation-limited, and approximation error falls with training-set size.",
+     "stance": "supports",
+     "source": "reasoning"
+    },
+    {
+     "claim": "If context.forward mismatches the generator, simulated pairs are off-distribution and degrade accuracy. This failure mode is informative about every physics and hybrid arm.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    },
+    {
+     "claim": "The k1/k4 signals are weak (CRB relative std about 0.02), so they need the most samples to learn without shrinkage.",
+     "stance": "supports",
+     "source": "diagnostics"
+    }
+   ],
+   "citations": [],
+   "falsifiable_test": "Compare val rel_l2 with the best 3000-sample data-driven arm (P-004/P-006, with the caveat that the learners differ). The hypothesis is falsified if the improvement is below 25% relative, or if val rel_l2 >= 0.04. If the error gets worse than the 3000-sample arms, I interpret that as evidence of forward-model/generator mismatch, and the physics and hybrid arms must be re-examined, in particular P-001's chi-squared/dof at the true k.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.04
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "One batched forward call of 12000 draws (cheap if vectorised; n_sim can drop to 6000 if the forward budget is tight). Then a sklearn MLP (256,256) on 15000 rows with early stopping, estimated 40-70 s on one CPU worker. No forward calls at inference.",
+    "est_seconds": null
+   },
+   "if_fails": "If the gain is under 25% but the error does not get worse, amortization is capacity- or optimisation-limited rather than data-limited, which favours the hybrid LM refinement arms. If the error gets worse, context.forward and the generator disagree (noise convention, layout or discretisation), which threatens every physics arm and must be fixed first. If the gain comes only on k2 and k3, then k1 and k4 are limited by information rather than data.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "context.forward budget limit and output layout vs feature vector",
+    "chi^2/dof of val features at true k under context.forward"
+   ],
+   "tags": [],
+   "family": "physics-custom",
+   "method_label": "custom-solver(fwd)",
+   "memory_refs": [],
+   "artifact_id": "prop-00074",
+   "method": {
+    "kind": "custom_solver",
+    "params": {
+     "n_sim": 12000,
+     "seed": 0
+    },
+    "uses_forward": true
+   }
+  }
+ },
+ "critiques": [
+  {
+   "round": 1,
+   "per_proposal": {
+    "P-001": {
+     "challenges": [
+      "The 0.0186 floor is the frequentist CRB, which bounds unbiased estimators only, and it is a median over 32 draws. rel_l2 averaged over the prior is driven by the tail of hard samples (large k1/k4, where the absolute std is largest), so the mean can exceed a median-based floor even for an efficient MLE. Report mean and median per-sample rel error.",
+      "'Within 1.5x of CRB' is ill-posed as a pass/fail anchor because the CRB estimate itself is noisy (32 draws). The fixed <0.03 threshold is the operative test; keep that one.",
+      "Starting points are unspecified. Random uniform starts in log space versus a fixed grid changes how often multistart finds the global basin.",
+      "Bounded LM in log space can still pin estimates at log(0.5) or log(2.0). The fraction of estimates at a bound should be reported, since these carry the truncation bias that P-002/P-007 target."
+     ],
+     "changed_assumptions": [
+      "Replace 'MLE near-efficient implies rel_l2 \u2248 CRB' with 'MLE rel_l2 \u2248 E_prior[CRB-based rel error]', computed over many more than 32 draws.",
+      "The forward map is a degree-~200 polynomial in k (explicit FD). It is smooth, but stability at k=2 must be verified: dt \u2264 dx\u00b2/(2\u00b7k_max) with dx=1/39."
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?",
+      "What is the final time T and dt? Is the scheme stable at k=2 for the stated 200 steps?",
+      "How are interface conductivities discretized (arithmetic vs harmonic mean)? Does context.forward use exactly the same rule as the data generator?",
+      "Is the 31.5s estimate for multistart=4, iters=40 on all 750 val samples batched?"
+     ],
+     "counterexamples": [
+      "If T is short enough that the pulse barely reaches sensors 5 and 35, k1/k4 information comes from a few low-amplitude late readings. The likelihood in those directions can then be flat or banana-shaped, and LM may stall, giving outliers well above CRB."
+     ],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      },
+      {
+       "query": "chi\u00b2/dof of val observations evaluated at the TRUE k through context.forward",
+       "why": "The cheapest check that the forward model matches the data generator and that sigma=1e-3 is correct. Every physics/hybrid arm rests on this."
+      },
+      {
+       "query": "Oracle-init LM: start LM at true k on val",
+       "why": "Separates the information limit (oracle rel_l2) from optimization/multimodality failure (multistart rel_l2)."
+      }
+     ],
+     "revision_directions": [
+      "Log per-sample final chi\u00b2/dof, iteration count, bound-hit flags and per-parameter errors so the if_fails branches can be tested directly.",
+      "Run this first as the team anchor. It is cheapest (31.5s) and defines 'best_physics' for P-002."
+     ],
+     "suggested_tests": [
+      {
+       "description": "chi\u00b2/dof at true k on 50 val samples (forward-model consistency check)",
+       "pilot": true
+      },
+      {
+       "description": "P-001 as specified plus oracle-init variant on the same val subset",
+       "pilot": true
+      }
+     ],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "Cram\u00e9r\u2013Rao relative std per parameter is 0.005-0.022, giving a CRB rel_l2 floor of about 0.0186, well below the 0.05 target",
+      "A Fisher condition number of median 48 indicates the Jacobian is not ill-posed locally; Gauss-Newton steps are well-defined",
+      "k1 and k4 are least determined; near the bounds the posterior may be truncated, and the MLE then ends up on the boundary, which can bias the estimates",
+      "CRB relative std is 0.022/0.006/0.005/0.018 for k1..k4 (diagnostics, median over draws).",
+      "Median Fisher condition number is 48.",
+      "Estimated cost is 31.5s."
+     ],
+     "conjectures": [
+      "The likelihood is unimodal enough that 4 starts find the global optimum for >95% of samples.",
+      "The MLE attains rel_l2 < 0.03."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 31.5,
+     "llm_score": 0.8,
+     "quality": 0.905
+    },
+    "P-002": {
+     "challenges": [
+      "The 10% improvement target is implausible from truncation alone. Absolute posterior std is \u22480.022\u00b7k, i.e. at most ~0.045 at k=2. Only samples within ~2\u03c3 of a bound are affected, roughly 3-6% of the prior mass per parameter. Even a large gain on those samples moves the overall rel_l2 by only a few percent.",
+      "The Van Trees (Bayesian) bound, not the CRB, is the relevant floor for an MMSE estimator. The posterior mean can legitimately beat the CRB, so 'gain concentrated on k1,k4' needs per-parameter Bayes-risk comparison.",
+      "noise_scale=0.001 here, but 1.0 in P-003, P-004, P-006, P-007 and P-008. At most one convention is right. If noise_scale is relative, this adds negligible noise. If it is absolute, the others add 1000x sigma.",
+      "Training data are presumably already noisy. Adding augmentation at sigma gives an effective noise of sqrt(2)\u00b7sigma, a train/val mismatch."
+     ],
+     "changed_assumptions": [
+      "Expect an MMSE-over-MLE gain of \u22725% overall. Any larger gain likely comes from outlier removal by the learned init, not from estimator choice, which is the confound the proposal itself names."
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?",
+      "What are the importance-sampling effective sample sizes? If ESS is near 128 everywhere, the posterior is Gaussian and the estimator choice is moot.",
+      "How is the box prior enforced in the IS step: weights set to zero outside the box, or proposal truncated?"
+     ],
+     "counterexamples": [
+      "If the learned init removes P-001's multistart outliers, the hybrid can beat P-001 by >10% while mode and mean are identical. The hypothesis would 'pass' for the wrong reason."
+     ],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      },
+      {
+       "query": "Harness definition of noise_scale (relative to sigma or absolute)",
+       "why": "Determines whether this arm's or every other arm's augmentation is mis-scaled. It can be checked by reading the code, with no compute."
+      }
+     ],
+     "revision_directions": [
+      "Merge with P-007. The paired mode/posterior_mean ablation from the same init is the clean test; comparison with P-001 confounds init and estimator.",
+      "Est 145.6s exceeds the 120s per-experiment limit the authors cite. Cut posterior_samples to 64 and MLP epochs to ~100, or run IS on a val subset."
+     ],
+     "suggested_tests": [
+      {
+       "description": "Stratify the mode-vs-mean gain by distance of the true k to the nearest bound (inside vs outside 2\u03c3)",
+       "pilot": false
+      }
+     ],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "k1 and k4 have CRB relative std 3-4x larger than k2 and k3, so most of the rel_l2 budget comes from them, and that is where the estimator choice matters",
+      "Under squared loss the posterior mean is Bayes-optimal.",
+      "Est 145.6s, over the 120s per-experiment figure used by the proposers."
+     ],
+     "conjectures": [
+      "When the posterior std is about 2% of a range of 1.5, truncation affects only samples whose true k lies within about 0.05 of a bound (roughly 7% of the prior mass per side), so the MMSE gain may be sm",
+      "Truncation-induced MLE bias contributes \u226510% of rel_l2."
+     ],
+     "blocking": [
+      "Estimated runtime 145.6s exceeds the 120s per-experiment limit; reduce posterior_samples/epochs before running.",
+      "noise_scale=0.001 conflicts with the other arms' noise_scale=1.0; resolve harness semantics first."
+     ],
+     "duplicate_of": "P-007",
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 145.6,
+     "llm_score": 0.45,
+     "quality": 0.375
+    },
+    "P-003": {
+     "challenges": [
+      "tikhonov=0.01 combined with estimator=posterior_mean is inconsistent. Tikhonov implies a Gaussian prior centred somewhere (init? prior mean?), whereas the stated prior is uniform. This biases the mode used as the Laplace centre and contaminates the MMSE test.",
+      "8 LM iterations with no extra start assumes init error <10%. P-004/P-006 estimate MLP error in the 2-5% range, which is plausibly fine, but this is untested. Per-sample convergence (\u0394chi\u00b2 at the last iteration) must be logged.",
+      "The '\u226525% better than best purely data-driven' clause depends on a P-004 run; state it as a paired comparison on identical val samples.",
+      "It overlaps heavily with P-002 and P-007 (MLP init + LM + posterior_mean). Its distinctive content is the minimal-iteration budget."
+     ],
+     "changed_assumptions": [
+      "noise model (from the simulator): additive i.i.d. Gaussian on every sensor reading; the likelihood must match it",
+      "Set tikhonov=0 so that the posterior-mean step corresponds to the stated uniform prior; otherwise label the arm a MAP-with-Gaussian-prior arm."
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?",
+      "What is the Tikhonov centre and scale in log space?",
+      "At 91.7s, is MLP training repeated in this arm, or can the P-004 initializer be reused?"
+     ],
+     "counterexamples": [
+      "If the MLP is already at ~0.03, an 8-step LM with Tikhonov pulling toward the init may improve it by <25% even though full LM would reach the CRB. That would be a false negative for 'refinement helps'."
+     ],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      },
+      {
+       "query": "Distribution of MLP-init per-parameter relative error on val vs the LM basin radius (fraction converging from init vs from truth)",
+       "why": "Tests the key assumption that the init lies in the basin."
+      }
+     ],
+     "revision_directions": [
+      "Reframe as the 'cheap hybrid' arm: tikhonov=0, estimator=mode, iters\u2208{4,8}. Leave the estimator question to P-007.",
+      "Reuse a single trained MLP across P-003/P-007/P-004 to save budget."
+     ],
+     "suggested_tests": [
+      {
+       "description": "Curve of rel_l2 vs LM iteration count (0, 2, 4, 8) from the same MLP init",
+       "pilot": false
+      }
+     ],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "CRB rel_l2 floor of about 0.0186 is well below the 0.05 target, so an efficient estimator can succeed.",
+      "Fisher condition number median 48 suggests that Gauss-Newton steps are stable in most of the prior.",
+      "k1 and k4 have about 3\u20134x larger relative CRB std. Their posteriors may hit the bounds, so the mode can be biased and the MMSE is preferable.",
+      "Est 91.7s."
+     ],
+     "conjectures": [
+      "Explicit FD with a fixed step may have stiff or near-unstable regimes at k=2. This could make Jacobians noisy near the upper bound.",
+      "8 LM steps suffice to reach within 2x of the CRB from an MLP init."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 91.7,
+     "llm_score": 0.6,
+     "quality": 0.845
+    },
+    "P-004": {
+     "challenges": [
+      "The 3000 fixed samples are a self-imposed limit. The constraints allow training on simulated data, and context.forward is available, so the amortized arm can be trained on 10-50k fresh simulations. Without that, a failure would not distinguish an 'amortization limit' from a 'data limit'.",
+      "noise_aug at sigma on top of already-noisy training features yields sqrt(2)\u00b7sigma training noise. This mildly biases toward a broader posterior and can inflate k1/k4 error.",
+      "Log targets with MSE give the posterior mean of log k, not of k. The bias is negligible at 2% std, as P-008 notes, so it is fine, but it should be acknowledged.",
+      "Raw 800-dim features with standard scaling inflate near-zero early-time channels at the edge sensors to unit variance, and those channels are pure noise. PCA or a time window may help."
+     ],
+     "changed_assumptions": [
+      "Treat training-set size as a free variable that can be enlarged through forward simulation, not a fixed 3000."
+     ],
+     "questions": [
+      "the physics floor (CRB rel_l2 ~0.01856) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?",
+      "Is the ridge comparison run in the same experiment? It is not in the method spec.",
+      "Does early stopping use val? That is allowed, but it must not touch test."
+     ],
+     "counterexamples": [
+      "A learned map with per-parameter error 3% on k1/k4 and 1.5% on k2/k3 gives rel_l2 \u2248 0.02-0.025. That would pass, yet still be ~25% worse than an efficient MLE, so 'pass' alone does not answer whether amortization suffices."
+     ],
+     "evidence_requests": [
+      {
+       "query": "Learning curve: val rel_l2 at n=750, 1500, 3000 training samples",
+       "why": "Extrapolates whether more simulated data would close any gap. It costs little extra."
+      }
+     ],
+     "revision_directions": [
+      "consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly",
+      "Merge with P-006, keeping the noise_aug=0 ablation and adding a ridge baseline in the same run.",
+      "Est 120s sits at the limit; reduce epochs to ~150 with early stopping."
+     ],
+     "suggested_tests": [
+      {
+       "description": "Ridge on the same features, in the same run (near-zero cost)",
+       "pilot": true
+      },
+      {
+       "description": "Learning curve over training-set size",
+       "pilot": false
+      }
+     ],
+     "facts": [
+      "The Bayes risk is bounded below by roughly the CRB floor of 0.0186, so 0.05 leaves room for about 2.5x approximation inefficiency.",
+      "The mean predictor scores 0.33, so the signal is strong relative to the target.",
+      "The edge segments k1 and k4 are weakly observed. A data-driven model with limited data may regress them toward the prior mean, inflating rel_l2.",
+      "The mean predictor scores 0.33 rel_l2.",
+      "Est 120s."
+     ],
+     "conjectures": [
+      "The MLP reaches <0.05.",
+      "The MLP is at least 2x better than ridge."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 120.0,
+     "llm_score": 0.6,
+     "quality": 0.845
+    },
+    "P-005": {
+     "challenges": [
+      "The hypothesis is phrased as 'test rel_l2'. Selection and falsification must use val only, since test is held out.",
+      "Its distinctness from P-001 is only init (kernel ridge vs multistart). If P-001 converges globally, this arm tests only whether a learned init saves iterations. The prediction <0.03 is then the same as P-001's.",
+      "'Gain over init alone <20%' is a weak criterion: a kernel-ridge init at ~0.05-0.1 will almost surely improve by >20%. The k1/k4 vs 2\u00d7CRB criterion is the informative one; promote it.",
+      "Kernel ridge with gamma_mult=1 on 800 standardized raw features may be dominated by noisy near-zero channels, giving a poor init. That is fine for basin testing, but report the init error."
+     ],
+     "changed_assumptions": [
+      "Compare against P-001 on identical val samples, so that the init effect (KRR vs multistart) is isolated at matched LM settings."
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?",
+      "How is the 'CRB std' for each sample computed for the k1/k4 criterion: per-sample Fisher at the estimate, or the global median?"
+     ],
+     "counterexamples": [
+      "The chi\u00b2/dof \u2248 1 with error > CRB branch could also arise from posterior non-Gaussianity rather than an unrepresentative CRB. Plotting error vs per-sample CRB separates the two."
+     ],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      },
+      {
+       "query": "Per-sample predicted CRB vs realized error scatter on val",
+       "why": "Directly tests efficiency sample-by-sample rather than via medians."
+      }
+     ],
+     "revision_directions": [
+      "Keep this arm as the cheap efficiency audit (32s). It is the best-instrumented physics arm, and its per-sample chi\u00b2 and CRB diagnostics should be adopted by P-001."
+     ],
+     "suggested_tests": [
+      {
+       "description": "Per-sample z-scores (error / per-sample CRB std); expect ~N(0,1) if efficient",
+       "pilot": false
+      }
+     ],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "The CRB rel_l2 floor is 0.0186, below the 0.05 target, so the target is information-theoretically reachable.",
+      "The median Fisher condition number is 48, so the local Gauss-Newton steps are well conditioned.",
+      "k1 and k4 have 3-4x larger CRB std than k2 and k3, so the outer segments may have flat likelihood directions where a poor start stalls.",
+      "The mean predictor gets 0.33, so the signal is strong compared with the prior spread.",
+      "Est 32s.",
+      "Forward model availability makes least squares the exact MLE, if the forward matches the generator (unverified)."
+     ],
+     "conjectures": [
+      "KRR init lies in the LM basin for most samples."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 32.0,
+     "llm_score": 0.65,
+     "quality": 0.895
+    },
+    "P-006": {
+     "challenges": [
+      "It is near-identical to P-004 (same method, features, target and augmentation; only the hidden layer sizes differ). Its value is the noise_aug=0 ablation and the explicit framing as a control against the hybrid.",
+      "The 'relative_to best_hybrid, \u226525% worse' prediction depends on which hybrid is best. If the hybrid underperforms for unrelated reasons (Tikhonov bias, IS degeneracy), the control comparison is confounded. Fix the comparator to the P-005/P-001 mode estimator.",
+      "The noise-overfitting hypothesis is weak: with noise sigma=1e-3 and fixed noisy features, overfitting noise realizations is limited at n=3000. Expect a small difference, so the ablation needs multiple seeds to be informative."
+     ],
+     "changed_assumptions": [
+      "Use the 'oracle-init LM' result as the reference instead of best_hybrid; that is the information-limited reference."
+     ],
+     "questions": [
+      "the physics floor (CRB rel_l2 ~0.01856) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?",
+      "How many seeds per arm? A single-seed difference of <10% is not interpretable."
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "Seed variance of MLP val rel_l2 (2-3 seeds)",
+       "why": "Needed to interpret the 10% and 25% thresholds."
+      }
+     ],
+     "revision_directions": [
+      "consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly",
+      "Fold into P-004 as a single experiment: MLP (noise_aug=2) + MLP (noise_aug=0) + ridge, sharing preprocessing."
+     ],
+     "suggested_tests": [
+      {
+       "description": "noise_aug 0 vs 2 at matched epochs, 2 seeds each",
+       "pilot": false
+      }
+     ],
+     "facts": [
+      "The CRB std for k1 and k4 is 2.2% and 1.8% versus about 0.5-0.6% for k2 and k3, so learned-map errors will concentrate on the outer segments.",
+      "Est 120s."
+     ],
+     "conjectures": [
+      "The low-dimensional (4-D) target and the good conditioning suggest a smooth inverse map that is learnable from 3000 samples.",
+      "Reaching 0.0186 requires a learning error well below 1% per parameter, which is hard at n=3000 without physics structure.",
+      "The MLP is \u226525% worse than the hybrid at n=3000."
+     ],
+     "blocking": [],
+     "duplicate_of": "P-004",
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 120.0,
+     "llm_score": 0.55,
+     "quality": 0.477
+    },
+    "P-007": {
+     "challenges": [
+      "The paired mode-vs-posterior_mean test from the same init is the cleanest design in the portfolio, but the \u22655% overall gain is optimistic. The truncation argument (see P-002) suggests ~1-5%. A null result is the likely outcome and is still informative.",
+      "At 128 IS samples, the Monte Carlo error of the posterior mean is ~\u03c3/sqrt(ESS). This is negligible only if ESS is large, so report ESS.",
+      "Overall rel_l2 \u22640.03 is the same claim as P-001/P-005. What is unique here is the estimator gap, so make that the primary falsifier.",
+      "The Laplace approximation in log space centred at a mode pinned on a bound is a poor proposal: half the Gaussian mass falls outside the box. Use a proposal centred at the unconstrained optimum or a truncated proposal."
+     ],
+     "changed_assumptions": [
+      "Primary prediction: posterior_mean improves mode by \u22652% overall and \u226510% on the bound-adjacent stratum. These are effect sizes that truncation theory can actually produce."
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?",
+      "Is the mode run computed in the same job? A shared LM run with two estimators applied post-hoc halves the cost."
+     ],
+     "counterexamples": [
+      "If the posterior is near-Gaussian and untruncated for ~90% of samples, mode and mean agree there. The whole gain comes from ~10% of samples and may be under the seed/MC noise."
+     ],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      },
+      {
+       "query": "IS effective sample size distribution, and estimate shift (mean \u2212 mode) vs distance to bound",
+       "why": "Shows directly whether the mechanism (truncation) is operating."
+      }
+     ],
+     "revision_directions": [
+      "Absorb P-002. Compute both estimators from one LM pass, reuse the MLP from P-004, and use posterior_samples=64 to get under 120s (est 145.6s now)."
+     ],
+     "suggested_tests": [
+      {
+       "description": "Same LM output, mode vs posterior_mean, stratified by distance of true k to bounds",
+       "pilot": false
+      }
+     ],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "The CRB rel_l2 floor is about 0.0186, well below the 0.05 success threshold, so an efficient estimator should succeed.",
+      "k1 and k4 are least determined (relative std about 0.02), so this is where box truncation and mode-versus-mean differences matter most.",
+      "Fisher condition number median 48 is moderate. LM should converge, and the local posterior is plausibly near-Gaussian, which would shrink the MMSE gain.",
+      "Est 145.6s, over the 120s figure."
+     ],
+     "conjectures": [
+      "Under squared loss the posterior mean minimises Bayes risk. The mode is optimal only under 0-1 loss.",
+      "MMSE beats the mode by \u22655%."
+     ],
+     "blocking": [
+      "Estimated runtime 145.6s exceeds the 120s per-experiment limit; reduce posterior_samples to 64 and/or reuse a pre-trained init."
+     ],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 145.6,
+     "llm_score": 0.6,
+     "quality": 0.705
+    },
+    "P-008": {
+     "challenges": [
+      "The log-feature transform is risky. With a Gaussian pulse at x=0.5 and edge sensors at x\u22480.13 and 0.90, early-time readings at sensors 5 and 35 are likely \u2264 noise level. log of a negative or near-zero noisy reading is NaN or dominated by noise. Unless the harness clips or shifts, this arm may fail for numerical reasons unrelated to the hypothesis.",
+      "The WKB/eigenvalue argument applies to late-time single-mode decay. For discontinuous k and a short window (200 explicit steps), the signal may be in the transient multi-mode regime, where log-linearity does not hold.",
+      "The requirement 'log beats raw by \u226515%' is arbitrary. The real question is whether either amortized arm reaches the hybrid.",
+      "Est 160s, the highest in the portfolio, over the 120s limit."
+     ],
+     "changed_assumptions": [
+      "Use log(u + c) with c \u2248 3\u03c3, or restrict to readings above 5\u03c3, rather than the bare harness 'log' features."
+     ],
+     "questions": [
+      "the physics floor (CRB rel_l2 ~0.01856) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?",
+      "What does the harness log transform do with non-positive inputs?",
+      "What fraction of sensor readings is below 3\u03c3 (=0.003)?"
+     ],
+     "counterexamples": [
+      "If ~30% of the edge-sensor channels are noise-only, log features amplify noise exactly in the k1/k4-informative channels. The log arm then loses to raw, falsifying the hypothesis for preprocessing reasons."
+     ],
+     "evidence_requests": [
+      {
+       "query": "Histogram of sensor readings per sensor/time vs sigma on train data",
+       "why": "Zero-compute check of whether log features are even well-defined."
+      }
+     ],
+     "revision_directions": [
+      "consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly",
+      "Gate this arm on the reading-histogram check. If many readings are near zero, switch to log(u+c) or drop the arm.",
+      "Cut epochs to ~150 and noise_aug to 1 to fit under 120s; run raw-vs-log as a paired ablation sharing everything else with P-004."
+     ],
+     "suggested_tests": [
+      {
+       "description": "Inspect the min/percentiles of train features and count non-positive values",
+       "pilot": true
+      }
+     ],
+     "facts": [
+      "The mean-predictor baseline is 0.33 and the CRB floor is 0.019, so there is a wide band in which a learned regressor can land under 0.05.",
+      "The end segments k1 and k4 are weakly identified. A finite-sample regressor may underfit their subtle signal and shrink toward the prior mean, inflating their error.",
+      "Est 160s, over the 120s figure."
+     ],
+     "conjectures": [
+      "Parabolic decay gives log(u) an approximately affine dependence on the diffusivity-time product, which simplifies the regression.",
+      "Log features linearize the inverse map enough to beat raw by 15%."
+     ],
+     "blocking": [
+      "Estimated runtime 160s exceeds the 120s per-experiment limit.",
+      "The log transform may be undefined on non-positive noisy readings; verify feature validity first."
+     ],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 160.0,
+     "llm_score": 0.45,
+     "quality": 0.625
+    }
+   },
+   "portfolio": {
+    "families": {
+     "physics": 1,
+     "hybrid": 4,
+     "data-driven": 3
+    },
+    "n_active": 8,
+    "diversity_warnings": [],
+    "disagreements": [
+     {
+      "between": [
+       "P-002",
+       "P-007"
+      ],
+      "issue": "Size of the MMSE-over-mode gain (10% vs 5%). The critic's truncation estimate suggests \u22725% overall; both may be optimistic."
+     },
+     {
+      "between": [
+       "P-004",
+       "P-006"
+      ],
+      "issue": "Whether amortization alone approaches the hybrid: P-004 expects near-sufficiency, P-006 predicts it is \u226525% worse. This is unresolved and the merged experiment decides it."
+     },
+     {
+      "between": [
+       "P-002",
+       "P-003"
+      ],
+      "issue": "noise_scale convention (0.001 vs 1.0). One set of arms is mis-specified until the harness semantics are confirmed."
+     },
+     {
+      "between": [
+       "P-003",
+       "P-007"
+      ],
+      "issue": "Tikhonov regularization vs a pure uniform prior inside the posterior-mean step; they are not mutually consistent."
+     }
+    ],
+    "summary": "The ideas are sound and falsifiable, but the portfolio is heavily duplicated and about 2x over budget. P-002/P-007 and P-004/P-006 should be merged. Three arms exceed the 120s per-experiment estimate. The shared, unverified assumption that context.forward matches the generator, plus the conflicting noise_scale conventions, must be resolved by near-free pilots before the main runs. Run the physics MLE (P-001) first as the anchor, with oracle-init and per-sample chi\u00b2/CRB diagnostics. Expect the MMSE-vs-mode effect to be small (\u22725%), and treat a null result as informative.",
+    "authors_active": {
+     "researcher-mathematical": 2,
+     "researcher-ml": 2,
+     "researcher-experimental": 2,
+     "researcher-exploratory": 2
+    },
+    "diversity_assessment": "The portfolio collapses into three clusters. (1) Physics MLE: P-001, and P-005 with a KRR init. (2) MLP-init hybrid + MMSE: P-002, P-003, P-007, essentially one experiment. (3) Amortized MLP: P-004, P-006, plus the P-008 log variant. All of them assume the forward model matches the generator, which nobody has checked. No arm explores larger simulated training sets, a different likelihood surrogate, or a direct Bayesian sampler. Total estimated cost is ~846s against a 400 worker-second budget, so merging is mandatory. Recommended order: forward-consistency check and feature histogram (pilot, near-free); P-001 with an oracle-init variant (~35s); P-005 (32s); merged P-004/P-006 with ridge and the noise_aug ablation (~120s); merged P-007/P-002 with paired estimators, reused MLP and 64 IS sampl",
+    "missing_controls": [
+     "Forward-model consistency: chi\u00b2/dof of val data at the true k (critical for every physics and hybrid arm).",
+     "Oracle-init LM from the true k, to separate the information limit from optimization failure.",
+     "A ridge baseline on the same features (cited by P-004 but not specified as a run).",
+     "An amortized arm trained on additional simulated data (e.g. 20k draws via context.forward), to separate a data limit from a method limit.",
+     "Seed replication for the MLP arms, so that 10-25% thresholds can be interpreted."
+    ],
+    "converged": false,
+    "mean_quality": 0.709,
+    "all_meet_threshold": false,
+    "llm_used": true
+   },
+   "artifact_id": "fdbk-00044"
+  },
+  {
+   "round": 2,
+   "per_proposal": {
+    "P-009": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "Pilot val rel_l2 = 0.0190 on 60 samples, against a CRB rel_l2 floor estimate of 0.0186",
+      "Residual std at the true k is 0.000995 vs nominal 0.001 over 200 samples; model_mismatch=false",
+      "Gauss-Newton uncertainty is calibrated: 1-sigma coverage 0.70, 2-sigma coverage 0.958, z_rms 0.98, final chi2/dof 0.944"
+     ],
+     "conjectures": [
+      "The CRB floor is a median over only 32 draws, and the 60-sample pilot is small, so the full-scale value may move by roughly 10-20%"
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 31.5,
+     "quality": 0.95
+    },
+    "P-010": {
+     "challenges": [],
+     "changed_assumptions": [
+      "noise model (from the simulator): additive i.i.d. Gaussian on every sensor reading; the likelihood must match it"
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "In the P-001 pilot, Gauss-Newton uncertainty is calibrated (z_rms 0.98, 1-sigma coverage 0.70, 2-sigma coverage 0.958): posteriors are near-Gaussian, which bounds the possible MMSE gain to bound-adjac",
+      "k1 and k4 have CRB relative std 3-4x larger than k2/k3, so truncation effects, where present, are largest there"
+     ],
+     "conjectures": [
+      "Under squared loss the posterior mean minimises Bayes risk, and it may undercut the frequentist CRB near bounds (the Van Trees regime)"
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 40.1,
+     "quality": 0.9
+    },
+    "P-011": {
+     "challenges": [],
+     "changed_assumptions": [
+      "noise model (from the simulator): additive i.i.d. Gaussian on every sensor reading; the likelihood must match it"
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "Median Fisher condition 48 implies well-posed Gauss-Newton steps over most of the prior."
+     ],
+     "conjectures": [
+      "The P-004 pilot reached val rel_l2 0.047 on 60 val samples with only 300 training samples, so the full-data init should be at least that good.",
+      "Explicit FD near k=2 could give poorly scaled Jacobians and slow convergence there."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 125.0,
+     "quality": 0.9
+    },
+    "P-012": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the physics floor (CRB rel_l2 ~0.01856) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [],
+     "revision_directions": [
+      "consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly"
+     ],
+     "suggested_tests": [],
+     "facts": [
+      "research memory holds 1 prior observation(s) for torch_mlp/raw+logy+aug2",
+      "The CRB floor of 0.0186 leaves about 2.5x room for inefficiency under 0.05."
+     ],
+     "conjectures": [
+      "The pilot reached rel_l2 0.0469 on 60 val samples with 300 training samples.",
+      "The pilot used only 60 val samples, so its 0.047 has a few-percent-relative standard error and could hide a value just above 0.05 at full fidelity."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 120.0,
+     "quality": 0.9
+    },
+    "P-014": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "The CRB rel_l2 floor is 0.0186, below the 0.05 target, so the target is information-theoretically reachable.",
+      "The median Fisher condition number is 48, so the local Gauss-Newton steps are well conditioned.",
+      "k1 and k4 have 3-4x larger CRB std than k2 and k3, so the outer segments may have flat likelihood directions where a poor start stalls.",
+      "The mean predictor gets 0.33, so the signal is strong compared with the prior spread."
+     ],
+     "conjectures": [],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 32.0,
+     "quality": 1.0
+    },
+    "P-015": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the physics floor (CRB rel_l2 ~0.01856) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "The mean-predictor baseline is 0.33 and the CRB floor is 0.0186, so a learned regressor has a wide band below 0.05 in which to land.",
+      "k1 and k4 are least determined (CRB relative std 0.022 and 0.018), so finite-sample amortized estimators will shrink them toward the prior mean."
+     ],
+     "conjectures": [
+      "asinh(x/c) is approximately x/c for |x| << c and approximately log(2x/c) for x >> c. It is defined for negative noisy readings, which removes the NaN and noise-amplification failure of log features.",
+      "If the window is in a transient multi-mode regime, the log-linearity heuristic may not hold, and asinh may give no advantage over raw features."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 30.0,
+     "quality": 0.9
+    },
+    "P-013": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "The CRB floor is 0.0186, so an estimator near E[k|y] should sit around 0.02-0.025."
+     ],
+     "conjectures": [
+      "The 300-sample pilot gave 0.047. Error falling with sample size suggests a data-limited regime.",
+      "If context.forward differs from the data generator, the extra simulations would add model discrepancy and could hurt."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 30.0,
+     "quality": 0.9
+    },
+    "P-016": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 48.2); CRB rel_l2 floor ~0.01856",
+      "The k1/k4 signals are weak (CRB relative std about 0.02), so they need the most samples to learn without shrinkage."
+     ],
+     "conjectures": [
+      "With a 4-parameter prior and a CRB floor of 0.0186, the remaining amortized error is plausibly approximation-limited, and approximation error falls with training-set size.",
+      "If context.forward mismatches the generator, simulated pairs are off-distribution and degrade accuracy. This failure mode is informative about every physics and hybrid arm."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 30.0,
+     "quality": 0.9
+    }
+   },
+   "portfolio": {
+    "families": {
+     "physics": 2,
+     "hybrid": 2,
+     "data-driven": 2,
+     "physics-custom": 2
+    },
+    "n_active": 8,
+    "diversity_warnings": [],
+    "disagreements": [],
+    "summary": "",
+    "authors_active": {
+     "researcher-mathematical": 2,
+     "researcher-ml": 3,
+     "researcher-experimental": 1,
+     "researcher-exploratory": 2
+    },
+    "mean_quality": 0.919,
+    "all_meet_threshold": true,
+    "converged": true,
+    "llm_used": false
+   },
+   "artifact_id": "fdbk-00076"
+  }
+ ],
+ "abandoned": [
+  {
+   "proposal_id": "P-006",
+   "root_id": "P-006",
+   "title": "Control: an amortized neural inverse map trained with noise augmentation falls short of forward-model refinement",
+   "author": "researcher-experimental",
+   "round": 2,
+   "reason": "duplicate of P-004",
+   "method_label": "torch_mlp/raw+logy+aug2"
+  },
+  {
+   "proposal_id": "P-007",
+   "root_id": "P-007",
+   "title": "Minimum-MSE (posterior-mean) refinement beats MLE when the error metric is squared: hybrid learned-init + Laplace/importance-sampled MMSE",
+   "author": "researcher-exploratory",
+   "round": 2,
+   "reason": "This is not a negative scientific result. The proposal duplicates P-002's estimator-gap experiment, exceeds the per-experiment time estimate (145.6 s > 120 s), and the total compute budget (400 worker-seconds) cannot fund two copies. It is merged into P-002 with the revisions listed in the response. Recorded expectation: posterior-mean gain over the mode of at most about 5% overall, concentrated in samples whose true k1 or k4 is near 0.5 or 2.0.",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug2->LM20]"
+  }
+ ],
+ "portfolio": [
+  {
+   "source": "proposal",
+   "proposal_id": "P-014",
+   "root_id": "P-005",
+   "title": "Learned initializer plus forward-model LM refinement reaches the noise-limited (CRB) regime",
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "family": "hybrid",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "kernel_ridge",
+     "params": {
+      "alpha": 0.001,
+      "gamma_mult": 1.0
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 0,
+     "noise_scale": 0.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 15,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "selection_reason": "best-rated proposal in family 'hybrid' (quality 1.00)",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-01"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-009",
+   "root_id": "P-001",
+   "title": "Log-space MLE via multistart Levenberg-Marquardt through the forward model attains the noise-limited (Cram\u00e9r-Rao) accuracy",
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "family": "physics",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 4,
+     "iters": 40,
+     "tikhonov": 0,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   },
+   "quality": 0.95,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "selection_reason": "best-rated proposal in family 'physics' (quality 0.95)",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-02"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-012",
+   "root_id": "P-004",
+   "title": "Purely amortized inverse map: MLP on log-k targets with noise-matched augmentation (given 3000 samples; shared initializer)",
+   "author": "researcher-ml",
+   "persona": "ml",
+   "family": "data-driven",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      512
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 1e-05,
+     "epochs": 150,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0,
+    "target_transform": "log",
+    "noise_aug": 2,
+    "noise_scale": 1.0
+   },
+   "quality": 0.9,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "selection_reason": "best-rated proposal in family 'data-driven' (quality 0.90)",
+   "unresolved": [
+    "question: the physics floor (CRB rel_l2 ~0.01856) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?",
+    "revision_direction: consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-03"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-013",
+   "root_id": "P-013",
+   "title": "Simulation-enlarged amortized MMSE: MLP trained on ~12k fresh forward simulations with exact per-epoch noise resampling",
+   "author": "researcher-ml",
+   "persona": "ml",
+   "family": "physics-custom",
+   "method": {
+    "kind": "custom_solver",
+    "uses_forward": true,
+    "params": {
+     "n_sim": 12000,
+     "epochs": 40,
+     "seed": 0
+    },
+    "code": "import numpy as np\nimport torch\nimport math\n\nclass SimMLP:\n    def __init__(self, params, context):\n        self.p = params\n        self.c = context\n\n    def fit(self, X, y):\n        c = self.c\n        rng = np.random.default_rng(int(self.p.get('seed', 0)))\n        torch.manual_seed(int(self.p.get('seed', 0)))\n        X = np.asarray(X, float).reshape(len(X), -1)\n        y = np.asarray(y, float)\n        lo = np.asarray(c.lower, float)\n        hi = np.asarray(c.upper, float)\n        self.lo, self.hi = lo, hi\n        n = int(self.p.get('n_sim', 12000))\n        th = lo + (hi - lo) * rng.random((n, len(lo)))\n        F, T = [], []\n        for i in range(0, n, 1000):\n            try:\n                f = np.asarray(c.forward(th[i:i + 1000]), float).reshape(len(th[i:i + 1000]), -1)\n            except Exception:\n                break\n            if f.shape[1] != X.shape[1] or not np.all(np.isfinite(f)):\n                break\n            F.append(f)\n            T.append(th[i:i + 1000])\n        Fc = np.concatenate(F) if F else np.zeros((0, X.shape[1]))\n        Tc = np.concatenate(T) if T else np.zeros((0, y.shape[1]))\n        sig = float(c.noise_std)\n        Xall = np.vstack([X, Fc + sig * rng.standard_normal(Fc.shape)])\n        self.mu = Xall.mean(0)\n        self.sd = Xall.std(0) + 1e-6\n        Yl = np.log(np.vstack([y, Tc]))\n        self.ym = Yl.mean(0)\n        self.ys = Yl.std(0) + 1e-8\n        d = X.shape[1]\n        self.net = torch.nn.Sequential(torch.nn.Linear(d, 512), torch.nn.GELU(), torch.nn.Linear(512, 512), torch.nn.GELU(), torch.nn.Linear(512, y.shape[1]))\n        ep = int(self.p.get('epochs', 40))\n        opt = torch.optim.AdamW(self.net.parameters(), lr=1e-3, weight_decay=1e-5)\n        sch = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=ep)\n        Yt = torch.tensor((Yl - self.ym) / self.ys, dtype=torch.float32)\n        for e in range(ep):\n            Xe = np.vstack([X, Fc + sig * rng.standard_normal(Fc.shape)])\n            Xt = torch.tensor((Xe - self.mu) / self.sd, dtype=torch.float32)\n            perm = torch.randperm(len(Xt))\n            self.net.train()\n            for b in range(0, len(Xt), 256):\n                idx = perm[b:b + 256]\n                opt.zero_grad()\n                loss = torch.mean((self.net(Xt[idx]) - Yt[idx]) ** 2)\n                loss.backward()\n                opt.step()\n            sch.step()\n        return self\n\n    def predict(self, X):\n        X = np.asarray(X, float).reshape(len(X), -1)\n        self.net.eval()\n        with torch.no_grad():\n            z = self.net(torch.tensor((X - self.mu) / self.sd, dtype=torch.float32)).numpy()\n        k = np.exp(z * self.ys + self.ym)\n        return np.clip(k, self.lo, self.hi)\n\ndef build_method(params, context):\n    return SimMLP(params, context)\n"
+   },
+   "quality": 0.9,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "selection_reason": "best-rated proposal in family 'physics-custom' (quality 0.90)",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-04"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-010",
+   "root_id": "P-002",
+   "title": "Paired ablation: box-prior posterior mean vs mode from an identical physics solver; any gain is confined to bound-adjacent k1/k4",
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "family": "physics",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 4,
+     "iters": 40,
+     "tikhonov": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   },
+   "quality": 0.9,
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_physics",
+    "improvement": 0.02,
+    "expect": "better"
+   },
+   "selection_reason": "quality 0.90 with diversity penalty",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-05"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-011",
+   "root_id": "P-003",
+   "title": "Cheap hybrid: shared MLP initializer + 4 unregularized Gauss-Newton/LM steps in log-k (MLE mode)",
+   "author": "researcher-ml",
+   "persona": "ml",
+   "family": "hybrid",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       512
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 1e-05,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 4,
+     "tikhonov": 0.0,
+     "extra_starts": 0,
+     "estimator": "mode",
+     "posterior_samples": 32
+    }
+   },
+   "quality": 0.9,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "selection_reason": "quality 0.90 with diversity penalty",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0223, k4=0.0179): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-06"
+  },
+  {
+   "source": "baseline",
+   "proposal_id": null,
+   "root_id": null,
+   "title": "conventional ML baseline (torch_mlp, library defaults)",
+   "author": "scheduler",
+   "persona": "control",
+   "family": "data-driven",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 0.0001,
+     "epochs": 150,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "quality": null,
+   "prediction": null,
+   "selection_reason": "strong conventional learned-inverse default",
+   "unresolved": [],
+   "status": "baseline",
+   "entry_id": "E-07"
+  },
+  {
+   "source": "baseline",
+   "proposal_id": null,
+   "root_id": null,
+   "title": "random-search control (2 uniform random library configs)",
+   "author": "scheduler",
+   "persona": "control",
+   "family": "data-driven",
+   "method": {
+    "kind": "random_search",
+    "n": 2
+   },
+   "quality": null,
+   "prediction": null,
+   "selection_reason": "basic random search control",
+   "unresolved": [],
+   "status": "baseline",
+   "entry_id": "E-08"
+  },
+  {
+   "source": "baseline",
+   "proposal_id": null,
+   "root_id": null,
+   "title": "physics baseline: Levenberg-Marquardt MLE (defaults)",
+   "author": "scheduler",
+   "persona": "control",
+   "family": "physics",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 1,
+     "iters": 30,
+     "tikhonov": 0.0,
+     "estimator": "mode",
+     "posterior_samples": 128
+    }
+   },
+   "quality": null,
+   "prediction": null,
+   "selection_reason": "conventional optimisation through the forward model",
+   "unresolved": [],
+   "status": "baseline",
+   "entry_id": "E-09"
+  }
+ ],
+ "excluded": [
+  {
+   "proposal_id": "P-015",
+   "title": "Variance-stabilised asinh(u/3\u03c3) sensor features let a purely amortized MLP reach rel_l2 < 0.05 without forward calls at inference",
+   "reason": "portfolio size limit (6); quality 0.90"
+  },
+  {
+   "proposal_id": "P-016",
+   "title": "Is the amortized gap a data limit? Train the inverse MLP on 3000 provided + 12000 freshly simulated prior draws via context.forward",
+   "reason": "portfolio size limit (6); quality 0.90"
+  }
+ ],
+ "prediction_outcomes": {
+  "E-01": {
+   "own": 0.019335303664183377,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.019335 vs predicted < 0.03",
+   "entry_id": "E-01",
+   "proposal_id": "P-014",
+   "title": "Learned initializer plus forward-model LM refinement reaches the noise-limited (CRB) regime",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "family": "hybrid",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-02": {
+   "own": 0.01934003184220304,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.01934 vs predicted < 0.03",
+   "entry_id": "E-02",
+   "proposal_id": "P-009",
+   "title": "Log-space MLE via multistart Levenberg-Marquardt through the forward model attains the noise-limited (Cram\u00e9r-Rao) accuracy",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "family": "physics",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-03": {
+   "outcome": "inconclusive",
+   "detail": "method did not produce a full-fidelity validation result",
+   "entry_id": "E-03",
+   "proposal_id": "P-012",
+   "title": "Purely amortized inverse map: MLP on log-k targets with noise-matched augmentation (given 3000 samples; shared initializer)",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "family": "data-driven",
+   "source": "proposal",
+   "new_status": "inconclusive"
+  },
+  "E-04": {
+   "own": 0.022872095708850095,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.022872 vs predicted < 0.03",
+   "entry_id": "E-04",
+   "proposal_id": "P-013",
+   "title": "Simulation-enlarged amortized MMSE: MLP trained on ~12k fresh forward simulations with exact per-epoch noise resampling",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "family": "physics-custom",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-05": {
+   "own": 0.01899848693205456,
+   "outcome": "contradicted",
+   "gain": 0.017420043380324098,
+   "reference": 0.01933530885101114,
+   "detail": "val rel_l2 0.018998 vs best_physics 0.019335: gain +1.74%; expected gain >= +2.0% vs best_physics",
+   "entry_id": "E-05",
+   "proposal_id": "P-010",
+   "title": "Paired ablation: box-prior posterior mean vs mode from an identical physics solver; any gain is confined to bound-adjacent k1/k4",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_physics",
+    "improvement": 0.02,
+    "expect": "better"
+   },
+   "family": "physics",
+   "source": "proposal",
+   "new_status": "contradicted"
+  },
+  "E-06": {
+   "outcome": "inconclusive",
+   "detail": "method did not produce a full-fidelity validation result",
+   "entry_id": "E-06",
+   "proposal_id": "P-011",
+   "title": "Cheap hybrid: shared MLP initializer + 4 unregularized Gauss-Newton/LM steps in log-k (MLE mode)",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "family": "hybrid",
+   "source": "proposal",
+   "new_status": "inconclusive"
+  },
+  "E-07": {
+   "outcome": "untestable",
+   "detail": "no structured prediction",
+   "entry_id": "E-07",
+   "proposal_id": null,
+   "title": "conventional ML baseline (torch_mlp, library defaults)",
+   "prediction": null,
+   "family": "data-driven",
+   "source": "baseline",
+   "new_status": "baseline"
+  },
+  "E-08": {
+   "outcome": "untestable",
+   "detail": "no structured prediction",
+   "entry_id": "E-08",
+   "proposal_id": null,
+   "title": "random-search control (2 uniform random library configs)",
+   "prediction": null,
+   "family": "data-driven",
+   "source": "baseline",
+   "new_status": "baseline"
+  },
+  "E-09": {
+   "outcome": "untestable",
+   "detail": "no structured prediction",
+   "entry_id": "E-09",
+   "proposal_id": null,
+   "title": "physics baseline: Levenberg-Marquardt MLE (defaults)",
+   "prediction": null,
+   "family": "physics",
+   "source": "baseline",
+   "new_status": "baseline"
+  }
+ },
+ "pilots": {
+  "P-001": {
+   "status": "ok",
+   "label": "physics-MLE[log,ms=4,it=40]",
+   "value": 0.019023747044067712,
+   "metric": "rel_l2",
+   "n_val": 60,
+   "train_fraction": 3000,
+   "seconds": 3.559,
+   "error": null,
+   "forward_evals": 20693,
+   "diagnostics": {
+    "fit_report": {
+     "residual_std_at_truth": 0.0009947749143547069,
+     "nominal_noise_std": 0.001,
+     "model_mismatch": false,
+     "checked_samples": 200
+    },
+    "last_chi2_per_dof": 0.9444168491990149,
+    "last_solve_seconds": 1.6719496250152588,
+    "last_iters": 40
+   },
+   "uncertainty": {
+    "coverage_1sigma": 0.7,
+    "coverage_2sigma": 0.9583333333333334,
+    "mean_std": 0.01914059234855495,
+    "z_rms": 0.9829860230877742
+   },
+   "result_artifact": "resu-00049",
+   "worse_than_baseline": false,
+   "note": "pilot on 60 validation samples (not comparable to full-fidelity numbers)"
+  },
+  "P-004": {
+   "status": "ok",
+   "label": "torch_mlp/raw+logy+aug2",
+   "value": 0.04686251456521864,
+   "metric": "rel_l2",
+   "n_val": 60,
+   "train_fraction": 300,
+   "seconds": 13.686,
+   "error": null,
+   "forward_evals": 0,
+   "diagnostics": {},
+   "uncertainty": null,
+   "result_artifact": "resu-00051",
+   "worse_than_baseline": false,
+   "note": "pilot on 60 validation samples (not comparable to full-fidelity numbers)"
+  }
+ },
+ "literature": [
+  {
+   "query": "Lipschitz stability for inverse coefficient problem of one-dimensional parabolic equation with piecewise constant conductivity from interior point observations",
+   "agent": "researcher-exploratory",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "uniqueness of piecewise constant diffusion coefficient from boundary or point measurements of heat equation, local identifiability and Fisher information",
+   "agent": "researcher-exploratory",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "Lipschitz stability for identification of piecewise constant conductivity coefficient in parabolic equation from finitely many interior or boundary measurements",
+   "agent": "researcher-ml",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "convergence of Gauss-Newton or Levenberg-Marquardt for nonlinear least squares parameter estimation with finite-dimensional parameters, local convergence under injectivity of Jacobian and small noise",
+   "agent": "researcher-ml",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "Lipschitz stability for recovering piecewise constant conductivity in a one-dimensional parabolic equation from interior point measurements over a finite time interval",
+   "agent": "researcher-experimental",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "Bernstein-von Mises or asymptotic efficiency of maximum likelihood estimator for finite-dimensional parameters in nonlinear inverse problems with Gaussian noise",
+   "agent": "researcher-experimental",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "uniqueness and Lipschitz stability for recovering piecewise constant diffusion coefficient in one-dimensional parabolic equation from interior point observations over a finite time interval",
+   "agent": "researcher-mathematical",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "convergence of Gauss-Newton or Levenberg-Marquardt for nonlinear least squares parameter identification with finite-dimensional parameter and well-posed local Fisher information, local convergence radius",
+   "agent": "researcher-mathematical",
+   "round": 1,
+   "purpose": "background",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+   "agent": "researcher-mathematical",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "chi\u00b2/dof of val observations evaluated at the TRUE k through context.forward",
+   "agent": "researcher-mathematical",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+   "agent": "researcher-ml",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "Distribution of MLP-init per-parameter relative error on val vs the LM basin radius (fraction converging from init vs from truth)",
+   "agent": "researcher-ml",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+   "agent": "researcher-experimental",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+   "agent": "researcher-exploratory",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "Per-sample predicted CRB vs realized error scatter on val",
+   "agent": "researcher-experimental",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  },
+  {
+   "query": "IS effective sample size distribution, and estimate shift (mean \u2212 mode) vs distance to bound",
+   "agent": "researcher-exploratory",
+   "round": 2,
+   "purpose": "evidence request",
+   "ok": false,
+   "error": "literature search disabled",
+   "error_kind": "disabled",
+   "endpoint": null,
+   "cached": false,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": []
+  }
+ ]
+}

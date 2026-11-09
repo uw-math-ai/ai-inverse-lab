@@ -1,0 +1,38 @@
+{
+ "exp_id": "exp-0006",
+ "idea_id": "idea-006",
+ "mode": "method_eval",
+ "fraction": 0.1,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.3719525536524112,
+  "r2": -0.2945829355694725,
+  "rmse": 0.4832193208764904
+ },
+ "n_train_used": 300,
+ "n_val_used": 150,
+ "fit_seconds": 8.09080195426941,
+ "predict_seconds": 0.0,
+ "latency_ms_per_sample": 0.0,
+ "warnings": [
+  "ConvergenceWarning: Stochastic Optimizer: Maximum iterations (400) reached and the optimization hasn't converged yet."
+ ],
+ "kind": "custom_ml",
+ "family": "data-driven",
+ "label": "custom-ml",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.37476233566198147,
+  0.4249297383153889,
+  0.3449018164030437,
+  0.3438645827179359
+ ],
+ "train": {
+  "rel_l2": 0.3579590643477173
+ },
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s0\\workspace\\experiments\\exp-0006\\val_pred.npy",
+ "status": "ok",
+ "elapsed": 9.83854341506958
+}

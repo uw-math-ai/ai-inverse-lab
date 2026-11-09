@@ -1,0 +1,64 @@
+2026-11-09 01:05:14,840 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-09 01:05:14,850 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-09 01:05:14,850 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-09 01:05:14,850 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-09 01:05:14,856 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
+2026-11-09 01:05:14,960 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-09 01:05:14,960 INFO identifiability: Fisher cond median 62.3, CRB rel_l2 floor ~0.01851, least determined ['k1', 'k4']
+2026-11-09 01:05:14,960 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-09 01:05:16,919 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (1.9s)
+2026-11-09 01:05:16,919 INFO baseline val rel_l2 = 0.3307
+2026-11-09 01:05:16,919 INFO === stage: research | compute used 2/400s | wall 2s
+2026-11-09 01:05:18,494 WARNING [researcher-mathematical] LLM call for literature queries (mathematical) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:18,509 WARNING [researcher-ml] LLM call for literature queries (ml) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:18,594 WARNING [researcher-exploratory] LLM call for literature queries (exploratory) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:18,742 WARNING [researcher-experimental] LLM call for literature queries (experimental) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:20,175 WARNING [research-critic] LLM call for research critique round 1 failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:20,182 INFO research round 1: running 3 pilot experiment(s)
+2026-11-09 01:05:22,159 INFO   exp-0003 pilot-P-002 physics-MAP[log,ms=1,it=30]  f=1.00 rel_l2=0.01906 r2=0.9965 rmse=0.02449 (2.0s)
+2026-11-09 01:05:22,165 INFO   exp-0002 pilot-P-001 physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.01902 r2=0.9966 rmse=0.02443 (2.0s)
+2026-11-09 01:05:22,725 INFO   exp-0004 pilot-P-008 physics-MMSE[log,ms=1,it=30] f=1.00 rel_l2=0.0184 r2=0.9968 rmse=0.02363 (2.5s)
+2026-11-09 01:05:24,384 WARNING [researcher-mathematical] LLM call for revise (mathematical) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:24,434 WARNING [researcher-experimental] LLM call for revise (experimental) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:24,515 WARNING [researcher-exploratory] LLM call for revise (exploratory) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:24,571 WARNING [researcher-ml] LLM call for revise (ml) failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:26,195 WARNING [research-critic] LLM call for research critique round 2 failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)
+2026-11-09 01:05:26,202 INFO research loop: 2 rounds, 8 active, 0 abandoned — quality criteria met after 2 rounds (every active proposal >= 0.75 quality, no blocking issues, critic converged)
+2026-11-09 01:05:26,202 INFO === stage: portfolio | compute used 8/400s | wall 11s
+2026-11-09 01:05:26,207 INFO portfolio: E-01 physics-MLE[log,ms=1,it=30], E-02 hybrid[ridge/log+logy->LM10], E-03 torch_mlp/log+logy, E-04 physics-MAP[log,ms=1,it=30], E-05 kernel_ridge/sqrt+pca32, E-06 physics-MMSE[log,ms=1,it=30], E-07 torch_mlp/raw, E-08 random-search x2
+2026-11-09 01:05:26,207 INFO === stage: gate | compute used 8/400s | wall 11s
+2026-11-09 01:05:26,221 INFO gate: 9/9 executable methods approved
+2026-11-09 01:05:26,221 INFO === stage: screen | compute used 8/400s | wall 11s
+2026-11-09 01:05:28,291 INFO   exp-0009 idea-006  kernel_ridge/sqrt+pca32      f=0.10 rel_l2=0.05237 r2=0.9736 rmse=0.06803 (2.0s)
+2026-11-09 01:05:28,676 INFO   exp-0005 idea-002  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.02139 r2=0.9956 rmse=0.02779 (2.4s)
+2026-11-09 01:05:28,698 INFO   exp-0008 idea-005  physics-MAP[log,ms=1,it=30]  f=1.00 rel_l2=0.02138 r2=0.9956 rmse=0.02777 (2.4s)
+2026-11-09 01:05:28,702 INFO   exp-0006 idea-003  hybrid[ridge/log+logy->LM10] f=0.10 rel_l2=0.02139 r2=0.9956 rmse=0.02779 (2.5s)
+2026-11-09 01:05:29,669 INFO   exp-0010 idea-007  physics-MMSE[log,ms=1,it=30] f=1.00 rel_l2=0.02027 r2=0.996 rmse=0.02633 (3.4s)
+2026-11-09 01:05:31,145 INFO   exp-0013 idea-010  extra_trees/sqrt             f=0.10 rel_l2=0.1505 r2=0.786 rmse=0.1955 (2.4s)
+2026-11-09 01:05:32,647 INFO   exp-0012 idea-009  svm/log+pca8                 f=0.10 rel_l2=0.1782 r2=0.7006 rmse=0.2315 (4.0s)
+2026-11-09 01:05:32,673 INFO   exp-0007 idea-004  torch_mlp/log+logy           f=0.10 rel_l2=0.05481 r2=0.9715 rmse=0.0712 (6.4s)
+2026-11-09 01:05:34,398 INFO   exp-0011 idea-008  torch_mlp/raw                f=0.10 rel_l2=0.06722 r2=0.9573 rmse=0.08733 (6.1s)
+2026-11-09 01:05:34,403 INFO screen: 8/9 methods survive (no cross-family ranking at unequal fidelity)
+2026-11-09 01:05:34,403 INFO === stage: evaluate | compute used 40/400s | wall 20s
+2026-11-09 01:05:37,095 INFO   exp-0016 idea-006  kernel_ridge/sqrt+pca32      f=1.00 rel_l2=0.02946 r2=0.992 rmse=0.03885 (2.7s)
+2026-11-09 01:05:39,116 INFO   exp-0015 idea-003  hybrid[ridge/log+logy->LM10] f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (4.7s)
+2026-11-09 01:05:39,721 INFO   exp-0017 idea-005  physics-MAP[log,ms=1,it=30]  f=1.00 rel_l2=0.01931 r2=0.9966 rmse=0.02547 (5.3s)
+2026-11-09 01:05:39,765 INFO   exp-0018 idea-002  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (5.3s)
+2026-11-09 01:05:43,095 INFO   exp-0014 idea-007  physics-MMSE[log,ms=1,it=30] f=1.00 rel_l2=0.01906 r2=0.9967 rmse=0.02513 (8.7s)
+2026-11-09 01:05:43,635 INFO   exp-0021 idea-010  extra_trees/sqrt             f=1.00 rel_l2=0.08248 r2=0.9373 rmse=0.1088 (4.5s)
+2026-11-09 01:05:45,635 INFO   exp-0020 idea-008  torch_mlp/raw                f=1.00 rel_l2=0.03225 r2=0.9904 rmse=0.04252 (8.5s)
+2026-11-09 01:05:48,093 INFO   exp-0019 idea-004  torch_mlp/log+logy           f=1.00 rel_l2=0.02922 r2=0.9921 rmse=0.03853 (13.6s)
+2026-11-09 01:05:48,095 INFO evaluate: best idea-007 physics-MMSE[log,ms=1,it=30] val rel_l2=0.019056
+2026-11-09 01:05:48,096 INFO === stage: refine | compute used 93/400s | wall 33s
+2026-11-09 01:05:52,598 INFO   exp-0023 idea-012  hybrid[ridge/log+logy->LM9]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (4.5s)
+2026-11-09 01:05:52,604 INFO   exp-0022 idea-011  hybrid[ridge/log+logy->LM10] f=1.00 rel_l2=0.01932 r2=0.9966 rmse=0.02548 (4.5s)
+2026-11-09 01:05:59,092 INFO   exp-0025 idea-014  torch_mlp/log+logy           f=1.00 rel_l2=0.03022 r2=0.9916 rmse=0.03985 (11.0s)
+2026-11-09 01:06:02,300 INFO   exp-0024 idea-013  torch_mlp/raw+logy           f=1.00 rel_l2=0.02724 r2=0.9932 rmse=0.03592 (14.2s)
+2026-11-09 01:06:02,302 INFO refine round 1: 4 children, best gain 0.00%
+2026-11-09 01:06:02,302 INFO === stage: predictions | compute used 127/400s | wall 47s
+2026-11-09 01:06:02,312 INFO prediction checks: {'supported': 4, 'contradicted': 2, 'inconclusive': 0, 'untestable': 2}
+2026-11-09 01:06:02,312 INFO === stage: final | compute used 127/400s | wall 47s
+2026-11-09 01:06:20,055 INFO   exp-0026 idea-007  FINAL                        f=1.00 rel_l2=0.01839 r2=0.997 rmse=0.0242 (16.9s)
+2026-11-09 01:06:20,058 INFO FINAL single ['physics-MMSE[log,ms=1,it=30]'] | val rel_l2=0.019056 | test {'rel_l2': 0.01839, 'r2': 0.99697, 'rmse': 0.0242} (95% CI [0.01741, 0.01959])
+2026-11-09 01:06:20,065 INFO === stage: report | compute used 144/400s | wall 65s
+2026-11-09 01:06:21,790 WARNING [reporter-v2] LLM call for report discussion failed: claude error: You've hit your 5-hour limit · resets 3:50am (America/Los_Angeles)

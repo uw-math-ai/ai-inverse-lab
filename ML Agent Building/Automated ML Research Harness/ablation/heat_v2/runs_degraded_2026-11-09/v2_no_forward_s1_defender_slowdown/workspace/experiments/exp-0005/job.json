@@ -1,0 +1,47 @@
+{
+ "mode": "method_eval",
+ "exp_id": "exp-0005",
+ "idea_id": "idea-002",
+ "method": {
+  "kind": "custom_ml",
+  "code": "import numpy as np\n\ndef _sq(A, B):\n    return np.maximum((A*A).sum(1)[:, None] + (B*B).sum(1)[None, :] - 2.0*A.dot(B.T), 0.0)\n\nclass PCAKRR:\n    def _w(self, m, mode):\n        ev = self.ev[:m]\n        if mode == 'wiener':\n            return np.sqrt(np.maximum(ev - self.sig**2, 1e-12)) / ev\n        return 1.0 / np.sqrt(ev)\n    def _z(self, X, m, w):\n        return (np.asarray(X, float) - self.mu).dot(self.Vt[:m].T) * w\n    def fit(self, X, y):\n        X = np.asarray(X, float); Y = np.log(np.asarray(y, float))\n        self.mu = X.mean(0)\n        U, S, Vt = np.linalg.svd(X - self.mu, full_matrices=False)\n        self.Vt = Vt; self.ev = S**2 / (X.shape[0] - 1)\n        n = X.shape[0]; idx = np.random.RandomState(self.seed).permutation(n)\n        va = idx[:n // 3]; tr = idx[n // 3:]; ym = Y[tr].mean(0); T = np.exp(Y[va])\n        best = (np.inf, None)\n        for fac in [3.0, 10.0, 30.0]:\n            m = int(np.sum(self.ev > fac * self.sig**2)); m = int(min(max(m, 4), self.maxpc, len(self.ev)))\n            for mode in ['whiten', 'wiener']:\n                Z = self._z(X, m, self._w(m, mode))\n                Dtr = _sq(Z[tr], Z[tr]); Dva = _sq(Z[va], Z[tr]); med = np.median(Dtr) + 1e-12\n                for gm in [0.1, 0.3, 1.0, 3.0]:\n                    g = gm / med\n                    L, Q = np.linalg.eigh(np.exp(-g * Dtr)); L = np.maximum(L, 0.0)\n                    QtY = Q.T.dot(Y[tr] - ym); Kq = np.exp(-g * Dva).dot(Q)\n                    for a in [1e-5, 1e-4, 1e-3, 1e-2]:\n                        P = np.exp(Kq.dot(QtY / (L + a)[:, None]) + ym)\n                        e = np.linalg.norm(P - T) / np.linalg.norm(T)\n                        if e < best[0]:\n                            best = (e, (m, mode, g * med, a, fac))\n        m, mode, gm, a, fac = best[1]\n        self.m = m; self.mode = mode; self.a = a; self.fac = fac; self.cv_err = best[0]\n        self.w = self._w(m, mode); self.Z = self._z(X, m, self.w)\n        D = _sq(self.Z, self.Z); self.g = gm / (np.median(D) + 1e-12)\n        self.ym = Y.mean(0)\n        self.c = np.linalg.solve(np.exp(-self.g * D) + a * np.eye(n), Y - self.ym)\n        return self\n    def predict(self, X):\n        Zq = self._z(X, self.m, self.w)\n        return np.exp(np.exp(-self.g * _sq(Zq, self.Z)).dot(self.c) + self.ym)\n\ndef build_model(params, task, seed):\n    m = PCAKRR(); m.sig = float(params.get('sigma', 1e-3)); m.maxpc = int(params.get('maxpc', 64)); m.seed = int(seed)\n    return m\n",
+  "params": {
+   "sigma": 0.001,
+   "maxpc": 64
+  },
+  "features": "raw",
+  "scaler": "none",
+  "pca": 0,
+  "target_transform": "none"
+ },
+ "fraction": 0.1,
+ "val_subsample": 150,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s1\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 1,
+ "feature_shape": null,
+ "stage": "screen",
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "simulator_hash": "d287f853686c",
+ "forward_access": false,
+ "max_forward_evals": 3000000,
+ "plan_artifact": "plan-00128",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s1\\workspace\\experiments\\exp-0005",
+ "device": "cpu"
+}

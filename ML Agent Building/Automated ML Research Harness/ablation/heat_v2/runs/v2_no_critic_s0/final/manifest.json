@@ -1,0 +1,126 @@
+{
+  "pipeline": "v2",
+  "members": [
+    {
+      "kind": "hybrid",
+      "params": {
+        "transform": "log",
+        "iters": 12,
+        "tikhonov": 0.5549751037041202,
+        "extra_starts": 0,
+        "estimator": "posterior_mean",
+        "posterior_samples": 160
+      },
+      "init": {
+        "kind": "library",
+        "method": "torch_mlp",
+        "params": {
+          "hidden": [
+            256,
+            256
+          ],
+          "dropout": 0.0,
+          "lr": 0.001,
+          "weight_decay": 0.0001,
+          "epochs": 120,
+          "batch_size": 128,
+          "activation": "gelu"
+        },
+        "features": "raw",
+        "scaler": "standard",
+        "pca": 0,
+        "target_transform": "log",
+        "noise_aug": 1,
+        "noise_scale": 0.1
+      }
+    }
+  ],
+  "member_info": [
+    {
+      "label": "hybrid[torch_mlp/raw+logy+aug1->LM12]",
+      "kind": "hybrid",
+      "family": "hybrid",
+      "uses_forward": true,
+      "method_hash": "e17d8a836616"
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.018250642518496597,
+    "r2": 0.997016861950297,
+    "rmse": 0.024014268408926807
+  },
+  "test_bootstrap": {
+    "mean": 0.018210350928347475,
+    "std": 0.00056163964690095,
+    "ci95": [
+      0.017132591313902573,
+      0.019279776960215735
+    ],
+    "n_boot": 200
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.09754813916009965,
+      "r2": 0.9349779371749278,
+      "rmse": 0.12148600322722863
+    },
+    "noise_x3": {
+      "rel_l2": 0.051177902448321655,
+      "r2": 0.977197260539765,
+      "rmse": 0.06818874598893511
+    }
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    true
+  ],
+  "reproducibility": {
+    "seed": 0,
+    "data_seed": 5,
+    "data_cache_key": "dbbb3d2541fda500",
+    "test_split_sha1": "5b49be1eb2715949",
+    "spec_hash": "105283f344",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "harness_version": "2.0.0"
+  },
+  "research_lineage": {
+    "idea-013": {
+      "proposal_chain": [
+        "P-005"
+      ],
+      "entry": "E-06",
+      "gate": "gate-00134",
+      "citations": [
+        "ts:thm:24153014",
+        "ts:thm:26986930"
+      ],
+      "label": "hybrid[torch_mlp/raw+logy+aug1->LM12]",
+      "origin": "refine"
+    }
+  }
+}

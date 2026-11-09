@@ -1,0 +1,36 @@
+2026-11-09 10:24:35,638 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-09 10:24:35,642 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-09 10:24:35,642 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-09 10:24:35,643 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-09 10:24:35,645 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
+2026-11-09 10:24:35,780 INFO problem context: forward model: not available | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde=parabolic (heat / diff
+2026-11-09 10:24:35,782 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-09 10:24:38,006 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.2s)
+2026-11-09 10:24:38,006 INFO baseline val rel_l2 = 0.3307
+2026-11-09 10:24:38,006 INFO === stage: research | compute used 2/400s | wall 2s
+2026-11-09 10:28:10,512 INFO research round 1: running 3 pilot experiment(s)
+2026-11-09 10:28:25,313 INFO   exp-0004 pilot-P-004 kernel_ridge/raw+pca24+logy+ f=0.10 rel_l2=0.06789 r2=0.9608 rmse=0.0872 (14.2s)
+2026-11-09 10:28:40,637 INFO   exp-0002 pilot-P-001 torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.05399 r2=0.9745 rmse=0.06935 (29.8s)
+2026-11-09 10:28:54,039 INFO   exp-0003 pilot-P-003 torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.05395 r2=0.9744 rmse=0.06929 (43.2s)
+2026-11-09 10:36:54,066 INFO research loop: 3 rounds, 7 active, 4 abandoned — iteration cap reached (max_rounds=3); unresolved issues are documented
+2026-11-09 10:36:54,066 INFO === stage: portfolio | compute used 89/400s | wall 738s
+2026-11-09 10:36:54,070 INFO portfolio: E-01 custom-ml, E-02 torch_mlp/raw+pca32+logy+aug2, E-03 torch_mlp/raw+aug2, E-04 custom-ml, E-05 ridge/raw+logy, E-06 custom-ml, E-07 torch_mlp/raw, E-08 random-search x2
+2026-11-09 10:36:54,070 INFO === stage: gate | compute used 89/400s | wall 738s
+2026-11-09 10:36:54,096 INFO gate: 9/9 executable methods approved
+2026-11-09 10:36:54,096 INFO === stage: screen | compute used 89/400s | wall 738s
+2026-11-09 10:37:23,638 INFO   exp-0005 idea-002  custom-ml                    f=0.10 error: TypeError: cannot unpack non-iterable NoneType object (28.3s)
+2026-11-09 10:37:31,847 INFO   exp-0009 idea-006  ridge/raw+logy               f=0.10 rel_l2=0.07915 r2=0.9398 rmse=0.1028 (37.4s)
+2026-11-09 10:38:11,043 INFO   exp-0011 idea-008  torch_mlp/raw                f=0.10 rel_l2=0.06722 r2=0.9573 rmse=0.08733 (47.4s)
+2026-11-09 10:38:11,613 INFO   exp-0008 idea-005  custom-ml                    f=0.10 error: AttributeError: The following error was raised: 'SurrogateInvert' object has no attribute  (77.5s)
+2026-11-09 10:38:12,862 INFO   exp-0007 idea-004  torch_mlp/raw+aug2           f=0.10 rel_l2=0.05127 r2=0.9752 rmse=0.0666 (78.7s)
+2026-11-09 10:38:18,255 INFO   exp-0006 idea-003  torch_mlp/raw+pca32+logy+aug f=0.10 rel_l2=0.03106 r2=0.9908 rmse=0.04035 (84.1s)
+2026-11-09 10:38:26,851 INFO   exp-0010 idea-007  custom-ml                    f=0.10 error: AttributeError: The following error was raised: 'Ens' object has no attribute '__sklearn_t (92.7s)
+2026-11-09 10:39:42,412 INFO screen: 1/9 methods survive (no cross-family ranking at unequal fidelity)
+2026-11-09 10:39:42,412 INFO === stage: evaluate | compute used 536/400s | wall 907s
+2026-11-09 10:39:42,416 INFO === stage: refine | compute used 536/400s | wall 907s
+2026-11-09 10:39:42,416 INFO === stage: predictions | compute used 536/400s | wall 907s
+2026-11-09 10:39:42,419 INFO prediction checks: {'supported': 0, 'contradicted': 0, 'inconclusive': 6, 'untestable': 2}
+2026-11-09 10:39:42,420 INFO === stage: final | compute used 536/400s | wall 907s
+2026-11-09 10:39:54,869 INFO   exp-0018 idea-006  FINAL                        f=1.00 rel_l2=0.0635 r2=0.964 rmse=0.08355 (12.4s)
+2026-11-09 10:39:54,871 INFO FINAL single ['ridge/raw+logy'] | val rel_l2=0.079154 | test {'rel_l2': 0.0635, 'r2': 0.96396, 'rmse': 0.08355} (95% CI [0.06074, 0.06681])
+2026-11-09 10:39:54,879 INFO === stage: report | compute used 548/400s | wall 919s
