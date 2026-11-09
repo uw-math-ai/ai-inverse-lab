@@ -1,0 +1,33 @@
+{
+ "mode": "train_eval",
+ "exp_id": "exp-0028",
+ "idea_id": "idea-019",
+ "idea": {
+  "method": "kernel_ridge",
+  "params": {
+   "alpha": 0.0005,
+   "gamma_mult": 0.3
+  },
+  "features": "log",
+  "scaler": "standard",
+  "pca": 30
+ },
+ "fraction": 1.0,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\llm_refine_s1\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 1,
+ "feature_shape": null,
+ "save_model": false,
+ "stage": "refine",
+ "threads": 2,
+ "wants_gpu": false,
+ "plan_artifact": "plan-00173",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\llm_refine_s1\\workspace\\experiments\\exp-0028",
+ "device": "cpu"
+}

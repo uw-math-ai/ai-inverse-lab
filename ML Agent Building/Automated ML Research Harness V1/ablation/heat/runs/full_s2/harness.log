@@ -1,0 +1,63 @@
+2026-11-08 16:13:19,981 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-08 16:13:19,990 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-08 16:13:19,990 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-08 16:13:19,991 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-08 16:13:19,998 INFO [simulator] dataset 9b4282a010efda1c loaded from cache
+2026-11-08 16:13:20,056 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-08 16:13:22,256 INFO   exp-0001 idea-001  mean_baseline  f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.2s)
+2026-11-08 16:13:22,258 INFO baseline val rel_l2 = 0.3307
+2026-11-08 16:13:22,259 INFO === stage: ideation | compute used 2/400s | wall 2s
+2026-11-08 16:13:50,101 INFO 16 ideas proposed by 4 ideators
+2026-11-08 16:13:50,101 INFO === stage: prescreen | compute used 2/400s | wall 30s
+2026-11-08 16:14:02,557 INFO prescreen: 15/16 ideas approved
+2026-11-08 16:14:02,557 INFO === stage: screen | compute used 2/400s | wall 43s
+2026-11-08 16:14:04,722 INFO   exp-0003 idea-007  ridge          f=0.10 rel_l2=0.05448 r2=0.9727 rmse=0.07185 (2.1s)
+2026-11-08 16:14:04,738 INFO   exp-0002 idea-006  kernel_ridge   f=0.10 rel_l2=0.04497 r2=0.9814 rmse=0.0593 (2.1s)
+2026-11-08 16:14:04,768 INFO   exp-0004 idea-008  knn            f=0.10 rel_l2=0.1702 r2=0.7332 rmse=0.2245 (2.2s)
+2026-11-08 16:14:04,781 INFO   exp-0005 idea-009  custom         f=0.10 rel_l2=0.03331 r2=0.9898 rmse=0.04392 (2.2s)
+2026-11-08 16:14:05,215 INFO   exp-0006 idea-010  extra_trees    f=0.10 rel_l2=0.1492 r2=0.7953 rmse=0.1968 (2.6s)
+2026-11-08 16:14:05,729 INFO   exp-0007 idea-011  hist_gbm       f=0.10 rel_l2=0.109 r2=0.8908 rmse=0.1438 (3.1s)
+2026-11-08 16:14:06,788 INFO   exp-0008 idea-012  kernel_ridge   f=0.10 rel_l2=0.05649 r2=0.9706 rmse=0.07449 (2.1s)
+2026-11-08 16:14:06,996 INFO   exp-0009 idea-013  custom         f=0.10 error: AttributeError: The following error was raised: 'RidgeBoost' object has no attribute '__sk (2.2s)
+2026-11-08 16:14:09,061 INFO   exp-0015 idea-016  pls            f=0.10 rel_l2=0.05179 r2=0.9754 rmse=0.0683 (2.0s)
+2026-11-08 16:14:10,237 INFO   exp-0013 idea-005  mlp_sklearn    f=0.10 rel_l2=0.06375 r2=0.9626 rmse=0.08406 (4.5s)
+2026-11-08 16:14:11,452 INFO   exp-0016 idea-017  custom         f=0.10 rel_l2=0.05702 r2=0.9701 rmse=0.0752 (2.4s)
+2026-11-08 16:14:16,192 INFO   exp-0011 idea-003  torch_mlp      f=0.10 rel_l2=0.05991 r2=0.967 rmse=0.07901 (11.4s)
+2026-11-08 16:14:17,491 INFO   exp-0010 idea-002  torch_mlp      f=0.10 rel_l2=0.06145 r2=0.9652 rmse=0.08103 (12.7s)
+2026-11-08 16:14:18,625 INFO   exp-0012 idea-004  torch_mlp      f=0.10 rel_l2=0.06355 r2=0.9629 rmse=0.08381 (13.4s)
+2026-11-08 16:14:20,684 INFO   exp-0014 idea-015  torch_mlp      f=0.10 rel_l2=0.04806 r2=0.9787 rmse=0.06338 (13.9s)
+2026-11-08 16:14:32,996 INFO [engineer] repaired code for idea-013: The estimator did not inherit from sklearn's BaseEstimator, so it lacked __sklearn_tags__. Pipeline's check_is_fitted ne
+2026-11-08 16:14:33,012 INFO screen: 14/15 ideas survive the feasibility check
+2026-11-08 16:14:33,013 INFO === stage: halving | compute used 81/400s | wall 73s
+2026-11-08 16:14:35,111 INFO   exp-0022 idea-007  ridge          f=0.33 rel_l2=0.04916 r2=0.9778 rmse=0.06483 (2.1s)
+2026-11-08 16:14:35,149 INFO   exp-0021 idea-016  pls            f=0.33 rel_l2=0.05013 r2=0.9769 rmse=0.06611 (2.1s)
+2026-11-08 16:14:35,186 INFO   exp-0019 idea-006  kernel_ridge   f=0.33 rel_l2=0.03463 r2=0.9889 rmse=0.04567 (2.2s)
+2026-11-08 16:14:35,736 INFO   exp-0018 idea-009  custom         f=0.33 rel_l2=0.02713 r2=0.9932 rmse=0.03577 (2.7s)
+2026-11-08 16:14:55,501 INFO   exp-0020 idea-015  torch_mlp      f=0.33 rel_l2=0.03284 r2=0.9901 rmse=0.04331 (22.5s)
+2026-11-08 16:14:55,503 INFO halving rung 0.33: 5 evaluated, best idea-009 0.027127
+2026-11-08 16:14:57,522 INFO   exp-0026 idea-007  ridge          f=1.00 rel_l2=0.04812 r2=0.9787 rmse=0.06346 (2.0s)
+2026-11-08 16:14:58,087 INFO   exp-0025 idea-006  kernel_ridge   f=1.00 rel_l2=0.02791 r2=0.9928 rmse=0.0368 (2.6s)
+2026-11-08 16:15:00,220 INFO   exp-0023 idea-009  custom         f=1.00 rel_l2=0.02545 r2=0.994 rmse=0.03357 (4.7s)
+2026-11-08 16:15:43,545 INFO   exp-0024 idea-015  torch_mlp      f=1.00 rel_l2=0.02706 r2=0.9933 rmse=0.03569 (48.0s)
+2026-11-08 16:15:43,546 INFO halving rung 1.00: 4 evaluated, best idea-009 0.025455
+2026-11-08 16:15:43,546 INFO === stage: refine | compute used 170/400s | wall 144s
+2026-11-08 16:16:27,105 INFO refine: 6/6 ideas approved
+2026-11-08 16:16:30,064 INFO   exp-0028 idea-021  kernel_ridge   f=1.00 rel_l2=0.02764 r2=0.993 rmse=0.03645 (2.9s)
+2026-11-08 16:16:30,081 INFO   exp-0029 idea-022  kernel_ridge   f=1.00 rel_l2=0.02937 r2=0.992 rmse=0.03873 (3.0s)
+2026-11-08 16:16:33,445 INFO   exp-0030 idea-023  svm            f=1.00 rel_l2=0.03594 r2=0.9881 rmse=0.0474 (6.3s)
+2026-11-08 16:16:36,048 INFO   exp-0027 idea-020  custom         f=1.00 rel_l2=0.02585 r2=0.9938 rmse=0.03409 (8.9s)
+2026-11-08 16:16:44,553 INFO   exp-0032 idea-019  torch_mlp      f=1.00 rel_l2=0.02778 r2=0.9929 rmse=0.03663 (17.4s)
+2026-11-08 16:16:57,013 INFO   exp-0031 idea-018  torch_mlp      f=1.00 rel_l2=0.02872 r2=0.9924 rmse=0.03787 (29.9s)
+2026-11-08 16:16:57,015 INFO refine round 1: 6 children, best idea-009 rel_l2=0.025455 (gain 0.00%)
+2026-11-08 16:17:28,673 INFO refine: 6/6 ideas approved
+2026-11-08 16:17:31,504 INFO   exp-0036 idea-029  kernel_ridge   f=1.00 rel_l2=0.03056 r2=0.9914 rmse=0.0403 (2.8s)
+2026-11-08 16:17:31,547 INFO   exp-0035 idea-028  kernel_ridge   f=1.00 rel_l2=0.02731 r2=0.9931 rmse=0.03601 (2.9s)
+2026-11-08 16:17:31,551 INFO   exp-0034 idea-027  kernel_ridge   f=1.00 rel_l2=0.02685 r2=0.9934 rmse=0.03541 (2.9s)
+2026-11-08 16:17:32,663 INFO   exp-0033 idea-026  custom         f=1.00 rel_l2=0.02657 r2=0.9935 rmse=0.03504 (4.0s)
+2026-11-08 16:17:50,812 INFO   exp-0037 idea-024  torch_mlp      f=1.00 rel_l2=0.02807 r2=0.9927 rmse=0.03702 (22.1s)
+2026-11-08 16:17:50,813 INFO refine round 2: 5 children, best idea-009 rel_l2=0.025455 (gain 0.00%)
+2026-11-08 16:17:50,814 INFO === stage: final | compute used 273/400s | wall 271s
+2026-11-08 16:17:50,901 INFO greedy ensemble {'idea-009': 2, 'idea-015': 1, 'idea-027': 1}: val rel_l2=0.024626 vs best single 0.025455 (gain 3.26%) -> ensemble
+2026-11-08 16:18:07,753 INFO   exp-0038 ensemble  FINAL          f=1.00 rel_l2=0.02318 r2=0.9952 rmse=0.0305 (16.8s)
+2026-11-08 16:18:07,755 INFO FINAL ensemble ['idea-009', 'idea-015', 'idea-027'] | val rel_l2=0.024626 | test {'rel_l2': 0.02318, 'r2': 0.99519, 'rmse': 0.0305}
+2026-11-08 16:18:07,755 INFO === stage: report | compute used 290/400s | wall 288s

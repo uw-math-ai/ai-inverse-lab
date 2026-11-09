@@ -1,0 +1,23 @@
+# Model card — heat_random_s0
+
+- Task: regression; data: 1-D heat equation u_t = (k(x) u_x)_x on [0,1] with Dirichlet ends; unknown piecewise-constant conductivity k (targets); features are noisy temperatures at sensor points over time.
+- Type: ensemble of ['idea-003', 'idea-024', 'idea-014', 'idea-023', 'idea-008'] (weights [2.0, 2.0, 1.0, 1.0, 1.0])
+- Trained on train+val (3750 samples)
+- Validation estimate (rel_l2): 0.025742
+- Test: {"rel_l2": 0.024132286692880763, "r2": 0.994761896248052, "rmse": 0.031753359333880016}
+
+## Members
+- idea-003: `{"method": "torch_mlp", "params": {"hidden": [512, 512], "dropout": 0.2188489682951995, "lr": 0.0006353309749933134, "weight_decay": 0.005499075661406088, "epochs": 262, "batch_size": 64, "activation": "tanh"}, "features": "sqrt", "scaler": "standard", "pca": 32}`
+- idea-024: `{"method": "torch_mlp", "params": {"hidden": [512, 256, 128], "dropout": 0.004797518857071592, "lr": 0.0013169992741853, "weight_decay": 0.00011246953330982432, "epochs": 365, "batch_size": 256, "activation": "relu"}, "features": "raw", "scaler": "robust", "pca": 0}`
+- idea-014: `{"method": "kernel_ridge", "params": {"alpha": 0.002674921484451008, "gamma_mult": 0.062237505553654315}, "features": "sqrt", "scaler": "standard", "pca": 64}`
+- idea-023: `{"method": "torch_mlp", "params": {"hidden": [512, 512], "dropout": 0.13282584869235944, "lr": 0.002372605134687588, "weight_decay": 1.452254880825563e-06, "epochs": 239, "batch_size": 256, "activation": "silu"}, "features": "raw", "scaler": "robust", "pca": 0}`
+- idea-008: `{"method": "mlp_sklearn", "params": {"hidden": [512, 256], "alpha": 3.5580281338759494e-05, "learning_rate_init": 0.0009368514162695851, "max_iter": 300}, "features": "sqrt", "scaler": "none", "pca": 32}`
+
+## Usage
+```python
+import sys
+sys.path.insert(0, r"C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness V1")
+from mlharness.export import load_model
+model = load_model(r"C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness V1\ablation\heat\runs\random_s0")
+y_hat = model.predict(X)   # X: raw simulator features, same layout as training
+```

@@ -1,0 +1,94 @@
+{
+ "mode": "final",
+ "exp_id": "exp-0034",
+ "idea_id": "ensemble",
+ "members": [
+  {
+   "method": "kernel_ridge",
+   "params": {
+    "alpha": 0.0004422906167031346,
+    "gamma_mult": 0.19546364342321004
+   },
+   "features": "log",
+   "scaler": "standard",
+   "pca": 0
+  },
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     512,
+     256,
+     128
+    ],
+    "dropout": 0.29652243702248987,
+    "lr": 0.002079447741866517,
+    "weight_decay": 0.00011983043170155368,
+    "epochs": 177,
+    "batch_size": 64,
+    "activation": "relu"
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0
+  },
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     512,
+     512
+    ],
+    "dropout": 0.04579938791735105,
+    "lr": 0.0009345938431869064,
+    "weight_decay": 1.0111965972213143e-05,
+    "epochs": 167,
+    "batch_size": 256,
+    "activation": "tanh"
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0
+  },
+  {
+   "method": "kernel_ridge",
+   "params": {
+    "alpha": 2.102783947671146e-05,
+    "gamma_mult": 1.8649835924329932
+   },
+   "features": "raw",
+   "scaler": "none",
+   "pca": 64
+  }
+ ],
+ "member_ids": [
+  "idea-016",
+  "idea-013",
+  "idea-023",
+  "idea-011"
+ ],
+ "weights": [
+  3.0,
+  2.0,
+  2.0,
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s1\\data\\dataset.npz",
+ "seed": 1,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s1\\final",
+ "run_id": "heat_random_s1_20261108_152006",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": true,
+ "plan_artifact": "plan-00180",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s1\\workspace\\experiments\\exp-0034",
+ "device": "cpu"
+}

@@ -1,0 +1,28 @@
+{
+  "members": [
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 0.0004422906167031346,
+        "gamma_mult": 0.19546364342321004
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.02631601794279286,
+    "r2": 0.993804441911621,
+    "rmse": 0.0346267216451084
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

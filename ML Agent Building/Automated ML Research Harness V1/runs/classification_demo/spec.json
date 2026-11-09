@@ -1,0 +1,98 @@
+{
+  "name": "classification_demo",
+  "problem": "Classify samples from a synthetic 3-class problem with 20 features (8 informative).",
+  "task": "classification",
+  "simulator": {
+    "name": "classification",
+    "params": {
+      "n_features": 20,
+      "n_informative": 8,
+      "n_classes": 3
+    }
+  },
+  "data": {
+    "n_train": 2000,
+    "n_val": 500,
+    "n_test": 500,
+    "seed": 3
+  },
+  "metrics": {
+    "primary": "accuracy",
+    "secondary": [
+      "f1_macro"
+    ]
+  },
+  "success": {
+    "metric": "accuracy",
+    "threshold": 0.9
+  },
+  "budget": {
+    "compute_seconds": 240,
+    "wall_seconds": 1320,
+    "max_ideas": 20,
+    "experiment_timeout": 90,
+    "llm_calls": 30
+  },
+  "hardware": {
+    "workers": 6,
+    "gpus": "auto",
+    "threads_per_worker": 2,
+    "gpu_devices": [],
+    "detected": {
+      "cpus": 12,
+      "gpus": [],
+      "accelerator": "cpu",
+      "torch": "2.9.1+cpu",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "python": "3.11.0"
+    }
+  },
+  "constraints": {
+    "allowed_methods": "all",
+    "forbidden_methods": [],
+    "allow_custom_code": true,
+    "notes": []
+  },
+  "search": {
+    "ideators": [
+      "classical",
+      "ensembles",
+      "neural",
+      "domain"
+    ],
+    "ideas_per_ideator": 3,
+    "screen_fraction": 0.1,
+    "baseline_margin": 0.02,
+    "rungs": [
+      0.33,
+      1.0
+    ],
+    "eta": 3,
+    "min_full": 3,
+    "refine_rounds": 1,
+    "refine_top_k": 3,
+    "refine_children": 2,
+    "patience": 1,
+    "min_improvement": 0.005,
+    "ensemble": true,
+    "ensemble_max": 5,
+    "stop_on_success": false,
+    "repair_attempts": 1,
+    "llm_critic": true
+  },
+  "llm": {
+    "backend": "none",
+    "model": null,
+    "timeout": 300,
+    "effort": "medium"
+  },
+  "seed": 0,
+  "objectives": [
+    "Learn a classification model from simulated data (classification) that solves: Classify samples from a synthetic 3-class problem with 20 features (8 informative).",
+    "Select methods by validation accuracy only; the test split is used exactly once, at the end",
+    "Success criterion: test accuracy >= 0.9",
+    "Stay within 240 worker-seconds of compute and 1320 s wall time",
+    "Eliminate weak approaches with cheap feasibility checks before spending substantial compute"
+  ],
+  "simulator_description": "classification simulator with params {\"n_features\": 20, \"n_informative\": 8, \"n_classes\": 3, \"class_sep\": 1.0, \"flip_y\": 0.02}"
+}

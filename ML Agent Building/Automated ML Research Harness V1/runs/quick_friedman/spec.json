@@ -1,0 +1,97 @@
+{
+  "name": "quick_friedman",
+  "problem": "Learn the Friedman #1 nonlinear regression function from noisy samples.",
+  "task": "regression",
+  "simulator": {
+    "name": "friedman",
+    "params": {
+      "n_features": 10,
+      "noise": 1.0
+    }
+  },
+  "data": {
+    "n_train": 1500,
+    "n_val": 500,
+    "n_test": 500,
+    "seed": 1
+  },
+  "metrics": {
+    "primary": "rmse",
+    "secondary": [
+      "r2"
+    ]
+  },
+  "success": {
+    "metric": "rmse",
+    "threshold": 1.5
+  },
+  "budget": {
+    "compute_seconds": 150,
+    "wall_seconds": 350,
+    "max_ideas": 16,
+    "experiment_timeout": 60,
+    "llm_calls": 10
+  },
+  "hardware": {
+    "workers": 6,
+    "gpus": "auto",
+    "threads_per_worker": 2,
+    "gpu_devices": [],
+    "detected": {
+      "cpus": 12,
+      "gpus": [],
+      "accelerator": "cpu",
+      "torch": "2.9.1+cpu",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "python": "3.11.0"
+    }
+  },
+  "constraints": {
+    "allowed_methods": "all",
+    "forbidden_methods": [],
+    "allow_custom_code": true,
+    "notes": []
+  },
+  "search": {
+    "ideators": [
+      "classical",
+      "ensembles",
+      "neural",
+      "domain"
+    ],
+    "ideas_per_ideator": 2,
+    "screen_fraction": 0.1,
+    "baseline_margin": 0.02,
+    "rungs": [
+      0.33,
+      1.0
+    ],
+    "eta": 3,
+    "min_full": 3,
+    "refine_rounds": 1,
+    "refine_top_k": 3,
+    "refine_children": 1,
+    "patience": 1,
+    "min_improvement": 0.005,
+    "ensemble": true,
+    "ensemble_max": 5,
+    "stop_on_success": false,
+    "repair_attempts": 1,
+    "llm_critic": true
+  },
+  "llm": {
+    "backend": "none",
+    "model": null,
+    "timeout": 300,
+    "effort": "medium"
+  },
+  "seed": 0,
+  "objectives": [
+    "Learn a regression model from simulated data (friedman) that solves: Learn the Friedman #1 nonlinear regression function from noisy samples.",
+    "Select methods by validation rmse only; the test split is used exactly once, at the end",
+    "Success criterion: test rmse <= 1.5",
+    "Stay within 150 worker-seconds of compute and 350 s wall time",
+    "Eliminate weak approaches with cheap feasibility checks before spending substantial compute"
+  ],
+  "simulator_description": "friedman simulator with params {\"n_features\": 10, \"noise\": 1.0}"
+}

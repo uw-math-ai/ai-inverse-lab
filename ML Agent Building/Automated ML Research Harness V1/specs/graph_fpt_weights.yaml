@@ -1,0 +1,45 @@
+# Inverse problem from the lab's first-passage-time work: recover the 12 edge weights of a weighted
+# 3x3 grid graph from noisy first-passage-time distributions observed only at the 8 boundary vertices.
+name: graph_fpt_weights
+problem: >
+  Recover the edge weights of a weighted 3x3 grid graph from empirical first-passage-time
+  distributions r'(t, x, y) of random walks observed only on the boundary vertices
+  (inverse problem for discrete heat equations / random walks on graphs).
+simulator:
+  name: graph_fpt
+  params:
+    graph: {family: grid, rows: 3, cols: 3}
+    observed: boundary          # B = 8 boundary vertices
+    T: 9                        # time steps observed
+    walks_per_pair: 10000       # N walks per ordered pair (finite-sample noise); 0 = exact
+    weights: {low: 0.2, high: 1.0}
+    potential: {mode: none}
+    target: weights
+data: {n_train: 4000, n_val: 1000, n_test: 1000, seed: 7}
+metrics: {primary: rel_l2, secondary: [r2, rmse]}
+success: {threshold: 0.05}      # relative L2 (FRNE) error <= 5 % on the test split
+budget:
+  compute_seconds: 900          # total worker-seconds for all experiments
+  max_ideas: 40
+  experiment_timeout: 240
+  llm_calls: 30
+hardware: {workers: auto, gpus: auto}
+constraints:
+  allowed_methods: all
+  forbidden_methods: []
+  allow_custom_code: true
+  notes:
+    - "Models may only be trained on simulated data; the test split is never used for selection"
+search:
+  ideators: [classical, ensembles, neural, domain]
+  ideas_per_ideator: 4
+  screen_fraction: 0.1
+  rungs: [0.33, 1.0]
+  eta: 3
+  min_full: 4
+  refine_rounds: 3
+  refine_top_k: 3
+  refine_children: 2
+  patience: 2
+llm: {backend: auto, effort: medium}
+seed: 0

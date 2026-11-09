@@ -1,0 +1,10 @@
+# Smoke test: finishes in about a minute on a laptop, no LLM needed.
+name: quick_friedman
+problem: "Learn the Friedman #1 nonlinear regression function from noisy samples."
+simulator: {name: friedman, params: {n_features: 10, noise: 1.0}}
+data: {n_train: 1500, n_val: 500, n_test: 500, seed: 1}
+metrics: {primary: rmse, secondary: [r2]}
+success: {threshold: 1.5}
+budget: {compute_seconds: 150, max_ideas: 16, experiment_timeout: 60, llm_calls: 10}
+search: {ideas_per_ideator: 2, refine_rounds: 1, refine_children: 1, min_full: 3}
+llm: {backend: none}

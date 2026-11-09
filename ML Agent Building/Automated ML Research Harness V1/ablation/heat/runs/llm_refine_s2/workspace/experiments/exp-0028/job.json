@@ -1,0 +1,41 @@
+{
+ "mode": "train_eval",
+ "exp_id": "exp-0028",
+ "idea_id": "idea-022",
+ "idea": {
+  "method": "custom",
+  "params": {
+   "n_models": 4,
+   "hidden": 256,
+   "epochs": 150,
+   "lr": 0.002,
+   "wd": 0.0001,
+   "noise": 0.03,
+   "krr_alpha": 0.001,
+   "gamma_mult": 0.3,
+   "blend": 0.5
+  },
+  "features": "log",
+  "scaler": "standard",
+  "pca": 0,
+  "code_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\llm_refine_s2\\workspace\\ideas\\idea-022\\model_v1.py"
+ },
+ "fraction": 1.0,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\llm_refine_s2\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 2,
+ "feature_shape": null,
+ "save_model": false,
+ "stage": "refine",
+ "threads": 2,
+ "wants_gpu": false,
+ "plan_artifact": "plan-00176",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\llm_refine_s2\\workspace\\experiments\\exp-0028",
+ "device": "cpu"
+}

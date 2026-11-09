@@ -1,0 +1,42 @@
+{
+ "mode": "train_eval",
+ "exp_id": "exp-0012",
+ "idea_id": "idea-012",
+ "idea": {
+  "method": "torch_mlp",
+  "params": {
+   "hidden": [
+    512,
+    256,
+    128
+   ],
+   "dropout": 0.2215088310270776,
+   "lr": 0.00011332759758936702,
+   "weight_decay": 0.0037889384478944845,
+   "epochs": 119,
+   "batch_size": 128,
+   "activation": "relu"
+  },
+  "features": "sqrt",
+  "scaler": "standard",
+  "pca": 0
+ },
+ "fraction": 0.1,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s2\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 2,
+ "feature_shape": null,
+ "save_model": false,
+ "stage": "screen",
+ "threads": 2,
+ "wants_gpu": true,
+ "plan_artifact": "plan-00054",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s2\\workspace\\experiments\\exp-0012",
+ "device": "cpu"
+}

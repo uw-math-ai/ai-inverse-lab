@@ -1,0 +1,44 @@
+{
+ "run_id": "heat_offline_s2_20261108_153336",
+ "stage": "done",
+ "ideas": 34,
+ "pruned": 4,
+ "best": {
+  "idea": "idea-027",
+  "method": "torch_mlp",
+  "rel_l2": 0.027133612235699933
+ },
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 482.45,
+  "compute_remaining_s": 0.0,
+  "wall_elapsed_s": 271.68,
+  "wall_budget_s": 1700.0,
+  "jobs": 36,
+  "by_stage_s": {
+   "baseline": 2.2,
+   "screen": 48.86,
+   "halving": 55.74,
+   "refine": 255.1,
+   "final": 120.55
+  },
+  "llm_calls": 0,
+  "llm_calls_max": 40,
+  "llm_seconds": 0.0,
+  "llm_cost_usd": 0.0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "proposed": 16,
+  "prescreen_approved": 13,
+  "screen_survivors": 12,
+  "rung_0.33": 4,
+  "rung_1.00": 4,
+  "refine_proposed": 17,
+  "refine_approved": 17
+ },
+ "updated": 1794181087.81865,
+ "error": null,
+ "elapsed": 271.6757016181946
+}

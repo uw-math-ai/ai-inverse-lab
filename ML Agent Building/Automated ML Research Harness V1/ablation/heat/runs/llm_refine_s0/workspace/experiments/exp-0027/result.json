@@ -1,0 +1,23 @@
+{
+ "exp_id": "exp-0027",
+ "idea_id": "idea-019",
+ "mode": "train_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.03751927394698679,
+  "r2": 0.9870434924669508,
+  "rmse": 0.04947802730295784
+ },
+ "train": {
+  "rel_l2": 0.031595258836085306
+ },
+ "n_train_used": 3000,
+ "fit_seconds": 38.868547201156616,
+ "predict_seconds": 0.010154247283935547,
+ "warnings": [],
+ "n_params": 73220,
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\llm_refine_s0\\workspace\\experiments\\exp-0027\\val_pred.npy",
+ "status": "ok",
+ "elapsed": 40.517810106277466
+}

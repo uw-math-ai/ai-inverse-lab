@@ -1,0 +1,3537 @@
+{
+ "runs": {
+  "full_s0": {
+   "run": "full_s0",
+   "stop_reason": "compute budget for stage 'refine' exhausted",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-021",
+    "idea-018",
+    "idea-017"
+   ],
+   "final_methods": [
+    "torch_mlp/sqrt",
+    "kernel_ridge/sqrt",
+    "torch_mlp/sqrt"
+   ],
+   "final_val": 0.024888891857186613,
+   "test_rel_l2": 0.023161062842123627,
+   "test_r2": 0.9951803044190694,
+   "test_per_segment": [
+    0.032986734820126255,
+    0.010849716583391577,
+    0.009457958860567358,
+    0.02965078566231571
+   ],
+   "best_single_val": 0.026519372008348977,
+   "best_single_idea": "idea-021",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      256,
+      128
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 0.0001,
+     "epochs": 200,
+     "batch_size": 128,
+     "activation": "silu"
+    },
+    "features": "sqrt",
+    "scaler": "standard",
+    "pca": 32
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.02826561171082294,
+   "refine_gain": 0.06177965367738095,
+   "n_ideas": 22,
+   "n_full": 10,
+   "n_experiments": 30,
+   "n_pruned": 3,
+   "origins": {
+    "llm": 22
+   },
+   "methods_at_full": {
+    "kernel_ridge": 3,
+    "custom": 1,
+    "torch_mlp": 6
+   },
+   "n_custom": 3,
+   "n_custom_reaching_full": 1,
+   "compute_s": 398.83,
+   "wall_s": 269.74,
+   "llm_calls": 10,
+   "llm_cost_usd": 0.6999,
+   "llm_seconds": 145.18,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 14,
+    "screen_survivors": 13,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 6,
+    "refine_approved": 6
+   },
+   "anytime": [
+    [
+     2.3,
+     null
+    ],
+    [
+     4.4,
+     null
+    ],
+    [
+     6.5,
+     null
+    ],
+    [
+     8.7,
+     null
+    ],
+    [
+     10.9,
+     null
+    ],
+    [
+     13.5,
+     null
+    ],
+    [
+     16.2,
+     null
+    ],
+    [
+     18.6,
+     null
+    ],
+    [
+     21.3,
+     null
+    ],
+    [
+     24.1,
+     null
+    ],
+    [
+     26.1,
+     null
+    ],
+    [
+     37.9,
+     null
+    ],
+    [
+     51.3,
+     null
+    ],
+    [
+     64.6,
+     null
+    ],
+    [
+     95.5,
+     null
+    ],
+    [
+     97.6,
+     null
+    ],
+    [
+     99.8,
+     null
+    ],
+    [
+     102.8,
+     null
+    ],
+    [
+     115.0,
+     null
+    ],
+    [
+     129.3,
+     null
+    ],
+    [
+     131.8,
+     0.0298
+    ],
+    [
+     137.5,
+     0.0298
+    ],
+    [
+     156.5,
+     0.0298
+    ],
+    [
+     177.9,
+     0.02827
+    ],
+    [
+     180.6,
+     0.02827
+    ],
+    [
+     183.2,
+     0.02827
+    ],
+    [
+     213.7,
+     0.02827
+    ],
+    [
+     245.5,
+     0.02827
+    ],
+    [
+     284.8,
+     0.02652
+    ],
+    [
+     352.5,
+     0.02652
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.025201325872588026
+  },
+  "full_s1": {
+   "run": "full_s1",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-026",
+    "idea-018",
+    "idea-020",
+    "idea-019"
+   ],
+   "final_methods": [
+    "torch_mlp/log",
+    "torch_mlp/log",
+    "torch_mlp/log",
+    "torch_mlp/log"
+   ],
+   "final_val": 0.02565347878383176,
+   "test_rel_l2": 0.024599963654579036,
+   "test_r2": 0.9945409884040435,
+   "test_per_segment": [
+    0.03355944817440784,
+    0.014651233068102338,
+    0.012679420106935025,
+    0.03077526841676365
+   ],
+   "best_single_val": 0.026408444505144155,
+   "best_single_idea": "idea-026",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      256,
+      128
+     ],
+     "dropout": 0.15,
+     "lr": 0.001,
+     "weight_decay": 0.001,
+     "epochs": 300,
+     "batch_size": 128,
+     "activation": "silu"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 30
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.028055676102985816,
+   "refine_gain": 0.05871295319332385,
+   "n_ideas": 30,
+   "n_full": 5,
+   "n_experiments": 27,
+   "n_pruned": 1,
+   "origins": {
+    "llm": 30
+   },
+   "methods_at_full": {
+    "torch_mlp": 5
+   },
+   "n_custom": 3,
+   "n_custom_reaching_full": 0,
+   "compute_s": 542.12,
+   "wall_s": 544.03,
+   "llm_calls": 13,
+   "llm_cost_usd": 0.8606,
+   "llm_seconds": 186.44,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 15,
+    "screen_survivors": 15,
+    "rung_0.33": 5,
+    "rung_1.00": 1,
+    "refine_proposed": 14,
+    "refine_approved": 14
+   },
+   "anytime": [
+    [
+     2.1,
+     null
+    ],
+    [
+     4.2,
+     null
+    ],
+    [
+     6.3,
+     null
+    ],
+    [
+     8.4,
+     null
+    ],
+    [
+     10.6,
+     null
+    ],
+    [
+     13.4,
+     null
+    ],
+    [
+     16.4,
+     null
+    ],
+    [
+     18.7,
+     null
+    ],
+    [
+     21.3,
+     null
+    ],
+    [
+     24.4,
+     null
+    ],
+    [
+     26.5,
+     null
+    ],
+    [
+     28.4,
+     null
+    ],
+    [
+     40.4,
+     null
+    ],
+    [
+     52.6,
+     null
+    ],
+    [
+     64.6,
+     null
+    ],
+    [
+     78.2,
+     null
+    ],
+    [
+     93.8,
+     null
+    ],
+    [
+     95.9,
+     null
+    ],
+    [
+     99.0,
+     null
+    ],
+    [
+     116.5,
+     null
+    ],
+    [
+     138.1,
+     null
+    ],
+    [
+     159.7,
+     null
+    ],
+    [
+     205.5,
+     0.02806
+    ],
+    [
+     234.5,
+     0.02755
+    ],
+    [
+     289.7,
+     0.02755
+    ],
+    [
+     330.3,
+     0.02667
+    ],
+    [
+     396.3,
+     0.02641
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.0262633165918749
+  },
+  "full_s2": {
+   "run": "full_s2",
+   "stop_reason": "no relative improvement >= 0.005 for 2 round(s)",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-009",
+    "idea-015",
+    "idea-027"
+   ],
+   "final_methods": [
+    "custom/log",
+    "torch_mlp/log",
+    "kernel_ridge/sqrt"
+   ],
+   "final_val": 0.02462627468215571,
+   "test_rel_l2": 0.023177903035818324,
+   "test_r2": 0.9951851763186367,
+   "test_per_segment": [
+    0.03405992768867347,
+    0.008748103916317557,
+    0.007572778810225212,
+    0.029753772000478323
+   ],
+   "best_single_val": 0.025454941036839422,
+   "best_single_idea": "idea-009",
+   "best_single_cfg": {
+    "method": "custom",
+    "params": {},
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.025454941036839422,
+   "refine_gain": 0.0,
+   "n_ideas": 28,
+   "n_full": 15,
+   "n_experiments": 36,
+   "n_pruned": 2,
+   "origins": {
+    "llm": 28
+   },
+   "methods_at_full": {
+    "ridge": 1,
+    "kernel_ridge": 6,
+    "custom": 3,
+    "torch_mlp": 4,
+    "svm": 1
+   },
+   "n_custom": 5,
+   "n_custom_reaching_full": 3,
+   "compute_s": 289.67,
+   "wall_s": 308.02,
+   "llm_calls": 13,
+   "llm_cost_usd": 0.928,
+   "llm_seconds": 208.97,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 15,
+    "screen_survivors": 14,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 12,
+    "refine_approved": 12
+   },
+   "anytime": [
+    [
+     2.2,
+     null
+    ],
+    [
+     4.3,
+     null
+    ],
+    [
+     6.5,
+     null
+    ],
+    [
+     8.6,
+     null
+    ],
+    [
+     10.8,
+     null
+    ],
+    [
+     13.4,
+     null
+    ],
+    [
+     16.5,
+     null
+    ],
+    [
+     18.6,
+     null
+    ],
+    [
+     20.8,
+     null
+    ],
+    [
+     22.9,
+     null
+    ],
+    [
+     27.4,
+     null
+    ],
+    [
+     29.8,
+     null
+    ],
+    [
+     41.2,
+     null
+    ],
+    [
+     53.9,
+     null
+    ],
+    [
+     67.3,
+     null
+    ],
+    [
+     81.1,
+     null
+    ],
+    [
+     83.2,
+     null
+    ],
+    [
+     85.3,
+     null
+    ],
+    [
+     87.5,
+     null
+    ],
+    [
+     90.2,
+     null
+    ],
+    [
+     112.6,
+     null
+    ],
+    [
+     114.6,
+     0.04812
+    ],
+    [
+     117.2,
+     0.02791
+    ],
+    [
+     121.9,
+     0.02545
+    ],
+    [
+     169.9,
+     0.02545
+    ],
+    [
+     172.8,
+     0.02545
+    ],
+    [
+     175.8,
+     0.02545
+    ],
+    [
+     182.1,
+     0.02545
+    ],
+    [
+     191.0,
+     0.02545
+    ],
+    [
+     208.4,
+     0.02545
+    ],
+    [
+     238.3,
+     0.02545
+    ],
+    [
+     241.1,
+     0.02545
+    ],
+    [
+     243.9,
+     0.02545
+    ],
+    [
+     246.8,
+     0.02545
+    ],
+    [
+     250.7,
+     0.02545
+    ],
+    [
+     272.8,
+     0.02545
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.023416271372258095
+  },
+  "llm_ideation_s0": {
+   "run": "llm_ideation_s0",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "single",
+   "final_members": [
+    "idea-016"
+   ],
+   "final_methods": [
+    "torch_mlp/log"
+   ],
+   "final_val": 0.026494943557936,
+   "test_rel_l2": 0.024650187514671684,
+   "test_r2": 0.9945246216419923,
+   "test_per_segment": [
+    0.0340760463212085,
+    0.013746651154769531,
+    0.012409652664449329,
+    0.030909871935007292
+   ],
+   "best_single_val": 0.026494943557936,
+   "best_single_idea": "idea-016",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.05,
+     "lr": 0.001,
+     "weight_decay": 0.0001,
+     "epochs": 150,
+     "batch_size": 128,
+     "activation": "silu"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 30
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.026494943557936,
+   "refine_gain": 0.0,
+   "n_ideas": 16,
+   "n_full": 4,
+   "n_experiments": 23,
+   "n_pruned": 4,
+   "origins": {
+    "llm": 16
+   },
+   "methods_at_full": {
+    "kernel_ridge": 1,
+    "custom": 2,
+    "torch_mlp": 1
+   },
+   "n_custom": 4,
+   "n_custom_reaching_full": 2,
+   "compute_s": 254.98,
+   "wall_s": 211.98,
+   "llm_calls": 5,
+   "llm_cost_usd": 0.4432,
+   "llm_seconds": 99.49,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 14,
+    "screen_survivors": 12,
+    "rung_0.33": 4,
+    "rung_1.00": 4
+   },
+   "anytime": [
+    [
+     2.2,
+     null
+    ],
+    [
+     4.3,
+     null
+    ],
+    [
+     6.5,
+     null
+    ],
+    [
+     8.6,
+     null
+    ],
+    [
+     10.8,
+     null
+    ],
+    [
+     13.6,
+     null
+    ],
+    [
+     16.8,
+     null
+    ],
+    [
+     19.5,
+     null
+    ],
+    [
+     22.3,
+     null
+    ],
+    [
+     24.4,
+     null
+    ],
+    [
+     26.4,
+     null
+    ],
+    [
+     39.6,
+     null
+    ],
+    [
+     52.5,
+     null
+    ],
+    [
+     75.3,
+     null
+    ],
+    [
+     143.6,
+     null
+    ],
+    [
+     145.6,
+     null
+    ],
+    [
+     147.7,
+     null
+    ],
+    [
+     150.9,
+     null
+    ],
+    [
+     164.4,
+     null
+    ],
+    [
+     167.0,
+     0.0298
+    ],
+    [
+     169.8,
+     0.02954
+    ],
+    [
+     174.8,
+     0.02954
+    ],
+    [
+     209.5,
+     0.02649
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.024650187514671684
+  },
+  "llm_ideation_s1": {
+   "run": "llm_ideation_s1",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "single",
+   "final_members": [
+    "idea-016"
+   ],
+   "final_methods": [
+    "torch_mlp/log"
+   ],
+   "final_val": 0.028390249816004333,
+   "test_rel_l2": 0.02862720192074091,
+   "test_r2": 0.9925853132643121,
+   "test_per_segment": [
+    0.038216201709059885,
+    0.019154230807351146,
+    0.01742539431176389,
+    0.03432898254396795
+   ],
+   "best_single_val": 0.028390249816004333,
+   "best_single_idea": "idea-016",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      256,
+      128
+     ],
+     "dropout": 0.05,
+     "lr": 0.001,
+     "weight_decay": 0.0001,
+     "epochs": 200,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.028390249816004333,
+   "refine_gain": 0.0,
+   "n_ideas": 16,
+   "n_full": 4,
+   "n_experiments": 25,
+   "n_pruned": 1,
+   "origins": {
+    "llm": 16
+   },
+   "methods_at_full": {
+    "custom": 2,
+    "kernel_ridge": 1,
+    "torch_mlp": 1
+   },
+   "n_custom": 3,
+   "n_custom_reaching_full": 2,
+   "compute_s": 135.88,
+   "wall_s": 112.22,
+   "llm_calls": 5,
+   "llm_cost_usd": 0.353,
+   "llm_seconds": 95.95,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 15,
+    "screen_survivors": 15,
+    "rung_0.33": 5,
+    "rung_1.00": 4
+   },
+   "anytime": [
+    [
+     2.1,
+     null
+    ],
+    [
+     4.5,
+     null
+    ],
+    [
+     6.8,
+     null
+    ],
+    [
+     9.2,
+     null
+    ],
+    [
+     11.6,
+     null
+    ],
+    [
+     14.4,
+     null
+    ],
+    [
+     18.4,
+     null
+    ],
+    [
+     21.3,
+     null
+    ],
+    [
+     24.4,
+     null
+    ],
+    [
+     27.6,
+     null
+    ],
+    [
+     29.8,
+     null
+    ],
+    [
+     31.9,
+     null
+    ],
+    [
+     38.7,
+     null
+    ],
+    [
+     46.5,
+     null
+    ],
+    [
+     53.6,
+     null
+    ],
+    [
+     64.4,
+     null
+    ],
+    [
+     66.5,
+     null
+    ],
+    [
+     68.6,
+     null
+    ],
+    [
+     70.8,
+     null
+    ],
+    [
+     74.9,
+     null
+    ],
+    [
+     87.4,
+     null
+    ],
+    [
+     90.1,
+     0.02992
+    ],
+    [
+     92.8,
+     0.0298
+    ],
+    [
+     98.8,
+     0.0298
+    ],
+    [
+     121.1,
+     0.02839
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.02862720192074091
+  },
+  "llm_ideation_s2": {
+   "run": "llm_ideation_s2",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "single",
+   "final_members": [
+    "idea-014"
+   ],
+   "final_methods": [
+    "kernel_ridge/log"
+   ],
+   "final_val": 0.027905502262650428,
+   "test_rel_l2": 0.02664827387438972,
+   "test_r2": 0.9936461476371654,
+   "test_per_segment": [
+    0.040161248873700886,
+    0.00812823401069741,
+    0.006985246312531195,
+    0.03396436137305926
+   ],
+   "best_single_val": 0.027905502262650428,
+   "best_single_idea": "idea-014",
+   "best_single_cfg": {
+    "method": "kernel_ridge",
+    "params": {
+     "alpha": 0.001,
+     "gamma_mult": 0.3
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.027905502262650428,
+   "refine_gain": 0.0,
+   "n_ideas": 16,
+   "n_full": 4,
+   "n_experiments": 27,
+   "n_pruned": 0,
+   "origins": {
+    "llm": 16
+   },
+   "methods_at_full": {
+    "kernel_ridge": 2,
+    "custom": 1,
+    "torch_mlp": 1
+   },
+   "n_custom": 3,
+   "n_custom_reaching_full": 1,
+   "compute_s": 116.54,
+   "wall_s": 93.21,
+   "llm_calls": 5,
+   "llm_cost_usd": 0.3616,
+   "llm_seconds": 103.91,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 16,
+    "screen_survivors": 16,
+    "rung_0.33": 6,
+    "rung_1.00": 4
+   },
+   "anytime": [
+    [
+     2.2,
+     null
+    ],
+    [
+     4.3,
+     null
+    ],
+    [
+     6.5,
+     null
+    ],
+    [
+     8.8,
+     null
+    ],
+    [
+     11.0,
+     null
+    ],
+    [
+     13.6,
+     null
+    ],
+    [
+     17.6,
+     null
+    ],
+    [
+     20.3,
+     null
+    ],
+    [
+     23.2,
+     null
+    ],
+    [
+     25.2,
+     null
+    ],
+    [
+     32.1,
+     null
+    ],
+    [
+     34.3,
+     null
+    ],
+    [
+     41.2,
+     null
+    ],
+    [
+     49.0,
+     null
+    ],
+    [
+     51.0,
+     null
+    ],
+    [
+     57.9,
+     null
+    ],
+    [
+     71.9,
+     null
+    ],
+    [
+     74.0,
+     null
+    ],
+    [
+     76.1,
+     null
+    ],
+    [
+     78.2,
+     null
+    ],
+    [
+     80.4,
+     null
+    ],
+    [
+     84.6,
+     null
+    ],
+    [
+     92.1,
+     null
+    ],
+    [
+     94.7,
+     0.02791
+    ],
+    [
+     97.3,
+     0.02791
+    ],
+    [
+     103.2,
+     0.02791
+    ],
+    [
+     113.4,
+     0.02791
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.02664827387438972
+  },
+  "llm_refine_s0": {
+   "run": "llm_refine_s0",
+   "stop_reason": "no relative improvement >= 0.005 for 2 round(s)",
+   "final_kind": "single",
+   "final_members": [
+    "idea-011"
+   ],
+   "final_methods": [
+    "torch_mlp/log"
+   ],
+   "final_val": 0.02773068357018907,
+   "test_rel_l2": 0.026989630280724562,
+   "test_r2": 0.9934141987228233,
+   "test_per_segment": [
+    0.03547251582665282,
+    0.0173374175225058,
+    0.01566631864569255,
+    0.033785306858889606
+   ],
+   "best_single_val": 0.02773068357018907,
+   "best_single_idea": "idea-011",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.1,
+     "lr": 0.001,
+     "weight_decay": 0.001,
+     "epochs": 250,
+     "batch_size": 64,
+     "activation": "tanh"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 30
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.02773068357018907,
+   "refine_gain": 0.0,
+   "n_ideas": 28,
+   "n_full": 7,
+   "n_experiments": 28,
+   "n_pruned": 2,
+   "origins": {
+    "llm": 28
+   },
+   "methods_at_full": {
+    "kernel_ridge": 1,
+    "custom": 1,
+    "torch_mlp": 5
+   },
+   "n_custom": 3,
+   "n_custom_reaching_full": 1,
+   "compute_s": 380.74,
+   "wall_s": 294.83,
+   "llm_calls": 11,
+   "llm_cost_usd": 0.7349,
+   "llm_seconds": 161.36,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 15,
+    "screen_survivors": 14,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 12,
+    "refine_approved": 12
+   },
+   "anytime": [
+    [
+     2.1,
+     null
+    ],
+    [
+     4.3,
+     null
+    ],
+    [
+     6.5,
+     null
+    ],
+    [
+     8.7,
+     null
+    ],
+    [
+     10.9,
+     null
+    ],
+    [
+     13.5,
+     null
+    ],
+    [
+     17.1,
+     null
+    ],
+    [
+     19.6,
+     null
+    ],
+    [
+     22.6,
+     null
+    ],
+    [
+     25.4,
+     null
+    ],
+    [
+     27.4,
+     null
+    ],
+    [
+     30.1,
+     null
+    ],
+    [
+     35.1,
+     null
+    ],
+    [
+     47.5,
+     null
+    ],
+    [
+     60.9,
+     null
+    ],
+    [
+     72.5,
+     null
+    ],
+    [
+     74.6,
+     null
+    ],
+    [
+     76.7,
+     null
+    ],
+    [
+     82.4,
+     null
+    ],
+    [
+     99.2,
+     null
+    ],
+    [
+     117.2,
+     null
+    ],
+    [
+     119.7,
+     0.02791
+    ],
+    [
+     127.5,
+     0.02791
+    ],
+    [
+     158.7,
+     0.02791
+    ],
+    [
+     219.0,
+     0.02773
+    ],
+    [
+     256.6,
+     0.02773
+    ],
+    [
+     298.2,
+     0.02773
+    ],
+    [
+     329.0,
+     0.02773
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.026989630280724562
+  },
+  "llm_refine_s1": {
+   "run": "llm_refine_s1",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "single",
+   "final_members": [
+    "idea-024"
+   ],
+   "final_methods": [
+    "kernel_ridge/log"
+   ],
+   "final_val": 0.026501444656787495,
+   "test_rel_l2": 0.025784743849971415,
+   "test_r2": 0.9940511622891111,
+   "test_per_segment": [
+    0.03845972708201379,
+    0.00765804472278499,
+    0.006367525105862616,
+    0.033478620914054916
+   ],
+   "best_single_val": 0.026501444656787495,
+   "best_single_idea": "idea-024",
+   "best_single_cfg": {
+    "method": "kernel_ridge",
+    "params": {
+     "alpha": 0.0001,
+     "gamma_mult": 0.08
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.027905502262650428,
+   "refine_gain": 0.05031472261806111,
+   "n_ideas": 34,
+   "n_full": 15,
+   "n_experiments": 37,
+   "n_pruned": 2,
+   "origins": {
+    "llm": 34
+   },
+   "methods_at_full": {
+    "kernel_ridge": 9,
+    "custom": 3,
+    "torch_mlp": 3
+   },
+   "n_custom": 7,
+   "n_custom_reaching_full": 3,
+   "compute_s": 345.27,
+   "wall_s": 303.8,
+   "llm_calls": 10,
+   "llm_cost_usd": 0.8526,
+   "llm_seconds": 205.07,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 16,
+    "screen_survivors": 14,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 17,
+    "refine_approved": 17
+   },
+   "anytime": [
+    [
+     2.3,
+     null
+    ],
+    [
+     4.4,
+     null
+    ],
+    [
+     6.6,
+     null
+    ],
+    [
+     8.8,
+     null
+    ],
+    [
+     11.5,
+     null
+    ],
+    [
+     15.2,
+     null
+    ],
+    [
+     19.7,
+     null
+    ],
+    [
+     22.5,
+     null
+    ],
+    [
+     25.7,
+     null
+    ],
+    [
+     28.9,
+     null
+    ],
+    [
+     31.0,
+     null
+    ],
+    [
+     33.1,
+     null
+    ],
+    [
+     35.0,
+     null
+    ],
+    [
+     47.0,
+     null
+    ],
+    [
+     60.8,
+     null
+    ],
+    [
+     71.9,
+     null
+    ],
+    [
+     99.6,
+     null
+    ],
+    [
+     101.7,
+     null
+    ],
+    [
+     103.8,
+     null
+    ],
+    [
+     106.0,
+     null
+    ],
+    [
+     110.5,
+     null
+    ],
+    [
+     131.8,
+     null
+    ],
+    [
+     134.4,
+     0.0382
+    ],
+    [
+     137.0,
+     0.02791
+    ],
+    [
+     144.3,
+     0.02791
+    ],
+    [
+     188.6,
+     0.02791
+    ],
+    [
+     191.3,
+     0.02791
+    ],
+    [
+     194.1,
+     0.02698
+    ],
+    [
+     201.4,
+     0.02698
+    ],
+    [
+     226.4,
+     0.02698
+    ],
+    [
+     263.0,
+     0.02698
+    ],
+    [
+     327.4,
+     0.02698
+    ],
+    [
+     330.2,
+     0.02698
+    ],
+    [
+     333.1,
+     0.02698
+    ],
+    [
+     336.0,
+     0.0265
+    ],
+    [
+     338.9,
+     0.0265
+    ],
+    [
+     341.9,
+     0.0265
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.025784743849971415
+  },
+  "llm_refine_s2": {
+   "run": "llm_refine_s2",
+   "stop_reason": "compute budget for stage 'refine' exhausted",
+   "final_kind": "single",
+   "final_members": [
+    "idea-013"
+   ],
+   "final_methods": [
+    "custom/raw"
+   ],
+   "final_val": 0.02621718479840955,
+   "test_rel_l2": 0.023995853932514414,
+   "test_r2": 0.9948254672673267,
+   "test_per_segment": [
+    0.03434680821654069,
+    0.011308275214009431,
+    0.010527065337257153,
+    0.030237565747026785
+   ],
+   "best_single_val": 0.02621718479840955,
+   "best_single_idea": "idea-013",
+   "best_single_cfg": {
+    "method": "custom",
+    "params": {
+     "n_models": 3,
+     "hidden": 256,
+     "epochs": 150,
+     "lr": 0.002,
+     "wd": 0.0001,
+     "noise": 0.05
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "llm",
+   "best_val_before_refine": 0.02621718479840955,
+   "refine_gain": 0.0,
+   "n_ideas": 22,
+   "n_full": 7,
+   "n_experiments": 30,
+   "n_pruned": 1,
+   "origins": {
+    "llm": 22
+   },
+   "methods_at_full": {
+    "kernel_ridge": 4,
+    "custom": 2,
+    "torch_mlp": 1
+   },
+   "n_custom": 4,
+   "n_custom_reaching_full": 2,
+   "compute_s": 521.49,
+   "wall_s": 450.28,
+   "llm_calls": 8,
+   "llm_cost_usd": 0.5804,
+   "llm_seconds": 134.77,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 16,
+    "screen_survivors": 16,
+    "rung_0.33": 6,
+    "rung_1.00": 4,
+    "refine_proposed": 6,
+    "refine_approved": 6
+   },
+   "anytime": [
+    [
+     2.3,
+     null
+    ],
+    [
+     4.4,
+     null
+    ],
+    [
+     6.5,
+     null
+    ],
+    [
+     8.7,
+     null
+    ],
+    [
+     10.9,
+     null
+    ],
+    [
+     13.4,
+     null
+    ],
+    [
+     16.3,
+     null
+    ],
+    [
+     18.8,
+     null
+    ],
+    [
+     21.4,
+     null
+    ],
+    [
+     24.0,
+     null
+    ],
+    [
+     26.1,
+     null
+    ],
+    [
+     28.2,
+     null
+    ],
+    [
+     30.1,
+     null
+    ],
+    [
+     39.9,
+     null
+    ],
+    [
+     52.8,
+     null
+    ],
+    [
+     65.4,
+     null
+    ],
+    [
+     76.6,
+     null
+    ],
+    [
+     78.7,
+     null
+    ],
+    [
+     80.8,
+     null
+    ],
+    [
+     83.0,
+     null
+    ],
+    [
+     87.7,
+     null
+    ],
+    [
+     100.3,
+     null
+    ],
+    [
+     124.2,
+     null
+    ],
+    [
+     126.8,
+     0.02791
+    ],
+    [
+     129.5,
+     0.02791
+    ],
+    [
+     136.6,
+     0.02791
+    ],
+    [
+     233.6,
+     0.02622
+    ],
+    [
+     236.2,
+     0.02622
+    ],
+    [
+     238.8,
+     0.02622
+    ],
+    [
+     280.6,
+     0.02622
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.023995853932514414
+  },
+  "offline_s0": {
+   "run": "offline_s0",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-030",
+    "idea-018",
+    "idea-021"
+   ],
+   "final_methods": [
+    "torch_mlp/sqrt",
+    "torch_mlp/sqrt",
+    "torch_mlp/raw"
+   ],
+   "final_val": 0.02509918440110662,
+   "test_rel_l2": 0.023445571386356633,
+   "test_r2": 0.9950461314781531,
+   "test_per_segment": [
+    0.03263608995932363,
+    0.01320751321033042,
+    0.012045626941458377,
+    0.02897225968902951
+   ],
+   "best_single_val": 0.025675542712489875,
+   "best_single_idea": "idea-030",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.08954734302423699,
+     "lr": 0.0015948143970774696,
+     "weight_decay": 2.370688972464005e-06,
+     "epochs": 157,
+     "batch_size": 128,
+     "activation": "silu"
+    },
+    "features": "sqrt",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "heuristic",
+   "best_val_before_refine": 0.029085201066935382,
+   "refine_gain": 0.11723000802362245,
+   "n_ideas": 34,
+   "n_full": 12,
+   "n_experiments": 29,
+   "n_pruned": 5,
+   "origins": {
+    "heuristic": 34
+   },
+   "methods_at_full": {
+    "kernel_ridge": 3,
+    "mlp_sklearn": 1,
+    "torch_mlp": 8
+   },
+   "n_custom": 0,
+   "n_custom_reaching_full": 0,
+   "compute_s": 369.3,
+   "wall_s": 194.92,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "llm_seconds": 0.0,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 12,
+    "screen_survivors": 11,
+    "rung_0.33": 4,
+    "rung_1.00": 4,
+    "refine_proposed": 17,
+    "refine_approved": 17
+   },
+   "anytime": [
+    [
+     3.7,
+     null
+    ],
+    [
+     5.8,
+     null
+    ],
+    [
+     7.9,
+     null
+    ],
+    [
+     10.1,
+     null
+    ],
+    [
+     12.9,
+     null
+    ],
+    [
+     15.8,
+     null
+    ],
+    [
+     20.2,
+     null
+    ],
+    [
+     22.9,
+     null
+    ],
+    [
+     25.8,
+     null
+    ],
+    [
+     29.3,
+     null
+    ],
+    [
+     32.9,
+     null
+    ],
+    [
+     42.6,
+     null
+    ],
+    [
+     52.9,
+     null
+    ],
+    [
+     54.9,
+     null
+    ],
+    [
+     59.0,
+     null
+    ],
+    [
+     72.1,
+     null
+    ],
+    [
+     89.2,
+     null
+    ],
+    [
+     91.9,
+     0.03196
+    ],
+    [
+     102.9,
+     0.03196
+    ],
+    [
+     121.2,
+     0.02952
+    ],
+    [
+     148.4,
+     0.02909
+    ],
+    [
+     151.2,
+     0.02909
+    ],
+    [
+     153.9,
+     0.02909
+    ],
+    [
+     176.7,
+     0.02909
+    ],
+    [
+     203.8,
+     0.02883
+    ],
+    [
+     237.4,
+     0.02745
+    ],
+    [
+     280.9,
+     0.02664
+    ],
+    [
+     305.8,
+     0.02664
+    ],
+    [
+     324.9,
+     0.02568
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.023930450669915778
+  },
+  "offline_s1": {
+   "run": "offline_s1",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-024",
+    "idea-026",
+    "idea-025"
+   ],
+   "final_methods": [
+    "torch_mlp/log",
+    "torch_mlp/sqrt",
+    "torch_mlp/log"
+   ],
+   "final_val": 0.02594592417696161,
+   "test_rel_l2": 0.02437556163434319,
+   "test_r2": 0.994643931440994,
+   "test_per_segment": [
+    0.03327202801451247,
+    0.013694195874024824,
+    0.012541177663217407,
+    0.03088143661168299
+   ],
+   "best_single_val": 0.02684429181459181,
+   "best_single_idea": "idea-024",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.09927449747328324,
+     "lr": 0.0006836807757312639,
+     "weight_decay": 3.613829647016976e-05,
+     "epochs": 318,
+     "batch_size": 256,
+     "activation": "silu"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 32
+   },
+   "best_single_origin": "heuristic",
+   "best_val_before_refine": 0.02948038252941962,
+   "refine_gain": 0.08941847047599032,
+   "n_ideas": 34,
+   "n_full": 14,
+   "n_experiments": 34,
+   "n_pruned": 3,
+   "origins": {
+    "heuristic": 34
+   },
+   "methods_at_full": {
+    "kernel_ridge": 3,
+    "mlp_sklearn": 1,
+    "torch_mlp": 10
+   },
+   "n_custom": 0,
+   "n_custom_reaching_full": 0,
+   "compute_s": 455.66,
+   "wall_s": 239.55,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "llm_seconds": 0.0,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 14,
+    "screen_survivors": 13,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 17,
+    "refine_approved": 17
+   },
+   "anytime": [
+    [
+     2.1,
+     null
+    ],
+    [
+     4.2,
+     null
+    ],
+    [
+     6.3,
+     null
+    ],
+    [
+     8.4,
+     null
+    ],
+    [
+     11.1,
+     null
+    ],
+    [
+     13.8,
+     null
+    ],
+    [
+     18.1,
+     null
+    ],
+    [
+     20.8,
+     null
+    ],
+    [
+     23.7,
+     null
+    ],
+    [
+     26.8,
+     null
+    ],
+    [
+     28.9,
+     null
+    ],
+    [
+     31.5,
+     null
+    ],
+    [
+     34.3,
+     null
+    ],
+    [
+     42.7,
+     null
+    ],
+    [
+     53.5,
+     null
+    ],
+    [
+     55.6,
+     null
+    ],
+    [
+     58.6,
+     null
+    ],
+    [
+     63.4,
+     null
+    ],
+    [
+     74.4,
+     null
+    ],
+    [
+     87.7,
+     null
+    ],
+    [
+     90.3,
+     0.03196
+    ],
+    [
+     99.2,
+     0.03196
+    ],
+    [
+     114.3,
+     0.03196
+    ],
+    [
+     138.5,
+     0.02948
+    ],
+    [
+     141.1,
+     0.02948
+    ],
+    [
+     143.8,
+     0.02948
+    ],
+    [
+     166.2,
+     0.02846
+    ],
+    [
+     190.3,
+     0.02846
+    ],
+    [
+     216.0,
+     0.02846
+    ],
+    [
+     242.9,
+     0.02824
+    ],
+    [
+     266.0,
+     0.02717
+    ],
+    [
+     296.5,
+     0.02684
+    ],
+    [
+     336.2,
+     0.02684
+    ],
+    [
+     372.0,
+     0.02684
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.026435408178287576
+  },
+  "offline_s2": {
+   "run": "offline_s2",
+   "stop_reason": "completed all refinement rounds",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-027",
+    "idea-024",
+    "idea-029",
+    "idea-025"
+   ],
+   "final_methods": [
+    "torch_mlp/log",
+    "torch_mlp/raw",
+    "torch_mlp/raw",
+    "torch_mlp/sqrt"
+   ],
+   "final_val": 0.025794824926320917,
+   "test_rel_l2": 0.023377062447665832,
+   "test_r2": 0.9950807585911889,
+   "test_per_segment": [
+    0.03267580576675901,
+    0.01199339441137369,
+    0.011680273748474489,
+    0.029406968599098946
+   ],
+   "best_single_val": 0.027133612235699933,
+   "best_single_idea": "idea-027",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.0,
+     "lr": 0.0013598589398165094,
+     "weight_decay": 0.0001,
+     "epochs": 150,
+     "batch_size": 64,
+     "activation": "silu"
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "heuristic",
+   "best_val_before_refine": 0.030972992351935725,
+   "refine_gain": 0.12395896633461188,
+   "n_ideas": 34,
+   "n_full": 17,
+   "n_experiments": 35,
+   "n_pruned": 4,
+   "origins": {
+    "heuristic": 34
+   },
+   "methods_at_full": {
+    "mlp_sklearn": 4,
+    "kernel_ridge": 5,
+    "torch_mlp": 8
+   },
+   "n_custom": 0,
+   "n_custom_reaching_full": 0,
+   "compute_s": 482.45,
+   "wall_s": 271.68,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "llm_seconds": 0.0,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 13,
+    "screen_survivors": 12,
+    "rung_0.33": 4,
+    "rung_1.00": 4,
+    "refine_proposed": 17,
+    "refine_approved": 17
+   },
+   "anytime": [
+    [
+     2.2,
+     null
+    ],
+    [
+     4.3,
+     null
+    ],
+    [
+     6.4,
+     null
+    ],
+    [
+     8.5,
+     null
+    ],
+    [
+     11.1,
+     null
+    ],
+    [
+     13.9,
+     null
+    ],
+    [
+     18.1,
+     null
+    ],
+    [
+     20.6,
+     null
+    ],
+    [
+     23.4,
+     null
+    ],
+    [
+     26.0,
+     null
+    ],
+    [
+     28.1,
+     null
+    ],
+    [
+     30.7,
+     null
+    ],
+    [
+     39.8,
+     null
+    ],
+    [
+     51.1,
+     null
+    ],
+    [
+     53.1,
+     null
+    ],
+    [
+     55.4,
+     null
+    ],
+    [
+     59.7,
+     null
+    ],
+    [
+     72.3,
+     null
+    ],
+    [
+     74.7,
+     0.04004
+    ],
+    [
+     77.3,
+     0.03196
+    ],
+    [
+     86.5,
+     0.03196
+    ],
+    [
+     106.8,
+     0.03097
+    ],
+    [
+     109.5,
+     0.03011
+    ],
+    [
+     112.2,
+     0.03011
+    ],
+    [
+     116.0,
+     0.03011
+    ],
+    [
+     126.6,
+     0.03011
+    ],
+    [
+     143.2,
+     0.03011
+    ],
+    [
+     169.2,
+     0.02852
+    ],
+    [
+     171.9,
+     0.02852
+    ],
+    [
+     174.6,
+     0.02852
+    ],
+    [
+     208.8,
+     0.02744
+    ],
+    [
+     247.1,
+     0.02744
+    ],
+    [
+     286.2,
+     0.02744
+    ],
+    [
+     327.9,
+     0.02713
+    ],
+    [
+     361.9,
+     0.02713
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.025469310695176755
+  },
+  "random_s0": {
+   "run": "random_s0",
+   "stop_reason": "no relative improvement >= 0.005 for 2 round(s)",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-003",
+    "idea-024",
+    "idea-014",
+    "idea-023",
+    "idea-008"
+   ],
+   "final_methods": [
+    "torch_mlp/sqrt",
+    "torch_mlp/raw",
+    "kernel_ridge/sqrt",
+    "torch_mlp/raw",
+    "mlp_sklearn/sqrt"
+   ],
+   "final_val": 0.025741720744988046,
+   "test_rel_l2": 0.024132286692880763,
+   "test_r2": 0.994761896248052,
+   "test_per_segment": [
+    0.03399596089617193,
+    0.012006976258031689,
+    0.011057812272711146,
+    0.03061135415220683
+   ],
+   "best_single_val": 0.028213007972440633,
+   "best_single_idea": "idea-003",
+   "best_single_cfg": {
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      512,
+      512
+     ],
+     "dropout": 0.2188489682951995,
+     "lr": 0.0006353309749933134,
+     "weight_decay": 0.005499075661406088,
+     "epochs": 262,
+     "batch_size": 64,
+     "activation": "tanh"
+    },
+    "features": "sqrt",
+    "scaler": "standard",
+    "pca": 32
+   },
+   "best_single_origin": "random",
+   "best_val_before_refine": 0.028213007972440633,
+   "refine_gain": 0.0,
+   "n_ideas": 28,
+   "n_full": 16,
+   "n_experiments": 38,
+   "n_pruned": 2,
+   "origins": {
+    "random": 28
+   },
+   "methods_at_full": {
+    "kernel_ridge": 2,
+    "mlp_sklearn": 4,
+    "torch_mlp": 4,
+    "ridge": 2,
+    "pls": 2,
+    "hist_gbm": 1,
+    "random_forest": 1
+   },
+   "n_custom": 0,
+   "n_custom_reaching_full": 0,
+   "compute_s": 422.11,
+   "wall_s": 248.65,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "llm_seconds": 0.0,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 16,
+    "screen_survivors": 14,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 12,
+    "refine_approved": 12
+   },
+   "anytime": [
+    [
+     2.2,
+     null
+    ],
+    [
+     4.3,
+     null
+    ],
+    [
+     6.6,
+     null
+    ],
+    [
+     9.3,
+     null
+    ],
+    [
+     12.1,
+     null
+    ],
+    [
+     17.1,
+     null
+    ],
+    [
+     21.0,
+     null
+    ],
+    [
+     25.6,
+     null
+    ],
+    [
+     27.9,
+     null
+    ],
+    [
+     32.6,
+     null
+    ],
+    [
+     37.9,
+     null
+    ],
+    [
+     40.1,
+     null
+    ],
+    [
+     42.3,
+     null
+    ],
+    [
+     44.4,
+     null
+    ],
+    [
+     46.6,
+     null
+    ],
+    [
+     48.8,
+     null
+    ],
+    [
+     59.6,
+     null
+    ],
+    [
+     61.8,
+     null
+    ],
+    [
+     63.9,
+     null
+    ],
+    [
+     75.6,
+     null
+    ],
+    [
+     88.4,
+     null
+    ],
+    [
+     109.6,
+     null
+    ],
+    [
+     112.2,
+     0.03018
+    ],
+    [
+     128.2,
+     0.03018
+    ],
+    [
+     150.3,
+     0.03018
+    ],
+    [
+     182.9,
+     0.02821
+    ],
+    [
+     185.0,
+     0.02821
+    ],
+    [
+     187.7,
+     0.02821
+    ],
+    [
+     191.2,
+     0.02821
+    ],
+    [
+     195.5,
+     0.02821
+    ],
+    [
+     209.6,
+     0.02821
+    ],
+    [
+     230.7,
+     0.02821
+    ],
+    [
+     232.8,
+     0.02821
+    ],
+    [
+     235.7,
+     0.02821
+    ],
+    [
+     243.7,
+     0.02821
+    ],
+    [
+     252.3,
+     0.02821
+    ],
+    [
+     261.7,
+     0.02821
+    ],
+    [
+     276.4,
+     0.02821
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.027061900495392772
+  },
+  "random_s1": {
+   "run": "random_s1",
+   "stop_reason": "compute budget for stage 'refine' exhausted",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-016",
+    "idea-013",
+    "idea-023",
+    "idea-011"
+   ],
+   "final_methods": [
+    "kernel_ridge/log",
+    "torch_mlp/raw",
+    "torch_mlp/raw",
+    "kernel_ridge/raw"
+   ],
+   "final_val": 0.024058847342494152,
+   "test_rel_l2": 0.0227921198126852,
+   "test_r2": 0.9953380034456011,
+   "test_per_segment": [
+    0.033244929634361674,
+    0.00962889628113492,
+    0.009188641384255198,
+    0.028685437272931553
+   ],
+   "best_single_val": 0.0273465254075474,
+   "best_single_idea": "idea-016",
+   "best_single_cfg": {
+    "method": "kernel_ridge",
+    "params": {
+     "alpha": 0.0004422906167031346,
+     "gamma_mult": 0.19546364342321004
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "best_single_origin": "random",
+   "best_val_before_refine": 0.0273465254075474,
+   "refine_gain": 0.0,
+   "n_ideas": 22,
+   "n_full": 10,
+   "n_experiments": 33,
+   "n_pruned": 0,
+   "origins": {
+    "random": 22
+   },
+   "methods_at_full": {
+    "kernel_ridge": 2,
+    "mlp_sklearn": 1,
+    "torch_mlp": 3,
+    "knn": 1,
+    "extra_trees": 2,
+    "hist_gbm": 1
+   },
+   "n_custom": 0,
+   "n_custom_reaching_full": 0,
+   "compute_s": 532.75,
+   "wall_s": 365.86,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "llm_seconds": 0.0,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 16,
+    "screen_survivors": 16,
+    "rung_0.33": 6,
+    "rung_1.00": 4,
+    "refine_proposed": 6,
+    "refine_approved": 6
+   },
+   "anytime": [
+    [
+     1.9,
+     null
+    ],
+    [
+     4.0,
+     null
+    ],
+    [
+     6.1,
+     null
+    ],
+    [
+     8.2,
+     null
+    ],
+    [
+     10.3,
+     null
+    ],
+    [
+     12.9,
+     null
+    ],
+    [
+     14.9,
+     null
+    ],
+    [
+     17.0,
+     null
+    ],
+    [
+     19.1,
+     null
+    ],
+    [
+     21.2,
+     null
+    ],
+    [
+     23.4,
+     null
+    ],
+    [
+     25.5,
+     null
+    ],
+    [
+     27.6,
+     null
+    ],
+    [
+     30.4,
+     null
+    ],
+    [
+     32.9,
+     null
+    ],
+    [
+     44.8,
+     null
+    ],
+    [
+     55.8,
+     null
+    ],
+    [
+     57.9,
+     null
+    ],
+    [
+     60.0,
+     null
+    ],
+    [
+     62.2,
+     null
+    ],
+    [
+     64.3,
+     null
+    ],
+    [
+     68.4,
+     null
+    ],
+    [
+     101.7,
+     null
+    ],
+    [
+     104.2,
+     0.03336
+    ],
+    [
+     106.8,
+     0.02735
+    ],
+    [
+     113.2,
+     0.02735
+    ],
+    [
+     197.2,
+     0.02735
+    ],
+    [
+     199.4,
+     0.02735
+    ],
+    [
+     201.8,
+     0.02735
+    ],
+    [
+     207.3,
+     0.02735
+    ],
+    [
+     245.2,
+     0.02735
+    ],
+    [
+     301.6,
+     0.02735
+    ],
+    [
+     371.4,
+     0.02735
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.02631601794279286
+  },
+  "random_s2": {
+   "run": "random_s2",
+   "stop_reason": "no relative improvement >= 0.005 for 2 round(s)",
+   "final_kind": "ensemble",
+   "final_members": [
+    "idea-010",
+    "idea-025"
+   ],
+   "final_methods": [
+    "kernel_ridge/raw",
+    "torch_mlp/log"
+   ],
+   "final_val": 0.02460352760402196,
+   "test_rel_l2": 0.024142615404035676,
+   "test_r2": 0.9947605647729811,
+   "test_per_segment": [
+    0.03380540153139539,
+    0.011232062670391818,
+    0.010677738633972665,
+    0.03130744155287422
+   ],
+   "best_single_val": 0.0267239011224004,
+   "best_single_idea": "idea-010",
+   "best_single_cfg": {
+    "method": "kernel_ridge",
+    "params": {
+     "alpha": 8.97887840661626e-05,
+     "gamma_mult": 0.022183576308829955
+    },
+    "features": "raw",
+    "scaler": "none",
+    "pca": 64
+   },
+   "best_single_origin": "random",
+   "best_val_before_refine": 0.0267239011224004,
+   "refine_gain": 0.0,
+   "n_ideas": 28,
+   "n_full": 16,
+   "n_experiments": 38,
+   "n_pruned": 2,
+   "origins": {
+    "random": 28
+   },
+   "methods_at_full": {
+    "kernel_ridge": 3,
+    "hist_gbm": 4,
+    "mlp_sklearn": 3,
+    "pls": 2,
+    "random_forest": 1,
+    "svm": 1,
+    "ridge": 1,
+    "torch_mlp": 1
+   },
+   "n_custom": 0,
+   "n_custom_reaching_full": 0,
+   "compute_s": 322.46,
+   "wall_s": 187.84,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "llm_seconds": 0.0,
+   "funnel": {
+    "proposed": 16,
+    "prescreen_approved": 16,
+    "screen_survivors": 14,
+    "rung_0.33": 5,
+    "rung_1.00": 4,
+    "refine_proposed": 12,
+    "refine_approved": 12
+   },
+   "anytime": [
+    [
+     2.4,
+     null
+    ],
+    [
+     4.6,
+     null
+    ],
+    [
+     6.8,
+     null
+    ],
+    [
+     9.4,
+     null
+    ],
+    [
+     12.1,
+     null
+    ],
+    [
+     16.5,
+     null
+    ],
+    [
+     18.7,
+     null
+    ],
+    [
+     23.1,
+     null
+    ],
+    [
+     25.3,
+     null
+    ],
+    [
+     27.5,
+     null
+    ],
+    [
+     30.0,
+     null
+    ],
+    [
+     32.1,
+     null
+    ],
+    [
+     34.3,
+     null
+    ],
+    [
+     36.6,
+     null
+    ],
+    [
+     38.7,
+     null
+    ],
+    [
+     42.0,
+     null
+    ],
+    [
+     49.7,
+     null
+    ],
+    [
+     51.8,
+     null
+    ],
+    [
+     54.0,
+     null
+    ],
+    [
+     56.2,
+     null
+    ],
+    [
+     58.9,
+     null
+    ],
+    [
+     61.7,
+     null
+    ],
+    [
+     64.3,
+     0.02672
+    ],
+    [
+     67.0,
+     0.02672
+    ],
+    [
+     70.5,
+     0.02672
+    ],
+    [
+     77.3,
+     0.02672
+    ],
+    [
+     79.8,
+     0.02672
+    ],
+    [
+     83.6,
+     0.02672
+    ],
+    [
+     89.4,
+     0.02672
+    ],
+    [
+     105.5,
+     0.02672
+    ],
+    [
+     132.8,
+     0.02672
+    ],
+    [
+     225.5,
+     0.02672
+    ],
+    [
+     227.6,
+     0.02672
+    ],
+    [
+     229.9,
+     0.02672
+    ],
+    [
+     232.6,
+     0.02672
+    ],
+    [
+     240.9,
+     0.02672
+    ],
+    [
+     251.7,
+     0.02672
+    ],
+    [
+     288.4,
+     0.02672
+    ]
+   ],
+   "llm_failures": 0,
+   "best_single_test_rel_l2": 0.02687567551921809
+  }
+ },
+ "by_arm": {
+  "random": {
+   "test_rel_l2": {
+    "mean": 0.023689007303200546,
+    "sd": 0.0007767445194854719,
+    "min": 0.0227921198126852,
+    "max": 0.024142615404035676,
+    "n": 3
+   },
+   "final_val": {
+    "mean": 0.024801365230501388,
+    "sd": 0.000858702810664786,
+    "min": 0.024058847342494152,
+    "max": 0.025741720744988046,
+    "n": 3
+   },
+   "best_single_val": {
+    "mean": 0.027427811500796147,
+    "sd": 0.0007478739027576233,
+    "min": 0.0267239011224004,
+    "max": 0.028213007972440633,
+    "n": 3
+   },
+   "best_single_test_rel_l2": {
+    "mean": 0.02675119798580124,
+    "sd": 0.00038820894865059007,
+    "min": 0.02631601794279286,
+    "max": 0.027061900495392772,
+    "n": 3
+   },
+   "best_val_before_refine": {
+    "mean": 0.027427811500796147,
+    "sd": 0.0007478739027576233,
+    "min": 0.0267239011224004,
+    "max": 0.028213007972440633,
+    "n": 3
+   },
+   "refine_gain": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "n_ideas": {
+    "mean": 26.0,
+    "sd": 3.4641016151377544,
+    "min": 22.0,
+    "max": 28.0,
+    "n": 3
+   },
+   "n_full": {
+    "mean": 14.0,
+    "sd": 3.4641016151377544,
+    "min": 10.0,
+    "max": 16.0,
+    "n": 3
+   },
+   "n_experiments": {
+    "mean": 36.333333333333336,
+    "sd": 2.8867513459481287,
+    "min": 33.0,
+    "max": 38.0,
+    "n": 3
+   },
+   "compute_s": {
+    "mean": 425.7733333333333,
+    "sd": 105.1928516265879,
+    "min": 322.46,
+    "max": 532.75,
+    "n": 3
+   },
+   "wall_s": {
+    "mean": 267.45,
+    "sd": 90.48679516924003,
+    "min": 187.84,
+    "max": 365.86,
+    "n": 3
+   },
+   "llm_calls": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "llm_cost_usd": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "test_per_segment": [
+    0.033682097353976335,
+    0.010955978403186142,
+    0.01030806409697967,
+    0.030201410992670864
+   ],
+   "seeds": [
+    "random_s0",
+    "random_s1",
+    "random_s2"
+   ]
+  },
+  "offline": {
+   "test_rel_l2": {
+    "mean": 0.02373273182278855,
+    "sd": 0.0005577597992305144,
+    "min": 0.023377062447665832,
+    "max": 0.02437556163434319,
+    "n": 3
+   },
+   "final_val": {
+    "mean": 0.025613311168129715,
+    "sd": 0.0004516109999914309,
+    "min": 0.02509918440110662,
+    "max": 0.02594592417696161,
+    "n": 3
+   },
+   "best_single_val": {
+    "mean": 0.026551148920927206,
+    "sd": 0.0007719723121382298,
+    "min": 0.025675542712489875,
+    "max": 0.027133612235699933,
+    "n": 3
+   },
+   "best_single_test_rel_l2": {
+    "mean": 0.025278389847793372,
+    "sd": 0.0012633452050652087,
+    "min": 0.023930450669915778,
+    "max": 0.026435408178287576,
+    "n": 3
+   },
+   "best_val_before_refine": {
+    "mean": 0.029846191982763573,
+    "sd": 0.0009956412009592935,
+    "min": 0.029085201066935382,
+    "max": 0.030972992351935725,
+    "n": 3
+   },
+   "refine_gain": {
+    "mean": 0.11020248161140822,
+    "sd": 0.01831122767991376,
+    "min": 0.08941847047599032,
+    "max": 0.12395896633461188,
+    "n": 3
+   },
+   "n_ideas": {
+    "mean": 34.0,
+    "sd": 0.0,
+    "min": 34.0,
+    "max": 34.0,
+    "n": 3
+   },
+   "n_full": {
+    "mean": 14.333333333333334,
+    "sd": 2.5166114784235836,
+    "min": 12.0,
+    "max": 17.0,
+    "n": 3
+   },
+   "n_experiments": {
+    "mean": 32.666666666666664,
+    "sd": 3.214550253664318,
+    "min": 29.0,
+    "max": 35.0,
+    "n": 3
+   },
+   "compute_s": {
+    "mean": 435.80333333333334,
+    "sd": 59.13075370171881,
+    "min": 369.3,
+    "max": 482.45,
+    "n": 3
+   },
+   "wall_s": {
+    "mean": 235.38333333333335,
+    "sd": 38.54925723452184,
+    "min": 194.92,
+    "max": 271.68,
+    "n": 3
+   },
+   "llm_calls": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "llm_cost_usd": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "test_per_segment": [
+    0.0328613079135317,
+    0.01296503449857631,
+    0.012089026117716757,
+    0.029753554966603816
+   ],
+   "seeds": [
+    "offline_s0",
+    "offline_s1",
+    "offline_s2"
+   ]
+  },
+  "llm_ideation": {
+   "test_rel_l2": {
+    "mean": 0.026641887769934102,
+    "sd": 0.0019885148939015078,
+    "min": 0.024650187514671684,
+    "max": 0.02862720192074091,
+    "n": 3
+   },
+   "final_val": {
+    "mean": 0.027596898545530255,
+    "sd": 0.0009846185269603343,
+    "min": 0.026494943557936,
+    "max": 0.028390249816004333,
+    "n": 3
+   },
+   "best_single_val": {
+    "mean": 0.027596898545530255,
+    "sd": 0.0009846185269603343,
+    "min": 0.026494943557936,
+    "max": 0.028390249816004333,
+    "n": 3
+   },
+   "best_single_test_rel_l2": {
+    "mean": 0.026641887769934102,
+    "sd": 0.0019885148939015078,
+    "min": 0.024650187514671684,
+    "max": 0.02862720192074091,
+    "n": 3
+   },
+   "best_val_before_refine": {
+    "mean": 0.027596898545530255,
+    "sd": 0.0009846185269603343,
+    "min": 0.026494943557936,
+    "max": 0.028390249816004333,
+    "n": 3
+   },
+   "refine_gain": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "n_ideas": {
+    "mean": 16.0,
+    "sd": 0.0,
+    "min": 16.0,
+    "max": 16.0,
+    "n": 3
+   },
+   "n_full": {
+    "mean": 4.0,
+    "sd": 0.0,
+    "min": 4.0,
+    "max": 4.0,
+    "n": 3
+   },
+   "n_experiments": {
+    "mean": 25.0,
+    "sd": 2.0,
+    "min": 23.0,
+    "max": 27.0,
+    "n": 3
+   },
+   "compute_s": {
+    "mean": 169.13333333333335,
+    "sd": 74.97163819294155,
+    "min": 116.54,
+    "max": 254.98,
+    "n": 3
+   },
+   "wall_s": {
+    "mean": 139.13666666666666,
+    "sd": 63.79622585493073,
+    "min": 93.21,
+    "max": 211.98,
+    "n": 3
+   },
+   "llm_calls": {
+    "mean": 5.0,
+    "sd": 0.0,
+    "min": 5.0,
+    "max": 5.0,
+    "n": 3
+   },
+   "llm_cost_usd": {
+    "mean": 0.3859333333333333,
+    "sd": 0.04978045131709167,
+    "min": 0.353,
+    "max": 0.4432,
+    "n": 3
+   },
+   "test_per_segment": [
+    0.037484498967989756,
+    0.01367637199093936,
+    0.012273431096248138,
+    0.033067738617344834
+   ],
+   "seeds": [
+    "llm_ideation_s0",
+    "llm_ideation_s1",
+    "llm_ideation_s2"
+   ]
+  },
+  "llm_refine": {
+   "test_rel_l2": {
+    "mean": 0.02559007602107013,
+    "sd": 0.0015063518441859715,
+    "min": 0.023995853932514414,
+    "max": 0.026989630280724562,
+    "n": 3
+   },
+   "final_val": {
+    "mean": 0.026816437675128705,
+    "sd": 0.000804415989552238,
+    "min": 0.02621718479840955,
+    "max": 0.02773068357018907,
+    "n": 3
+   },
+   "best_single_val": {
+    "mean": 0.026816437675128705,
+    "sd": 0.000804415989552238,
+    "min": 0.02621718479840955,
+    "max": 0.02773068357018907,
+    "n": 3
+   },
+   "best_single_test_rel_l2": {
+    "mean": 0.02559007602107013,
+    "sd": 0.0015063518441859715,
+    "min": 0.023995853932514414,
+    "max": 0.026989630280724562,
+    "n": 3
+   },
+   "best_val_before_refine": {
+    "mean": 0.027284456877083016,
+    "sd": 0.0009284086714617967,
+    "min": 0.02621718479840955,
+    "max": 0.027905502262650428,
+    "n": 3
+   },
+   "refine_gain": {
+    "mean": 0.01677157420602037,
+    "sd": 0.029049218647738937,
+    "min": 0.0,
+    "max": 0.05031472261806111,
+    "n": 3
+   },
+   "n_ideas": {
+    "mean": 28.0,
+    "sd": 6.0,
+    "min": 22.0,
+    "max": 34.0,
+    "n": 3
+   },
+   "n_full": {
+    "mean": 9.666666666666666,
+    "sd": 4.618802153517006,
+    "min": 7.0,
+    "max": 15.0,
+    "n": 3
+   },
+   "n_experiments": {
+    "mean": 31.666666666666668,
+    "sd": 4.725815626252608,
+    "min": 28.0,
+    "max": 37.0,
+    "n": 3
+   },
+   "compute_s": {
+    "mean": 415.8333333333333,
+    "sd": 93.20423076949531,
+    "min": 345.27,
+    "max": 521.49,
+    "n": 3
+   },
+   "wall_s": {
+    "mean": 349.6366666666666,
+    "sd": 87.2750000477418,
+    "min": 294.83,
+    "max": 450.28,
+    "n": 3
+   },
+   "llm_calls": {
+    "mean": 9.666666666666666,
+    "sd": 1.5275252316519468,
+    "min": 8.0,
+    "max": 11.0,
+    "n": 3
+   },
+   "llm_cost_usd": {
+    "mean": 0.7226333333333333,
+    "sd": 0.13651396753934497,
+    "min": 0.5804,
+    "max": 0.8526,
+    "n": 3
+   },
+   "test_per_segment": [
+    0.036093017041735766,
+    0.012101245819766742,
+    0.010853636362937439,
+    0.032500497839990435
+   ],
+   "seeds": [
+    "llm_refine_s0",
+    "llm_refine_s1",
+    "llm_refine_s2"
+   ]
+  },
+  "full": {
+   "test_rel_l2": {
+    "mean": 0.023646309844173662,
+    "sd": 0.0008259313473930111,
+    "min": 0.023161062842123627,
+    "max": 0.024599963654579036,
+    "n": 3
+   },
+   "final_val": {
+    "mean": 0.025056215107724693,
+    "sd": 0.0005336523861588153,
+    "min": 0.02462627468215571,
+    "max": 0.02565347878383176,
+    "n": 3
+   },
+   "best_single_val": {
+    "mean": 0.02612758585011085,
+    "sd": 0.0005851619531014735,
+    "min": 0.025454941036839422,
+    "max": 0.026519372008348977,
+    "n": 3
+   },
+   "best_single_test_rel_l2": {
+    "mean": 0.02496030461224034,
+    "sd": 0.0014387442637906218,
+    "min": 0.023416271372258095,
+    "max": 0.0262633165918749,
+    "n": 3
+   },
+   "best_val_before_refine": {
+    "mean": 0.027258742950216058,
+    "sd": 0.0015656609616661586,
+    "min": 0.025454941036839422,
+    "max": 0.02826561171082294,
+    "n": 3
+   },
+   "refine_gain": {
+    "mean": 0.04016420229023493,
+    "sd": 0.0348170004763896,
+    "min": 0.0,
+    "max": 0.06177965367738095,
+    "n": 3
+   },
+   "n_ideas": {
+    "mean": 26.666666666666668,
+    "sd": 4.163331998932265,
+    "min": 22.0,
+    "max": 30.0,
+    "n": 3
+   },
+   "n_full": {
+    "mean": 10.0,
+    "sd": 5.0,
+    "min": 5.0,
+    "max": 15.0,
+    "n": 3
+   },
+   "n_experiments": {
+    "mean": 31.0,
+    "sd": 4.58257569495584,
+    "min": 27.0,
+    "max": 36.0,
+    "n": 3
+   },
+   "compute_s": {
+    "mean": 410.2066666666667,
+    "sd": 126.60893346574457,
+    "min": 289.67,
+    "max": 542.12,
+    "n": 3
+   },
+   "wall_s": {
+    "mean": 373.93,
+    "sd": 148.54914035429488,
+    "min": 269.74,
+    "max": 544.03,
+    "n": 3
+   },
+   "llm_calls": {
+    "mean": 12.0,
+    "sd": 1.7320508075688772,
+    "min": 10.0,
+    "max": 13.0,
+    "n": 3
+   },
+   "llm_cost_usd": {
+    "mean": 0.8295,
+    "sd": 0.11718707266588754,
+    "min": 0.6999,
+    "max": 0.928,
+    "n": 3
+   },
+   "test_per_segment": [
+    0.03353537022773586,
+    0.011416351189270492,
+    0.009903385925909199,
+    0.030059942026519227
+   ],
+   "seeds": [
+    "full_s0",
+    "full_s1",
+    "full_s2"
+   ]
+  }
+ }
+}

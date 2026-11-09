@@ -1,0 +1,96 @@
+{
+  "members": [
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.15,
+        "lr": 0.001,
+        "weight_decay": 0.001,
+        "epochs": 300,
+        "batch_size": 128,
+        "activation": "silu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 30
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          1024,
+          512
+        ],
+        "dropout": 0.05,
+        "lr": 0.0008,
+        "weight_decay": 0.0003,
+        "epochs": 300,
+        "batch_size": 128,
+        "activation": "silu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.1,
+        "lr": 0.001,
+        "weight_decay": 0.0003,
+        "epochs": 250,
+        "batch_size": 128,
+        "activation": "silu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 30
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.05,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 200,
+        "batch_size": 128,
+        "activation": "silu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 40
+    }
+  ],
+  "weights": [
+    2.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.024599963654579036,
+    "r2": 0.9945409884040435,
+    "rmse": 0.03236873055029124
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

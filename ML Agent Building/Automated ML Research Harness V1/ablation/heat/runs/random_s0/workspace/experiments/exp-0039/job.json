@@ -1,0 +1,119 @@
+{
+ "mode": "final",
+ "exp_id": "exp-0039",
+ "idea_id": "ensemble",
+ "members": [
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     512,
+     512
+    ],
+    "dropout": 0.2188489682951995,
+    "lr": 0.0006353309749933134,
+    "weight_decay": 0.005499075661406088,
+    "epochs": 262,
+    "batch_size": 64,
+    "activation": "tanh"
+   },
+   "features": "sqrt",
+   "scaler": "standard",
+   "pca": 32
+  },
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     512,
+     256,
+     128
+    ],
+    "dropout": 0.004797518857071592,
+    "lr": 0.0013169992741853,
+    "weight_decay": 0.00011246953330982432,
+    "epochs": 365,
+    "batch_size": 256,
+    "activation": "relu"
+   },
+   "features": "raw",
+   "scaler": "robust",
+   "pca": 0
+  },
+  {
+   "method": "kernel_ridge",
+   "params": {
+    "alpha": 0.002674921484451008,
+    "gamma_mult": 0.062237505553654315
+   },
+   "features": "sqrt",
+   "scaler": "standard",
+   "pca": 64
+  },
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     512,
+     512
+    ],
+    "dropout": 0.13282584869235944,
+    "lr": 0.002372605134687588,
+    "weight_decay": 1.452254880825563e-06,
+    "epochs": 239,
+    "batch_size": 256,
+    "activation": "silu"
+   },
+   "features": "raw",
+   "scaler": "robust",
+   "pca": 0
+  },
+  {
+   "method": "mlp_sklearn",
+   "params": {
+    "hidden": [
+     512,
+     256
+    ],
+    "alpha": 3.5580281338759494e-05,
+    "learning_rate_init": 0.0009368514162695851,
+    "max_iter": 300
+   },
+   "features": "sqrt",
+   "scaler": "none",
+   "pca": 32
+  }
+ ],
+ "member_ids": [
+  "idea-003",
+  "idea-024",
+  "idea-014",
+  "idea-023",
+  "idea-008"
+ ],
+ "weights": [
+  2.0,
+  2.0,
+  1.0,
+  1.0,
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s0\\data\\dataset.npz",
+ "seed": 0,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s0\\final",
+ "run_id": "heat_random_s0_20261108_151141",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": true,
+ "plan_artifact": "plan-00208",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\random_s0\\workspace\\experiments\\exp-0039",
+ "device": "cpu"
+}

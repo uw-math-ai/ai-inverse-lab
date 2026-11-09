@@ -1,0 +1,63 @@
+name: heat_full_s1
+problem: Given noisy temperature measurements at four sensor locations over time,
+  recover the four unknown piecewise-constant thermal conductivities of a 1-D rod
+  governed by the heat equation.
+simulator:
+  name: python
+  params:
+    path: examples/heat_diffusion_simulator.py
+    function: simulate
+    n_segments: 4
+    noise: 0.001
+data:
+  n_train: 3000
+  n_val: 750
+  n_test: 750
+  seed: 5
+metrics:
+  primary: rel_l2
+  secondary:
+  - r2
+  - rmse
+success:
+  threshold: 0.05
+budget:
+  compute_seconds: 400
+  max_ideas: 34
+  experiment_timeout: 120
+  llm_calls: 40
+hardware:
+  workers: 6
+  gpus: auto
+constraints:
+  allowed_methods: all
+  forbidden_methods: []
+  allow_custom_code: true
+  notes:
+  - Models may only be trained on simulated data; the test split is never used for
+    selection
+search:
+  ideators:
+  - classical
+  - ensembles
+  - neural
+  - domain
+  ideas_per_ideator: 4
+  screen_fraction: 0.1
+  rungs:
+  - 0.33
+  - 1.0
+  eta: 3
+  min_full: 4
+  refine_rounds: 3
+  refine_top_k: 3
+  refine_children: 2
+  patience: 2
+  min_improvement: 0.005
+  ensemble: true
+  repair_attempts: 1
+  llm_critic: true
+llm:
+  backend: claude_code
+  effort: medium
+seed: 1

@@ -1,0 +1,6 @@
+rank,idea,persona,origin,parent,method,features,scaler,pca,params,val_rel_l2,val_r2,val_rmse,fit_seconds,wall_seconds
+1,idea-016,domain,llm,,torch_mlp,log,standard,30,"{""hidden"": [256, 256], ""dropout"": 0.05, ""lr"": 0.001, ""weight_decay"": 0.0001, ""epochs"": 150, ""batch_size"": 128, ""activation"": ""silu""}",0.026494943557936,0.9935348151616101,0.034939842988490594,31.902270793914795,34.726
+2,idea-005,classical,llm,,custom,log,standard,0,"{""alpha"": 0.001, ""gamma_mult"": 0.5, ""lin_weight"": 1.0}",0.029542240902621204,0.9919571756877167,0.03895842451631023,0.6154952049255371,2.839
+3,idea-002,classical,llm,,kernel_ridge,log,standard,0,"{""alpha"": 0.001, ""gamma_mult"": 0.5}",0.029797395767410393,0.9918180605433469,0.03929490649046463,0.4616515636444092,2.553
+4,idea-009,ensembles,llm,,custom,log,standard,24,"{""alpha"": 1.0, ""learning_rate"": 0.05, ""max_iter"": 300, ""max_leaf_nodes"": 15}",0.03383221728079619,0.9894644319096955,0.044615771955077314,2.72888445854187,5.009
+5,idea-001,baseline,scheduler,,mean_baseline,raw,none,0,{},0.330697038745562,-0.0011333917959855389,0.4361021787143162,0.0009424686431884766,2.189

@@ -1,0 +1,57 @@
+2026-11-08 15:08:22,062 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-08 15:08:22,067 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-08 15:08:22,067 INFO llm backend: none | workers: 6 x 2 threads | gpus: none
+2026-11-08 15:08:22,068 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-08 15:08:23,250 INFO [simulator] generated 4500 samples with python in 1.2s
+2026-11-08 15:08:23,308 INFO === stage: baseline | compute used 0/400s | wall 1s
+2026-11-08 15:08:27,014 INFO   exp-0001 idea-001  mean_baseline  f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (3.7s)
+2026-11-08 15:08:27,016 INFO baseline val rel_l2 = 0.3307
+2026-11-08 15:08:27,016 INFO === stage: ideation | compute used 4/400s | wall 5s
+2026-11-08 15:08:27,032 INFO 16 ideas proposed by 4 ideators
+2026-11-08 15:08:27,032 INFO === stage: prescreen | compute used 4/400s | wall 5s
+2026-11-08 15:08:27,039 INFO prescreen: 12/16 ideas approved
+2026-11-08 15:08:27,039 INFO === stage: screen | compute used 4/400s | wall 5s
+2026-11-08 15:08:29,192 INFO   exp-0003 idea-003  pls            f=0.10 rel_l2=0.06909 r2=0.9562 rmse=0.09111 (2.1s)
+2026-11-08 15:08:29,195 INFO   exp-0002 idea-002  ridge          f=0.10 rel_l2=0.07546 r2=0.9475 rmse=0.09951 (2.1s)
+2026-11-08 15:08:29,222 INFO   exp-0004 idea-004  kernel_ridge   f=0.10 rel_l2=0.06288 r2=0.9636 rmse=0.08292 (2.2s)
+2026-11-08 15:08:29,846 INFO   exp-0007 idea-008  random_forest  f=0.10 rel_l2=0.1466 r2=0.8019 rmse=0.1934 (2.8s)
+2026-11-08 15:08:30,030 INFO   exp-0006 idea-005  extra_trees    f=0.10 rel_l2=0.1363 r2=0.8289 rmse=0.1798 (3.0s)
+2026-11-08 15:08:31,435 INFO   exp-0005 idea-006  svm            f=0.10 rel_l2=0.08846 r2=0.928 rmse=0.1167 (4.4s)
+2026-11-08 15:08:31,901 INFO   exp-0009 idea-017  extra_trees    f=0.10 rel_l2=0.184 r2=0.6885 rmse=0.2426 (2.7s)
+2026-11-08 15:08:32,097 INFO   exp-0008 idea-010  hist_gbm       f=0.10 rel_l2=0.1001 r2=0.9076 rmse=0.132 (2.9s)
+2026-11-08 15:08:33,334 INFO   exp-0011 idea-011  mlp_sklearn    f=0.10 rel_l2=0.05789 r2=0.9692 rmse=0.07635 (3.5s)
+2026-11-08 15:08:35,102 INFO   exp-0013 idea-013  mlp_sklearn    f=0.10 rel_l2=0.06807 r2=0.9573 rmse=0.08976 (3.7s)
+2026-11-08 15:08:38,899 INFO   exp-0010 idea-007  torch_mlp      f=0.10 rel_l2=0.06144 r2=0.9653 rmse=0.08103 (9.7s)
+2026-11-08 15:08:40,383 INFO   exp-0012 idea-012  torch_mlp      f=0.10 rel_l2=0.05085 r2=0.9762 rmse=0.06706 (10.3s)
+2026-11-08 15:08:40,385 INFO screen: 11/12 ideas survive the feasibility check
+2026-11-08 15:08:40,385 INFO === stage: halving | compute used 53/400s | wall 18s
+2026-11-08 15:08:42,417 INFO   exp-0017 idea-004  kernel_ridge   f=0.33 rel_l2=0.04196 r2=0.9838 rmse=0.05533 (2.0s)
+2026-11-08 15:08:44,510 INFO   exp-0015 idea-011  mlp_sklearn    f=0.33 rel_l2=0.0432 r2=0.9828 rmse=0.05696 (4.1s)
+2026-11-08 15:08:53,476 INFO   exp-0016 idea-007  torch_mlp      f=0.33 rel_l2=0.03952 r2=0.9856 rmse=0.05212 (13.1s)
+2026-11-08 15:08:57,542 INFO   exp-0014 idea-012  torch_mlp      f=0.33 rel_l2=0.03463 r2=0.989 rmse=0.04567 (17.1s)
+2026-11-08 15:08:57,542 INFO halving rung 0.33: 4 evaluated, best idea-012 0.034633
+2026-11-08 15:09:00,230 INFO   exp-0020 idea-004  kernel_ridge   f=1.00 rel_l2=0.03196 r2=0.9906 rmse=0.04215 (2.7s)
+2026-11-08 15:09:08,564 INFO   exp-0021 idea-011  mlp_sklearn    f=1.00 rel_l2=0.03332 r2=0.9898 rmse=0.04394 (11.0s)
+2026-11-08 15:09:15,858 INFO   exp-0019 idea-007  torch_mlp      f=1.00 rel_l2=0.02952 r2=0.992 rmse=0.03893 (18.3s)
+2026-11-08 15:09:24,809 INFO   exp-0018 idea-012  torch_mlp      f=1.00 rel_l2=0.02909 r2=0.9922 rmse=0.03836 (27.2s)
+2026-11-08 15:09:24,810 INFO halving rung 1.00: 4 evaluated, best idea-012 0.029085
+2026-11-08 15:09:24,810 INFO === stage: refine | compute used 148/400s | wall 63s
+2026-11-08 15:09:24,824 INFO refine: 6/6 ideas approved
+2026-11-08 15:09:27,630 INFO   exp-0027 idea-022  kernel_ridge   f=1.00 rel_l2=0.03613 r2=0.988 rmse=0.04765 (2.8s)
+2026-11-08 15:09:27,634 INFO   exp-0026 idea-020  kernel_ridge   f=1.00 rel_l2=0.03196 r2=0.9906 rmse=0.04215 (2.8s)
+2026-11-08 15:09:47,633 INFO   exp-0025 idea-023  torch_mlp      f=1.00 rel_l2=0.02945 r2=0.992 rmse=0.03884 (22.8s)
+2026-11-08 15:09:51,928 INFO   exp-0024 idea-021  torch_mlp      f=1.00 rel_l2=0.02883 r2=0.9924 rmse=0.03802 (27.1s)
+2026-11-08 15:09:58,452 INFO   exp-0023 idea-019  torch_mlp      f=1.00 rel_l2=0.02745 r2=0.9931 rmse=0.0362 (33.6s)
+2026-11-08 15:10:08,312 INFO   exp-0022 idea-018  torch_mlp      f=1.00 rel_l2=0.02664 r2=0.9935 rmse=0.03513 (43.5s)
+2026-11-08 15:10:08,316 INFO refine round 1: 6 children, best idea-018 rel_l2=0.026638 (gain 8.41%)
+2026-11-08 15:10:08,327 INFO refine: 6/6 ideas approved
+2026-11-08 15:10:33,296 INFO   exp-0028 idea-024  torch_mlp      f=1.00 rel_l2=0.02664 r2=0.9935 rmse=0.03513 (25.0s)
+2026-11-08 15:10:33,296 INFO refine round 2: 1 children, best idea-018 rel_l2=0.026638 (gain 0.00%)
+2026-11-08 15:10:33,310 INFO refine: 5/5 ideas approved
+2026-11-08 15:10:52,401 INFO   exp-0029 idea-030  torch_mlp      f=1.00 rel_l2=0.02568 r2=0.9939 rmse=0.03386 (19.1s)
+2026-11-08 15:10:52,401 INFO refine round 3: 1 children, best idea-030 rel_l2=0.025676 (gain 3.61%)
+2026-11-08 15:10:52,402 INFO === stage: final | compute used 325/400s | wall 150s
+2026-11-08 15:10:52,552 INFO greedy ensemble {'idea-030': 2, 'idea-018': 1, 'idea-021': 1}: val rel_l2=0.025099 vs best single 0.025676 (gain 2.24%) -> ensemble
+2026-11-08 15:11:36,971 INFO   exp-0030 ensemble  FINAL          f=1.00 rel_l2=0.02345 r2=0.995 rmse=0.03085 (44.4s)
+2026-11-08 15:11:36,973 INFO FINAL ensemble ['idea-030', 'idea-018', 'idea-021'] | val rel_l2=0.025099 | test {'rel_l2': 0.02345, 'r2': 0.99505, 'rmse': 0.03085}
+2026-11-08 15:11:36,973 INFO === stage: report | compute used 369/400s | wall 195s

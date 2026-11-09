@@ -1,0 +1,37 @@
+{
+  "members": [
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.15,
+        "lr": 0.001,
+        "weight_decay": 0.001,
+        "epochs": 300,
+        "batch_size": 128,
+        "activation": "silu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 30
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.0262633165918749,
+    "r2": 0.9937598846663862,
+    "rmse": 0.0345573769968214
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

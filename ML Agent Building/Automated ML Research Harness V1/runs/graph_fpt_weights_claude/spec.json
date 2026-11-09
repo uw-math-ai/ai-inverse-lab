@@ -1,0 +1,115 @@
+{
+  "name": "graph_fpt_weights",
+  "problem": "Recover the edge weights of a weighted 3x3 grid graph from empirical first-passage-time distributions r'(t, x, y) of random walks observed only on the boundary vertices (inverse problem for discrete heat equations / random walks on graphs).\n",
+  "task": "regression",
+  "simulator": {
+    "name": "graph_fpt",
+    "params": {
+      "graph": {
+        "family": "grid",
+        "rows": 3,
+        "cols": 3
+      },
+      "observed": "boundary",
+      "T": 9,
+      "walks_per_pair": 10000,
+      "weights": {
+        "low": 0.2,
+        "high": 1.0
+      },
+      "potential": {
+        "mode": "none"
+      },
+      "target": "weights"
+    }
+  },
+  "data": {
+    "n_train": 4000,
+    "n_val": 1000,
+    "n_test": 1000,
+    "seed": 7
+  },
+  "metrics": {
+    "primary": "rel_l2",
+    "secondary": [
+      "r2",
+      "rmse"
+    ]
+  },
+  "success": {
+    "metric": "rel_l2",
+    "threshold": 0.05
+  },
+  "budget": {
+    "compute_seconds": 900,
+    "wall_seconds": 600,
+    "max_ideas": 40,
+    "experiment_timeout": 240,
+    "llm_calls": 30
+  },
+  "hardware": {
+    "workers": 6,
+    "gpus": "auto",
+    "threads_per_worker": 2,
+    "gpu_devices": [],
+    "detected": {
+      "cpus": 12,
+      "gpus": [],
+      "accelerator": "cpu",
+      "torch": "2.9.1+cpu",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "python": "3.11.0"
+    }
+  },
+  "constraints": {
+    "allowed_methods": "all",
+    "forbidden_methods": [],
+    "allow_custom_code": true,
+    "notes": [
+      "Models may only be trained on simulated data; the test split is never used for selection"
+    ]
+  },
+  "search": {
+    "ideators": [
+      "classical",
+      "ensembles",
+      "neural",
+      "domain"
+    ],
+    "ideas_per_ideator": 4,
+    "screen_fraction": 0.1,
+    "baseline_margin": 0.02,
+    "rungs": [
+      0.33,
+      1.0
+    ],
+    "eta": 3,
+    "min_full": 4,
+    "refine_rounds": 3,
+    "refine_top_k": 3,
+    "refine_children": 2,
+    "patience": 2,
+    "min_improvement": 0.005,
+    "ensemble": true,
+    "ensemble_max": 5,
+    "stop_on_success": false,
+    "repair_attempts": 1,
+    "llm_critic": true
+  },
+  "llm": {
+    "backend": "claude_code",
+    "model": null,
+    "timeout": 300,
+    "effort": "medium"
+  },
+  "seed": 0,
+  "objectives": [
+    "Learn a regression model from simulated data (graph_fpt) that solves: Recover the edge weights of a weighted 3x3 grid graph from empirical first-passage-time distributions r'(t, x, y) of random walks observed only on the boundary vertices (inverse problem for discrete h",
+    "Select methods by validation rel_l2 only; the test split is used exactly once, at the end",
+    "Success criterion: test rel_l2 <= 0.05",
+    "Stay within 900 worker-seconds of compute and 600 s wall time",
+    "Eliminate weak approaches with cheap feasibility checks before spending substantial compute",
+    "Constraint: Models may only be trained on simulated data; the test split is never used for selection"
+  ],
+  "simulator_description": "Random walk on a fixed {'family': 'grid', 'rows': 3, 'cols': 3} graph with 9 vertices and 12 edges; edge weights ~ U[0.2, 1.0], mu = degree, potential {'mode': 'none'}. Observed set B = [0, 1, 2, 3, 5, 6, 7, 8] (|B|=8). Features: empirical first-passage probabilities r'(t, x, y) for t = 1..9 and (x, y) in B x B from N = 10000 walks per pair, flattened in (t, x, y) order -> 576 features. Target: weights (12 values). Inverse problem: recover graph parameters from boundary first-passage data."
+}

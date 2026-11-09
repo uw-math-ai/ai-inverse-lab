@@ -1,0 +1,16 @@
+{
+ "exp_id": "exp-0031",
+ "idea_id": "ensemble",
+ "mode": "final",
+ "fraction": 1.0,
+ "device": "cpu",
+ "test": {
+  "rel_l2": 0.023161062842123627,
+  "r2": 0.9951803044190694,
+  "rmse": 0.030475419107195072
+ },
+ "fit_seconds": 43.18088698387146,
+ "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\full_s0\\final\\model.pkl",
+ "status": "ok",
+ "elapsed": 45.22610068321228
+}

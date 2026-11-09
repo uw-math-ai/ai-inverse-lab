@@ -1,0 +1,89 @@
+{
+ "mode": "final",
+ "exp_id": "exp-0030",
+ "idea_id": "ensemble",
+ "members": [
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     256,
+     256
+    ],
+    "dropout": 0.08954734302423699,
+    "lr": 0.0015948143970774696,
+    "weight_decay": 2.370688972464005e-06,
+    "epochs": 157,
+    "batch_size": 128,
+    "activation": "silu"
+   },
+   "features": "sqrt",
+   "scaler": "standard",
+   "pca": 0
+  },
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     256,
+     256
+    ],
+    "dropout": 0.08954734302423699,
+    "lr": 0.0015948143970774696,
+    "weight_decay": 2.331652194583013e-06,
+    "epochs": 157,
+    "batch_size": 128,
+    "activation": "tanh"
+   },
+   "features": "sqrt",
+   "scaler": "standard",
+   "pca": 0
+  },
+  {
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     256,
+     256
+    ],
+    "dropout": 0.0,
+    "lr": 0.001,
+    "weight_decay": 0.00012028897186395869,
+    "epochs": 175,
+    "batch_size": 128,
+    "activation": "gelu"
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0
+  }
+ ],
+ "member_ids": [
+  "idea-030",
+  "idea-018",
+  "idea-021"
+ ],
+ "weights": [
+  2.0,
+  1.0,
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\offline_s0\\data\\dataset.npz",
+ "seed": 0,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\offline_s0\\final",
+ "run_id": "heat_offline_s0_20261108_150822",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": true,
+ "plan_artifact": "plan-00204",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\offline_s0\\workspace\\experiments\\exp-0030",
+ "device": "cpu"
+}

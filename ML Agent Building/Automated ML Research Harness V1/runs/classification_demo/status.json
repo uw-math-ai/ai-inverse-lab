@@ -1,0 +1,44 @@
+{
+ "run_id": "classification_demo_20261107_154748",
+ "stage": "done",
+ "ideas": 19,
+ "pruned": 1,
+ "best": {
+  "idea": "idea-014",
+  "method": "extra_trees",
+  "accuracy": 0.88
+ },
+ "resources": {
+  "compute_budget_s": 240.0,
+  "compute_used_s": 74.83,
+  "compute_remaining_s": 165.17,
+  "wall_elapsed_s": 24.12,
+  "wall_budget_s": 1320.0,
+  "jobs": 26,
+  "by_stage_s": {
+   "baseline": 2.04,
+   "screen": 32.49,
+   "halving": 18.66,
+   "refine": 18.49,
+   "final": 3.16
+  },
+  "llm_calls": 0,
+  "llm_calls_max": 30,
+  "llm_seconds": 0.0,
+  "llm_cost_usd": 0.0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "proposed": 12,
+  "prescreen_approved": 11,
+  "screen_survivors": 11,
+  "rung_0.33": 4,
+  "rung_1.00": 3,
+  "refine_proposed": 6,
+  "refine_approved": 6
+ },
+ "updated": 1794095292.538503,
+ "error": null,
+ "elapsed": 24.11716914176941
+}

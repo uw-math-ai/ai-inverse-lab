@@ -1,0 +1,27 @@
+{
+  "members": [
+    {
+      "method": "ridge",
+      "params": {
+        "alpha": 0.7285632345290244
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.013827545828826,
+    "r2": 0.9984944912970529,
+    "rmse": 0.00884520235009804
+  },
+  "custom_modules": [],
+  "feature_dim": 576,
+  "target_shape": [
+    12
+  ]
+}

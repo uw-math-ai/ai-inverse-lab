@@ -1,0 +1,41 @@
+2026-11-07 15:44:45,951 INFO === stage: spec | compute used 0/150s | wall 0s
+2026-11-07 15:44:45,958 INFO objective: Learn the Friedman #1 nonlinear regression function from noisy samples.
+2026-11-07 15:44:45,958 INFO llm backend: none | workers: 6 x 2 threads | gpus: none
+2026-11-07 15:44:45,959 INFO === stage: data | compute used 0/150s | wall 0s
+2026-11-07 15:44:45,962 INFO [simulator] dataset 9f85b3605f491814 loaded from cache
+2026-11-07 15:44:45,988 INFO === stage: baseline | compute used 0/150s | wall 0s
+2026-11-07 15:44:47,981 INFO   exp-0001 idea-001  mean_baseline  f=1.00 rmse=4.714 r2=-0.007589 (2.0s)
+2026-11-07 15:44:47,981 INFO baseline val rmse = 4.7136
+2026-11-07 15:44:47,981 INFO === stage: ideation | compute used 2/150s | wall 2s
+2026-11-07 15:44:47,986 INFO 8 ideas proposed by 4 ideators
+2026-11-07 15:44:47,986 INFO === stage: prescreen | compute used 2/150s | wall 2s
+2026-11-07 15:44:48,007 INFO prescreen: 7/8 ideas approved
+2026-11-07 15:44:48,007 INFO === stage: screen | compute used 2/150s | wall 2s
+2026-11-07 15:44:50,022 INFO   exp-0002 idea-002  ridge          f=0.10 rmse=2.736 r2=0.6606 (2.0s)
+2026-11-07 15:44:50,036 INFO   exp-0003 idea-003  pls            f=0.10 rmse=2.998 r2=0.5924 (2.0s)
+2026-11-07 15:44:50,170 INFO   exp-0007 idea-008  mlp_sklearn    f=0.10 rmse=2.924 r2=0.6123 (2.1s)
+2026-11-07 15:44:50,328 INFO   exp-0005 idea-006  random_forest  f=0.10 rmse=2.506 r2=0.7152 (2.3s)
+2026-11-07 15:44:50,363 INFO   exp-0004 idea-004  extra_trees    f=0.10 rmse=2.458 r2=0.7259 (2.3s)
+2026-11-07 15:44:51,854 INFO   exp-0008 idea-009  kernel_ridge   f=0.10 rmse=2.922 r2=0.6129 (1.8s)
+2026-11-07 15:44:55,405 INFO   exp-0006 idea-005  torch_mlp      f=0.10 rmse=2.843 r2=0.6336 (7.4s)
+2026-11-07 15:44:55,406 INFO screen: 7/7 ideas survive the feasibility check
+2026-11-07 15:44:55,406 INFO === stage: halving | compute used 22/150s | wall 9s
+2026-11-07 15:44:57,242 INFO   exp-0011 idea-002  ridge          f=0.33 rmse=2.7 r2=0.6693 (1.8s)
+2026-11-07 15:44:57,570 INFO   exp-0010 idea-006  random_forest  f=0.33 rmse=2.15 r2=0.7904 (2.1s)
+2026-11-07 15:44:57,618 INFO   exp-0009 idea-004  extra_trees    f=0.33 rmse=2.155 r2=0.7894 (2.2s)
+2026-11-07 15:44:57,618 INFO halving rung 0.33: 3 evaluated, best idea-006 2.1497
+2026-11-07 15:44:59,449 INFO   exp-0014 idea-002  ridge          f=1.00 rmse=2.669 r2=0.6769 (1.8s)
+2026-11-07 15:45:00,020 INFO   exp-0012 idea-006  random_forest  f=1.00 rmse=1.832 r2=0.8478 (2.4s)
+2026-11-07 15:45:00,112 INFO   exp-0013 idea-004  extra_trees    f=1.00 rmse=1.77 r2=0.8579 (2.5s)
+2026-11-07 15:45:00,112 INFO halving rung 1.00: 3 evaluated, best idea-004 1.7704
+2026-11-07 15:45:00,112 INFO === stage: refine | compute used 35/150s | wall 14s
+2026-11-07 15:45:00,120 INFO refine: 3/3 ideas approved
+2026-11-07 15:45:01,967 INFO   exp-0017 idea-011  ridge          f=1.00 rmse=2.53 r2=0.7097 (1.8s)
+2026-11-07 15:45:02,491 INFO   exp-0016 idea-012  random_forest  f=1.00 rmse=1.864 r2=0.8425 (2.4s)
+2026-11-07 15:45:02,499 INFO   exp-0015 idea-010  extra_trees    f=1.00 rmse=1.971 r2=0.8238 (2.4s)
+2026-11-07 15:45:02,507 INFO refine round 1: 3 children, best idea-004 rmse=1.7704 (gain 0.00%)
+2026-11-07 15:45:02,508 INFO === stage: final | compute used 41/150s | wall 17s
+2026-11-07 15:45:02,540 INFO greedy ensemble {'idea-004': 1}: val rmse=1.7704 vs best single 1.7704 (gain 0.00%) -> single
+2026-11-07 15:45:05,455 INFO   exp-0018 idea-004  FINAL          f=1.00 rmse=1.734 r2=0.8792 (2.9s)
+2026-11-07 15:45:05,457 INFO FINAL single ['idea-004'] | val rmse=1.7704 | test {'rmse': 1.73385, 'r2': 0.87923}
+2026-11-07 15:45:05,457 INFO === stage: report | compute used 44/150s | wall 20s
