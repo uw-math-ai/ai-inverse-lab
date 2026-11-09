@@ -362,6 +362,19 @@ def _transition_with_absorption(P, q):
         raise ValueError("q_x must not exceed the holding probability p_xx")
     return P - torch.diag(q)
 
+def first_passage_model(G, q, t_max):
+    """Differentiable exact first-passage distributions for all pairs in B."""
+    K = G.transition_matrix() - torch.diag(q)
+    per_target = []
+    for y in G.B.tolist():
+        r = K[:, y]
+        by_time = [r[G.B]]
+        avoid_target = torch.arange(G.n) != y
+        for _ in range(1, t_max):
+            r = K[:, avoid_target] @ r[avoid_target]
+            by_time.append(r[G.B])
+        per_target.append(torch.stack(by_time))
+    return torch.stack(per_target, dim=2)
 
 def exact_first_passage_literal(P, B, t_max, q=None):
     '''
@@ -385,6 +398,31 @@ def exact_first_passage_literal(P, B, t_max, q=None):
 
     return torch.tensor([[[r(t, int(x), int(y)) for y in B] for x in B]
                          for t in range(1, t_max + 1)], dtype=torch.float64)
+
+def fit_potential(G, q_upper, observed, t_max):
+    best_loss, best_q = float("inf"), None
+    for initial_q in (0.08, 0.16):
+        initial_fraction = (torch.full_like(q_upper, initial_q) / q_upper).clamp(1e-5, 1 - 1e-5)
+        theta = torch.nn.Parameter(torch.logit(initial_fraction))
+        optimizer = torch.optim.LBFGS(
+            [theta], lr=0.8, max_iter=80, tolerance_grad=1e-9,
+            tolerance_change=1e-12, line_search_fn="strong_wolfe"
+        )
+
+        def closure():
+            optimizer.zero_grad()
+            q_estimate = q_upper * torch.sigmoid(theta)
+            prediction = first_passage_model(G, q_estimate, t_max)
+            loss = torch.mean((prediction - observed[:t_max]) ** 2)
+            loss.backward()
+            return loss
+
+        optimizer.step(closure)
+        q_estimate = q_upper * torch.sigmoid(theta.detach())
+        final_loss = torch.mean((first_passage_model(G, q_estimate, t_max) - observed[:t_max]) ** 2).item()
+        if final_loss < best_loss:
+            best_loss, best_q = final_loss, q_estimate
+    return best_q
 
 @torch.no_grad()
 def empirical_first_passage(P, B, t_max, n_walks=10**6, batch=10**6, seed=0, q=None):
