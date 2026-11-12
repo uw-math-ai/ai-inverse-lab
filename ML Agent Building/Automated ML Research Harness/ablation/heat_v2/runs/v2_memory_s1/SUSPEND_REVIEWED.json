@@ -1,0 +1,7 @@
+{
+ "events": [
+  "2026-11-09T15:47:23"
+ ],
+ "review": "30 s standby 15:47:23-15:47:53 during the final stage (selection finished at 15:46:14; test scored once). Result unaffected.",
+ "accepted": true
+}

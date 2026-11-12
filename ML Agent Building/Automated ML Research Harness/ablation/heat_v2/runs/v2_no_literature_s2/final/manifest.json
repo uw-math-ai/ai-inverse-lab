@@ -2,24 +2,37 @@
   "pipeline": "v2",
   "members": [
     {
-      "kind": "physics",
+      "kind": "hybrid",
       "params": {
         "transform": "log",
-        "multistart": 4,
-        "iters": 40,
+        "iters": 15,
         "tikhonov": 0,
+        "extra_starts": 1,
         "estimator": "posterior_mean",
-        "posterior_samples": 128
+        "posterior_samples": 256
+      },
+      "init": {
+        "kind": "library",
+        "method": "ridge",
+        "params": {
+          "alpha": 0.010578919932105746
+        },
+        "features": "raw",
+        "scaler": "standard",
+        "pca": 40,
+        "target_transform": "log",
+        "noise_aug": 1,
+        "noise_scale": 0.1
       }
     }
   ],
   "member_info": [
     {
-      "label": "physics-MMSE[log,ms=4,it=40]",
-      "kind": "physics",
-      "family": "physics",
+      "label": "hybrid[ridge/raw+pca40+logy+aug1->LM15]",
+      "kind": "hybrid",
+      "family": "hybrid",
       "uses_forward": true,
-      "method_hash": "d935fa19c446"
+      "method_hash": "16e5f6d7c2b1"
     }
   ],
   "weights": [
@@ -27,29 +40,29 @@
   ],
   "task": "regression",
   "test": {
-    "rel_l2": 0.018404560569991804,
-    "r2": 0.9969665705150171,
-    "rmse": 0.024216794396592113
+    "rel_l2": 0.018326342299300843,
+    "r2": 0.9969921783674607,
+    "rmse": 0.024113874483227354
   },
   "test_bootstrap": {
-    "mean": 0.018347580293457736,
-    "std": 0.0005579425782012675,
+    "mean": 0.01826522391946012,
+    "std": 0.0005530328703519321,
     "ci95": [
-      0.017321170915590704,
-      0.019529214845567324
+      0.017245714686597864,
+      0.019441432223436673
     ],
     "n_boot": 200
   },
   "shift": {
     "k_low_0.3": {
-      "rel_l2": 0.12165947515994481,
-      "r2": 0.8999766191239105,
-      "rmse": 0.15151415003054683
+      "rel_l2": 0.09720298036108582,
+      "r2": 0.9351916938381711,
+      "rmse": 0.12105614404865342
     },
     "noise_x3": {
-      "rel_l2": 0.05118136345065137,
-      "r2": 0.9771921611076425,
-      "rmse": 0.06819335738169328
+      "rel_l2": 0.05120563786214321,
+      "r2": 0.9771619271562322,
+      "rmse": 0.0682257002797032
     }
   },
   "custom_modules": [],
@@ -87,16 +100,16 @@
     "harness_version": "2.0.0"
   },
   "research_lineage": {
-    "idea-006": {
+    "idea-013": {
       "proposal_chain": [
-        "P-010",
-        "P-002"
+        "P-009",
+        "P-001"
       ],
-      "entry": "E-05",
-      "gate": "gate-00089",
+      "entry": "E-02",
+      "gate": "gate-00170",
       "citations": [],
-      "label": "physics-MMSE[log,ms=4,it=40]",
-      "origin": "research"
+      "label": "hybrid[ridge/raw+pca40+logy+aug1->LM15]",
+      "origin": "refine"
     }
   }
 }

@@ -1,53 +1,55 @@
-2026-11-09 11:39:33,062 INFO === stage: spec | compute used 0/400s | wall 0s
-2026-11-09 11:39:33,066 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
-2026-11-09 11:39:33,066 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
-2026-11-09 11:39:33,067 INFO === stage: data | compute used 0/400s | wall 0s
-2026-11-09 11:39:33,073 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
-2026-11-09 11:39:33,242 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
-2026-11-09 11:39:33,244 INFO identifiability: Fisher cond median 48.2, CRB rel_l2 floor ~0.01856, least determined ['k1', 'k4']
-2026-11-09 11:39:33,244 INFO === stage: baseline | compute used 0/400s | wall 0s
-2026-11-09 11:39:35,632 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.4s)
-2026-11-09 11:39:35,633 INFO baseline val rel_l2 = 0.3307
-2026-11-09 11:39:35,633 INFO === stage: research | compute used 2/400s | wall 3s
-2026-11-09 11:42:20,284 INFO research round 1: running 2 pilot experiment(s)
-2026-11-09 11:42:23,861 INFO   exp-0002 pilot-P-001 physics-MLE[log,ms=4,it=40]  f=1.00 rel_l2=0.01902 r2=0.9966 rmse=0.02443 (3.6s)
-2026-11-09 11:42:33,989 INFO   exp-0003 pilot-P-004 torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.04686 r2=0.9806 rmse=0.06019 (13.7s)
-2026-11-09 11:44:12,119 WARNING [research-critic] LLM call for research critique round 2 failed: claude error: You've hit your 5-hour limit · resets 2:30pm (America/Los_Angeles)
-2026-11-09 11:44:12,127 INFO research loop: 2 rounds, 8 active, 2 abandoned — quality criteria met after 2 rounds (every active proposal >= 0.75 quality, no blocking issues, critic converged)
-2026-11-09 11:44:12,127 INFO === stage: portfolio | compute used 20/400s | wall 279s
-2026-11-09 11:44:12,131 INFO portfolio: E-01 hybrid[kernel_ridge/raw+logy->LM15], E-02 physics-MLE[log,ms=4,it=40], E-03 torch_mlp/raw+logy+aug2, E-04 custom-solver(fwd), E-05 physics-MMSE[log,ms=4,it=40], E-06 hybrid[torch_mlp/raw+logy+aug2->LM4], E-07 torch_mlp/raw, E-08 random-search x2, E-09 physics-MLE[log,ms=1,it=30]
-2026-11-09 11:44:12,131 INFO === stage: gate | compute used 20/400s | wall 279s
-2026-11-09 11:44:12,148 INFO gate: 10/10 executable methods approved
-2026-11-09 11:44:12,148 INFO === stage: screen | compute used 20/400s | wall 279s
-2026-11-09 11:44:15,348 INFO   exp-0004 idea-002  hybrid[kernel_ridge/raw+logy f=0.10 rel_l2=0.02138 r2=0.9956 rmse=0.02777 (3.2s)
-2026-11-09 11:44:17,557 INFO   exp-0005 idea-003  physics-MLE[log,ms=4,it=40]  f=1.00 rel_l2=0.02137 r2=0.9956 rmse=0.02776 (5.4s)
-2026-11-09 11:44:19,082 INFO   exp-0008 idea-006  physics-MMSE[log,ms=4,it=40] f=1.00 rel_l2=0.02042 r2=0.996 rmse=0.02653 (6.9s)
-2026-11-09 11:44:20,124 INFO   exp-0011 idea-009  extra_trees/log+pca64        f=0.10 rel_l2=0.1898 r2=0.6635 rmse=0.2465 (2.6s)
-2026-11-09 11:44:22,074 INFO   exp-0012 idea-010  extra_trees/sqrt+pca16       f=0.10 rel_l2=0.1766 r2=0.707 rmse=0.2294 (3.0s)
-2026-11-09 11:44:22,893 INFO   exp-0013 idea-011  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.02139 r2=0.9956 rmse=0.02779 (2.8s)
-2026-11-09 11:44:24,392 INFO   exp-0010 idea-008  torch_mlp/raw                f=0.10 rel_l2=0.0605 r2=0.9656 rmse=0.0786 (9.0s)
-2026-11-09 11:44:28,053 INFO   exp-0006 idea-004  torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.04479 r2=0.981 rmse=0.05819 (15.9s)
-2026-11-09 11:44:28,543 INFO   exp-0009 idea-007  hybrid[torch_mlp/raw+logy+au f=0.10 rel_l2=0.02139 r2=0.9956 rmse=0.02779 (16.3s)
-2026-11-09 11:44:44,940 INFO   exp-0007 idea-005  custom-solver(fwd)           f=0.10 rel_l2=0.02499 r2=0.994 rmse=0.03247 (32.8s)
-2026-11-09 11:44:44,945 INFO screen: 8/10 methods survive (no cross-family ranking at unequal fidelity)
-2026-11-09 11:44:44,946 INFO === stage: evaluate | compute used 117/400s | wall 312s
-2026-11-09 11:44:48,711 INFO   exp-0019 idea-010  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.1084 r2=0.8917 rmse=0.143 (3.7s)
-2026-11-09 11:44:52,810 INFO   exp-0018 idea-011  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (7.8s)
-2026-11-09 11:44:56,460 INFO   exp-0015 idea-002  hybrid[kernel_ridge/raw+logy f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (11.5s)
-2026-11-09 11:45:07,193 INFO   exp-0017 idea-003  physics-MLE[log,ms=4,it=40]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (22.2s)
-2026-11-09 11:45:14,300 INFO   exp-0014 idea-006  physics-MMSE[log,ms=4,it=40] f=1.00 rel_l2=0.019 r2=0.9967 rmse=0.02505 (29.3s)
-2026-11-09 11:45:27,788 INFO   exp-0016 idea-005  custom-solver(fwd)           f=1.00 rel_l2=0.02287 r2=0.9952 rmse=0.03016 (42.8s)
-2026-11-09 11:45:27,789 INFO evaluate: best idea-006 physics-MMSE[log,ms=4,it=40] val rel_l2=0.018998
-2026-11-09 11:45:27,790 INFO === stage: refine | compute used 235/400s | wall 355s
-2026-11-09 11:45:30,799 INFO   exp-0023 idea-015  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.123 r2=0.8607 rmse=0.1622 (3.0s)
-2026-11-09 11:45:30,910 INFO   exp-0022 idea-014  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.1085 r2=0.8916 rmse=0.1431 (3.1s)
-2026-11-09 11:45:37,782 INFO   exp-0020 idea-012  hybrid[kernel_ridge/raw+logy f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.0255 (10.0s)
-2026-11-09 11:45:37,809 INFO   exp-0021 idea-013  hybrid[kernel_ridge/raw+logy f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.0255 (10.0s)
-2026-11-09 11:45:37,810 INFO refine round 1: 4 children, best gain 0.00%
-2026-11-09 11:45:37,810 INFO === stage: predictions | compute used 261/400s | wall 365s
-2026-11-09 11:45:37,813 INFO prediction checks: {'supported': 3, 'contradicted': 1, 'inconclusive': 2, 'untestable': 3}
-2026-11-09 11:45:37,813 INFO === stage: final | compute used 261/400s | wall 365s
-2026-11-09 11:46:42,471 INFO   exp-0024 idea-006  FINAL                        f=1.00 rel_l2=0.0184 r2=0.997 rmse=0.02422 (64.6s)
-2026-11-09 11:46:42,474 INFO FINAL single ['physics-MMSE[log,ms=4,it=40]'] | val rel_l2=0.018998 | test {'rel_l2': 0.0184, 'r2': 0.99697, 'rmse': 0.02422} (95% CI [0.01732, 0.01953])
-2026-11-09 11:46:42,482 INFO === stage: report | compute used 325/400s | wall 429s
-2026-11-09 11:46:43,990 WARNING [reporter-v2] LLM call for report discussion failed: claude error: You've hit your 5-hour limit · resets 2:30pm (America/Los_Angeles)
+2026-11-09 15:27:50,414 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-09 15:27:50,430 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-09 15:27:50,430 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-09 15:27:50,431 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-09 15:27:50,435 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
+2026-11-09 15:27:50,544 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-09 15:27:50,552 INFO identifiability: Fisher cond median 48.2, CRB rel_l2 floor ~0.01856, least determined ['k1', 'k4']
+2026-11-09 15:27:50,552 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-09 15:27:52,649 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.1s)
+2026-11-09 15:27:52,651 INFO baseline val rel_l2 = 0.3307
+2026-11-09 15:27:52,651 INFO === stage: research | compute used 2/400s | wall 2s
+2026-11-09 15:30:14,864 INFO research round 1: running 2 pilot experiment(s)
+2026-11-09 15:30:17,730 INFO   exp-0003 pilot-P-002 physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01902 r2=0.9966 rmse=0.02443 (2.9s)
+2026-11-09 15:30:17,976 INFO   exp-0002 pilot-P-001 hybrid[ridge/log+pca40+logy+ f=0.10 rel_l2=0.0186 r2=0.9967 rmse=0.02388 (3.1s)
+2026-11-09 15:33:13,025 INFO research loop: 2 rounds, 6 active, 3 abandoned — quality criteria met after 2 rounds (every active proposal >= 0.75 quality, no blocking issues, critic converged)
+2026-11-09 15:33:13,025 INFO === stage: portfolio | compute used 8/400s | wall 323s
+2026-11-09 15:33:13,027 INFO portfolio: E-01 physics-MMSE[log,ms=3,it=30], E-02 hybrid[ridge/raw+pca40+logy+aug1->LM15], E-03 torch_mlp/raw, E-04 physics-MLE[log,ms=3,it=30], E-05 hybrid[extra_trees/raw+logy+aug1->LM12], E-06 hybrid[torch_mlp/raw+logy->LM12], E-07 torch_mlp/raw, E-08 random-search x2, E-09 physics-MLE[log,ms=1,it=30]
+2026-11-09 15:33:13,027 INFO === stage: gate | compute used 8/400s | wall 323s
+2026-11-09 15:33:13,042 INFO gate: 10/10 executable methods approved
+2026-11-09 15:33:13,042 INFO === stage: screen | compute used 8/400s | wall 323s
+2026-11-09 15:33:16,745 INFO   exp-0007 idea-005  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.02139 r2=0.9956 rmse=0.02778 (3.7s)
+2026-11-09 15:33:18,067 INFO   exp-0005 idea-003  hybrid[ridge/raw+pca40+logy+ f=0.10 rel_l2=0.02062 r2=0.9959 rmse=0.02679 (5.0s)
+2026-11-09 15:33:18,519 INFO   exp-0008 idea-006  hybrid[extra_trees/raw+logy+ f=0.10 rel_l2=0.02042 r2=0.996 rmse=0.02653 (5.4s)
+2026-11-09 15:33:18,687 INFO   exp-0004 idea-002  physics-MMSE[log,ms=3,it=30] f=1.00 rel_l2=0.02062 r2=0.9959 rmse=0.02679 (5.6s)
+2026-11-09 15:33:19,504 INFO   exp-0006 idea-004  torch_mlp/raw                f=0.10 rel_l2=0.0695 r2=0.9545 rmse=0.09029 (6.4s)
+2026-11-09 15:33:20,388 INFO   exp-0011 idea-009  extra_trees/log+pca64        f=0.10 rel_l2=0.1898 r2=0.6635 rmse=0.2465 (2.3s)
+2026-11-09 15:33:20,872 INFO   exp-0009 idea-007  hybrid[torch_mlp/raw+logy->L f=0.10 rel_l2=0.02008 r2=0.9961 rmse=0.02608 (7.8s)
+2026-11-09 15:33:21,248 INFO   exp-0013 idea-011  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.02139 r2=0.9956 rmse=0.02779 (2.6s)
+2026-11-09 15:33:21,264 INFO   exp-0012 idea-010  extra_trees/sqrt+pca16       f=0.10 rel_l2=0.1766 r2=0.707 rmse=0.2294 (2.7s)
+2026-11-09 15:33:23,562 INFO   exp-0010 idea-008  torch_mlp/raw                f=0.10 rel_l2=0.0605 r2=0.9656 rmse=0.0786 (6.8s)
+2026-11-09 15:33:23,563 INFO screen: 10/10 methods survive (no cross-family ranking at unequal fidelity)
+2026-11-09 15:33:23,563 INFO === stage: evaluate | compute used 56/400s | wall 333s
+2026-11-09 15:33:35,565 INFO   exp-0019 idea-005  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (12.0s)
+2026-11-09 15:33:37,564 INFO   exp-0016 idea-008  torch_mlp/raw                f=1.00 rel_l2=0.03097 r2=0.9912 rmse=0.04085 (14.0s)
+2026-11-09 15:33:39,506 INFO   exp-0018 idea-003  hybrid[ridge/raw+pca40+logy+ f=1.00 rel_l2=0.01899 r2=0.9967 rmse=0.02505 (15.9s)
+2026-11-09 15:33:41,713 INFO   exp-0020 idea-011  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (6.1s)
+2026-11-09 15:33:42,141 INFO   exp-0014 idea-007  hybrid[torch_mlp/raw+logy->L f=1.00 rel_l2=0.01903 r2=0.9967 rmse=0.0251 (18.6s)
+2026-11-09 15:33:43,437 INFO   exp-0022 idea-010  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.1084 r2=0.8917 rmse=0.143 (3.9s)
+2026-11-09 15:33:44,072 INFO   exp-0015 idea-002  physics-MMSE[log,ms=3,it=30] f=1.00 rel_l2=0.01899 r2=0.9967 rmse=0.02505 (20.5s)
+2026-11-09 15:33:44,535 INFO   exp-0023 idea-009  extra_trees/log+pca64        f=1.00 rel_l2=0.1149 r2=0.8787 rmse=0.1515 (2.8s)
+2026-11-09 15:33:48,434 INFO   exp-0017 idea-006  hybrid[extra_trees/raw+logy+ f=1.00 rel_l2=0.019 r2=0.9967 rmse=0.02505 (24.8s)
+2026-11-09 15:33:48,815 INFO   exp-0021 idea-004  torch_mlp/raw                f=1.00 rel_l2=0.02929 r2=0.9921 rmse=0.03862 (11.2s)
+2026-11-09 15:33:48,815 INFO evaluate: best idea-003 hybrid[ridge/raw+pca40+logy+aug1->LM15] val rel_l2=0.018992
+2026-11-09 15:33:48,815 INFO === stage: refine | compute used 186/400s | wall 358s
+2026-11-09 15:34:03,072 INFO   exp-0025 idea-013  hybrid[ridge/raw+pca40+logy+ f=1.00 rel_l2=0.01899 r2=0.9967 rmse=0.02505 (14.2s)
+2026-11-09 15:34:03,227 INFO   exp-0024 idea-012  hybrid[ridge/raw+pca40+logy+ f=1.00 rel_l2=0.01899 r2=0.9967 rmse=0.02505 (14.4s)
+2026-11-09 15:34:10,870 INFO   exp-0026 idea-014  hybrid[extra_trees/raw+logy+ f=1.00 rel_l2=0.019 r2=0.9967 rmse=0.02505 (22.0s)
+2026-11-09 15:34:11,821 INFO   exp-0027 idea-015  hybrid[extra_trees/raw+logy+ f=1.00 rel_l2=0.019 r2=0.9967 rmse=0.02505 (22.9s)
+2026-11-09 15:34:11,824 INFO refine round 1: 4 children, best gain 0.00%
+2026-11-09 15:34:11,824 INFO === stage: predictions | compute used 260/400s | wall 381s
+2026-11-09 15:34:11,828 INFO prediction checks: {'supported': 5, 'contradicted': 1, 'inconclusive': 0, 'untestable': 3}
+2026-11-09 15:34:11,828 INFO === stage: final | compute used 260/400s | wall 381s
+2026-11-09 15:34:53,931 INFO   exp-0028 idea-013  FINAL                        f=1.00 rel_l2=0.01833 r2=0.997 rmse=0.02411 (42.0s)
+2026-11-09 15:34:53,933 INFO FINAL single ['hybrid[ridge/raw+pca40+logy+aug1->LM15]'] | val rel_l2=0.018992 | test {'rel_l2': 0.01833, 'r2': 0.99699, 'rmse': 0.02411} (95% CI [0.01725, 0.01944])
+2026-11-09 15:34:53,945 INFO === stage: report | compute used 302/400s | wall 424s

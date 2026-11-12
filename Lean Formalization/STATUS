@@ -1,4 +1,4 @@
-Updated: 2026-11-09 (America/Los_Angeles)
+Updated: 2026-11-09, 3:37 PM (America/Los_Angeles)
 Goal: reusable Tau Ceti prerequisites for arXiv:2603.20710v1.
 Local scope: all task files, checkouts, tools and caches stay in Lean Formalization/.
 
@@ -6,11 +6,16 @@ Opened PRs:
 - #34660 https://github.com/TauCetiProject/TauCeti/pull/34660
   Finite-time first-passage factorization/convolution; commit c325d5de1d.
   Local build, source guards, header/text style, 14 environment linters, and
-  local compiled axiom/module checks pass. Remote build pending; no-stacking workflow failed on
+  local compiled axiom/module checks pass. Remote content build PASSED at
+  2026-11-09 11:19 AM Pacific (job 129361492766). No-stacking workflow failed on
   a repository-wide 2000-open-PR pagination cap, not a detected stack.
   Failure run: https://github.com/TauCetiProject/TauCeti/actions/runs/42677115064
   Report: https://github.com/TauCetiProject/TauCeti/pull/34660#issuecomment-6748551062
   Base: upstream main; this PR has exactly one new commit and one source file.
+  External scope review BLOCKS at current head:
+  https://github.com/TauCetiProject/TauCeti/pull/34660#discussion_r4516972396
+  Reviewer says cited Layer 1.3–4 is complete and requests an actual unfinished
+  consumer/target, or closure. Investigating suggestions; no scope bypass.
 Landed PRs: none.
 
 Completed preparation:
@@ -27,18 +32,26 @@ Completed preparation:
   The suggested Mathlib simplification was separately checked by Lean.
 - TauCetiReview CLI requires POSIX fcntl and cannot run here. Local trusted Lean
   checkers were invoked directly without changing their sources/settings.
+- The pagination bug is already fixed by merged TauCetiTools #210. Existing
+  consuming-workflow update PR #34081 is OPEN; do not duplicate it:
+  https://github.com/TauCetiProject/TauCeti/pull/34081
 
 In progress:
 - Monitor/fix CI and review feedback on #34660.
 - Preserve the checked Gram candidate pending a valid roadmap target.
-- Await remote content build and external review; no dependent PR opened.
-- Reassess finite-data reconstruction scope after the entrance API review.
+- Address the external scope block by checking concrete existing consumers.
+  Countdown/Mass's current recursion accepts arbitrary reset measures, whereas
+  the new first-passage theorem requires a Markov kernel; do not weaken that
+  existing result merely to introduce a consumer.
+- Remote content CI is green; address scope review before merge. No dependent PR opened.
 
-Central estimate: 5 active working days for the currently identified
-existing-roadmap prerequisite work, approximately 2026-11-16 if work continues
-daily, plus external review/merge latency. Full graph/control/reconstruction
-formalization has no defensible date until a human-owned roadmap covers it and
-the paper's coordinate conventions are settled. No roadmap exhaustion claimed.
+Central estimate: 2 further active working days for the remaining scope/consumer
+audit and a justified repair if one exists, plus external review/merge latency.
+The earlier November 16 completion forecast is superseded by the scope block;
+there is no defensible upstream completion date until an eligible target is
+established. Full graph/control/reconstruction formalization also needs suitable
+human-owned roadmap coverage and settled coordinate conventions. No roadmap
+exhaustion or complete formalization is claimed.
 
 Policy: one topic per PR; dependent PRs wait until prerequisites merge; no roadmap
 PRs/issues opened by the agent; no unverified proofs submitted as complete.
