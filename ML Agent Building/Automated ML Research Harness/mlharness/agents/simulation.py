@@ -26,8 +26,10 @@ class SimulationAgent(Agent):
     def generate(self, run_dir: Path) -> tuple[Path, A.Artifact]:
         d = self.spec.data
         n_total = d["n_train"] + d["n_val"] + d["n_test"]
-        key = hashlib.sha1(json.dumps({"sim": self.simulator.config_hash(), "n": n_total,
-                                       "seed": d["seed"]}).encode()).hexdigest()[:16]
+        identity = {"sim": self.simulator.config_hash(), "n": n_total, "seed": d["seed"]}
+        if self.spec.pipeline == "v3":
+            identity.update(protocol="v3", split_sizes={k: d[k] for k in ("n_train", "n_val", "n_test")})
+        key = hashlib.sha1(json.dumps(identity).encode()).hexdigest()[:16]
         cached = self.cache_dir / f"{key}.npz"
         out = Path(run_dir) / "data" / "dataset.npz"
         out.parent.mkdir(parents=True, exist_ok=True)

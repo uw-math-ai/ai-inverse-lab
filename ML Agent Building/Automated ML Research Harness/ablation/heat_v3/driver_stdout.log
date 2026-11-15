@@ -1,0 +1,201 @@
+=== launch 2026-11-13T17:06:42-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+
+##### v3_full seed 0 #####
+ Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\__main__.py", line 4, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 365, in main
+    return args.fn(args)
+           ^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 58, in cmd_research
+    return cmd_research_v3(args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 73, in cmd_research_v3
+    out = ResearchSchedulerV3(spec, run_dir, resume=args.resume, verbose=not args.quiet).run()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\scheduler_v3.py", line 150, in run
+    raise RuntimeError(error)
+RuntimeError: RuntimeError: final export failed: timeout after 100s
+
+tokens: 17 calls, in 1,034,742 (cache-write 0, cache-read 0), out 42,984, $8.43; fallbacks {'service_error': 5}
+WARNING: v3_full s0 had 5 failed LLM call(s); marked LLM_DEGRADED.json
+LLM usage/rate limit hit; stopping. Re-run the same command later: degraded runs are redone, valid ones are skipped.
+=== phase1 exit 1 2026-11-13T17:17:28-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+
+##### v3_offline seed 1 #####
+earch Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\report.md
+model   : C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\final\model.pkl  (single: physics-MLE[log,ms=1,it=30])
+val rel_l2: 0.019335   test: rel_l2=0.018419, r2=0.99696, rmse=0.024236
+success criterion met: True
+research: registered work resolved or explicitly deferred; no justified next study
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\evidence_bundle.json
+ 
+tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 9pm (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== phase2 exit 1 2026-11-13T17:18:31-08:00
+=== relaunch 2026-11-13T21:25:07-08:00 (budget 400 dev + 360 export reserve, compacted model views)
+=== attempt 1 2026-11-13T21:25:07-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+
+##### v3_offline seed 0 #####
+earch Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\report.md
+model   : C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\final\model.pkl  (single: physics-MLE[log,ms=1,it=30])
+val rel_l2: 0.019335   test: rel_l2=0.018419, r2=0.99696, rmse=0.024236
+success criterion met: True
+research: registered work resolved or explicitly deferred; no justified next study
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\evidence_bundle.json
+ 
+tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
+
+##### v3_full seed 0 #####
+ hannel 90 open FAILED: open failed: Connect failed
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\__main__.py", line 4, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 365, in main
+    return args.fn(args)
+           ^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 58, in cmd_research
+    return cmd_research_v3(args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 73, in cmd_research_v3
+    out = ResearchSchedulerV3(spec, run_dir, resume=args.resume, verbose=not args.quiet).run()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\scheduler_v3.py", line 150, in run
+    raise RuntimeError(error)
+RuntimeError: RuntimeError: final export failed: AttributeError: Can't pickle local object 'build_method.<locals>.BoxLMVec'
+
+tokens: 21 calls, in 1,124,013 (cache-write 0, cache-read 0), out 159,721, $15.31; fallbacks {'service_error': 8}
+WARNING: v3_full s0 had 8 failed LLM call(s); marked LLM_DEGRADED.json
+LLM usage/rate limit hit; stopping. Re-run the same command later: degraded runs are redone, valid ones are skipped.
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+
+##### v3_offline seed 1 #####
+earch Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\report.md
+model   : C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\final\model.pkl  (single: physics-MLE[log,ms=1,it=30])
+val rel_l2: 0.019335   test: rel_l2=0.018419, r2=0.99696, rmse=0.024236
+success criterion met: True
+research: registered work resolved or explicitly deferred; no justified next study
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\evidence_bundle.json
+ 
+tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 1 exits 1 1 2026-11-13T21:59:55-08:00
+=== attempt 2 2026-11-13T22:29:55-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+LLM backend unavailable before v3_full s0: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s1 (done)
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 2 exits 1 1 2026-11-13T22:30:08-08:00
+=== attempt 3 2026-11-13T23:00:08-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+LLM backend unavailable before v3_full s0: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s1 (done)
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 3 exits 1 1 2026-11-13T23:00:20-08:00
+=== attempt 4 2026-11-13T23:30:20-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+LLM backend unavailable before v3_full s0: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s1 (done)
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 4 exits 1 1 2026-11-13T23:30:33-08:00
+=== attempt 5 2026-11-14T00:00:33-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+LLM backend unavailable before v3_full s0: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s1 (done)
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-opus-5-5'): claude error: You've hit your 5-hour limit � resets 2:10am (America/Los_Angeles)
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 5 exits 1 1 2026-11-14T00:00:45-08:00
+=== core relaunch 2026-11-14T13:05:09-08:00 (scope: full x3, opus_top x1, offline x3; usage-limit wait mode; model-view dedupe; pickle gate)
+=== attempt 1 2026-11-14T13:05:09-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+
+##### v3_offline seed 0 #####
+earch Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\report.md
+model   : C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\final\model.pkl  (single: physics-MLE[log,ms=1,it=30])
+val rel_l2: 0.019335   test: rel_l2=0.018419, r2=0.99696, rmse=0.024236
+success criterion met: True
+research: registered work resolved or explicitly deferred; no justified next study
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\evidence_bundle.json
+ 
+tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
+
+##### v3_full seed 0 #####
+me setting (exact forward model, known IC, known Gaussian noise sigma=0.001); the control is one untuned extra_trees configuration; row-bootstrap intervals exclude ET training-seed and multistart-RNG variation; no seed-1 hybrid exists; the forward-eval split into residual/Jacobian/rejected-step counts is unmeasured; and no synthesis should rank hybrid against physics, attribute the hybrid result to the ET initializer, or generalize beyond this sensor layout and discretization. Verdicts remain with the independent verifier.
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_full_s0\evidence_bundle.json
+ 
+tokens: 24 calls, in 842,989 (cache-write 0, cache-read 0), out 58,570, $8.01; fallbacks {}
+
+##### v3_opus_top seed 0 #####
+=== core relaunch 4 2026-11-14T13:25:28-08:00 (fixes: per-row multistart seeding, specialist schema + default id)
+=== attempt 1 2026-11-14T13:25:28-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+
+##### v3_offline seed 0 #####
+earch Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\report.md
+model   : C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\final\model.pkl  (single: physics-MLE[log,ms=1,it=30])
+val rel_l2: 0.019335   test: rel_l2=0.018419, r2=0.99696, rmse=0.024236
+success criterion met: True
+research: registered work resolved or explicitly deferred; no justified next study
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s0\evidence_bundle.json
+ 
+tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
+
+##### v3_full seed 0 #####
+WARNING: machine slept during v3_full s0 (['2026-11-14T13:38:45']); marked SUSPENDED.json, will be redone
+o seed-variance estimate, row-resampling-only bootstrap with n_bootstrap=200, development split only. Budget: 217 s of 760 s used, 543 s remaining, forward evals far under the cap. Export is the best executed full-fidelity arm by validation rel_l2, which is the S-Q2-02 posterior_mean arm (0.019047, resu-00348), with the S-Q1-03 physics mode arm (0.019334) as the pre-registered default; the difference between them is not statistically established. Nothing here certifies a claim; verdicts remain with the executor and critic.
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_full_s0\evidence_bundle.json
+ 
+tokens: 39 calls, in 1,786,483 (cache-write 0, cache-read 0), out 101,162, $17.27; fallbacks {'invalid_json': 2}
+
+##### v3_opus_top seed 0 #####
+The learned controls are fixed and untuned, with 1-2 seeds. Uncertainty covers row sampling only.
+- The output is the best-objective projected-LM iterate, not a certified MLE (objections 063, 111).
+- The CFL number and interface averaging are unverified (018, 040, 067, 080, 094).
+- Each comparison stands on its own; there is no family-wise claim.
+
+Q-2 (hybrid initializer) and Q-3 (Fisher identifiability) were not studied because the study limit was reached. They remain open.
+
+Everything above is for independent review.
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_opus_top_s0\evidence_bundle.json
+ 
+tokens: 30 calls, in 1,408,079 (cache-write 0, cache-read 0), out 167,228, $9.33; fallbacks {}
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+
+##### v3_offline seed 1 #####
+earch Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\report.md
+model   : C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\final\model.pkl  (single: physics-MLE[log,ms=1,it=30])
+val rel_l2: 0.019335   test: rel_l2=0.018419, r2=0.99696, rmse=0.024236
+success criterion met: True
+research: registered work resolved or explicitly deferred; no justified next study
+evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\ablation\heat_v3\runs\v3_offline_s1\evidence_bundle.json
+ 
+tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
+
+##### v3_full seed 1 #####

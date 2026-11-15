@@ -1,0 +1,87 @@
+{
+ "exp_id": "exp-0011",
+ "idea_id": "idea-011",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cuda:0",
+ "val": {
+  "rel_l2": 0.028045400632179675,
+  "r2": 0.9927600207712438,
+  "rmse": 0.0369844869642745
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 9.44140362739563,
+ "predict_seconds": 0.008517026901245117,
+ "latency_ms_per_sample": 0.011356035868326822,
+ "warnings": [],
+ "kind": "library",
+ "family": "data-driven",
+ "label": "torch_mlp/raw+logy",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.038879904859616704,
+  0.016166404956216587,
+  0.014426865408033904,
+  0.033636227354571266
+ ],
+ "train": {
+  "rel_l2": 0.01721128730201791
+ },
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794635002_exp-0011/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-5",
+ "arm_id": "S-Q1-5.torch_mlp",
+ "claim_ids": [
+  "C-Q1-5a",
+  "C-Q1-5b",
+  "C-Q1-5c",
+  "C-Q1-5d"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "6347432c5bd6",
+ "effective_method": {
+  "kind": "library",
+  "method": "torch_mlp",
+  "params": {
+   "hidden": [
+    256,
+    256
+   ],
+   "dropout": 0.0,
+   "lr": 0.001,
+   "weight_decay": 0.0001,
+   "epochs": 150,
+   "batch_size": 128,
+   "activation": "gelu"
+  },
+  "features": "raw",
+  "scaler": "standard",
+  "pca": 0,
+  "target_transform": "log",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 0,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794635002_exp-0011/val_idx.npy",
+ "status": "ok",
+ "elapsed": 10.163376092910767
+}

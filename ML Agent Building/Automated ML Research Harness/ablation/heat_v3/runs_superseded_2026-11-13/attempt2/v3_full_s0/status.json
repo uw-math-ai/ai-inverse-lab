@@ -1,0 +1,40 @@
+{
+ "run_id": "heat_v3_full_s0_20261113_212624",
+ "stage": "failed",
+ "ideas": 28,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-022",
+  "method": "custom-solver(fwd)",
+  "rel_l2": 0.019325695574256917
+ },
+ "resources": {
+  "compute_budget_s": 760.0,
+  "compute_used_s": 361.1,
+  "compute_remaining_s": 398.9,
+  "wall_elapsed_s": 1934.75,
+  "wall_budget_s": 7200.0,
+  "jobs": 23,
+  "by_stage_s": {
+   "study": 358.22,
+   "final": 2.88
+  },
+  "llm_calls": 29,
+  "llm_calls_max": 80,
+  "llm_seconds": 1700.89,
+  "llm_cost_usd": 15.3129,
+  "llm_by_phase": {
+   "execution": 29
+  },
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794635919.1867437,
+ "error": "RuntimeError: final export failed: AttributeError: Can't pickle local object 'build_method.<locals>.BoxLMVec'",
+ "pipeline": "v3",
+ "elapsed": 1934.753233909607,
+ "research_stop": "registered work resolved or explicitly deferred; no justified next study"
+}

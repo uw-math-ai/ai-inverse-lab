@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import math
 import os
 import subprocess
 import sys
@@ -25,6 +26,13 @@ def cache_key(job: dict, data_key: str) -> str | None:
                 "val_subsample": job.get("val_subsample"), "data": data_key, "seed": job["seed"],
                 "data_seed": job["data_seed"], "forward": bool(job.get("forward_access")),
                 "sim": job.get("simulator_hash"), "max_fwd": job.get("max_forward_evals")}
+        if job.get("pipeline") == "v3":
+            blob.update(v=3, protocol=job.get("protocol_version", "study-v3"),
+                        diagnostics=job.get("diagnostic_requests", []),
+                        method_contract=job.get("method_contract"),
+                        split_fingerprint=job.get("split_fingerprint"),
+                        matching_policy=job.get("matching_policy"),
+                        shared_computation=job.get("shared_computation"))
         return hashlib.sha1(json.dumps(blob, sort_keys=True, default=str).encode()).hexdigest()[:16]
     if job["mode"] != "train_eval":
         return None
@@ -64,6 +72,11 @@ class Executor:
             return list(pool.map(lambda j: self._run_one(j, stage), jobs))
 
     def _timeout(self, job, stage) -> float:
+        if job.get("pipeline") == "v3" and job.get("timeout_seconds") is not None:
+            timeout = float(job["timeout_seconds"])
+            if not math.isfinite(timeout) or timeout <= 0:
+                raise ValueError("V3 timeout_seconds must be finite and positive")
+            return min(timeout, max(0.001, self.resources.wall_remaining()))
         t = float(self.spec.budget["experiment_timeout"])
         if job["mode"] in ("final", "final_v2"):
             return t * max(1, len(job.get("members") or job.get("members_v2") or [])) * 3
@@ -74,12 +87,18 @@ class Executor:
         if key and key in self.cache:
             res = dict(self.cache[key])
             res.update(exp_id=job["exp_id"], cached=True)
+            if job.get("pipeline") == "v3":
+                res["reused_result_exp_id"] = self.cache[key].get("exp_id")
+                res["wall_seconds"] = 0.0
+                for name in ("idea_id", "study_id", "arm_id", "claim_ids", "parent_task_id", "parent_agent_id", "budget_group"):
+                    res[name] = job.get(name)
             art = self.store.put(A.RESULT, res, author="executor", idea_id=job["idea_id"],
                                  parents=[job["plan_artifact"]], stage=stage,
                                  summary=f"{job['exp_id']} (cached) {self._summ(res)}")
             res["artifact_id"] = art.id
             return res
-        if self.resources.exhausted(stage):
+        if self.resources.exhausted(stage) or (job.get("pipeline") == "v3" and
+                                              (self.resources.remaining() <= 0 or self.resources.wall_remaining() <= 0)):
             res = {"status": "skipped_budget", "exp_id": job["exp_id"], "idea_id": job["idea_id"],
                    "fraction": job.get("fraction"), "error": "compute budget for this stage exhausted"}
             art = self.store.put(A.RESULT, res, author="executor", idea_id=job["idea_id"],
@@ -94,6 +113,7 @@ class Executor:
                    PYTHONWARNINGS="ignore")
         timeout = self._timeout(job, stage)
         use_remote = bool(self.remote is not None and self.remote.accepts(job))
+        dispatch_started = time.time()
         if use_remote:
             t0 = time.time()
             job["device"] = "remote"
@@ -124,23 +144,35 @@ class Executor:
             dev = rres.get("device", "remote")
             timed_out = rres.get("status") == "timeout"
             stderr = rres.get("stderr", "")
+        if job.get("pipeline") == "v3":
+            elapsed = time.time()-dispatch_started  # includes failed remote attempt and device allocation
         self.resources.charge(elapsed, stage, job["idea_id"])
         rp = job_dir / "result.json"
         if timed_out:
             res = {"status": "timeout", "error": f"timeout after {timeout:.0f}s"}
         elif rp.exists():
             res = json.loads(rp.read_text())
-            if use_remote and res.get("val_pred_path"):        # downloaded next to the local job
-                res["val_pred_path"] = str(job_dir / "val_pred.npy")
+            if use_remote:        # artifacts were downloaded next to the local job; drop remote paths
+                for field, name in (("val_pred_path", "val_pred.npy"), ("val_idx_path", "val_idx.npy")):
+                    if res.get(field):
+                        res[field] = str(job_dir / name)
         else:
             res = {"status": "error", "error": "runner produced no result", "traceback": stderr}
         res.update(exp_id=job["exp_id"], idea_id=job["idea_id"], fraction=job.get("fraction"),
                    wall_seconds=round(elapsed, 3), device=dev, cache_key=key, stage=stage)
+        if job.get("pipeline") == "v3":
+            for name in ("study_id", "arm_id", "claim_ids", "parent_task_id", "parent_agent_id",
+                         "budget_group", "protocol_version", "split_fingerprint"):
+                res[name] = job.get(name)
+            res["timeout_seconds"] = timeout
+            res["timeout_overhead_seconds"] = max(0.0, elapsed-timeout) if timed_out else 0.0
         art = self.store.put(A.RESULT, res, author="executor", idea_id=job["idea_id"],
                              parents=[job["plan_artifact"]], stage=stage, files=[str(job_dir)],
                              summary=f"{job['exp_id']} {self._summ(res)}")
         self.store.put(A.RESOURCE, {"type": "experiment", "exp_id": job["exp_id"], "seconds": round(elapsed, 3),
-                                    "device": dev, "threads": job.get("threads"), "stage": stage},
+                                    "device": dev, "threads": job.get("threads"), "stage": stage,
+                                    **({k: job.get(k) for k in ("study_id", "arm_id", "parent_task_id", "parent_agent_id", "budget_group")}
+                                       if job.get("pipeline") == "v3" else {})},
                        author="executor", idea_id=job["idea_id"], parents=[art.id], stage=stage,
                        summary=f"{job['exp_id']}: {elapsed:.1f}s on {dev}")
         res["artifact_id"] = art.id

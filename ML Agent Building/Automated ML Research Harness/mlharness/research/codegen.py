@@ -24,7 +24,9 @@ CONTRACT = {
                       "upper, noise_std, param_names, n_params, facts, clip(theta), prior_center()"),
 }
 RULES = ("Allowed imports: numpy, scipy, sklearn, torch, math. No file, network or process access; no getattr/"
-         "setattr/eval/exec/open; no dunder attributes except __init__/__call__; never reference test data.")
+         "setattr/eval/exec/open; no dunder attributes except __init__/__call__; never reference test data. "
+         "Define every class and helper function at module level (never inside build_model/build_method) "
+         "and store no lambdas on the model: exported models are pickled.")
 
 
 class CodeEngineer(Agent):

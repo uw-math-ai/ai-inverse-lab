@@ -44,6 +44,14 @@ def check_code_v2(code: str, contract: str = "build_model") -> list[str]:
         return [f"SyntaxError: {exc}"]
     if not any(isinstance(n, ast.FunctionDef) and n.name == contract for n in tree.body):
         problems.append(f"code must define a top-level {CONTRACTS.get(contract, contract)}")
+    # Exported models are pickled; a class defined inside a function cannot be pickled, so a method
+    # that evaluates fine in development would fail only at final export.
+    for top in tree.body:
+        if isinstance(top, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            for inner in ast.walk(top):
+                if isinstance(inner, ast.ClassDef):
+                    problems.append(f"class {inner.name} must be defined at module level, not inside "
+                                    f"{top.name}() (exported models are pickled)")
     for node in ast.walk(tree):
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             names = [a.name for a in node.names] if isinstance(node, ast.Import) else [node.module or ""]

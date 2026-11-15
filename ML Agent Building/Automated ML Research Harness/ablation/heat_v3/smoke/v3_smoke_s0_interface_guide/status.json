@@ -1,0 +1,40 @@
+{
+ "run_id": "heat_v3_smoke_s0_20261113_163324",
+ "stage": "done",
+ "ideas": 8,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-004",
+  "method": "physics-MLE[log,ms=4,it=30]",
+  "rel_l2": 0.005529704324879796
+ },
+ "resources": {
+  "compute_budget_s": 120.0,
+  "compute_used_s": 23.94,
+  "compute_remaining_s": 96.06,
+  "wall_elapsed_s": 1490.31,
+  "wall_budget_s": 2400.0,
+  "jobs": 9,
+  "by_stage_s": {
+   "study": 16.46,
+   "final": 7.49
+  },
+  "llm_calls": 17,
+  "llm_calls_max": 24,
+  "llm_seconds": 1472.85,
+  "llm_cost_usd": 9.8793,
+  "llm_by_phase": {
+   "execution": 17
+  },
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 2,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794617894.4528408,
+ "error": null,
+ "pipeline": "v3",
+ "elapsed": 1490.3083531856537,
+ "research_stop": "action limit reached"
+}

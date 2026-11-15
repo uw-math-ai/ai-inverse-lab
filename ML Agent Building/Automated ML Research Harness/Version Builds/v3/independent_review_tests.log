@@ -1,0 +1,15 @@
+test_comparison_disallows_unregistered_method_changes (test_v3_review.IndependentScientificReview.test_comparison_disallows_unregistered_method_changes) ... ok
+test_comparison_uncertainty_must_describe_registered_pair (test_v3_review.IndependentScientificReview.test_comparison_uncertainty_must_describe_registered_pair) ... ok
+test_concurrent_begin_consumes_exposure_once (test_v3_review.IndependentScientificReview.test_concurrent_begin_consumes_exposure_once) ... ok
+test_critic_objection_cannot_resolve_with_unrelated_work (test_v3_review.IndependentScientificReview.test_critic_objection_cannot_resolve_with_unrelated_work) ... ok
+test_duplicate_persona_instances_and_real_nested_callbacks (test_v3_review.IndependentScientificReview.test_duplicate_persona_instances_and_real_nested_callbacks) ... ok
+test_integrated_scripted_researcher_and_certified_resume (test_v3_review.IndependentScientificReview.test_integrated_scripted_researcher_and_certified_resume) ... ok
+test_malformed_protocol_returns_invalid_record (test_v3_review.IndependentScientificReview.test_malformed_protocol_returns_invalid_record) ... ok
+test_paired_evidence_scenarios_change_subsequent_action (test_v3_review.IndependentScientificReview.test_paired_evidence_scenarios_change_subsequent_action) ... ok
+test_scalar_uncertainty_is_an_evidence_obligation (test_v3_review.IndependentScientificReview.test_scalar_uncertainty_is_an_evidence_obligation) ... ok
+test_study_missing_uncertainty_differs_from_overlapping_interval (test_v3_review.IndependentScientificReview.test_study_missing_uncertainty_differs_from_overlapping_interval) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 13.672s
+
+OK

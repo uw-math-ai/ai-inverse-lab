@@ -1,0 +1,84 @@
+{
+  "schema": "v3.1",
+  "model_quality": {},
+  "study_count": 2,
+  "studies_complete": 1,
+  "study_completion_rate": 0.5,
+  "orphan_studies": 0,
+  "claim_outcomes": {
+    "supported": 0,
+    "contradicted": 0,
+    "inconclusive": 5,
+    "untestable": 0
+  },
+  "claim_evidence_coverage": 1.0,
+  "claim_reliability": {
+    "unsupported_support_count": 0,
+    "supported_claims_have_evidence": true,
+    "scope": "record integrity; not an independent truth assessment"
+  },
+  "claim_resolution_rate": 0.0,
+  "reproducibility": {
+    "schema_version": 3,
+    "certified": false,
+    "passed": false,
+    "protocol": "pristine-repeat-reload-partition-v1",
+    "atol": 1e-10,
+    "rtol": 1e-08,
+    "checks": {
+      "finite_shape": true,
+      "repeat": true,
+      "reload": true,
+      "partition": false
+    },
+    "reasons": [
+      "partition check failed"
+    ],
+    "max_abs_differences": {
+      "repeat": 0.0,
+      "reload": 0.0,
+      "partition": 0.023731306972196275
+    },
+    "input_role": "development",
+    "n_rows": 750,
+    "output_shape": [
+      750,
+      4
+    ]
+  },
+  "cost": {
+    "compute_budget_s": 760.0,
+    "compute_used_s": 196.22,
+    "compute_remaining_s": 563.78,
+    "wall_elapsed_s": 764.17,
+    "wall_budget_s": 7200.0,
+    "jobs": 13,
+    "by_stage_s": {
+      "study": 133.92,
+      "final": 62.31
+    },
+    "llm_calls": 24,
+    "llm_calls_max": 80,
+    "llm_seconds": 637.14,
+    "llm_cost_usd": 8.0054,
+    "llm_by_phase": {
+      "execution": 24
+    },
+    "literature_queries": 0,
+    "literature_failures": 0,
+    "workers": 6,
+    "gpus": []
+  },
+  "discovery": {
+    "established": null,
+    "reason": "method novelty requires explicit independent attribution review"
+  },
+  "transfer": {
+    "established": null,
+    "reason": "no independent-instance transfer evaluation supplied"
+  },
+  "time_to_resolved_questions": {
+    "value": null,
+    "reason": "requires registered question-start and resolution timestamps"
+  }
+}

@@ -146,23 +146,31 @@ class PhysicsInversion(BaseEstimator, RegressorMixin):
             self.sigma_ = est if est > 0 else None
         return self
 
-    def _starts(self, n, p, lo, hi, init=None):
-        rng = np.random.default_rng(self.seed)
+    def _starts(self, n, p, lo, hi, init=None, X=None):
         zlo, zhi = _to_z(lo, self.transform), _to_z(hi, self.transform)
         starts = []
         if init is not None:
             starts.append(np.clip(_to_z(np.clip(init, lo, hi), self.transform), zlo, zhi))
         center = (np.sqrt(lo * hi) if self.transform == "log" else 0.5 * (lo + hi))
         starts.append(np.broadcast_to(_to_z(center, self.transform), (n, p)).copy())
-        for _ in range(max(0, int(self.multistart) - 1)):
-            starts.append(rng.uniform(zlo, zhi, size=(n, p)))
+        extra = max(0, int(self.multistart) - 1)
+        if extra:
+            # Random starts are seeded per sample from the observation itself (as in _posterior_mean), so a
+            # prediction never depends on which other samples share its batch; a single batch-wide stream
+            # made exported multistart models fail the V3 partition certificate.
+            import zlib
+            draws = np.empty((extra, n, p))
+            for i in range(n):
+                key = (zlib.crc32(np.ascontiguousarray(X[i], dtype=np.float64).tobytes()) if X is not None else i)
+                draws[:, i, :] = np.random.default_rng([int(self.seed) + 11, key]).uniform(zlo, zhi, size=(extra, p))
+            starts.extend(draws[j] for j in range(extra))
         return starts, zlo, zhi
 
     def _solve(self, X, init=None, iters=None):
         X = np.asarray(X, dtype=float)
         p = int(self.n_params_out_ or self.context.n_params)
         lo, hi = self._bounds(p)
-        starts, zlo, zhi = self._starts(len(X), p, lo, hi, init)
+        starts, zlo, zhi = self._starts(len(X), p, lo, hi, init, X=X)
         zprior = _to_z(np.sqrt(lo * hi) if self.transform == "log" else 0.5 * (lo + hi), self.transform)
         best_z = best_c = None
         t0 = time.time()
@@ -268,8 +276,8 @@ class HybridInversion(PhysicsInversion):
         self.fit_report_["initializer_fit_seconds"] = time.time() - t0
         return self
 
-    def _starts(self, n, p, lo, hi, init=None):
-        starts, zlo, zhi = super()._starts(n, p, lo, hi, init)
+    def _starts(self, n, p, lo, hi, init=None, X=None):
+        starts, zlo, zhi = super()._starts(n, p, lo, hi, init, X=X)
         # ML start first; the prior-centre start is kept only if extra_starts > 0
         keep = 1 + max(0, int(self.extra_starts))
         return starts[:keep], zlo, zhi

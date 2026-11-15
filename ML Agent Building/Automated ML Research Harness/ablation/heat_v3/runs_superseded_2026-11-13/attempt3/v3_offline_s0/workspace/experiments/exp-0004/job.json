@@ -1,0 +1,77 @@
+{
+ "mode": "final_v3",
+ "exp_id": "exp-0004",
+ "idea_id": "idea-003",
+ "pipeline": "v3",
+ "members_v2": [
+  {
+   "kind": "physics",
+   "params": {
+    "transform": "log",
+    "multistart": 1,
+    "iters": 30,
+    "tikhonov": 0.0,
+    "estimator": "mode",
+    "posterior_samples": 128
+   }
+  }
+ ],
+ "member_ids": [
+  "idea-003"
+ ],
+ "forward_access_members": [
+  true
+ ],
+ "weights": [
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_offline_s0\\data\\dataset.npz",
+ "seed": 0,
+ "data_seed": 5,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_offline_s0\\final",
+ "run_id": "heat_v3_offline_s0_20261114_130530",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "max_forward_evals": null,
+ "bootstrap": 200,
+ "data_cache_key": "346a0cfc9d47587b",
+ "spec_hash": "3b21c2ad92",
+ "harness_version": "2.0.0",
+ "lineage": {
+  "idea-003": {
+   "label": "physics-MLE[log,ms=1,it=30]",
+   "origin": "baseline",
+   "study_id": "S-1",
+   "arm_id": "S-1.physics",
+   "gate": "gate-00039",
+   "baseline_identity": true
+  }
+ },
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_offline_s0\\workspace\\experiments\\exp-0004",
+ "plan_artifact": "plan-00069",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "budget_group": "final-export",
+ "timeout_seconds": 360.0,
+ "selection_hash": "bad6e3a676341f9036c06283de6f9958f003a837855d199b7ebfc05b11a9b116",
+ "exposure_token": "exposure-47c25fe20e854bea83a17f883da28432",
+ "device": "cpu"
+}

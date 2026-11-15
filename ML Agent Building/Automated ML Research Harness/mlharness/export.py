@@ -51,3 +51,64 @@ def load_model(path) -> FinalModel:
                 load_custom_module(str(code), item["module_name"])
     with open(path, "rb") as f:
         return pickle.load(f)
+
+
+def certify_model(path_or_model, X, *, atol=1e-10, rtol=1e-8) -> dict:
+    """Check a pristine export on development inputs, without consuming any labels.
+
+    Every independent check starts from the same serialized state. Checks never rewrite the
+    candidate. Stateful, batch-sensitive, stochastic, malformed or nonfinite predictions are
+    explicitly uncertified; a configured random seed alone is not a certificate.
+    """
+    checks, reasons, differences = {}, [], {}
+    certificate = {"schema_version": 3, "certified": False, "passed": False,
+                   "protocol": "pristine-repeat-reload-partition-v1", "atol": float(atol),
+                   "rtol": float(rtol), "checks": checks, "reasons": reasons,
+                   "max_abs_differences": differences, "input_role": "development"}
+    try:
+        if atol < 0 or rtol < 0 or not np.isfinite([atol, rtol]).all():
+            raise ValueError("certification tolerances must be finite and nonnegative")
+        X = np.asarray(X)
+        certificate["n_rows"] = len(X)
+        if len(X) < 2:
+            raise ValueError("certification requires at least two development rows")
+        if isinstance(path_or_model, (str, Path)):
+            def fresh():
+                return load_model(path_or_model)
+        else:
+            pristine = pickle.dumps(path_or_model)
+            def fresh():
+                return pickle.loads(pristine)
+        model = fresh()
+        canonical = np.asarray(model.predict(X)).copy()
+
+        def valid(p):
+            if p.ndim == 0 or p.shape[0] != len(X):
+                return False
+            if np.issubdtype(p.dtype, np.number):
+                return bool(np.isfinite(p).all())
+            return bool(all(v is not None for v in p.ravel()))
+
+        checks["finite_shape"] = valid(canonical)
+        certificate["output_shape"] = list(canonical.shape)
+        predictions = {"repeat": np.asarray(model.predict(X)).copy(),
+                       "reload": np.asarray(fresh().predict(X)).copy()}
+        batch_model = fresh()
+        partitions = np.array_split(X, min(3, len(X)))
+        predictions["partition"] = np.concatenate([np.asarray(batch_model.predict(part)).copy()
+                                                    for part in partitions], axis=0)
+        for name, prediction in predictions.items():
+            ok = checks["finite_shape"] and valid(prediction) and prediction.shape == canonical.shape
+            if ok and np.issubdtype(canonical.dtype, np.number):
+                differences[name] = float(np.max(np.abs(prediction - canonical)))
+                ok = bool(np.allclose(prediction, canonical, atol=atol, rtol=rtol))
+            elif ok:
+                ok = bool(np.array_equal(prediction, canonical))
+            checks[name] = ok
+        for name, passed in checks.items():
+            if not passed:
+                reasons.append(f"{name} check failed")
+        certificate["certified"] = certificate["passed"] = bool(checks and all(checks.values()))
+    except Exception as exc:
+        reasons.append(f"{type(exc).__name__}: {str(exc)[:400]}")
+    return certificate

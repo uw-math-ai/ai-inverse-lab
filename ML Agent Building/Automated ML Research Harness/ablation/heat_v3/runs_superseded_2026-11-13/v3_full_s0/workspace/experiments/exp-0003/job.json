@@ -1,0 +1,131 @@
+{
+ "mode": "method_eval",
+ "exp_id": "exp-0003",
+ "idea_id": "idea-003",
+ "method": {
+  "kind": "physics",
+  "params": {
+   "transform": "log",
+   "multistart": 6,
+   "iters": 30,
+   "tikhonov": 0.0,
+   "estimator": "mode",
+   "posterior_samples": 128
+  }
+ },
+ "fraction": 1.0,
+ "val_subsample": null,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 0,
+ "feature_shape": null,
+ "stage": "study",
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "simulator_hash": "d287f853686c",
+ "forward_access": true,
+ "max_forward_evals": 3000000,
+ "plan_artifact": "plan-00057",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0003",
+ "pipeline": "v3",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-1",
+ "arm_id": "S-1.physics_map",
+ "claim_ids": [
+  "C-1",
+  "C-2"
+ ],
+ "diagnostic_requests": [
+  {
+   "id": "S-1.paired",
+   "kind": "paired",
+   "treatment": "S-1.physics_map",
+   "control": "S-1.library_et",
+   "required": true
+  },
+  {
+   "id": "S-1.paired_kr",
+   "kind": "paired",
+   "treatment": "S-1.physics_map",
+   "control": "S-1.library_kr",
+   "required": true
+  },
+  {
+   "id": "S-1.per_target",
+   "kind": "per_target",
+   "treatment": "S-1.physics_map",
+   "control": "S-1.library_et",
+   "required": true
+  }
+ ],
+ "method_contract": {
+  "schema_version": 3,
+  "requested": {
+   "kind": "physics",
+   "params": {
+    "estimator": "mode",
+    "iters": 30,
+    "multistart": 8,
+    "posterior_samples": 128,
+    "tikhonov": 0.0,
+    "transform": "log"
+   }
+  },
+  "effective": {
+   "kind": "physics",
+   "params": {
+    "transform": "log",
+    "multistart": 6,
+    "iters": 30,
+    "tikhonov": 0.0,
+    "estimator": "mode",
+    "posterior_samples": 128
+   }
+  },
+  "requested_hash": "095c98b8d4d7055f52d4e5322bec4a8c4833d5eff5c7112ddcc4cbf485ddc01a",
+  "effective_hash": "2b8fd20de45f63459bfd6a5f5e6efc6ef2177189a30fda70bb776a7b288ebd67",
+  "source_hash": null,
+  "normalization_changes": [
+   {
+    "field": "params.multistart",
+    "requested": 8,
+    "effective": 6,
+    "requested_present": true,
+    "effective_present": true
+   }
+  ],
+  "interface": {
+   "fit": "fit(X_train,y_train)",
+   "predict": "predict(X)->one finite prediction per row",
+   "factory": "method-kind-specific factory"
+  },
+  "diagnostics": {
+   "declared": [],
+   "observed": [],
+   "verified": false
+  },
+  "inference_policy": "repeatability requires exported-artifact certification"
+ },
+ "row_hash": "260db427b9210269aa3df7d5d3515f223aa5519cf0e75558d38942150f9295b2",
+ "parent_agent_id": "researcher-003",
+ "parent_task_id": null,
+ "budget_group": "study:S-1:4",
+ "timeout_seconds": 120.0,
+ "device": "remote"
+}

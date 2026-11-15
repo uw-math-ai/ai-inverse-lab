@@ -1,0 +1,175 @@
+{
+  "run_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0",
+  "final": {
+    "kind": "single",
+    "members": [
+      "idea-002"
+    ],
+    "labels": [
+      "physics-MLE[log,ms=3,it=30]"
+    ],
+    "weights": [
+      1.0
+    ],
+    "val": 0.01932290895348481,
+    "test": {},
+    "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\final\\model.pkl",
+    "audit": {
+      "type": "final_audit",
+      "test": {},
+      "val_estimate": 0.01932290895348481,
+      "success_metric": "rel_l2",
+      "threshold": 0.05,
+      "success": false,
+      "issues": [
+        "final evaluation failed"
+      ],
+      "aligned_with_objective": false,
+      "model_certified": false,
+      "scientific_completion": false
+    },
+    "checkpoint": "chec-00224",
+    "result_artifact": "resu-00221",
+    "result": {
+      "exp_id": "exp-0014",
+      "idea_id": "idea-002",
+      "mode": "final_v3",
+      "fraction": 1.0,
+      "device": "cpu",
+      "schema_version": 3,
+      "fit_seconds": 0.009733915328979492,
+      "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\final\\model.pkl",
+      "export_certificate": {
+        "schema_version": 3,
+        "certified": false,
+        "passed": false,
+        "protocol": "pristine-repeat-reload-partition-v1",
+        "atol": 1e-10,
+        "rtol": 1e-08,
+        "checks": {
+          "finite_shape": true,
+          "repeat": true,
+          "reload": true,
+          "partition": false
+        },
+        "reasons": [
+          "partition check failed"
+        ],
+        "max_abs_differences": {
+          "repeat": 0.0,
+          "reload": 0.0,
+          "partition": 0.023731306972196275
+        },
+        "input_role": "development",
+        "n_rows": 750,
+        "output_shape": [
+          750,
+          4
+        ]
+      },
+      "certified": false,
+      "test": {},
+      "shift": {},
+      "member_info": [
+        {
+          "label": "physics-MLE[log,ms=3,it=30]",
+          "kind": "physics",
+          "family": "physics",
+          "method_hash": "3be67b83aa14",
+          "source_hash": null,
+          "uses_forward": true,
+          "fit_diagnostics": {
+            "fit_report": {
+              "residual_std_at_truth": 0.0009994548867275769,
+              "nominal_noise_std": 0.001,
+              "model_mismatch": false,
+              "checked_samples": 200
+            }
+          }
+        }
+      ],
+      "final_evaluation_blocked": true,
+      "status": "ok",
+      "elapsed": 61.544471979141235,
+      "wall_seconds": 62.307,
+      "cache_key": null,
+      "stage": "final",
+      "study_id": null,
+      "arm_id": null,
+      "claim_ids": null,
+      "parent_task_id": null,
+      "parent_agent_id": null,
+      "budget_group": "final-export",
+      "protocol_version": 3,
+      "split_fingerprint": null,
+      "timeout_seconds": 360.0,
+      "timeout_overhead_seconds": 0.0,
+      "artifact_id": "resu-00221"
+    },
+    "lineage": {
+      "idea-002": {
+        "label": "physics-MLE[log,ms=3,it=30]",
+        "origin": "proposal",
+        "study_id": "S-Q1-001",
+        "arm_id": "S-Q1-001.physics_map",
+        "gate": "gate-00043",
+        "baseline_identity": false
+      }
+    },
+    "certificate": {
+      "schema_version": 3,
+      "certified": false,
+      "passed": false,
+      "protocol": "pristine-repeat-reload-partition-v1",
+      "atol": 1e-10,
+      "rtol": 1e-08,
+      "checks": {
+        "finite_shape": true,
+        "repeat": true,
+        "reload": true,
+        "partition": false
+      },
+      "reasons": [
+        "partition check failed"
+      ],
+      "max_abs_differences": {
+        "repeat": 0.0,
+        "reload": 0.0,
+        "partition": 0.023731306972196275
+      },
+      "input_role": "development",
+      "n_rows": 750,
+      "output_shape": [
+        750,
+        4
+      ]
+    }
+  },
+  "resources": {
+    "compute_budget_s": 760.0,
+    "compute_used_s": 196.22,
+    "compute_remaining_s": 563.78,
+    "wall_elapsed_s": 764.48,
+    "wall_budget_s": 7200.0,
+    "jobs": 13,
+    "by_stage_s": {
+      "study": 133.92,
+      "final": 62.31
+    },
+    "llm_calls": 24,
+    "llm_calls_max": 80,
+    "llm_seconds": 637.14,
+    "llm_cost_usd": 8.0054,
+    "llm_by_phase": {
+      "execution": 24
+    },
+    "literature_queries": 0,
+    "literature_failures": 0,
+    "workers": 6,
+    "gpus": []
+  },
+  "research": {
+    "stop_reason": "Stopping with S-Q1-002.physics_mle (resu-00147, exp-0010, val rel_l2 0.019323) as the best executed full-fidelity arm. The program has reached the limit of what the available adapters can produce. Both required studies ran to completion on the val split (fingerprint edfcc32d..., 750 rows, row_hash 260db427...): S-Q1-001 was inconclusive on a matching-protocol technicality, and S-Q1-002 re-registered the same arms with every differing field listed, completing all three required arms, all five diagnostics, and the two optional seed-1 arms. Measured results, not self-certified: rel_l2 is 0.07741 for extra_trees (control_et, resu-00141), 0.019323 for bounded log-k MLE (physics_mle, resu-00147) and 0.019330 for the ET-initialized LM hybrid (hybrid_lm, resu-00145); paired relative improvement is 0.750 with interval [0.729, 0.770] for both treatments at B=200, and the hybrid-vs-physics paired difference is -0.00036 with interval [-0.00126, 0.00021], all far from the 1% margin; seed-1 replicates (resu-00140, resu-00143) move rel_l2 by less than 0.0004 relative for ET and 0.0008 for physics; per-target rel_l2 for physics is [0.0268, 0.0060, 0.0050, 0.0263] against [0.117, 0.028, 0.029, 0.092] for ET, so outer segments carry about 5x the error of inner segments under every method (Q-2, local evidence only). The fit_report spot checks (200 rows) show residual std at truth 9.95e-4 against nominal 1e-3 and model_mismatch=false; 2-sigma coverage is 0.957 with z_rms 0.98. Every claim in S-Q1-002 remains 'inconclusive' solely because blocking objections 016, 017, 018, 020, 021, 022, 024 and 029 require source-level artifacts (forward-operator parity, CFL ratio, bound handling, per-row convergence logs, initializer identity) that only a coding_execution specialist can produce. That path is closed: tasks 001 and 003 both failed at adapter setup with 'study requires a nonempty stable id' regardless of how the id was supplied, action-006 was rejected on the depth/children limit, and the analysis adapter (task-004) returned only a B=200 re-run of one pair. Resolving objection-020 from the executor's own forward_evals logs was rejected twice, the second time because the independent critic has not accepted the resolution, so further resolve_objection attempts would repeat the same outcome. Resources: 661 s of 760 s wall time remain and cumulative measured forward spend is 731,311 of 3,000,000 (about 24%), so stopping is not budget-driven; it is driven by the absence of any action that can create new verifiable evidence. Scope limitations carried into the final export: results hold only in the inverse-crime setting (exact forward model, known IC, known Gaussian noise sigma=0.001); the control is one untuned extra_trees configuration; row-bootstrap intervals exclude ET training-seed and multistart-RNG variation; no seed-1 hybrid exists; the forward-eval split into residual/Jacobian/rejected-step counts is unmeasured; and no synthesis should rank hybrid against physics, attribute the hybrid result to the ET initializer, or generalize beyond this sensor layout and discretization. Verdicts remain with the independent verifier."
+  },
+  "evidence_bundle": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\evidence_bundle.json"
+}

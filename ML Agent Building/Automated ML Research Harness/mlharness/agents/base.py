@@ -45,6 +45,8 @@ class Agent:
                                "model": resp.model, "seconds": round(resp.seconds, 2),
                                "cost_usd": resp.cost_usd, "input_tokens": resp.input_tokens,
                                "output_tokens": resp.output_tokens,
+                               **({k: v for k, v in resp.usage_record().items() if v is not None}
+                                  if hasattr(resp, "usage_record") else {}),
                                "prompt_chars": len(prompt), "response_chars": len(resp.text)},
                   summary=f"LLM call: {purpose}", idea_id=idea_id, stage=stage)
         return resp.text

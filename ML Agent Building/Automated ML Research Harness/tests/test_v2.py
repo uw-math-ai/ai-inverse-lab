@@ -240,6 +240,22 @@ class TestPhysics(unittest.TestCase):
         m = PhysicsInversion(ctx, estimator="posterior_mean", posterior_samples=32).fit(X, k)
         np.testing.assert_allclose(m.predict(X)[:3], m.predict(X[:3]), rtol=0, atol=1e-12)
 
+    def test_multistart_mode_is_batch_independent(self):
+        """Random multistart points are per-observation, so partitioned/reordered batches re-predict
+        identically (the V3 export partition certificate failed on multistart physics before)."""
+        from sklearn.linear_model import Ridge
+
+        from mlharness.inversion import HybridInversion, PhysicsInversion
+        ctx = ProblemContext(SIM, authorized=True)
+        rng = np.random.default_rng(2)
+        k = rng.uniform(0.6, 1.9, (10, 2))
+        X = ctx.forward(k) + rng.normal(0, 1e-3, (10, ctx.forward(k[:1]).shape[1]))
+        for m in (PhysicsInversion(ctx, multistart=3, iters=8, uncertainty=False).fit(X, k),
+                  HybridInversion(ctx, initializer=Ridge(), extra_starts=2, iters=8, uncertainty=False).fit(X, k)):
+            full = m.predict(X)
+            np.testing.assert_allclose(full[:4], m.predict(X[:4]), rtol=0, atol=1e-12)
+            np.testing.assert_allclose(full[::-1], m.predict(X[::-1]), rtol=0, atol=1e-12)
+
 
 class TestGateAndSafety(unittest.TestCase):
     def gate(self, **cons):
@@ -334,6 +350,40 @@ class TestCacheAndBudget(unittest.TestCase):
                        "method": {"kind": "physics"}, "val_subsample": 5, "seed": 0, "data_seed": 0}], "pilot")
         self.assertEqual(out[0]["status"], "skipped_budget")
         self.assertEqual(res.jobs, 1)
+
+    def test_remote_result_paths_are_localized(self):
+        """Remote result.json files name remote-host paths; the executor must point every downloaded
+        artifact (val_pred and the V3 val_idx row identity) at its local copy."""
+        from mlharness.executor import Executor
+        from mlharness.resources import STAGE_CAPS_V2, ResourceManager
+        local = Path(tempfile.mkdtemp())
+
+        class StubRemote:
+            def accepts(self, job):
+                return True
+
+            def run(self, job, timeout):
+                d = Path(job["job_dir"])
+                np.save(d / "val_pred.npy", np.zeros((2, 1)))
+                np.save(d / "val_idx.npy", np.arange(2))
+                (d / "result.json").write_text(json.dumps({
+                    "status": "ok", "val": {"rel_l2": 0.1},
+                    "val_pred_path": "/home/u/.mlharness_remote/jobs/1_e1/val_pred.npy",
+                    "val_idx_path": "/home/u/.mlharness_remote/jobs/1_e1/val_idx.npy"}))
+                return {"status": "done", "device": "gpuhost:gpu0", "stderr": ""}
+
+        try:
+            res = ResourceManager(100, 1000, 1, [], 5, caps=STAGE_CAPS_V2)
+            ex = Executor(tiny_v2(), A.MemoryStore(), res, "d", remote=StubRemote())
+            out = ex.run([{"mode": "method_eval", "exp_id": "e1", "idea_id": "i", "plan_artifact": None,
+                           "fraction": 1.0, "method": {"kind": "physics"}, "val_subsample": 5, "seed": 0,
+                           "data_seed": 0, "job_dir": str(local)}], "evaluate")[0]
+            self.assertEqual(out["device"], "gpuhost:gpu0")
+            for field in ("val_pred_path", "val_idx_path"):
+                self.assertEqual(Path(out[field]).parent, local)
+                self.assertTrue(Path(out[field]).exists(), field)
+        finally:
+            shutil.rmtree(local, ignore_errors=True)
 
     def test_research_llm_budget(self):
         spec = tiny_v2(research={"llm_calls": 7})

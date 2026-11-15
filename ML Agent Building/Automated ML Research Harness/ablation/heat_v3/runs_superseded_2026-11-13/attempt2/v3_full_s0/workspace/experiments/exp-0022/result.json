@@ -1,0 +1,77 @@
+{
+ "exp_id": "exp-0022",
+ "idea_id": "idea-022",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.019325695574256917,
+  "r2": 0.9965601178821133,
+  "rmse": 0.025485495658119698
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 1.3455631732940674,
+ "predict_seconds": 33.9451961517334,
+ "latency_ms_per_sample": 45.26026153564453,
+ "warnings": [],
+ "kind": "custom_solver",
+ "family": "physics-custom",
+ "label": "custom-solver(fwd)",
+ "forward_evals": 473570,
+ "forward_evals_fit": 12320,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.026824495809692515,
+  0.006039051509045254,
+  0.004995932849769542,
+  0.02629327866323708
+ ],
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794635869_exp-0022/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-6",
+ "arm_id": "S-Q1-6.physics",
+ "claim_ids": [
+  "C-Q1-6a",
+  "C-Q1-6b",
+  "C-Q1-6c",
+  "C-Q1-6d"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "367e41fd1a3f",
+ "effective_method": {
+  "kind": "custom_solver",
+  "params": {
+   "iters": 40,
+   "multistart": 3,
+   "fd_step": 0.0001,
+   "max_calls": 2800000,
+   "seed": 0,
+   "n_recovery": 20,
+   "fit_time_limit": 20.0,
+   "time_limit": 95.0
+  },
+  "uses_forward": true,
+  "module_name": "mlh_code_exp_0022"
+ },
+ "source_hash": "387637ef099c0f2e3fc08757ebdfd8c67b809b9110d6db1a4955ea9916306caf",
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 0,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794635869_exp-0022/val_idx.npy",
+ "status": "ok",
+ "elapsed": 35.95426917076111
+}

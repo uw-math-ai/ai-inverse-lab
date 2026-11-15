@@ -1,5 +1,6 @@
 __pycache__/
 .cache/
+.research_memory/v3_packages/
 runs/*/data/
 runs/*/workspace/
 runs/*/llm_scratch/

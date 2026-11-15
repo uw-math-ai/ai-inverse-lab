@@ -38,6 +38,46 @@ class LLMResponse:
     cost_usd: float | None = None
     input_tokens: int | None = None
     output_tokens: int | None = None
+    # Prompt-cache input is billed separately from ``input_tokens`` (Claude Code reports almost all
+    # prompt tokens here), so token accounting must include both fields.
+    cache_creation_tokens: int | None = None
+    cache_read_tokens: int | None = None
+    thinking_tokens: int | None = None
+    model_usage: dict | None = None      # per-model breakdown when the backend reports one
+    waited_seconds: float = 0.0          # time paused for a subscription usage-limit reset (included in seconds)
+
+    def usage_record(self) -> dict:
+        """Token/cost fields for the artifact ledger (never includes prompt or response text)."""
+        return {"input_tokens": self.input_tokens, "output_tokens": self.output_tokens,
+                "cache_creation_tokens": self.cache_creation_tokens, "cache_read_tokens": self.cache_read_tokens,
+                "thinking_tokens": self.thinking_tokens, "model_usage": self.model_usage,
+                "usage_limit_wait_seconds": round(self.waited_seconds, 1) if self.waited_seconds else None}
+
+
+USAGE_LIMIT = re.compile(r"hit your .{0,40}limit", re.I)
+
+
+def usage_limit_wait(message: str, now: float | None = None, default: float = 1800.0) -> float:
+    """Seconds until a Claude subscription limit resets, parsed from e.g. 'resets 2:10am (...)'."""
+    import datetime as dt
+    m = re.search(r"resets\s+(\d{1,2})(?::(\d{2}))?\s*([ap]m)", message or "", re.I)
+    if not m:
+        return default
+    hour, minute, ampm = int(m.group(1)) % 12, int(m.group(2) or 0), m.group(3).lower()
+    hour += 12 if ampm == "pm" else 0
+    cur = dt.datetime.fromtimestamp(now if now is not None else time.time())
+    target = cur.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    if target <= cur:
+        target += dt.timedelta(days=1)
+    return min((target - cur).total_seconds(), 6 * 3600.0)
+
+
+def _model_usage(raw) -> dict | None:
+    if not isinstance(raw, dict):
+        return None
+    keys = ("inputTokens", "outputTokens", "cacheReadInputTokens", "cacheCreationInputTokens",
+            "thinkingTokens", "costUSD")
+    return {m: {k: v.get(k) for k in keys} for m, v in raw.items() if isinstance(v, dict)}
 
 
 class LLMBackend:
@@ -104,6 +144,24 @@ class ClaudeCodeLLM(LLMBackend):
         self.workdir.mkdir(parents=True, exist_ok=True)
 
     def complete(self, system, prompt, timeout=None):
+        """One call. With MLH_WAIT_ON_USAGE_LIMIT=1 a subscription usage-limit refusal pauses until the
+        stated reset and retries the same call (up to 3 times) instead of failing the run."""
+        waited, t_all = 0.0, time.time()
+        for attempt in range(4):
+            try:
+                resp = self._complete_once(system, prompt, timeout)
+                resp.waited_seconds, resp.seconds = waited, time.time() - t_all
+                return resp
+            except LLMError as exc:
+                if (os.environ.get("MLH_WAIT_ON_USAGE_LIMIT") != "1" or attempt == 3
+                        or not USAGE_LIMIT.search(str(exc))):
+                    raise
+                pause = usage_limit_wait(str(exc)) + 120
+                time.sleep(pause)
+                waited += pause
+        raise LLMError("unreachable")
+
+    def _complete_once(self, system, prompt, timeout=None):
         cmd = [self.exe, "-p", "--output-format", "json", "--tools", "", "--no-session-persistence",
                "--append-system-prompt", system]
         if self.model:
@@ -127,7 +185,10 @@ class ClaudeCodeLLM(LLMBackend):
         usage = out.get("usage") or {}
         return LLMResponse(out.get("result", ""), time.time() - t0, self.name,
                            self.model or "claude-code-default", out.get("total_cost_usd"),
-                           usage.get("input_tokens"), usage.get("output_tokens"))
+                           usage.get("input_tokens"), usage.get("output_tokens"),
+                           usage.get("cache_creation_input_tokens"), usage.get("cache_read_input_tokens"),
+                           (usage.get("output_tokens_details") or {}).get("thinking_tokens"),
+                           _model_usage(out.get("modelUsage")))
 
 
 class AnthropicLLM(LLMBackend):
@@ -166,7 +227,8 @@ class AnthropicLLM(LLMBackend):
         text = "".join(b.text for b in msg.content if b.type == "text")
         u = msg.usage
         return LLMResponse(text, time.time() - t0, self.name, self.model, None,
-                           getattr(u, "input_tokens", None), getattr(u, "output_tokens", None))
+                           getattr(u, "input_tokens", None), getattr(u, "output_tokens", None),
+                           getattr(u, "cache_creation_input_tokens", None), getattr(u, "cache_read_input_tokens", None))
 
 
 class CodexLLM(LLMBackend):

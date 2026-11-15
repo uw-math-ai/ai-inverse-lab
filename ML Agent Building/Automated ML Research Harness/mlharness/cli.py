@@ -53,6 +53,9 @@ def _print_final(spec, run_dir, fin):
 
 
 def cmd_research(args):
+    pipeline = getattr(args, "pipeline", None) or "v2"
+    if pipeline == "v3":
+        return cmd_research_v3(args)
     from .scheduler_v2 import ResearchSchedulerV2
     spec = _spec_from_args(args, pipeline="v2")
     run_dir = Path(args.run_dir) if args.run_dir else HARNESS_ROOT / "runs" / f"{spec.name}_v2_{time.strftime('%Y%m%d_%H%M%S')}"
@@ -63,9 +66,22 @@ def cmd_research(args):
     return 0
 
 
+def cmd_research_v3(args):
+    from .scheduler_v3 import ResearchSchedulerV3
+    spec = _spec_from_args(args, pipeline="v3")
+    run_dir = Path(args.run_dir) if args.run_dir else HARNESS_ROOT / "runs" / f"{spec.name}_v3_{time.strftime('%Y%m%d_%H%M%S')}"
+    out = ResearchSchedulerV3(spec, run_dir, resume=args.resume, verbose=not args.quiet).run()
+    _print_final(spec, run_dir, out["final"])
+    print(f"research: {out['research']['stop_reason']}")
+    print(f"evidence: {out['evidence_bundle']}")
+    return 0
+
+
 def cmd_run(args):
     from .scheduler import ResearchScheduler
     spec = _spec_from_args(args)
+    if spec.pipeline == "v3":
+        return cmd_research_v3(args)
     if spec.pipeline == "v2":
         return cmd_research(args)
     run_dir = Path(args.run_dir) if args.run_dir else HARNESS_ROOT / "runs" / f"{spec.name}_{time.strftime('%Y%m%d_%H%M%S')}"
@@ -115,6 +131,11 @@ def cmd_report(args):
         from .llm import make_llm
         llm = make_llm({"backend": args.backend}) if args.backend else None
         spec_d = json.loads((Path(args.run_dir) / "spec.json").read_text())
+        if spec_d.get("pipeline") == "v3":
+            from .agents.reporter_v3 import write_report_v3
+            write_report_v3(args.run_dir)
+            print(f"rebuilt {p} from persisted V3 evidence (no final access)")
+            return 0
         if spec_d.get("pipeline") == "v2":
             print("V2 reports are written at the end of each run; research_trace.json holds the full research record. "
                   "Rebuilding the research section from artifacts:")
@@ -249,7 +270,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog="mlharness", description="Autonomous ML research harness (V2: research-first)")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    rs = sub.add_parser("research", help="V2: research-first run (4 researchers + critic -> portfolio -> execution)")
+    rs = sub.add_parser("research", help="V2/V3 scientific research (use --pipeline v3 for study-centered adaptive research)")
+    rs.add_argument("--pipeline", choices=["v2", "v3"], default="v2")
     rs.add_argument("--spec", required=True)
     rs.add_argument("--run-dir")
     rs.add_argument("--backend", choices=["auto", "none", "claude_code", "anthropic", "codex"])

@@ -1,0 +1,145 @@
+{
+  "kind": "single",
+  "members": [
+    "idea-002"
+  ],
+  "labels": [
+    "physics-MLE[log,ms=3,it=30]"
+  ],
+  "weights": [
+    1.0
+  ],
+  "val": 0.01932290895348481,
+  "test": {},
+  "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\final\\model.pkl",
+  "audit": {
+    "type": "final_audit",
+    "test": {},
+    "val_estimate": 0.01932290895348481,
+    "success_metric": "rel_l2",
+    "threshold": 0.05,
+    "success": false,
+    "issues": [
+      "final evaluation failed"
+    ],
+    "aligned_with_objective": false,
+    "model_certified": false,
+    "scientific_completion": false
+  },
+  "checkpoint": "chec-00224",
+  "result_artifact": "resu-00221",
+  "result": {
+    "exp_id": "exp-0014",
+    "idea_id": "idea-002",
+    "mode": "final_v3",
+    "fraction": 1.0,
+    "device": "cpu",
+    "schema_version": 3,
+    "fit_seconds": 0.009733915328979492,
+    "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\final\\model.pkl",
+    "export_certificate": {
+      "schema_version": 3,
+      "certified": false,
+      "passed": false,
+      "protocol": "pristine-repeat-reload-partition-v1",
+      "atol": 1e-10,
+      "rtol": 1e-08,
+      "checks": {
+        "finite_shape": true,
+        "repeat": true,
+        "reload": true,
+        "partition": false
+      },
+      "reasons": [
+        "partition check failed"
+      ],
+      "max_abs_differences": {
+        "repeat": 0.0,
+        "reload": 0.0,
+        "partition": 0.023731306972196275
+      },
+      "input_role": "development",
+      "n_rows": 750,
+      "output_shape": [
+        750,
+        4
+      ]
+    },
+    "certified": false,
+    "test": {},
+    "shift": {},
+    "member_info": [
+      {
+        "label": "physics-MLE[log,ms=3,it=30]",
+        "kind": "physics",
+        "family": "physics",
+        "method_hash": "3be67b83aa14",
+        "source_hash": null,
+        "uses_forward": true,
+        "fit_diagnostics": {
+          "fit_report": {
+            "residual_std_at_truth": 0.0009994548867275769,
+            "nominal_noise_std": 0.001,
+            "model_mismatch": false,
+            "checked_samples": 200
+          }
+        }
+      }
+    ],
+    "final_evaluation_blocked": true,
+    "status": "ok",
+    "elapsed": 61.544471979141235,
+    "wall_seconds": 62.307,
+    "cache_key": null,
+    "stage": "final",
+    "study_id": null,
+    "arm_id": null,
+    "claim_ids": null,
+    "parent_task_id": null,
+    "parent_agent_id": null,
+    "budget_group": "final-export",
+    "protocol_version": 3,
+    "split_fingerprint": null,
+    "timeout_seconds": 360.0,
+    "timeout_overhead_seconds": 0.0,
+    "artifact_id": "resu-00221"
+  },
+  "lineage": {
+    "idea-002": {
+      "label": "physics-MLE[log,ms=3,it=30]",
+      "origin": "proposal",
+      "study_id": "S-Q1-001",
+      "arm_id": "S-Q1-001.physics_map",
+      "gate": "gate-00043",
+      "baseline_identity": false
+    }
+  },
+  "certificate": {
+    "schema_version": 3,
+    "certified": false,
+    "passed": false,
+    "protocol": "pristine-repeat-reload-partition-v1",
+    "atol": 1e-10,
+    "rtol": 1e-08,
+    "checks": {
+      "finite_shape": true,
+      "repeat": true,
+      "reload": true,
+      "partition": false
+    },
+    "reasons": [
+      "partition check failed"
+    ],
+    "max_abs_differences": {
+      "repeat": 0.0,
+      "reload": 0.0,
+      "partition": 0.023731306972196275
+    },
+    "input_role": "development",
+    "n_rows": 750,
+    "output_shape": [
+      750,
+      4
+    ]
+  }
+}

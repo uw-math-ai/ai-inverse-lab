@@ -1,0 +1,174 @@
+{
+  "kind": "single",
+  "members": [
+    "idea-004"
+  ],
+  "labels": [
+    "physics-MLE[log,ms=4,it=30]"
+  ],
+  "weights": [
+    1.0
+  ],
+  "val": 0.005529704324879796,
+  "test": {
+    "rel_l2": 0.005490560987682502,
+    "r2": 0.9997051257578653,
+    "rmse": 0.007440878039646911
+  },
+  "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_smoke_s0\\final\\model.pkl",
+  "audit": {
+    "type": "final_audit",
+    "test": {
+      "rel_l2": 0.005490560987682502,
+      "r2": 0.9997051257578653,
+      "rmse": 0.007440878039646911
+    },
+    "val_estimate": 0.005529704324879796,
+    "success_metric": "rel_l2",
+    "threshold": 0.05,
+    "success": true,
+    "test_vs_val_degradation": -0.0071,
+    "issues": [],
+    "aligned_with_objective": true,
+    "model_certified": true,
+    "scientific_completion": false
+  },
+  "checkpoint": "chec-00193",
+  "result_artifact": "resu-00190",
+  "result": {
+    "exp_id": "exp-0009",
+    "idea_id": "idea-004",
+    "mode": "final_v3",
+    "fraction": 1.0,
+    "device": "cpu",
+    "schema_version": 3,
+    "fit_seconds": 0.0024118423461914062,
+    "model_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_smoke_s0\\final\\model.pkl",
+    "export_certificate": {
+      "schema_version": 3,
+      "certified": true,
+      "passed": true,
+      "protocol": "pristine-repeat-reload-partition-v1",
+      "atol": 1e-10,
+      "rtol": 1e-08,
+      "checks": {
+        "finite_shape": true,
+        "repeat": true,
+        "reload": true,
+        "partition": true
+      },
+      "reasons": [],
+      "max_abs_differences": {
+        "repeat": 0.0,
+        "reload": 0.0,
+        "partition": 2.100711604668959e-09
+      },
+      "input_role": "development",
+      "n_rows": 80,
+      "output_shape": [
+        80,
+        2
+      ]
+    },
+    "certified": true,
+    "test": {
+      "rel_l2": 0.005490560987682502,
+      "r2": 0.9997051257578653,
+      "rmse": 0.007440878039646911
+    },
+    "shift": {},
+    "member_info": [
+      {
+        "label": "physics-MLE[log,ms=4,it=30]",
+        "kind": "physics",
+        "family": "physics",
+        "method_hash": "c247693e4c47",
+        "source_hash": null,
+        "uses_forward": true,
+        "fit_diagnostics": {
+          "fit_report": {
+            "residual_std_at_truth": 0.0009970299536016798,
+            "nominal_noise_std": 0.001,
+            "model_mismatch": false,
+            "checked_samples": 200
+          }
+        }
+      }
+    ],
+    "final_evaluation_blocked": false,
+    "predict_seconds": 0.37079811096191406,
+    "latency_ms_per_sample": 4.634976387023926,
+    "test_bootstrap": {
+      "mean": 0.005459914683370376,
+      "std": 0.00033033083853570126,
+      "ci95": [
+        0.004870637077438388,
+        0.006197424139505603
+      ],
+      "n_boot": 200
+    },
+    "test_per_target_rel_l2": [
+      0.005215525779419974,
+      0.005737746709956274
+    ],
+    "test_uncertainty": {
+      "coverage_1sigma": 0.65,
+      "coverage_2sigma": 0.95,
+      "mean_std": 0.006956507281874569,
+      "z_rms": 1.0805524721871205
+    },
+    "reload_max_abs_diff": 0.0,
+    "status": "ok",
+    "elapsed": 6.63109278678894,
+    "wall_seconds": 7.486,
+    "cache_key": null,
+    "stage": "final",
+    "study_id": null,
+    "arm_id": null,
+    "claim_ids": null,
+    "parent_task_id": null,
+    "parent_agent_id": null,
+    "budget_group": "final-export",
+    "protocol_version": 3,
+    "split_fingerprint": null,
+    "timeout_seconds": 30.0,
+    "timeout_overhead_seconds": 0.0,
+    "artifact_id": "resu-00190"
+  },
+  "lineage": {
+    "idea-004": {
+      "label": "physics-MLE[log,ms=4,it=30]",
+      "origin": "proposal",
+      "study_id": "S-Q1-002",
+      "arm_id": "S-Q1-002.physics",
+      "gate": "gate-00062",
+      "baseline_identity": false
+    }
+  },
+  "certificate": {
+    "schema_version": 3,
+    "certified": true,
+    "passed": true,
+    "protocol": "pristine-repeat-reload-partition-v1",
+    "atol": 1e-10,
+    "rtol": 1e-08,
+    "checks": {
+      "finite_shape": true,
+      "repeat": true,
+      "reload": true,
+      "partition": true
+    },
+    "reasons": [],
+    "max_abs_differences": {
+      "repeat": 0.0,
+      "reload": 0.0,
+      "partition": 2.100711604668959e-09
+    },
+    "input_role": "development",
+    "n_rows": 80,
+    "output_shape": [
+      80,
+      2
+    ]
+  }
+}

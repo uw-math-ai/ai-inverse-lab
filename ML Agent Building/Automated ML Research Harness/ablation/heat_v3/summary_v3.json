@@ -1,0 +1,495 @@
+{
+ "runs": {
+  "v3_full_s0": {
+   "run": "v3_full_s0",
+   "failed": true,
+   "error": null
+  },
+  "v3_offline_s0": {
+   "run": "v3_offline_s0",
+   "test_rel_l2": 0.01841886806236584,
+   "test_r2": 0.9969618386959722,
+   "test_ci95": [
+    0.017292073249961584,
+    0.019558946936356902
+   ],
+   "test_per_segment": [
+    0.0269799001673662,
+    0.006088333683040254,
+    0.005218525678847445,
+    0.02419188207713548
+   ],
+   "shift": {
+    "k_low_0.3": {
+     "rel_l2": 0.12494414929093481,
+     "r2": 0.8926730245849349,
+     "rmse": 0.15560486806487978
+    },
+    "noise_x3": {
+     "rel_l2": 0.0520294521303912,
+     "r2": 0.97642188876497,
+     "rmse": 0.0693233392838876
+    }
+   },
+   "final_val": 0.019335308875384715,
+   "final_kind": "single",
+   "final_labels": [
+    "physics-MLE[log,ms=1,it=30]"
+   ],
+   "final_families": [
+    "physics"
+   ],
+   "final_member_kinds": [
+    "physics"
+   ],
+   "final_uses_forward": true,
+   "certified": true,
+   "reload_max_abs_diff": 0.0,
+   "latency_ms": 11.243633588155111,
+   "test_uncertainty": {
+    "coverage_1sigma": 0.701,
+    "coverage_2sigma": 0.956,
+    "mean_std": 0.018403128846459282,
+    "z_rms": 0.98157672398061
+   },
+   "best_arm_val": 0.019335308875384715,
+   "best_arm_label": "physics-MLE[log,ms=1,it=30]",
+   "stop_reason": "registered work resolved or explicitly deferred; no justified next study",
+   "actions": {
+    "decompose": 1,
+    "spawn": 2,
+    "propose_study": 1,
+    "execute": 1,
+    "diagnose": 1,
+    "stop": 1
+   },
+   "actions_total": 7,
+   "actions_rejected": 0,
+   "rejection_errors": [],
+   "questions": 1,
+   "studies": 1,
+   "studies_complete": 1,
+   "study_status": {
+    "complete": 1
+   },
+   "study_completion_rate": 1.0,
+   "claims": 1,
+   "claim_outcomes": {
+    "contradicted": 1
+   },
+   "arms_registered": 3,
+   "arms_ok": 3,
+   "arm_method_kinds": {
+    "library": 2,
+    "physics": 1
+   },
+   "custom_code_arms": 0,
+   "researchers": 2,
+   "researcher_personas": {
+    "mathematical": 1,
+    "ml": 1
+   },
+   "specialist_tasks": 0,
+   "specialist_status": {},
+   "objections": 0,
+   "objections_blocking": 0,
+   "objections_resolved": 0,
+   "theorem_requests": 0,
+   "scientific_completion": true,
+   "role_fallbacks": {
+    "offline_choice": 13
+   },
+   "llm_timeouts": 0,
+   "tokens": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "thinking_tokens": 0,
+    "total_input_tokens": 0,
+    "cost_usd": 0.0,
+    "seconds": 0.0
+   },
+   "tokens_by_tier": {},
+   "tokens_by_model": {},
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "compute_s": 83.38,
+   "wall_s": 66.54,
+   "jobs": 4,
+   "stage_s": {
+    "study": 30.46,
+    "final": 52.92
+   },
+   "devices": {
+    "doppio.amath.washington.edu:gpu0": 2,
+    "doppio.amath.washington.edu:gpu1": 1
+   }
+  }
+ },
+ "by_arm": {
+  "v3_offline": {
+   "test_rel_l2": {
+    "mean": 0.01841886806236584,
+    "sd": 0.0,
+    "min": 0.01841886806236584,
+    "max": 0.01841886806236584,
+    "n": 1
+   },
+   "final_val": {
+    "mean": 0.019335308875384715,
+    "sd": 0.0,
+    "min": 0.019335308875384715,
+    "max": 0.019335308875384715,
+    "n": 1
+   },
+   "best_arm_val": {
+    "mean": 0.019335308875384715,
+    "sd": 0.0,
+    "min": 0.019335308875384715,
+    "max": 0.019335308875384715,
+    "n": 1
+   },
+   "llm_calls": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "llm_cost_usd": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "compute_s": {
+    "mean": 83.38,
+    "sd": 0.0,
+    "min": 83.38,
+    "max": 83.38,
+    "n": 1
+   },
+   "wall_s": {
+    "mean": 66.54,
+    "sd": 0.0,
+    "min": 66.54,
+    "max": 66.54,
+    "n": 1
+   },
+   "actions_total": {
+    "mean": 7.0,
+    "sd": 0.0,
+    "min": 7.0,
+    "max": 7.0,
+    "n": 1
+   },
+   "actions_rejected": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "studies": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "n": 1
+   },
+   "studies_complete": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "n": 1
+   },
+   "study_completion_rate": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "n": 1
+   },
+   "claims": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "n": 1
+   },
+   "arms_registered": {
+    "mean": 3.0,
+    "sd": 0.0,
+    "min": 3.0,
+    "max": 3.0,
+    "n": 1
+   },
+   "custom_code_arms": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "researchers": {
+    "mean": 2.0,
+    "sd": 0.0,
+    "min": 2.0,
+    "max": 2.0,
+    "n": 1
+   },
+   "specialist_tasks": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "objections": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "objections_blocking": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "objections_resolved": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "theorem_requests": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "llm_timeouts": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "tokens": {
+    "calls": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "input_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "cache_creation_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "cache_read_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "total_input_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "output_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "thinking_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "cost_usd": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "seconds": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    }
+   },
+   "tokens_by_tier": {},
+   "test_per_segment": [
+    0.0269799001673662,
+    0.006088333683040254,
+    0.005218525678847445,
+    0.02419188207713548
+   ],
+   "final_uses_forward": 1,
+   "certified": 1,
+   "final_labels": [
+    [
+     "physics-MLE[log,ms=1,it=30]"
+    ]
+   ],
+   "claim_outcomes": {
+    "contradicted": 1
+   },
+   "actions": {
+    "decompose": 1,
+    "spawn": 2,
+    "propose_study": 1,
+    "execute": 1,
+    "diagnose": 1,
+    "stop": 1
+   },
+   "arm_method_kinds": {
+    "library": 2,
+    "physics": 1
+   },
+   "shift": {
+    "k_low_0.3": {
+     "mean": 0.12494414929093481,
+     "sd": 0.0,
+     "min": 0.12494414929093481,
+     "max": 0.12494414929093481,
+     "n": 1
+    },
+    "noise_x3": {
+     "mean": 0.0520294521303912,
+     "sd": 0.0,
+     "min": 0.0520294521303912,
+     "max": 0.0520294521303912,
+     "n": 1
+    }
+   },
+   "seeds": [
+    "v3_offline_s0"
+   ]
+  }
+ },
+ "comparisons": {
+  "v3_offline": {
+   "vs_v1_full": {
+    "p_welch": null,
+    "rel_change": -0.22106797281504112
+   },
+   "vs_v2_full": {
+    "p_welch": null,
+    "rel_change": 0.002275677815319182
+   },
+   "vs_v2_offline": {
+    "p_welch": null,
+    "rel_change": 0.00232784853325786
+   }
+  }
+ },
+ "physics_reference": {
+  "n_test": 750,
+  "mle_test_rel_l2": 0.01841582623321368,
+  "mle_test_rel_l2_per_segment": [
+   0.026977381344804395,
+   0.006065006349626412,
+   0.0052037106215193415,
+   0.024194729408981965
+  ],
+  "mle_mean_chi2_per_dof": 0.9543191364894748,
+  "crb_rel_l2": 0.01922922253398505,
+  "crb_rel_l2_per_segment": [
+   0.02863199892892568,
+   0.0063883978876992965,
+   0.005212550400189048,
+   0.024754600232527624
+  ],
+  "crb_std_median_per_segment": [
+   0.02665,
+   0.00743,
+   0.00643,
+   0.02335
+  ],
+  "fisher_condition_median": 69.15075541645228,
+  "mean_predictor_rel_l2": 0.32987820797881623
+ },
+ "v1_full": {
+  "mean": 0.023646309844173662,
+  "sd": 0.0008259313473930111,
+  "min": 0.023161062842123627,
+  "max": 0.024599963654579036,
+  "n": 3
+ },
+ "v2_by_arm_test": {
+  "v2_offline": {
+   "mean": 0.018376091305174078,
+   "sd": 3.6597860501271355e-05,
+   "min": 0.018334245073669358,
+   "max": 0.01840212060099675,
+   "n": 3
+  },
+  "v2_full": {
+   "mean": 0.018377047822325514,
+   "sd": 6.591065469994149e-05,
+   "min": 0.018301032233173253,
+   "max": 0.018418286260390347,
+   "n": 3
+  },
+  "v2_no_forward": {
+   "mean": 0.01968587147293892,
+   "sd": 0.0012788275068973919,
+   "min": 0.018497468982486998,
+   "max": 0.02103913426567809,
+   "n": 3
+  },
+  "v2_no_critic": {
+   "mean": 0.01832041888064617,
+   "sd": 7.848556505882789e-05,
+   "min": 0.018250642518496597,
+   "max": 0.018405391274667574,
+   "n": 3
+  },
+  "v2_no_literature": {
+   "mean": 0.018306225869707943,
+   "sd": 4.6697082983286384e-05,
+   "min": 0.01825284197540761,
+   "max": 0.018339493334415383,
+   "n": 3
+  },
+  "v2_memory": {
+   "mean": 0.018345339004074906,
+   "sd": 0.0001039857914635605,
+   "min": 0.018271809945783972,
+   "max": 0.01841886806236584,
+   "n": 2
+  }
+ }
+}

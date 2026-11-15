@@ -1,0 +1,95 @@
+# A V3 inverse-problem example. This file is configuration, not an experimental result.
+# Run later from the harness directory:
+#   python -m mlharness research --pipeline v3 --spec specs/v3_example.yaml --backend none
+name: heat_v3_example
+pipeline: v3
+problem: >
+  Recover two piecewise-constant thermal conductivities from noisy sensor traces.
+  Test whether changing only ridge regularization improves the registered global
+  relative Frobenius error on matched validation observations.
+simulator:
+  name: python
+  params:
+    path: examples/heat_diffusion_simulator.py
+    function: simulate
+    n_segments: 2
+    n_grid: 20
+    n_steps: 60
+    sensors: [3, 8, 12, 17]
+    every: 6
+    noise: 0.001
+data: {n_train: 240, n_val: 80, n_test: 80, seed: 1302}
+seed: 17
+metrics: {primary: rel_l2, secondary: [rmse, r2]}
+budget: {compute_seconds: 180, wall_seconds: 300, experiment_timeout: 30, llm_calls: 24}
+hardware: {workers: 2, gpus: 0, threads_per_worker: 1}
+constraints:
+  allowed_methods: [ridge]
+  allow_custom_code: true
+  allow_forward_model: false
+  notes: ["Only the registered regularization factor varies between required arms."]
+research:
+  researchers: [ml, experimental]
+  llm_calls: 16
+llm: {backend: none}
+literature: {enabled: false}
+memory: {enabled: false, mode: frozen, read: false, write: false}
+execution: {ensemble: false, bootstrap: 100}
+evaluation:
+  shift_sets: []
+  strict_holdout: true
+  protocol:
+    instances:
+      - {instance_id: heat_v3_example_data1302, problem_id: two_segment_heat, dataset_seed: 1302, search_seeds: [17]}
+    memory: {mode: frozen, snapshot_id: 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945}
+    split_roles: {train: training, validation: development, test: final}
+program:
+  max_actions: 24
+  max_agents: 10
+  max_active_agents: 6
+  max_depth: 3
+  max_children: 4
+  max_specialist_tasks: 8
+  max_agent_turns: 6
+  max_studies: 4
+  budget_mode: soft
+  confirmation_fraction: 0.35
+  auto_followup: true
+  roles: {}
+  questions:
+    - {id: Q-ridge, question: "Does lower ridge regularization improve this fixed observation representation?", priority: 1}
+  studies:
+    - id: S-ridge
+      question: "Does alpha=1 improve validation rel_l2 by at least 3% versus alpha=10?"
+      priority: 1
+      matching: {allowed_varying_factors: [params.alpha]}
+      arms:
+        - id: S-ridge.control
+          role: baseline
+          required: true
+          seed: 17
+          fidelity: 1.0
+          method: {kind: library, method: ridge, params: {alpha: 10.0}, features: raw, scaler: standard, pca: 0}
+        - id: S-ridge.treatment
+          role: treatment
+          required: true
+          seed: 17
+          fidelity: 1.0
+          method: {kind: library, method: ridge, params: {alpha: 1.0}, features: raw, scaler: standard, pca: 0}
+      diagnostics:
+        - {id: S-ridge.paired, kind: paired, treatment: S-ridge.treatment, control: S-ridge.control, required: true}
+      claims:
+        - id: C-ridge
+          kind: comparison
+          text: "Alpha=1 improves the registered validation metric by at least 3% against the frozen alpha=10 control."
+          treatment: S-ridge.treatment
+          control: S-ridge.control
+          metric: rel_l2
+          operator: at_least_better
+          margin: 0.03
+          required_fidelity: 1.0
+          allowed_varying_factors: [params.alpha]
+          requires_implementation_verification: true
+          requires_uncertainty: true
+          analysis_id: S-ridge.paired
+          required_diagnostics: [S-ridge.paired]

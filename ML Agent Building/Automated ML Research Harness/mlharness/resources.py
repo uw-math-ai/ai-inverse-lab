@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import math
 import os
 import platform
 import queue
@@ -15,6 +16,71 @@ from contextlib import contextmanager
 STAGE_CAPS = {"baseline": 0.05, "screen": 0.20, "halving": 0.60, "refine": 0.85, "final": 1.0}
 # V2 pipeline: research pilots, multi-profile screening, full evaluation, local refinement, final
 STAGE_CAPS_V2 = {"baseline": 0.04, "pilot": 0.12, "screen": 0.30, "evaluate": 0.78, "refine": 0.90, "final": 1.0}
+
+
+class BudgetReservations:
+    """Atomic worker-second admission for whole required groups.
+
+    In hard mode callers must reserve timeout bounds, including final/export work, and pass
+    those bounds to the isolated executor. Process startup/termination overhead is measured
+    separately and can exceed the bound; this class never describes estimates as hard caps.
+    Confirmation reserve is protected from exploratory admission until consumed explicitly.
+    """
+    def __init__(self, total_seconds, confirmation_seconds=0, hard=False):
+        self.total = float(total_seconds)
+        self.confirmation = float(confirmation_seconds)
+        if not math.isfinite(self.total) or not math.isfinite(self.confirmation) or not 0 <= self.confirmation <= self.total:
+            raise ValueError("invalid total/confirmation budget")
+        self.hard = bool(hard)
+        self.used = 0.0
+        self.confirmation_used = 0.0
+        self.reservations = {}
+        self.history = []
+        self._lock = threading.Lock()
+
+    def reserve(self, group_id, seconds, confirmation=False):
+        seconds = float(seconds)
+        if not group_id or not math.isfinite(seconds) or seconds < 0:
+            raise ValueError("reservation needs an id and finite nonnegative seconds")
+        with self._lock:
+            if group_id in self.reservations:
+                raise ValueError(f"group {group_id!r} is already reserved")
+            reserved = sum(r["seconds"] for r in self.reservations.values())
+            confirmed = sum(r["seconds"] for r in self.reservations.values() if r["confirmation"])
+            protected = max(0.0, self.confirmation - self.confirmation_used - confirmed)
+            available = self.total - self.used - reserved - (0.0 if confirmation else protected)
+            admitted = seconds <= available + 1e-12
+            self.history.append({"action": "reserve", "group_id": group_id, "seconds": seconds,
+                                 "confirmation": bool(confirmation), "admitted": admitted})
+            if admitted:
+                self.reservations[group_id] = {"seconds": seconds, "confirmation": bool(confirmation)}
+            return admitted
+
+    def release(self, group_id, actual_seconds=0):
+        actual = float(actual_seconds)
+        if not math.isfinite(actual) or actual < 0:
+            raise ValueError("actual seconds must be finite and nonnegative")
+        with self._lock:
+            reservation = self.reservations.pop(group_id, None)
+            if reservation is None:
+                raise ValueError(f"unknown reservation {group_id!r}")
+            self.used += actual
+            if reservation["confirmation"]:
+                self.confirmation_used += actual
+            self.history.append({"action": "release", "group_id": group_id, "actual_seconds": actual,
+                                 "reserved_seconds": reservation["seconds"],
+                                 "overrun_seconds": max(0.0, actual - reservation["seconds"])})
+
+    def snapshot(self):
+        with self._lock:
+            reserved = sum(r["seconds"] for r in self.reservations.values())
+            return {"total_seconds": self.total, "used_seconds": self.used,
+                    "reserved_seconds": reserved, "remaining_seconds": max(0.0, self.total-self.used-reserved),
+                    "confirmation_seconds": self.confirmation, "confirmation_used_seconds": self.confirmation_used,
+                    "hard": self.hard, "policy": "timeout_bounds" if self.hard else "soft_estimates",
+                    "overrun_seconds": max(0.0, self.used-self.total),
+                    "active_groups": {k: dict(v) for k, v in self.reservations.items()},
+                    "history": list(self.history)}
 
 
 def detect_hardware() -> dict:

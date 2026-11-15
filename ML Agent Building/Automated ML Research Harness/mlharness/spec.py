@@ -90,6 +90,13 @@ DEFAULTS = {
         "bootstrap": 200,
     },
     "evaluation": {"shift_sets": "auto", "shift_n": 300},
+    "program": {
+        "max_actions": 40, "max_agents": 12, "max_active_agents": 6,
+        "max_depth": 2, "max_children": 4, "max_specialist_tasks": 12,
+        "max_agent_turns": 8, "max_studies": 8, "budget_mode": "soft",
+        "confirmation_fraction": 0.25, "roles": {}, "studies": [],
+        "questions": [], "auto_followup": True,
+    },
 }
 
 V2_CONSTRAINT_DEFAULTS = {"allow_forward_model": True, "max_forward_evals": 3_000_000}
@@ -129,6 +136,7 @@ class ResearchSpec:
     memory: dict = field(default_factory=dict)
     execution: dict = field(default_factory=dict)
     evaluation: dict = field(default_factory=dict)
+    program: dict = field(default_factory=dict)
 
     @property
     def primary(self) -> str:
@@ -145,7 +153,7 @@ class ResearchSpec:
         return {k: getattr(self, k) for k in ("name", "problem", "task", "simulator", "data", "metrics",
                                                "success", "budget", "hardware", "constraints", "search",
                                                "llm", "seed", "objectives", "simulator_description", "pipeline",
-                                               "research", "literature", "memory", "execution", "evaluation")}
+                                               "research", "literature", "memory", "execution", "evaluation", "program")}
 
     def hash(self) -> str:
         return hashlib.sha1(json.dumps(self.to_dict(), sort_keys=True, default=str).encode()).hexdigest()[:10]
@@ -202,9 +210,9 @@ def compile_spec(raw: dict, llm=None, hardware: dict | None = None, pipeline: st
     cfg = deep_merge(DEFAULTS, raw)
     if pipeline:
         cfg["pipeline"] = pipeline
-    if cfg["pipeline"] not in ("v1", "v2"):
-        raise ValueError(f"pipeline must be v1 or v2, got {cfg['pipeline']!r}")
-    if cfg["pipeline"] == "v2":
+    if cfg["pipeline"] not in ("v1", "v2", "v3"):
+        raise ValueError(f"pipeline must be v1, v2 or v3, got {cfg['pipeline']!r}")
+    if cfg["pipeline"] in ("v2", "v3"):
         cfg["constraints"] = deep_merge(V2_CONSTRAINT_DEFAULTS, cfg["constraints"])
         # the research phase has its own LLM budget on top of what execution-time agents may use
         user_llm = (raw.get("budget") or {}).get("llm_calls")
@@ -215,6 +223,16 @@ def compile_spec(raw: dict, llm=None, hardware: dict | None = None, pipeline: st
         bad = [x for x in r["researchers"] if x not in ("mathematical", "ml", "experimental", "exploratory")]
         if bad:
             raise ValueError(f"unknown researcher role(s) {bad}")
+    if cfg["pipeline"] == "v3":
+        p = cfg["program"]
+        for key in ("max_actions", "max_agents", "max_active_agents", "max_depth", "max_children",
+                    "max_specialist_tasks", "max_agent_turns", "max_studies"):
+            if isinstance(p[key], bool) or int(p[key]) != p[key] or int(p[key]) < 1:
+                raise ValueError(f"program.{key} must be a positive integer")
+        if p["budget_mode"] not in ("soft", "hard"):
+            raise ValueError("program.budget_mode must be soft or hard")
+        if not 0 < float(p["confirmation_fraction"]) < 1:
+            raise ValueError("program.confirmation_fraction must be between zero and one")
 
     sim = get_simulator(cfg["simulator"])
     task = cfg["task"] or sim.task
@@ -275,7 +293,7 @@ def compile_spec(raw: dict, llm=None, hardware: dict | None = None, pipeline: st
                         budget=b, hardware=hw, constraints=cfg["constraints"], search=srch, llm=cfg["llm"],
                         seed=int(cfg["seed"]), simulator_description=sim.describe(), pipeline=cfg["pipeline"],
                         research=cfg["research"], literature=cfg["literature"], memory=cfg["memory"],
-                        execution=cfg["execution"], evaluation=cfg["evaluation"])
+                        execution=cfg["execution"], evaluation=cfg["evaluation"], program=cfg["program"])
     s = spec.success
     op = "<=" if M.direction(s["metric"]) == "min" else ">="
     spec.objectives = [

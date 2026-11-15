@@ -1,0 +1,13 @@
+{
+ "n": 8,
+ "errors": [
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)",
+  "LLMError: claude error: You've hit your 5-hour limit \u00b7 resets 2:10am (America/Los_Angeles)"
+ ]
+}

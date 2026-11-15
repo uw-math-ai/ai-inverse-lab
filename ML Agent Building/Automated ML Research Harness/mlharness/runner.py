@@ -225,6 +225,36 @@ def _model_diag(model):
     return out
 
 
+def _v3_runtime_evidence(job, ms, model, y, prediction, train_idx, val_idx):
+    import hashlib
+    import numpy as np
+    from . import methods_v2 as M2
+    source = None
+    if ms.get("code_path"):
+        source = Path(ms["code_path"]).read_bytes()
+    observed = _model_diag(model)
+    # Only a standardized diagnostic mapping is an extension point. Attribute presence alone
+    # cannot establish that a claimed fallback branch was executed.
+    extra = getattr(model, "diagnostics_", None)
+    if isinstance(extra, dict):
+        observed["declared_runtime_diagnostics"] = extra
+    shape_ok = np.asarray(prediction).shape == np.asarray(y).shape
+    finite = bool(np.isfinite(prediction).all()) if np.issubdtype(np.asarray(prediction).dtype, np.number) else True
+    return {"schema_version": 3, "protocol_version": job.get("protocol_version", "study-v3"),
+            "study_id": job.get("study_id"), "arm_id": job.get("arm_id"),
+            "claim_ids": job.get("claim_ids", []), "parent_task_id": job.get("parent_task_id"),
+            "parent_agent_id": job.get("parent_agent_id"), "method_hash": M2.method_hash(job["method"]),
+            "effective_method": {k: v for k, v in ms.items() if k not in ("code", "code_path")},
+            "source_hash": hashlib.sha256(source).hexdigest() if source is not None else None,
+            "row_hash": hashlib.sha256(np.ascontiguousarray(val_idx).tobytes()).hexdigest(),
+            "train_row_hash": hashlib.sha256(np.ascontiguousarray(train_idx).tobytes()).hexdigest(),
+            "seed": int(job.get("seed", 0)), "data_seed": int(job.get("data_seed", 0)),
+            "fidelity": float(job["fraction"]), "verification": {"factory_fit_predict": True,
+                "finite": finite, "shape": shape_ok, "passed": finite and shape_ok,
+                "intervention_verified": False, "diagnostic_gates_verified": False},
+            "runtime_diagnostics": observed}
+
+
 def run_method_eval(job, data, out_dir: Path):
     import numpy as np
 
@@ -278,6 +308,17 @@ def run_method_eval(job, data, out_dir: Path):
     np.save(out_dir / "val_pred.npy", pv)
     np.save(out_dir / "val_idx.npy", vidx)
     out["val_pred_path"] = str(out_dir / "val_pred.npy")
+    if job.get("pipeline") == "v3":
+        # V3 exports the selected arm by pickling it; an unpicklable fitted model (local class,
+        # lambda, closure) must fail here as a visible arm failure, not after selection.
+        import pickle
+        try:
+            pickle.dumps(model)
+        except Exception as exc:
+            raise TypeError(f"fitted model is not exportable (pickle failed: {type(exc).__name__}: "
+                            f"{str(exc)[:200]}); define classes/functions at module level") from exc
+        out.update(_v3_runtime_evidence(job, ms, model, yv, pv, idx, vidx))
+        out["val_idx_path"] = str(out_dir / "val_idx.npy")
     return out
 
 
@@ -303,6 +344,8 @@ def _versions():
 
 
 def run_final_v2(job, data, out_dir: Path):
+    if job.get("pipeline") == "v3":
+        return run_final_v3(job, data, out_dir)
     import hashlib
 
     import numpy as np
@@ -406,6 +449,111 @@ def run_final_v2(job, data, out_dir: Path):
     return out
 
 
+def run_final_v3(job, data, out_dir: Path):
+    """Export pristine fitted state, certify on development inputs, then evaluate that export."""
+    import hashlib
+    import numpy as np
+    from . import methods_v2 as M2
+    from . import metrics as M
+    from .export import FinalModel, certify_model, load_model
+    final_dir = Path(job["final_dir"])
+    final_dir.mkdir(parents=True, exist_ok=True)
+    specs = [_materialize_code(ms, final_dir, f"member{i}_{job['run_id']}")
+             for i, ms in enumerate(job["members_v2"])]
+    if _has_code(specs):
+        _preload_and_guard(specs, [out_dir, final_dir])
+    sim_copy = None
+    if (job.get("simulator") or {}).get("name") == "python":
+        from .simulators import resolve_user_path
+        src = resolve_user_path(job["simulator"]["params"]["path"])
+        if src.exists():
+            sim_copy = final_dir / ("simulator_" + src.name)
+            sim_copy.write_bytes(src.read_bytes())
+    X = np.concatenate([data["X_train"], data["X_val"]])
+    y = np.concatenate([data["y_train"], data["y_val"]])
+    members, info, fit_total = [], [], 0.0
+    for i, ms in enumerate(specs):
+        ctx = _make_context(job, authorized=bool(job["forward_access_members"][i]))
+        if ctx is not None and sim_copy is not None:
+            ctx.fallback_path = str(sim_copy)
+        model = M2.build(ms, job["task"], job.get("feature_shape"), _n_features_for(ms, job.get("feature_shape"), X),
+                         context=ctx, device=job.get("device", "cpu"), seed=int(job.get("seed", 0)),
+                         threads=int(job.get("threads", 1)))
+        t0 = time.time()
+        model.fit(X, y)
+        fit_total += time.time()-t0
+        members.append(model)
+        source_hash = hashlib.sha256(Path(ms["code_path"]).read_bytes()).hexdigest() if ms.get("code_path") else None
+        info.append({"label": M2.label(ms), "kind": ms.get("kind"), "family": M2.family(ms),
+                     "method_hash": M2.method_hash(ms), "source_hash": source_hash,
+                     "uses_forward": M2.uses_forward(ms), "fit_diagnostics": _model_diag(model)})
+    clean = [{k: v for k, v in ms.items() if k != "code"} for ms in specs]
+    model_path = final_dir / "model.pkl"
+    fm = FinalModel(members, job["weights"], job["task"], clean,
+                    {"run_id": job["run_id"], "n_train": len(X), "pipeline": "v3"})
+    # This is the only serialization: no predict call has modified the fitted candidate.
+    with model_path.open("wb") as f:
+        pickle.dump(fm, f)
+    manifest = {"pipeline": "v3", "schema_version": 3, "members": clean, "member_info": info,
+                "weights": job["weights"], "task": job["task"],
+                "custom_modules": [{"file": Path(ms["code_path"]).name, "module_name": ms["module_name"]}
+                                   for ms in specs if ms.get("code_path")],
+                "feature_dim": int(X.shape[1]), "target_shape": list(y.shape[1:]),
+                "simulator": job.get("simulator"), "simulator_copy": sim_copy.name if sim_copy else None,
+                "forward_access_members": job["forward_access_members"], "research_lineage": job.get("lineage", {}),
+                "reproducibility": {"seed": job.get("seed"), "data_seed": job.get("data_seed"),
+                    "data_cache_key": job.get("data_cache_key"), "spec_hash": job.get("spec_hash"),
+                    "harness_version": job.get("harness_version"), "versions": _versions()},
+                "model_sha256": hashlib.sha256(model_path.read_bytes()).hexdigest()}
+    manifest_path = final_dir / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2, default=str), encoding="utf-8")
+    cert = certify_model(model_path, data["X_val"],
+                         atol=float(job.get("certification_atol", 1e-10)),
+                         rtol=float(job.get("certification_rtol", 1e-8)))
+    manifest["export_certificate"] = cert
+    out = {"schema_version": 3, "fit_seconds": fit_total, "model_path": str(model_path),
+           "export_certificate": cert, "certified": cert["certified"], "test": {}, "shift": {},
+           "member_info": info, "final_evaluation_blocked": not cert["certified"]}
+    if cert["certified"]:
+        canonical = load_model(model_path)
+        t0 = time.time()
+        pt = np.asarray(canonical.predict(data["X_test"]))
+        pred_s = time.time()-t0
+        if job["task"] == "regression":
+            if pt.size != data["y_test"].size:
+                raise ValueError("export prediction shape does not match target")
+            pt = pt.reshape(data["y_test"].shape)
+        if pt.shape != data["y_test"].shape or (np.issubdtype(pt.dtype, np.number) and not np.isfinite(pt).all()):
+            raise ValueError("export produced malformed/nonfinite final predictions")
+        names = [job["primary"]] + [m for m in job.get("secondary", []) if m != job["primary"]]
+        out.update(test=M.compute_all(names, data["y_test"], pt), predict_seconds=pred_s,
+                   latency_ms_per_sample=1000*pred_s/max(1, len(pt)),
+                   test_bootstrap=_bootstrap(job["primary"], data["y_test"], pt, job.get("bootstrap", 200), int(job.get("seed", 0))))
+        np.save(final_dir / "test_pred.npy", pt)
+        if job["task"] == "regression":
+            out["test_per_target_rel_l2"] = _per_target(data["y_test"], pt)
+            if len(canonical.members) == 1:
+                _, unc = _uncertainty_report(canonical.members[0], data["y_test"], pt)
+                if unc:
+                    out["test_uncertainty"] = unc
+        for key in sorted(k for k in data if k.startswith("X_shift_")):
+            name = key[len("X_shift_"):]
+            ys = data["y_shift_"+name]
+            ps = np.asarray(load_model(model_path).predict(data[key]))
+            if ps.shape != ys.shape or (np.issubdtype(ps.dtype, np.number) and not np.isfinite(ps).all()):
+                out["shift"][name] = {"status": "invalid_prediction"}
+            else:
+                out["shift"][name] = M.compute_all(names, ys, ps)
+        manifest["reproducibility"]["test_split_sha1"] = hashlib.sha1(np.ascontiguousarray(data["X_test"]).tobytes()).hexdigest()[:16]
+        for key in ("test", "shift", "test_bootstrap", "test_per_target_rel_l2", "test_uncertainty"):
+            if key in out:
+                manifest[key] = out[key]
+        out["reload_max_abs_diff"] = cert["max_abs_differences"].get("reload", 0.0)
+    manifest["final_evaluation_blocked"] = out["final_evaluation_blocked"]
+    manifest_path.write_text(json.dumps(manifest, indent=2, default=str), encoding="utf-8")
+    return out
+
+
 def main(argv=None):
     argv = argv or sys.argv[1:]
     job_path = Path(argv[0])
@@ -422,7 +570,9 @@ def main(argv=None):
             result.update(run_train_eval(job, data, out_dir))
         elif job["mode"] == "method_eval":
             result.update(run_method_eval(job, data, out_dir))
-        elif job["mode"] == "final_v2":
+        elif job["mode"] in ("final_v2", "final_v3"):
+            if job["mode"] == "final_v3":
+                job["pipeline"] = "v3"
             result.update(run_final_v2(job, data, out_dir))
         else:
             result.update(run_final(job, data, out_dir))

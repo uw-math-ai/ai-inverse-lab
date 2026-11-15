@@ -1,0 +1,38 @@
+{
+ "run_id": "heat_v3_offline_s0_20261113_212515",
+ "stage": "done",
+ "ideas": 3,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-003",
+  "method": "physics-MLE[log,ms=1,it=30]",
+  "rel_l2": 0.019335308875384715
+ },
+ "resources": {
+  "compute_budget_s": 760.0,
+  "compute_used_s": 64.98,
+  "compute_remaining_s": 695.02,
+  "wall_elapsed_s": 49.98,
+  "wall_budget_s": 7200.0,
+  "jobs": 4,
+  "by_stage_s": {
+   "study": 26.98,
+   "final": 38.0
+  },
+  "llm_calls": 0,
+  "llm_calls_max": 80,
+  "llm_seconds": 0.0,
+  "llm_cost_usd": 0.0,
+  "llm_by_phase": {},
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794633965.8547044,
+ "error": null,
+ "pipeline": "v3",
+ "elapsed": 49.98480820655823,
+ "research_stop": "registered work resolved or explicitly deferred; no justified next study"
+}

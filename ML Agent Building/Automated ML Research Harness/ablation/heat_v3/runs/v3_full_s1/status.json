@@ -1,0 +1,27 @@
+{
+ "run_id": "heat_v3_full_s1_20261114_194223",
+ "stage": "program",
+ "ideas": 0,
+ "pruned": 0,
+ "best": null,
+ "resources": {
+  "compute_budget_s": 760.0,
+  "compute_used_s": 0.0,
+  "compute_remaining_s": 760.0,
+  "wall_elapsed_s": 0.33,
+  "wall_budget_s": 7200.0,
+  "jobs": 0,
+  "by_stage_s": {},
+  "llm_calls": 0,
+  "llm_calls_max": 80,
+  "llm_seconds": 0.0,
+  "llm_cost_usd": 0.0,
+  "llm_by_phase": {},
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794714143.7388594
+}
