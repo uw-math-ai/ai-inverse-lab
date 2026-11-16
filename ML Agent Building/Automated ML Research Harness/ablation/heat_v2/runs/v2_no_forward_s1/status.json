@@ -1,0 +1,54 @@
+{
+ "run_id": "heat_v2_no_forward_s1_20261109_151330",
+ "stage": "done",
+ "ideas": 14,
+ "pruned": 3,
+ "best": {
+  "idea": "idea-003",
+  "method": "custom-solver",
+  "rel_l2": 0.019968595114663996
+ },
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 216.59,
+  "compute_remaining_s": 183.41,
+  "wall_elapsed_s": 849.77,
+  "wall_budget_s": 1640.0,
+  "jobs": 29,
+  "by_stage_s": {
+   "baseline": 2.24,
+   "pilot": 50.32,
+   "screen": 63.29,
+   "evaluate": 53.47,
+   "refine": 28.75,
+   "final": 18.52
+  },
+  "llm_calls": 22,
+  "llm_calls_max": 38,
+  "llm_seconds": 1283.74,
+  "llm_cost_usd": 4.621,
+  "llm_by_phase": {
+   "research": 19,
+   "execution": 3
+  },
+  "literature_queries": 22,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "research_rounds": 3,
+  "proposal_versions": 25,
+  "proposals_active_at_end": 10,
+  "proposals_abandoned": 4,
+  "portfolio_entries": 8,
+  "gate_approved": 9,
+  "screen_survivors": 6,
+  "evaluated_full": 6
+ },
+ "updated": 1794266860.1217556,
+ "error": null,
+ "elapsed": 849.7697701454163,
+ "pipeline": "v2",
+ "research_stop": "iteration cap reached (max_rounds=3); unresolved issues are documented"
+}

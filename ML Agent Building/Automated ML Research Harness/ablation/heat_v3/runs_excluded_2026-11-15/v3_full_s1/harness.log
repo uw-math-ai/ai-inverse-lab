@@ -1,0 +1,30 @@
+2026-11-14 19:42:23,419 INFO === stage: spec | compute used 0/760s | wall 0s
+2026-11-14 19:42:23,425 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-14 19:42:23,425 INFO llm backend: claude_code (claude-opus-5-5) | workers: 6 x 2 threads | gpus: none
+2026-11-14 19:42:23,426 INFO === stage: data | compute used 0/760s | wall 0s
+2026-11-14 19:42:23,440 INFO [simulator] dataset 346a0cfc9d47587b loaded from cache
+2026-11-14 19:42:23,679 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-14 19:42:23,679 INFO identifiability: Fisher cond median 62.3, CRB rel_l2 floor ~0.01851, least determined ['k1', 'k4']
+2026-11-14 19:42:23,737 INFO === stage: program | compute used 0/760s | wall 0s
+2026-11-14 19:45:52,635 INFO   exp-0006 idea-006  extra_trees/raw+logy         f=1.00 rel_l2=0.07763 r2=0.9445 rmse=0.1024 (15.2s)
+2026-11-14 19:45:58,093 INFO   exp-0007 idea-007  physics-MLE[log,ms=2,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (12.8s)
+2026-11-14 19:45:59,592 INFO   exp-0004 idea-004  extra_trees/raw+logy         f=1.00 rel_l2=0.07711 r2=0.9452 rmse=0.1017 (22.1s)
+2026-11-14 19:47:10,290 INFO   exp-0016 idea-016  physics-MLE[log,ms=6,it=80]  f=0.25 rel_l2=0.01932 r2=0.9966 rmse=0.02548 (58.8s)
+2026-11-14 19:47:29,910 INFO   exp-0021 idea-021  extra_trees/raw+logy         f=1.00 rel_l2=0.07757 r2=0.9446 rmse=0.1023 (8.6s)
+2026-11-14 19:47:32,065 INFO   exp-0018 idea-018  torch_mlp/raw+logy           f=1.00 rel_l2=0.03075 r2=0.9913 rmse=0.04055 (10.8s)
+2026-11-14 19:47:32,909 INFO   exp-0017 idea-017  torch_mlp/raw+logy           f=1.00 rel_l2=0.03016 r2=0.9916 rmse=0.03977 (11.6s)
+2026-11-14 19:47:33,126 INFO   exp-0019 idea-019  torch_mlp/raw+logy           f=1.00 rel_l2=0.02972 r2=0.9919 rmse=0.03919 (11.8s)
+2026-11-14 19:50:49,803 INFO   exp-0030 idea-030  extra_trees/raw+logy         f=1.00 rel_l2=0.07763 r2=0.9445 rmse=0.1024 (10.2s)
+2026-11-14 19:50:52,436 INFO   exp-0029 idea-029  extra_trees/raw+logy         f=1.00 rel_l2=0.07757 r2=0.9446 rmse=0.1023 (12.9s)
+2026-11-14 19:50:55,686 INFO   exp-0031 idea-031  physics-MLE[log,ms=2,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (12.1s)
+2026-11-14 19:51:21,935 INFO   exp-0043 idea-043  physics-MLE[log,ms=2,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (14.6s)
+2026-11-14 19:51:23,355 INFO   exp-0042 idea-042  physics-MLE[log,ms=2,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.0255 (16.0s)
+2026-11-14 19:51:49,748 INFO   exp-0044 idea-044  physics-MLE[log,ms=6,it=80]  f=1.00 rel_l2=0.01932 r2=0.9966 rmse=0.02548 (38.7s)
+2026-11-14 19:52:12,140 INFO   exp-0048 idea-048  extra_trees/raw+logy         f=1.00 rel_l2=0.07711 r2=0.9452 rmse=0.1017 (8.7s)
+2026-11-14 19:52:14,270 INFO   exp-0046 idea-046  torch_mlp/raw+logy           f=1.00 rel_l2=0.03075 r2=0.9913 rmse=0.04055 (10.9s)
+2026-11-14 19:52:14,944 INFO   exp-0047 idea-047  torch_mlp/raw+logy           f=1.00 rel_l2=0.02972 r2=0.9919 rmse=0.03919 (11.5s)
+2026-11-14 19:52:15,327 INFO   exp-0045 idea-045  torch_mlp/raw+logy           f=1.00 rel_l2=0.03016 r2=0.9916 rmse=0.03977 (11.9s)
+2026-11-14 19:54:57,544 INFO   exp-0055 idea-055  custom-solver(fwd)           f=1.00 rel_l2=0.3307 r2=-0.000891 rmse=0.436 (1.9s)
+2026-11-14 20:01:42,975 INFO   exp-0056 idea-056  custom-solver(fwd)           f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (25.8s)
+2026-11-15 02:21:45,521 INFO === stage: final | compute used 403/760s | wall 7515s
+2026-11-15 02:21:45,677 INFO === stage: report | compute used 403/760s | wall 7515s

@@ -1,0 +1,156 @@
+{
+ "mode": "final_v2",
+ "exp_id": "exp-0022",
+ "idea_id": "ensemble",
+ "members_v2": [
+  {
+   "kind": "library",
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     256,
+     256
+    ],
+    "dropout": 0.0,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "epochs": 148,
+    "batch_size": 128,
+    "activation": "gelu"
+   },
+   "features": "sqrt",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 1,
+   "noise_scale": 1.0
+  },
+  {
+   "kind": "library",
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     128,
+     128
+    ],
+    "dropout": 0.006210683502179335,
+    "lr": 0.001,
+    "weight_decay": 0.00027016952133083425,
+    "epochs": 150,
+    "batch_size": 128,
+    "activation": "gelu"
+   },
+   "features": "log",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 1.0
+  },
+  {
+   "kind": "library",
+   "method": "torch_mlp",
+   "params": {
+    "hidden": [
+     256,
+     256
+    ],
+    "dropout": 0.0,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "epochs": 150,
+    "batch_size": 128,
+    "activation": "gelu"
+   },
+   "features": "log",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 1,
+   "noise_scale": 1.0
+  }
+ ],
+ "member_ids": [
+  "idea-011",
+  "idea-012",
+  "idea-006"
+ ],
+ "forward_access_members": [
+  false,
+  false,
+  false
+ ],
+ "weights": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s2\\data\\dataset.npz",
+ "seed": 2,
+ "data_seed": 5,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s2\\final",
+ "run_id": "heat_v2_no_forward_s2_20261109_010026",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": true,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "max_forward_evals": null,
+ "bootstrap": 200,
+ "data_cache_key": "dbbb3d2541fda500",
+ "spec_hash": "8fafaa561b",
+ "harness_version": "2.0.0",
+ "lineage": {
+  "idea-011": {
+   "proposal_chain": [
+    "P-011",
+    "P-005"
+   ],
+   "entry": "E-05",
+   "gate": "gate-00139",
+   "citations": [],
+   "label": "torch_mlp/sqrt+logy+aug1",
+   "origin": "refine"
+  },
+  "idea-012": {
+   "proposal_chain": [
+    "P-009",
+    "P-003"
+   ],
+   "entry": "E-03",
+   "gate": "gate-00141",
+   "citations": [],
+   "label": "torch_mlp/log+logy",
+   "origin": "refine"
+  },
+  "idea-006": {
+   "proposal_chain": [
+    "P-011",
+    "P-005"
+   ],
+   "entry": "E-05",
+   "gate": "gate-00073",
+   "citations": [],
+   "label": "torch_mlp/log+logy+aug1",
+   "origin": "research"
+  }
+ },
+ "plan_artifact": "plan-00167",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s2\\workspace\\experiments\\exp-0022",
+ "device": "cpu"
+}

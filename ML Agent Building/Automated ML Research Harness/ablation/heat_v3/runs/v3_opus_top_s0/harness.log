@@ -1,0 +1,21 @@
+2026-11-14 14:55:16,425 INFO === stage: spec | compute used 0/760s | wall 0s
+2026-11-14 14:55:16,438 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-14 14:55:16,438 INFO llm backend: claude_code (claude-opus-5-5) | workers: 6 x 2 threads | gpus: none
+2026-11-14 14:55:16,439 INFO === stage: data | compute used 0/760s | wall 0s
+2026-11-14 14:55:16,447 INFO [simulator] dataset 346a0cfc9d47587b loaded from cache
+2026-11-14 14:55:16,701 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-14 14:55:16,707 INFO identifiability: Fisher cond median 46.6, CRB rel_l2 floor ~0.01949, least determined ['k1', 'k4']
+2026-11-14 14:55:16,780 INFO === stage: program | compute used 0/760s | wall 0s
+2026-11-14 14:58:23,307 INFO   exp-0004 idea-004  extra_trees/raw+logy         f=1.00 rel_l2=0.07711 r2=0.9452 rmse=0.1017 (20.5s)
+2026-11-14 14:58:39,998 INFO   exp-0006 idea-006  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (6.8s)
+2026-11-14 14:58:46,461 INFO   exp-0010 idea-010  torch_mlp/raw+logy           f=1.00 rel_l2=0.03016 r2=0.9916 rmse=0.03977 (13.2s)
+2026-11-14 14:58:46,939 INFO   exp-0007 idea-007  torch_mlp/raw+logy           f=1.00 rel_l2=0.02805 r2=0.9928 rmse=0.03698 (13.7s)
+2026-11-14 14:58:50,580 INFO   exp-0008 idea-008  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (17.3s)
+2026-11-14 15:13:42,238 INFO   exp-0015 idea-015  torch_mlp/raw+logy           f=1.00 rel_l2=0.02805 r2=0.9928 rmse=0.03698 (32.6s)
+2026-11-14 15:14:00,156 INFO   exp-0019 idea-019  custom-ml                    f=1.00 error: ValueError: expected positive 2-D k targets on original scale (3.6s)
+2026-11-14 15:14:03,883 INFO   exp-0018 idea-018  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (7.4s)
+2026-11-14 15:14:09,713 INFO   exp-0016 idea-016  custom-solver(fwd)           f=1.00 rel_l2=0.01932 r2=0.9966 rmse=0.02548 (13.2s)
+2026-11-14 15:14:14,760 INFO   exp-0017 idea-017  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (18.2s)
+2026-11-14 15:21:55,323 INFO === stage: final | compute used 191/760s | wall 1599s
+2026-11-14 15:22:49,776 INFO   exp-0021 idea-016  FINAL                        f=1.00  (54.4s)
+2026-11-14 15:22:49,795 INFO === stage: report | compute used 245/760s | wall 1653s

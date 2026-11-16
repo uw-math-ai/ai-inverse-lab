@@ -1,0 +1,56 @@
+{
+  "schema": "v3.1",
+  "model_quality": null,
+  "study_count": 6,
+  "studies_complete": 2,
+  "study_completion_rate": 0.3333333333333333,
+  "orphan_studies": 0,
+  "claim_outcomes": {
+    "supported": 0,
+    "contradicted": 0,
+    "inconclusive": 4,
+    "untestable": 0
+  },
+  "claim_evidence_coverage": 1.0,
+  "claim_reliability": {
+    "unsupported_support_count": 0,
+    "supported_claims_have_evidence": true,
+    "scope": "record integrity; not an independent truth assessment"
+  },
+  "claim_resolution_rate": 0.0,
+  "reproducibility": null,
+  "cost": {
+    "compute_budget_s": 760.0,
+    "compute_used_s": 402.88,
+    "compute_remaining_s": 357.12,
+    "wall_elapsed_s": 7514.86,
+    "wall_budget_s": 7200.0,
+    "jobs": 36,
+    "by_stage_s": {
+      "study": 402.88
+    },
+    "llm_calls": 39,
+    "llm_calls_max": 80,
+    "llm_seconds": 7316.18,
+    "llm_cost_usd": 21.8953,
+    "llm_by_phase": {
+      "execution": 39
+    },
+    "literature_queries": 0,
+    "literature_failures": 0,
+    "workers": 6,
+    "gpus": []
+  },
+  "discovery": {
+    "established": null,
+    "reason": "method novelty requires explicit independent attribution review"
+  },
+  "transfer": {
+    "established": null,
+    "reason": "no independent-instance transfer evaluation supplied"
+  },
+  "time_to_resolved_questions": {
+    "value": null,
+    "reason": "requires registered question-start and resolution timestamps"
+  }
+}

@@ -1,0 +1,51 @@
+{
+ "run_id": "heat_v2_offline_s0_20261109_001050",
+ "stage": "done",
+ "ideas": 14,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-006",
+  "method": "physics-MMSE[log,ms=1,it=30]",
+  "rel_l2": 0.019047027081828607
+ },
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 122.58,
+  "compute_remaining_s": 277.42,
+  "wall_elapsed_s": 49.81,
+  "wall_budget_s": 1640.0,
+  "jobs": 27,
+  "by_stage_s": {
+   "baseline": 2.1,
+   "pilot": 6.9,
+   "screen": 29.96,
+   "evaluate": 52.09,
+   "refine": 14.21,
+   "final": 17.32
+  },
+  "llm_calls": 0,
+  "llm_calls_max": 38,
+  "llm_seconds": 0.0,
+  "llm_cost_usd": 0.0,
+  "llm_by_phase": {},
+  "literature_queries": 15,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "research_rounds": 2,
+  "proposal_versions": 14,
+  "proposals_active_at_end": 8,
+  "proposals_abandoned": 0,
+  "portfolio_entries": 8,
+  "gate_approved": 9,
+  "screen_survivors": 9,
+  "evaluated_full": 9
+ },
+ "updated": 1794211900.2823625,
+ "error": null,
+ "elapsed": 49.80918526649475,
+ "pipeline": "v2",
+ "research_stop": "quality criteria met after 2 rounds (every active proposal >= 0.75 quality, no blocking issues, critic converged)"
+}

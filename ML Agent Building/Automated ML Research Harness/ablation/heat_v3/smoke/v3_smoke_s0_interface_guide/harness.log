@@ -1,0 +1,19 @@
+2026-11-13 16:33:24,144 INFO === stage: spec | compute used 0/120s | wall 0s
+2026-11-13 16:33:24,154 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-13 16:33:24,155 INFO llm backend: claude_code (claude-opus-5-5) | workers: 2 x 6 threads | gpus: none
+2026-11-13 16:33:24,155 INFO === stage: data | compute used 0/120s | wall 0s
+2026-11-13 16:33:24,171 INFO [simulator] dataset 8b070c356b0637da loaded from cache
+2026-11-13 16:33:24,213 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2'] | bounds: lower=[0.5, 0.5] upper=[2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde=parabolic (heat / diffusion equ
+2026-11-13 16:33:24,214 INFO identifiability: Fisher cond median 3.1, CRB rel_l2 floor ~0.005337, least determined ['k2', 'k1']
+2026-11-13 16:33:24,220 INFO === stage: program | compute used 0/120s | wall 0s
+2026-11-13 16:36:24,302 INFO   exp-0001 idea-001  ridge/raw                    f=1.00 rel_l2=0.0101 r2=0.999 rmse=0.01329 (2.2s)
+2026-11-13 16:36:24,307 INFO   exp-0002 idea-002  kernel_ridge/raw             f=1.00 rel_l2=0.01485 r2=0.9979 rmse=0.01953 (2.2s)
+2026-11-13 16:36:26,330 INFO   exp-0004 idea-004  physics-MLE[log,ms=4,it=30]  f=1.00 rel_l2=0.00553 r2=0.9997 rmse=0.007273 (2.0s)
+2026-11-13 16:36:26,729 INFO   exp-0003 idea-003  extra_trees/raw              f=1.00 rel_l2=0.01689 r2=0.9973 rmse=0.02221 (2.4s)
+2026-11-13 16:56:06,710 INFO   exp-0005 idea-005  ridge/raw                    f=1.00 rel_l2=0.0101 r2=0.999 rmse=0.01329 (1.8s)
+2026-11-13 16:56:06,712 INFO   exp-0006 idea-006  kernel_ridge/raw             f=1.00 rel_l2=0.01485 r2=0.9979 rmse=0.01953 (1.8s)
+2026-11-13 16:56:08,557 INFO   exp-0008 idea-008  physics-MLE[log,ms=4,it=30]  f=1.00 rel_l2=0.00553 r2=0.9997 rmse=0.007273 (1.8s)
+2026-11-13 16:56:08,937 INFO   exp-0007 idea-007  extra_trees/raw              f=1.00 rel_l2=0.01689 r2=0.9973 rmse=0.02221 (2.2s)
+2026-11-13 16:58:06,769 INFO === stage: final | compute used 16/120s | wall 1483s
+2026-11-13 16:58:14,293 INFO   exp-0009 idea-004  FINAL                        f=1.00 rel_l2=0.005491 r2=0.9997 rmse=0.007441 (7.5s)
+2026-11-13 16:58:14,326 INFO === stage: report | compute used 24/120s | wall 1490s

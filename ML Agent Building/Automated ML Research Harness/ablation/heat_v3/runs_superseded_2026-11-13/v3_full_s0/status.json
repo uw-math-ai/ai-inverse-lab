@@ -1,0 +1,40 @@
+{
+ "run_id": "heat_v3_full_s0_20261113_170700",
+ "stage": "failed",
+ "ideas": 6,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-003",
+  "method": "physics-MLE[log,ms=6,it=30]",
+  "rel_l2": 0.019325980337639572
+ },
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 194.24,
+  "compute_remaining_s": 205.76,
+  "wall_elapsed_s": 624.71,
+  "wall_budget_s": 7200.0,
+  "jobs": 7,
+  "by_stage_s": {
+   "study": 94.18,
+   "final": 100.06
+  },
+  "llm_calls": 22,
+  "llm_calls_max": 80,
+  "llm_seconds": 454.92,
+  "llm_cost_usd": 8.4288,
+  "llm_by_phase": {
+   "execution": 22
+  },
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794619045.176865,
+ "error": "RuntimeError: final export failed: timeout after 100s",
+ "pipeline": "v3",
+ "elapsed": 624.6998040676117,
+ "research_stop": "registered work resolved or explicitly deferred; no justified next study"
+}

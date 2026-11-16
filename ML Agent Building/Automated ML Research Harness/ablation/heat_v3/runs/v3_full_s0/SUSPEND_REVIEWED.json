@@ -1,0 +1,8 @@
+{
+ "events": [
+  "2026-11-14T13:38:45"
+ ],
+ "reviewed": "2026-11-14",
+ "decision": "accepted",
+ "reason": "Single Modern Standby entry at 2026-11-14T13:38:45 occurred during a subscription usage-limit wait (wait of 3833 s ended 3807 s after the standby; the last artifact before it was an orchestrator response 40 s earlier). No development or final experiment's dispatch interval spans the standby, so worker-second compute accounting and selection are unaffected; the wait itself is excluded from the run wall clock. Same handling as V2 memory s1/s2 (SUSPEND_REVIEWED.json)."
+}

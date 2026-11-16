@@ -1,0 +1,251 @@
+{
+  "pipeline": "v2",
+  "members": [
+    {
+      "kind": "custom_solver",
+      "params": {
+        "m": 40,
+        "iters": 30,
+        "samples": 96,
+        "inflate": 1.5,
+        "estimator": "posterior_mean"
+      },
+      "uses_forward": false,
+      "code_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s0\\final\\member0_heat_v2_no_forward_s0_20261109_094428.py",
+      "module_name": "mlh_member0_heat_v2_no_forward_s0_20261109_094428"
+    },
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          256,
+          256
+        ],
+        "dropout": 0.0,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 123,
+        "batch_size": 128,
+        "activation": "gelu"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "none",
+      "noise_aug": 0,
+      "noise_scale": 1.0
+    },
+    {
+      "kind": "custom_solver",
+      "params": {
+        "K": 48,
+        "Ks": [
+          24,
+          48,
+          96
+        ],
+        "iters": 2,
+        "lo": 0.5,
+        "hi": 2.0,
+        "sigma": 0.001,
+        "lam": 1.0,
+        "n_hold": 250,
+        "mmse": false,
+        "n_samples": 256
+      },
+      "uses_forward": false,
+      "code_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_forward_s0\\final\\member2_heat_v2_no_forward_s0_20261109_094428.py",
+      "module_name": "mlh_member2_heat_v2_no_forward_s0_20261109_094428"
+    },
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.0,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 179,
+        "batch_size": 128,
+        "activation": "gelu"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "none",
+      "noise_aug": 0,
+      "noise_scale": 1.0
+    }
+  ],
+  "member_info": [
+    {
+      "label": "custom-solver",
+      "kind": "custom_solver",
+      "family": "custom",
+      "uses_forward": false,
+      "method_hash": "5f357e25843a"
+    },
+    {
+      "label": "torch_mlp/raw",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "b84b35160939"
+    },
+    {
+      "label": "custom-solver",
+      "kind": "custom_solver",
+      "family": "custom",
+      "uses_forward": false,
+      "method_hash": "d4dbdefb4941"
+    },
+    {
+      "label": "torch_mlp/raw",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "bbe5b5810bb4"
+    }
+  ],
+  "weights": [
+    5.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.02103913426567809,
+    "r2": 0.9960355067605914,
+    "rmse": 0.027683377000858725
+  },
+  "test_bootstrap": {
+    "mean": 0.020977394973850053,
+    "std": 0.0007353010805166448,
+    "ci95": [
+      0.01962891549872201,
+      0.02241209308421346
+    ],
+    "n_boot": 200
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.09131566848779842,
+      "r2": 0.9440617581766898,
+      "rmse": 0.11372411295717313
+    },
+    "noise_x3": {
+      "rel_l2": 0.0540439209594569,
+      "r2": 0.974552357456252,
+      "rmse": 0.07200739034335601
+    }
+  },
+  "custom_modules": [
+    {
+      "file": "member0_heat_v2_no_forward_s0_20261109_094428.py",
+      "module_name": "mlh_member0_heat_v2_no_forward_s0_20261109_094428"
+    },
+    {
+      "file": "member2_heat_v2_no_forward_s0_20261109_094428.py",
+      "module_name": "mlh_member2_heat_v2_no_forward_s0_20261109_094428"
+    }
+  ],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    false,
+    false,
+    false,
+    false
+  ],
+  "reproducibility": {
+    "seed": 0,
+    "data_seed": 5,
+    "data_cache_key": "dbbb3d2541fda500",
+    "test_split_sha1": "5b49be1eb2715949",
+    "spec_hash": "a7592704f6",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "harness_version": "2.0.0"
+  },
+  "research_lineage": {
+    "idea-004": {
+      "proposal_chain": [
+        "P-029",
+        "P-018",
+        "P-007"
+      ],
+      "entry": "E-03",
+      "gate": "gate-00132",
+      "citations": [
+        "ts:thm:11493811",
+        "ts:thm:21223425",
+        "ts:thm:21824669",
+        "ts:thm:24153014",
+        "ts:thm:26141779",
+        "ts:thm:26682376"
+      ],
+      "label": "custom-solver",
+      "origin": "research"
+    },
+    "idea-012": {
+      "proposal_chain": [
+        "P-026",
+        "P-015",
+        "P-005"
+      ],
+      "entry": "E-06",
+      "gate": "gate-00215",
+      "citations": [
+        "ts:thm:22398568"
+      ],
+      "label": "torch_mlp/raw",
+      "origin": "refine"
+    },
+    "idea-002": {
+      "proposal_chain": [
+        "P-022",
+        "P-011"
+      ],
+      "entry": "E-01",
+      "gate": "gate-00128",
+      "citations": [
+        "ts:thm:22398568",
+        "ts:thm:23892151"
+      ],
+      "label": "custom-solver",
+      "origin": "research"
+    },
+    "idea-013": {
+      "proposal_chain": [],
+      "entry": "E-07",
+      "gate": "gate-00217",
+      "citations": [],
+      "label": "torch_mlp/raw",
+      "origin": "refine"
+    }
+  }
+}

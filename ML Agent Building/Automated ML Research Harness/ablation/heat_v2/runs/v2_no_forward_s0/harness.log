@@ -1,0 +1,57 @@
+2026-11-09 09:44:28,939 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-09 09:44:28,947 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-09 09:44:28,947 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-09 09:44:28,947 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-09 09:44:28,955 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
+2026-11-09 09:44:29,135 INFO problem context: forward model: not available | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde=parabolic (heat / diff
+2026-11-09 09:44:29,151 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-09 09:44:31,426 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.2s)
+2026-11-09 09:44:31,426 INFO baseline val rel_l2 = 0.3307
+2026-11-09 09:44:31,426 INFO === stage: research | compute used 2/400s | wall 2s
+2026-11-09 09:47:47,142 INFO research round 1: running 3 pilot experiment(s)
+2026-11-09 09:47:49,259 INFO   exp-0004 pilot-P-004 kernel_ridge/log+pca20+logy  f=0.10 rel_l2=0.07513 r2=0.9488 rmse=0.09649 (2.1s)
+2026-11-09 09:47:49,280 INFO   exp-0002 pilot-P-001 kernel_ridge/log+pca40+logy+ f=0.10 rel_l2=0.05204 r2=0.9763 rmse=0.06684 (2.1s)
+2026-11-09 09:48:01,143 INFO   exp-0003 pilot-P-002 torch_mlp/log+logy+aug2      f=0.10 rel_l2=0.04967 r2=0.9778 rmse=0.0638 (14.0s)
+2026-11-09 09:52:57,889 INFO research round 2: running 3 pilot experiment(s)
+2026-11-09 09:52:59,898 INFO   exp-0007 pilot-P-011 custom-solver                f=0.10 rel_l2=0.0449 r2=0.982 rmse=0.05767 (2.0s)
+2026-11-09 09:52:59,959 INFO   exp-0006 pilot-P-018 custom-solver                f=0.10 rel_l2=0.08362 r2=0.9421 rmse=0.1074 (2.1s)
+2026-11-09 09:53:11,224 INFO   exp-0005 pilot-P-010 torch_mlp/log+logy+aug2      f=0.10 rel_l2=0.05102 r2=0.9765 rmse=0.06553 (13.3s)
+2026-11-09 09:58:46,965 INFO research loop: 3 rounds, 10 active, 4 abandoned — iteration cap reached (max_rounds=3); unresolved issues are documented
+2026-11-09 09:58:46,965 INFO === stage: portfolio | compute used 38/400s | wall 858s
+2026-11-09 09:58:46,971 INFO portfolio: E-01 custom-solver, E-02 custom-ml, E-03 custom-solver, E-04 torch_mlp/log+logy, E-05 kernel_ridge/sqrt+pca40+logy, E-06 torch_mlp/raw, E-07 torch_mlp/raw, E-08 random-search x2
+2026-11-09 09:58:46,972 INFO === stage: gate | compute used 38/400s | wall 858s
+2026-11-09 09:58:46,999 INFO gate: 9/9 executable methods approved
+2026-11-09 09:58:46,999 INFO === stage: screen | compute used 38/400s | wall 858s
+2026-11-09 09:58:49,527 INFO   exp-0012 idea-006  kernel_ridge/sqrt+pca40+logy f=0.10 rel_l2=0.05973 r2=0.966 rmse=0.0776 (2.5s)
+2026-11-09 09:58:49,547 INFO   exp-0009 idea-003  custom-ml                    f=0.10 error: ValueError: Input y contains NaN. (2.5s)
+2026-11-09 09:58:49,629 INFO   exp-0008 idea-002  custom-solver                f=0.10 rel_l2=0.04336 r2=0.982 rmse=0.05633 (2.6s)
+2026-11-09 09:58:50,123 INFO   exp-0010 idea-004  custom-solver                f=0.10 rel_l2=0.09035 r2=0.9226 rmse=0.1174 (3.1s)
+2026-11-09 09:58:51,749 INFO   exp-0015 idea-009  knn/sqrt                     f=0.10 rel_l2=0.2036 r2=0.6059 rmse=0.2645 (2.2s)
+2026-11-09 09:58:51,803 INFO   exp-0016 idea-010  kernel_ridge/raw             f=0.10 rel_l2=0.05292 r2=0.9734 rmse=0.06875 (2.2s)
+2026-11-09 09:58:54,311 INFO   exp-0013 idea-007  torch_mlp/raw                f=0.10 rel_l2=0.06155 r2=0.9644 rmse=0.07996 (7.3s)
+2026-11-09 09:58:54,312 INFO   exp-0011 idea-005  torch_mlp/log+logy           f=0.10 rel_l2=0.05363 r2=0.9727 rmse=0.06967 (7.3s)
+2026-11-09 09:58:57,484 INFO   exp-0014 idea-008  torch_mlp/raw                f=0.10 rel_l2=0.06289 r2=0.9628 rmse=0.0817 (7.9s)
+2026-11-09 09:59:20,733 INFO   exp-0017 idea-003  custom-ml                    f=0.10 error: RuntimeError: Cannot clone object <mlh_code_exp_0017.AsinhKRR object at 0x00000241F855EED0 (2.4s)
+2026-11-09 09:59:20,735 INFO screen: 8/9 methods survive (no cross-family ranking at unequal fidelity)
+2026-11-09 09:59:20,735 INFO === stage: evaluate | compute used 78/400s | wall 892s
+2026-11-09 09:59:23,575 INFO   exp-0021 idea-006  kernel_ridge/sqrt+pca40+logy f=1.00 rel_l2=0.03324 r2=0.9898 rmse=0.04384 (2.8s)
+2026-11-09 09:59:23,575 INFO   exp-0019 idea-010  kernel_ridge/raw             f=1.00 rel_l2=0.03242 r2=0.9903 rmse=0.04275 (2.8s)
+2026-11-09 09:59:25,901 INFO   exp-0025 idea-009  knn/sqrt                     f=1.00 rel_l2=0.1404 r2=0.8184 rmse=0.1851 (2.3s)
+2026-11-09 09:59:26,270 INFO   exp-0018 idea-002  custom-solver                f=1.00 rel_l2=0.02725 r2=0.9932 rmse=0.03594 (5.5s)
+2026-11-09 09:59:32,257 INFO   exp-0023 idea-008  torch_mlp/raw                f=1.00 rel_l2=0.02952 r2=0.992 rmse=0.03893 (11.5s)
+2026-11-09 09:59:34,094 INFO   exp-0022 idea-007  torch_mlp/raw                f=1.00 rel_l2=0.02833 r2=0.9926 rmse=0.03736 (13.3s)
+2026-11-09 09:59:35,052 INFO   exp-0020 idea-005  torch_mlp/log+logy           f=1.00 rel_l2=0.02964 r2=0.9919 rmse=0.03909 (14.3s)
+2026-11-09 09:59:49,625 INFO   exp-0024 idea-004  custom-solver                f=1.00 rel_l2=0.02315 r2=0.9951 rmse=0.03053 (26.0s)
+2026-11-09 09:59:49,627 INFO evaluate: best idea-004 custom-solver val rel_l2=0.023148
+2026-11-09 09:59:49,627 INFO === stage: refine | compute used 156/400s | wall 921s
+2026-11-09 10:00:00,836 INFO   exp-0029 idea-014  torch_mlp/log                f=1.00 rel_l2=0.02976 r2=0.9918 rmse=0.03924 (11.2s)
+2026-11-09 10:00:02,164 INFO   exp-0028 idea-013  torch_mlp/raw                f=1.00 rel_l2=0.02947 r2=0.992 rmse=0.03886 (12.5s)
+2026-11-09 10:00:02,284 INFO   exp-0026 idea-011  torch_mlp/raw                f=1.00 rel_l2=0.02971 r2=0.9919 rmse=0.03918 (12.6s)
+2026-11-09 10:00:03,361 INFO   exp-0027 idea-012  torch_mlp/raw                f=1.00 rel_l2=0.02822 r2=0.9927 rmse=0.03722 (13.7s)
+2026-11-09 10:00:03,366 INFO refine round 1: 4 children, best gain 0.00%
+2026-11-09 10:00:03,366 INFO === stage: predictions | compute used 206/400s | wall 934s
+2026-11-09 10:00:03,366 INFO prediction checks: {'supported': 5, 'contradicted': 0, 'inconclusive': 1, 'untestable': 2}
+2026-11-09 10:00:03,366 INFO === stage: final | compute used 206/400s | wall 934s
+2026-11-09 10:02:03,733 INFO   exp-0030 ensemble  FINAL                        f=1.00 rel_l2=0.02104 r2=0.996 rmse=0.02768 (120.3s)
+2026-11-09 10:02:03,734 INFO FINAL ensemble ['custom-solver', 'torch_mlp/raw', 'custom-solver', 'torch_mlp/raw'] | val rel_l2=0.022098 | test {'rel_l2': 0.02104, 'r2': 0.99604, 'rmse': 0.02768} (95% CI [0.01963, 0.02241])
+2026-11-09 10:02:03,748 INFO === stage: report | compute used 327/400s | wall 1055s

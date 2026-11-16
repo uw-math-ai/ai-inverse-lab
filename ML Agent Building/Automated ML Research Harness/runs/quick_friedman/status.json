@@ -1,0 +1,44 @@
+{
+ "run_id": "quick_friedman_20261107_154445",
+ "stage": "done",
+ "ideas": 12,
+ "pruned": 1,
+ "best": {
+  "idea": "idea-004",
+  "method": "extra_trees",
+  "rmse": 1.7704053935470165
+ },
+ "resources": {
+  "compute_budget_s": 150.0,
+  "compute_used_s": 44.18,
+  "compute_remaining_s": 105.82,
+  "wall_elapsed_s": 19.51,
+  "wall_budget_s": 350.0,
+  "jobs": 18,
+  "by_stage_s": {
+   "baseline": 1.96,
+   "screen": 19.93,
+   "halving": 12.82,
+   "refine": 6.57,
+   "final": 2.89
+  },
+  "llm_calls": 0,
+  "llm_calls_max": 10,
+  "llm_seconds": 0.0,
+  "llm_cost_usd": 0.0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "proposed": 8,
+  "prescreen_approved": 7,
+  "screen_survivors": 7,
+  "rung_0.33": 3,
+  "rung_1.00": 3,
+  "refine_proposed": 3,
+  "refine_approved": 3
+ },
+ "updated": 1794095105.4581673,
+ "error": null,
+ "elapsed": 19.50709843635559
+}

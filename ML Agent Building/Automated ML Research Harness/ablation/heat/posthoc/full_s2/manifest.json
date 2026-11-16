@@ -1,0 +1,31 @@
+{
+  "members": [
+    {
+      "method": "custom",
+      "params": {},
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0,
+      "code_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\full_s2\\workspace\\ideas\\idea-009\\model_v1.py"
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.023416271372258095,
+    "r2": 0.9950924172352302,
+    "rmse": 0.030811223511707717
+  },
+  "custom_modules": [
+    {
+      "file": "member0_model.py",
+      "module_name": "mlh_final_member0_posthoc_full_s2"
+    }
+  ],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

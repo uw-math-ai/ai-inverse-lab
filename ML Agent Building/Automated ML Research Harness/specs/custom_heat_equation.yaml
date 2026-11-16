@@ -1,0 +1,16 @@
+# Example of plugging in your own simulator file (see examples/heat_diffusion_simulator.py).
+# Paths are relative to the directory you run the command from (the harness folder).
+name: heat_conductivity
+problem: "Recover the piecewise-constant conductivity of a 1-D rod from noisy sensor temperatures."
+simulator:
+  name: python
+  params:
+    path: examples/heat_diffusion_simulator.py
+    function: simulate
+    n_segments: 4
+    noise: 0.001
+data: {n_train: 3000, n_val: 750, n_test: 750, seed: 5}
+metrics: {primary: rel_l2, secondary: [r2]}
+success: {threshold: 0.05}
+budget: {compute_seconds: 400, max_ideas: 30, experiment_timeout: 120}
+llm: {backend: auto}

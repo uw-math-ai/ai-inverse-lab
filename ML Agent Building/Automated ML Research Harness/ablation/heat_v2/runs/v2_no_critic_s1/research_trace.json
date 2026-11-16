@@ -1,0 +1,2603 @@
+{
+ "run_id": "heat_v2_no_critic_s1_20261109_110121",
+ "stop_reason": "iteration cap reached (max_rounds=1); unresolved issues are documented",
+ "rounds": [
+  {
+   "round": 1,
+   "actions": [
+    {
+     "researcher": "researcher-mathematical",
+     "persona": "mathematical",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-001"
+    },
+    {
+     "researcher": "researcher-mathematical",
+     "persona": "mathematical",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-002"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-003"
+    },
+    {
+     "researcher": "researcher-ml",
+     "persona": "ml",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-004"
+    },
+    {
+     "researcher": "researcher-experimental",
+     "persona": "experimental",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-005"
+    },
+    {
+     "researcher": "researcher-experimental",
+     "persona": "experimental",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-006"
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-007"
+    },
+    {
+     "researcher": "researcher-exploratory",
+     "persona": "exploratory",
+     "action": "propose",
+     "target": null,
+     "origin": "llm",
+     "response": "",
+     "new_id": "P-008"
+    }
+   ],
+   "critique": "fdbk-00043",
+   "mean_quality": 0.994,
+   "active": [
+    "P-001",
+    "P-002",
+    "P-003",
+    "P-004",
+    "P-005",
+    "P-006",
+    "P-007",
+    "P-008"
+   ]
+  }
+ ],
+ "proposals": {
+  "P-001": {
+   "id": "P-001",
+   "root_id": "P-001",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Per-sample bounded LM in log-conductivity with box-prior posterior mean reaches near the Cram\u00e9r\u2013Rao floor",
+   "hypothesis": "Inverting the forward map F(k) one sample at a time gets close to the information limit. The method is bounded Levenberg\u2013Marquardt in log k with multistart, followed by importance-sampled posterior mean under the uniform box prior. We hypothesise val rel_l2 <= 0.035, within a factor of about 1.9 of the CRB floor of 0.0185, and well inside the 0.05 success threshold. The posterior-mean estimator should beat the MLE mode on k1 and k4. Those parameters are the least determined and the most often near the bounds, so truncating their posterior to the box shrinks their error.",
+   "motivation": "The forward model is known exactly and is available. It has 4 unknowns, i.i.d. Gaussian noise with sigma=0.001, and an explicit FD solver on 40\u00d7200 (cheap). The Fisher condition number is about 62, which is mild, and the CRB per-parameter relative std is 0.5\u20132%. The local likelihood is therefore well conditioned, and a Gauss-Newton/LM solver should be near-efficient once it is in the basin. Using log k enforces positivity. It also makes the multiplicative scale of k (range 0.5 to 2, a 4\u00d7 ratio) closer to uniform in sensitivity. Sensor geometry explains why k1 and k4 are weak. The sensors sit at grid indices 5, 15, 25, 35, one per 10-cell segment at its centre. The pulse starts at x=0.5, so the outer segments see small amplitudes and gradients that are damped by the Dirichlet ends. Near the box edges the Gaussian Laplace posterior is truncated, which favours the MMSE estimator over the mode under the stated i.i.d. uniform prior.",
+   "assumptions": [
+    "context.forward matches the simulator that generated the data (same grid, time steps and sensor times); i.e. there is no model error.",
+    "Noise is exactly i.i.d. Gaussian with sigma = 0.001, so least squares is the MLE.",
+    "The misfit is locally convex in log k within the prior box for most samples, and multistart=3 catches the rest.",
+    "Per-sample LM over 750 val and 750 test samples fits in the 400 worker-second budget across 6 workers."
+   ],
+   "evidence": [
+    {
+     "claim": "The CRB rel_l2 floor is about 0.0185, below the 0.05 target, so an efficient unbiased estimator could succeed.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The median Fisher condition number is 62.3, which means the problem is mildly ill-conditioned and Gauss-Newton steps are stable.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have 3\u20134\u00d7 larger relative CRB std than k2 and k3, consistent with sensor and pulse geometry. These are where the prior truncation helps most.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Quadratic local convergence of LM for parabolic coefficient problems is proven, but under smooth coefficients and Robin BCs. That does not match this problem.",
+     "stance": "supports",
+     "source": "ts:thm:21223425"
+    },
+    {
+     "claim": "The CRB is a local, linearised bound computed at only 32 draws. Nonlinearity at small k, where there is slow diffusion and weak signal at the sensors, could leave tail samples far above it.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:21223425",
+     "claimed_applicability": "partial",
+     "note": "Two parts carry over: a parabolic equation, and a local Lipschitz stability \u2192 LM convergence argument. Three assumptions fail: the unknown is a Robin coefficient rather than the diffusion coefficient, the BCs are Robin/Neumann rather than Dirichlet, and the coefficient is smooth rather than piecewise-constant. For a 4-parameter finite-dimensional family, local stability instead follows numerically from the full-rank Jacobian (the Fisher diagnostics), not from this theorem. We use the theorem onl",
+     "screen": "partial"
+    }
+   ],
+   "falsifiable_test": "Run on the val split and compare the result with the CRB floor and with an identical run using estimator='mode'. The hypothesis is rejected under either of two conditions. The first is val rel_l2 > 0.035. The second is posterior_mean failing to improve over mode on the k1 and k4 per-parameter error.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "Each LM step needs one forward pass and one Jacobian, about 5 forward-equivalents, on a 40\u00d7200 explicit FD grid. For 750 samples \u00d7 3 starts \u00d7 \u226430 iters, split across 6 workers, this should fit in about 120s. If it is too slow, drop to multistart=2 and iters=20.",
+    "est_seconds": null
+   },
+   "if_fails": "If rel_l2 is well above the CRB but the residuals are at noise level (chi\u00b2 \u2248 number of observations), the problem is practical non-identifiability or nonlinearity beyond the Laplace regime. In that case, use full posterior sampling. If the residuals are above noise level, either LM is stuck in local minima (use more starts or the learned init of proposal 2) or there is a forward-model mismatch.",
+   "status": "literature-supported",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "identifiability piecewise constant conductivity heat equation interior point measurements",
+    "Levenberg-Marquardt parameter estimation parabolic Dirichlet finite-dimensional coefficient"
+   ],
+   "tags": [],
+   "family": "physics",
+   "method_label": "physics-MMSE[log,ms=3,it=30]",
+   "memory_refs": [],
+   "artifact_id": "prop-00035",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 3,
+     "iters": 30,
+     "tikhonov": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   }
+  },
+  "P-002": {
+   "id": "P-002",
+   "root_id": "P-002",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "An amortised learned inverse plus a few LM steps matches per-sample physics accuracy and removes local-minimum failures",
+   "hypothesis": "A torch MLP on log-temperature features learns a smooth approximation of the inverse map F^{-1}. It will not reach the CRB on its own; we expect val rel_l2 around 0.04\u20130.08, limited by finite training data and the weak k1/k4 signal. Starting from it, 10 LM iterations in log k will converge to the global basin for almost all samples. We predict the hybrid improves rel_l2 by at least 40% relative to the best pure data-driven model, and reaches <= 0.035 with fewer forward evaluations than cold-start multistart.",
+   "motivation": "In 4 dimensions with mild conditioning, the inverse map is smooth over the box, so a neural regressor gives an initial guess with about 5% error. That lies inside the Newton-Kantorovich basin of the least-squares misfit. With a good initial guess, a couple of Gauss-Newton steps are enough to reach the efficient estimator. Each step cuts the error quadratically down to the noise floor, so the learned model's bias is removed by the physics. Log features compress the dynamic range of the sensor signals: amplitudes decay with time and are small at the outer sensors. Combined with log k targets, they make the map closer to linear in the dominant scaling direction (k\u00b7t time-rescaling).",
+   "assumptions": [
+    "3000 training simulations are enough for the MLP to land in the LM basin of attraction for more than 98% of samples.",
+    "Log features are well defined: the sensor readings stay positive with high probability, given small noise and a positive Gaussian IC. Otherwise the harness clips them.",
+    "LM refinement using context.forward is consistent with the data-generating simulator.",
+    "Noise augmentation at the true sigma helps the MLP generalise to noisy inputs."
+   ],
+   "evidence": [
+    {
+     "claim": "The mean predictor gives 0.3307, so the inverse map carries much more information than the prior alone. A learned model should capture most of it.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The well-conditioned 4-parameter Jacobian (cond about 62) implies a large basin for Gauss-Newton around the truth.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Pure regressors trained on finite data typically do not reach the CRB for weakly informed parameters. They shrink toward the prior mean on k1 and k4, which is why refinement is needed.",
+     "stance": "supports",
+     "source": "reasoning"
+    },
+    {
+     "claim": "Log features amplify noise at late times or at outer sensors where the signal is near 0. That could hurt the initializer, though not the final LM, which uses raw residuals.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:21223425",
+     "claimed_applicability": "partial",
+     "note": "Used only for the idea that LM converges fast locally once inside the stability neighbourhood N(\u03b3*, b). Its assumptions fail here: Robin coefficient, Robin BCs and smooth coefficient. For our finite-dimensional piecewise-constant family, the needed local injectivity is checked numerically by the full-rank Fisher matrix, not by this theorem.",
+     "screen": "partial"
+    }
+   ],
+   "falsifiable_test": "Report the val rel_l2 of the MLP initializer alone and of the hybrid. The hypothesis is rejected under any of three conditions. (a) The hybrid improves on the initializer by less than 40%. (b) The hybrid val rel_l2 is above 0.035. (c) The hybrid is not at least as accurate as proposal 1's cold-start physics run, which would mean the learned init brings no basin benefit.",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_data_driven",
+    "improvement": 0.4,
+    "expect": "better"
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "MLP training on 3000\u00d7(4\u00b7~200) features takes tens of seconds on CPU. With 10 LM iterations and 1 extra start per sample, this is about 3\u00d7 cheaper than proposal 1's cold multistart. It fits within the 120s per-experiment limit.",
+    "est_seconds": null
+   },
+   "if_fails": "If the initializer alone already reaches the CRB-level error, refinement is unnecessary and the amortised model is the efficient choice. If refinement does not improve the result, check for a forward-model mismatch or non-Gaussian effects. If the hybrid is worse than cold-start physics, the learned init is biased into wrong basins for edge-of-box k1/k4, and multistart diversity matters more than init quality.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "learned initialization Gauss-Newton refinement parameter identification PDE",
+    "amortized inference heat equation conductivity neural network posterior"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/log+logy+aug2->LM10]",
+   "memory_refs": [],
+   "artifact_id": "prop-00036",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 200,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "log",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 0.001
+    },
+    "params": {
+     "transform": "log",
+     "iters": 10,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   }
+  },
+  "P-003": {
+   "id": "P-003",
+   "root_id": "P-003",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Learned amortized initializer + few-step Levenberg-Marquardt refinement (hybrid) approaches the Cram\u00e9r\u2013Rao floor",
+   "hypothesis": "An MLP inverse map trained on simulated data lands close enough to the truth that LM through the exact forward model converges to the global MLE in a few iterations. If so, test rel_l2 should be within about 1.5x of the CRB floor (0.0185), i.e. below 0.03, and clearly better than the MLP alone.",
+   "motivation": "The noise is small (sigma=1e-3) and the Fisher matrix is only moderately conditioned (median cond 62). Locally the problem is close to linear-Gaussian, so the MLE should be nearly efficient. The main risks for pure LM are local minima and slow convergence from the prior centre for the weakly determined k1 and k4. A learned initializer removes the globalisation problem, and LM removes the amortization and approximation error of the network. The log transform enforces positivity and makes the per-segment sensitivities more uniform.",
+   "assumptions": [
+    "The forward model available through context.forward matches the data-generating simulator, with the same discretization and no model error.",
+    "The MLP initializer error is inside the LM basin of attraction for most samples.",
+    "Per-sample LM with 10 iterations over 750+750 samples fits within the 120 s per-experiment limit.",
+    "Noise is i.i.d. Gaussian with known sigma, so least squares is the MLE."
+   ],
+   "evidence": [
+    {
+     "claim": "The CRB rel_l2 floor is about 0.0185, far below the 0.05 target. An efficient estimator therefore has ample margin.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have CR relative std of about 0.02, versus 0.005 for k2 and k3. These two will dominate the error, and when an estimate hits the box bounds the MLE can be pulled off target.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The Laplace or Gaussian posterior form is accurate when the forward map is near-linear at the scale of the posterior width. With sigma=1e-3 this is plausible, and it motivates a Gauss-Newton or LM refinement.",
+     "stance": "supports",
+     "source": "ts:thm:23749594"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:23749594",
+     "claimed_applicability": "partial",
+     "note": "Assumes a Gaussian prior and a (locally) linear operator. Our prior is a uniform box and the forward map is nonlinear in k. It only motivates a local Gaussian treatment near the mode; it does not prove LM convergence.",
+     "screen": "unknown"
+    },
+    {
+     "ref_id": "ts:thm:22602562",
+     "claimed_applicability": "no",
+     "note": "Covers elliptic equations with C^{m,alpha} coefficients and internal data. Our problem is parabolic with piecewise-constant k and point sensors, so its assumptions fail. It is cited only to note that no transferable stability theorem was retrieved.",
+     "screen": "plausible"
+    }
+   ],
+   "falsifiable_test": "Compare val rel_l2 of the hybrid against its own initializer (torch_mlp alone) and against the CRB floor. The hypothesis is refuted if hybrid val rel_l2 >= 0.03, or if it fails to improve on the initializer by at least 30%.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "The MLP trains in about 20-30 s on CPU. LM costs about 10 iterations x (1 forward + Jacobian) per sample, and the 40x200 explicit FD solver is cheap. If the time limit binds, drop extra_starts to 0.",
+    "est_seconds": null
+   },
+   "if_fails": "If LM does not improve on the initializer, either the forward model or the noise model is mismatched (model error) or the iterations are too few. Inspecting per-parameter error for k1 and k4 versus the CRB will tell which. If LM degrades results, bound-hitting MLE estimates suggest switching to the posterior_mean estimator.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "amortized initialization Gauss-Newton refinement parameter estimation PDE",
+    "piecewise constant conductivity identification heat equation point measurements uniqueness"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+pca64+logy+aug2->LM10]",
+   "memory_refs": [],
+   "artifact_id": "prop-00037",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 64,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 10,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-004": {
+   "id": "P-004",
+   "root_id": "P-004",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-ml",
+   "persona": "ml",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Posterior-mean (MMSE) refinement beats the MLE mode under the box prior for the weakly identified k1 and k4",
+   "hypothesis": "rel_l2 is a squared-error metric, so the Bayes-optimal estimator is the posterior mean, not the mode. Near the bounds 0.5 and 2.0, the box prior truncates the likelihood, and the MLE or mode is biased or has excess variance for k1 and k4. A hybrid that reports the importance-sampled posterior mean should therefore reduce val rel_l2 by at least 5% relative to the same hybrid with estimator=mode.",
+   "motivation": "This is an estimator-choice hypothesis rather than an architecture one. The CRB applies to unbiased estimators. A Bayes estimator that uses the bounded prior can go below the per-sample CRB where the posterior is truncated. The gain should concentrate in the least-determined parameters.",
+   "assumptions": [
+    "The Laplace approximation is an adequate importance proposal: posterior near-Gaussian in log k at sigma=1e-3.",
+    "Enough samples have true k1 or k4 near the bounds that truncation matters (uniform prior, so about 10-20% of samples lie within 2 sigma of a bound).",
+    "256 importance samples per test point remain within the compute budget."
+   ],
+   "evidence": [
+    {
+     "claim": "The CR relative std of about 0.02 for k1 and k4 makes posterior width non-negligible near bounds 0.5 and 2.0, so prior truncation is active for a fraction of samples.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "If the posterior is narrow and nearly symmetric for most samples, mean and mode coincide and the gain will be under 1%.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    },
+    {
+     "claim": "In the Gaussian-linear case the Laplace posterior is exact, which justifies it as an importance proposal.",
+     "stance": "supports",
+     "source": "ts:thm:23749594"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:23749594",
+     "claimed_applicability": "partial",
+     "note": "The Gaussian prior assumption fails here because our prior is a uniform box. It is used only to justify the Laplace proposal; importance weights correct for the box prior.",
+     "screen": "unknown"
+    },
+    {
+     "ref_id": "ts:thm:19966089",
+     "claimed_applicability": "no",
+     "note": "A Bernstein-von Mises result for linear inverse problems with a Gaussian process prior. Our map is nonlinear, finite-dimensional, and has a uniform prior. It only loosely suggests that the posterior mean is well behaved; the assumptions do not hold.",
+     "screen": "unknown"
+    }
+   ],
+   "falsifiable_test": "Run the same pipeline with estimator=mode and estimator=posterior_mean on val. The hypothesis is refuted if the posterior-mean val rel_l2 is not at least 5% lower, or if the per-parameter improvement is not concentrated in k1 and k4.",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_hybrid",
+    "improvement": 0.05,
+    "expect": "better"
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "Importance sampling reuses the Gauss-Newton Jacobian; 256 forward evaluations per sample is the dominant cost. If the time limit binds, cut posterior_samples to 128.",
+    "est_seconds": null
+   },
+   "if_fails": "If the two estimators tie, the posterior is effectively Gaussian and untruncated, and the remaining error is pure noise at the CRB, so further effort should not go into estimators. If posterior_mean is worse, the Laplace proposal is poor and the importance weights are degenerate, which would mean exploring a learned conditional density (amortized posterior) instead.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "posterior mean versus MAP bounded uniform prior parameter estimation small noise",
+    "Laplace importance sampling effective sample size nonlinear inverse problem"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+pca64+logy+aug2->LM10]",
+   "memory_refs": [],
+   "artifact_id": "prop-00038",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 64,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 10,
+     "tikhonov": 0,
+     "extra_starts": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 256
+    }
+   }
+  },
+  "P-005": {
+   "id": "P-005",
+   "root_id": "P-005",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Physics MLE via bounded LM in log-space reaches near the Cram\u00e9r\u2013Rao floor",
+   "hypothesis": "Because the forward model is exact (same explicit FD simulator, 40 grid, 200 steps) and noise is i.i.d. Gaussian sigma=0.001 with Fisher condition ~62, per-sample Levenberg\u2013Marquardt with a few multistarts will converge to the global MLE for nearly all samples, giving test-proxy val rel_l2 within ~1.5x of the CRB floor (0.0185), i.e. < 0.03. Competing explanation to falsify: local minima / non-identifiability from the piecewise-constant interfaces (or explicit-scheme stiffness at k=2) cause a heavy tail of failed fits that pushes rel_l2 above 0.05.",
+   "motivation": "Simulation fidelity: the model class is exactly correct, so the only error sources are noise (bounded by CRB) and optimizer failure. Mean CRB rel std is ~0.5\u20132% per parameter; a well-posed 4-parameter least-squares problem with a smooth parabolic forward map should be locally convex in a large basin. Log transform enforces positivity and evens out sensitivity across the [0.5,2] range. Posterior mean under box prior partially shrinks k1/k4 (least determined) and should reduce MSE slightly versus mode.",
+   "assumptions": [
+    "context.forward matches the data-generating simulator exactly (no model mismatch)",
+    "noise is i.i.d. Gaussian with known sigma=0.001 so least squares = MLE",
+    "the misfit landscape has a dominant basin reachable from 3 starts",
+    "per-sample LM over 750 val samples fits in the 120 s per-experiment budget across 6 workers"
+   ],
+   "evidence": [
+    {
+     "claim": "CRB rel_l2 floor ~0.0185, well below the 0.05 success threshold, so an efficient estimator should succeed",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Fisher condition number median 62 indicates locally well-conditioned problem, LM steps will be stable",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have ~2% rel std, so errors will be dominated by end segments; shrinkage toward prior helps there",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Uniqueness theorems for coefficient recovery exist but assume smooth coefficients and boundary/final-time data, so global uniqueness here is not guaranteed by literature",
+     "stance": "contradicts",
+     "source": "ts:thm:22398568"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:22398568",
+     "claimed_applicability": "partial",
+     "note": "Same parabolic divergence-form class and admits non-smooth coefficients, but uses final-time full-field data rather than 4 point sensors over time; does not prove uniqueness for our 4-parameter discrete setting, only motivates plausibility.",
+     "screen": "partial"
+    },
+    {
+     "ref_id": "ts:thm:24476298",
+     "claimed_applicability": "partial",
+     "note": "1-D Dirichlet setting and recovery of diffusion coefficient from lateral data; but lateral boundary flux measurement and subdiffusion, not interior point sensors of classical heat eq. Heuristic support only.",
+     "screen": "partial"
+    }
+   ],
+   "falsifiable_test": "Run on val; compute rel_l2 and also the distribution of per-sample normalized residual chi^2/(n_obs). If optimizer reaches the MLE, chi^2/n \u2248 1 for >98% of samples and val rel_l2 < 0.03. A heavy tail of chi^2/n >> 1 with large errors falsifies the single-basin hypothesis; rel_l2 > 0.05 with chi^2/n\u22481 would instead indicate genuine non-identifiability (CRB misleading).",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "4 params, Jacobian via forward FD or context.jacobian; 750 samples x 3 starts x ~30 iters; may approach budget\u2014reduce multistart to 2 if timing shows risk.",
+    "est_seconds": null
+   },
+   "if_fails": "If chi^2 tail: multimodality/poor starts -> motivates hybrid learned init. If chi^2 fine but error high: CRB diagnostics underestimate error (nonlinearity at bounds), motivates posterior-mean with more samples or prior-informed estimator.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "identifiability piecewise constant conductivity heat equation interior point measurements",
+    "Levenberg-Marquardt parameter estimation heat equation multistart local minima"
+   ],
+   "tags": [],
+   "family": "physics",
+   "method_label": "physics-MMSE[log,ms=3,it=30]",
+   "memory_refs": [],
+   "artifact_id": "prop-00039",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 3,
+     "iters": 30,
+     "tikhonov": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-006": {
+   "id": "P-006",
+   "root_id": "P-006",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Noise-augmented learned initializer + short LM refinement (hybrid) beats pure ML and matches physics at lower cost",
+   "hypothesis": "A data-driven inverse map (torch MLP on standardized raw sensor traces trained with noise augmentation at sigma=0.001) alone will plateau around rel_l2 0.03\u20130.06 because finite training data (3000) limits accuracy near the bounds; refining its output with 8 LM iterations removes that approximation error, giving val rel_l2 at least 30% lower than the best pure data-driven arm and within 10% of the full physics arm. Competing explanation: if the ML init already sits near the CRB, refinement gives <5% gain.",
+   "motivation": "Controls/evaluation design: this isolates approximation error (learned map) from estimation error (noise, CRB). Pairing the same initializer with and without refinement is a clean ablation. Noise augmentation matches the train feature distribution to the measurement model so the MLP doesn't overfit to the particular noise realisations (train data already noisy, augmentation adds diversity). The good init should make a single start sufficient, avoiding multistart cost.",
+   "assumptions": [
+    "training data noise model equals test noise model (sigma=0.001 Gaussian)",
+    "MLP init lands in the MLE basin for nearly all samples",
+    "8 LM iterations from a good init converge (quadratic convergence near optimum)",
+    "forward model is exact"
+   ],
+   "evidence": [
+    {
+     "claim": "Mean predictor baseline 0.33; smooth parabolic forward map suggests a smooth inverse learnable by MLP",
+     "stance": "supports",
+     "source": "reasoning"
+    },
+    {
+     "claim": "CRB floor 0.0185 bounds any estimator; refinement can only close gap down to this floor",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Regularity results (Lipschitz continuity of parabolic solutions) suggest forward map is smooth in data, but these are for different equations and do not establish inverse-map smoothness",
+     "stance": "contradicts",
+     "source": "ts:thm:19667864"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:19667864",
+     "claimed_applicability": "no",
+     "note": "Viscous HJ homogenization on R with linear initial data; does not match our bounded rod/Dirichlet/Gaussian IC; cited only to note regularity of parabolic solutions is not evidence for inverse-map smoothness.",
+     "screen": "unknown"
+    }
+   ],
+   "falsifiable_test": "Report val rel_l2 of the MLP init alone and after refinement. Hypothesis is falsified if refinement improves rel_l2 by <30% relative to best data-driven arm, or if the hybrid is >10% worse than the pure physics arm (indicating init leads to wrong basins or too few iters).",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_data_driven",
+    "improvement": 0.3,
+    "expect": "better"
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "MLP training ~20-40 s on CPU; LM refinement with 1 start and 8 iters is ~4-10x cheaper than multistart physics.",
+    "est_seconds": null
+   },
+   "if_fails": "Small gain => MLP already near CRB (data-driven sufficient, prefer cheaper arm). Hybrid worse than physics => initializer biased near bounds into wrong basin; add extra_starts or increase iters.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "learned initialization Gauss-Newton refinement inverse problems PDE",
+    "amortized inference plus optimization heat equation conductivity"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug2->LM8]",
+   "memory_refs": [],
+   "artifact_id": "prop-00040",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 200,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 0.001
+    },
+    "params": {
+     "transform": "log",
+     "iters": 8,
+     "tikhonov": 0,
+     "extra_starts": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 64
+    }
+   }
+  },
+  "P-007": {
+   "id": "P-007",
+   "root_id": "P-007",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "MMSE-not-MLE: hybrid amortized init + log-space LM with posterior-mean readout to approach the Cram\u00e9r\u2013Rao floor under a rel_l2 loss",
+   "hypothesis": "The usual framing treats this as a point-estimation (MLE/least-squares) problem, but the metric is a squared-error-type loss and the prior is a known bounded box. k1 and k4 are weakly determined (CRB rel std 0.022 and 0.017). For these, the box-prior MMSE (posterior mean) should beat the MLE, because the MLE's tails run toward the bounds 0.5 and 2.0. Prediction: a learned initializer (torch_mlp on log features), followed by bounded LM in log-k and a posterior-mean readout, reaches val rel_l2 < 0.03. That is within about 1.6x of the CRB floor 0.0185 and below 0.05. It should also be at least 10% better than the same pipeline with estimator=mode.",
+   "motivation": "The forward model is cheap: explicit FD with 40 nodes and 200 steps. The diagnostics show moderate conditioning (Fisher cond median 62) and a CRB floor near 0.019. So the information is in the data, and the bottleneck is the estimator, not the model class. A purely amortized regressor trained on 3000 samples usually lands at about 0.03\u20130.08 for 4 parameters. LM refinement removes that approximation error. The posterior mean then trades a small bias for lower variance in the poorly determined end segments, and that variance is what dominates rel_l2. Working in log-k enforces positivity and makes the multiplicative scaling of diffusion time scales roughly linear.",
+   "assumptions": [
+    "The rel_l2 metric aggregates squared errors, so MMSE is the Bayes-optimal point estimate under it.",
+    "Noise is i.i.d. Gaussian with sigma = 0.001 exactly as stated, so the Laplace/importance-sampling posterior is well calibrated.",
+    "The MLP initializer lands in the basin of the global minimum for most samples. Any non-uniqueness (e.g. k1/k4 trade-offs) is local, not multimodal.",
+    "The forward call budget allows about 20 LM iterations plus 128 posterior samples per val/test sample within 120 s."
+   ],
+   "evidence": [
+    {
+     "claim": "The CRB rel_l2 floor of about 0.0185 is well below the 0.05 success threshold, so near-efficient estimators should succeed.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "k1 and k4 have CRB rel std 3\u20134x larger than k2 and k3, so the bound-truncation effect on the MLE concentrates there and the MMSE gain should too.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "Fisher condition number 62 indicates local identifiability, so a Laplace approximation is reasonable.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "With sigma = 0.001 the posterior may be so narrow that MMSE and MLE coincide numerically, which would make the readout change irrelevant.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:24153014",
+     "claimed_applicability": "partial",
+     "note": "Uniqueness for u_t = div(A grad u) with positive integrable A on R^n. Positivity and integrability hold for piecewise-constant k, but the domain here is bounded with Dirichlet ends and the data are point sensors, not the full solution. It only motivates that the forward problem is well posed, not inverse uniqueness.",
+     "screen": "unknown"
+    },
+    {
+     "ref_id": "ts:thm:22602562",
+     "claimed_applicability": "partial",
+     "note": "Reconstruction/stability from internal solution data, allowing less regular coefficients in their class. However, it is elliptic with C^{m,alpha} coefficients and needs many boundary conditions; we have one initial condition and 4 point sensors. It gives qualitative support only; our identifiability claim rests on the harness Fisher diagnostics.",
+     "screen": "plausible"
+    }
+   ],
+   "falsifiable_test": "Compare val rel_l2 of this spec against an identical spec with estimator='mode'. The hypothesis is falsified if the posterior-mean version is not below 0.03, or not at least 10% better than the mode version. Also report per-parameter errors: the gain should be concentrated in k1 and k4.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "feasibility": {
+    "cost": "medium",
+    "notes": "The MLP trains in about 10\u201320 s on CPU. LM costs about 20 iterations with a 4-column Jacobian per sample, plus 128 importance samples, across 1500 val/test samples, all batched through the cheap FD solver. If time is tight, drop posterior_samples to 64 and extra_starts to 0.",
+    "est_seconds": null
+   },
+   "if_fails": "If mode \u2248 posterior_mean, the posterior is effectively Gaussian and interior, so estimator choice is irrelevant and the remaining error is optimizer or basin failure; we would then inspect the fraction of samples with high final residual. If the hybrid stalls above 0.05, either the initializer misses basins (multimodality in k1/k4) or the forward budget truncates iterations.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "MMSE vs MLE bounded parameter estimation truncated Gaussian posterior",
+    "identifiability piecewise constant conductivity heat equation point sensors"
+   ],
+   "tags": [],
+   "family": "hybrid",
+   "method_label": "hybrid[torch_mlp/raw+logy+aug2->LM20]",
+   "memory_refs": [],
+   "artifact_id": "prop-00041",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       256,
+       256
+      ],
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu",
+      "dropout": 0.0
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 20,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   }
+  },
+  "P-008": {
+   "id": "P-008",
+   "root_id": "P-008",
+   "parent_id": null,
+   "version": 1,
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "round": 1,
+   "origin": "llm",
+   "action": "propose",
+   "title": "Forward-model-free amortized inversion: kernel ridge in log-temperature / log-k coordinates is already sufficient (challenging the need for physics refinement)",
+   "hypothesis": "The opposite framing is that physics-based refinement is unnecessary. The inverse map from sensor time series to log k is smooth and only 4-dimensional, and noise is tiny (sigma = 0.001). A smooth kernel interpolant trained on 3000 simulated samples should therefore approximate it to within the success threshold. Prediction: kernel_ridge on log-transformed features with PCA compression and log targets reaches val rel_l2 < 0.05, without any forward-model calls at inference.",
+   "motivation": "This borrows from scattered-data approximation and surrogate modeling. Kernel interpolation error in a d-dimensional parameter manifold decays like h^s, and with n = 3000 in d = 4 the fill distance is about 3000^(-1/4) \u2248 0.135 in normalized units. That is fine enough for a smooth map. Log features linearize the exponential decay of heat modes: the modes' decay rates scale with k, and log u turns a rate into an additive slope. PCA strips noise directions, since 4 parameters generate a low-dimensional data manifold. Log targets match the multiplicative structure. If this works, it shows that the 'physics is essential' framing is wrong for this regime. If it fails, it quantifies the approximation gap that refinement must close.",
+   "assumptions": [
+    "The parameter-to-data map is injective and smooth on the prior box, so the inverse is smooth with no folds.",
+    "The 'log' feature set is safe: the harness offsets or clips near-zero temperatures, since sensors at indices 5 and 35 may see very small values early on.",
+    "3000 training samples cover the 4-D box densely enough for an RBF interpolant.",
+    "Noise augmentation at the true sigma regularizes the kernel toward the noisy-data regime."
+   ],
+   "evidence": [
+    {
+     "claim": "The problem has only 4 parameters, and the Fisher conditioning (median 62) suggests a locally well-conditioned, smooth map.",
+     "stance": "supports",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "The mean-predictor baseline of 0.33 means the data must explain more than 85% of the error, with no physics, in order to reach 0.05.",
+     "stance": "contradicts",
+     "source": "diagnostics"
+    },
+    {
+     "claim": "End segments k1 and k4 influence the sensors only weakly and nonlinearly, which likely produces a curved, anisotropic inverse map that an isotropic RBF handles poorly.",
+     "stance": "contradicts",
+     "source": "reasoning"
+    }
+   ],
+   "citations": [
+    {
+     "ref_id": "ts:thm:21876495",
+     "claimed_applicability": "partial",
+     "note": "It gives conditional stability of the coefficient from boundary data, with a modulus eta\u2218eta. Its regularity assumptions fail for piecewise-constant k, and it is an elliptic corrosion setting. It is cited only to note that inverse coefficient problems can have very weak (log-type) stability in general; our finite-dimensional, 4-parameter case relies instead on the Fisher diagnostics.",
+     "screen": "partial"
+    }
+   ],
+   "falsifiable_test": "Fit on train and evaluate rel_l2 on val. The hypothesis is falsified if val rel_l2 >= 0.05. Secondary check: if per-parameter error for k1 and k4 exceeds 3x their CRB rel std while k2 and k3 sit near their CRB, the bottleneck is anisotropic end-segment sensitivity, not overall map smoothness.",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "feasibility": {
+    "cost": "low",
+    "notes": "KRR on about 9000 augmented samples needs O(n^2) memory, roughly 650 MB at float64 for 9000. If memory is tight, use noise_aug=1 for about 6000 samples. Training takes a few seconds with no forward calls. This is a cheap reference that also gives a candidate initializer for hybrids.",
+    "est_seconds": null
+   },
+   "if_fails": "It quantifies the amortization gap, i.e. how far a purely data-driven smooth interpolant sits above the CRB floor. That justifies spending the forward-model budget on LM refinement, and tells us whether init quality or refinement matters more.",
+   "status": "conjectured",
+   "response_to_critic": "",
+   "abandon_reason": "",
+   "next_queries": [
+    "kernel interpolation error parameter-to-observable map surrogate inverse problem",
+    "log transform features heat equation mode decay rates inverse conductivity"
+   ],
+   "tags": [],
+   "family": "data-driven",
+   "method_label": "kernel_ridge/log+pca40+logy+aug2",
+   "memory_refs": [],
+   "artifact_id": "prop-00042",
+   "method": {
+    "kind": "library",
+    "method": "kernel_ridge",
+    "params": {
+     "alpha": 0.001,
+     "gamma_mult": 1.0
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 40,
+    "target_transform": "log",
+    "noise_aug": 2,
+    "noise_scale": 1.0
+   }
+  }
+ },
+ "critiques": [
+  {
+   "round": 1,
+   "per_proposal": {
+    "P-001": {
+     "challenges": [
+      "the proposal uses proof language ('proved'/'formally verified'); retrieval of a related theorem is not a proof of this claim \u2014 treated as conjecture until tested"
+     ],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "The CRB rel_l2 floor is about 0.0185, below the 0.05 target, so an efficient unbiased estimator could succeed.",
+      "The median Fisher condition number is 62.3, which means the problem is mildly ill-conditioned and Gauss-Newton steps are stable.",
+      "k1 and k4 have 3\u20134\u00d7 larger relative CRB std than k2 and k3, consistent with sensor and pulse geometry. These are where the prior truncation helps most.",
+      "Quadratic local convergence of LM for parabolic coefficient problems is proven, but under smooth coefficients and Robin BCs. That does not match this problem."
+     ],
+     "conjectures": [
+      "transfer of ts:thm:21223425 to this setting (screen: partial)",
+      "The CRB is a local, linearised bound computed at only 32 draws. Nonlinearity at small k, where there is slow diffusion and weak signal at the sensors, could leave tail samples far above it."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 22.2,
+     "quality": 1.0
+    },
+    "P-002": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [
+      "the portfolio is dominated by 'hybrid' methods: branch into an under-represented family"
+     ],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "The mean predictor gives 0.3307, so the inverse map carries much more information than the prior alone. A learned model should capture most of it.",
+      "The well-conditioned 4-parameter Jacobian (cond about 62) implies a large basin for Gauss-Newton around the truth."
+     ],
+     "conjectures": [
+      "transfer of ts:thm:21223425 to this setting (screen: partial)",
+      "Pure regressors trained on finite data typically do not reach the CRB for weakly informed parameters. They shrink toward the prior mean on k1 and k4, which is why refinement is needed.",
+      "Log features amplify noise at late times or at outer sensors where the signal is near 0. That could hurt the initializer, though not the final LM, which uses raw residuals."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": true,
+     "completeness": 1.0,
+     "est_seconds": 135.8,
+     "quality": 1.0
+    },
+    "P-003": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "The CRB rel_l2 floor is about 0.0185, far below the 0.05 target. An efficient estimator therefore has ample margin.",
+      "k1 and k4 have CR relative std of about 0.02, versus 0.005 for k2 and k3. These two will dominate the error, and when an estimate hits the box bounds the MLE can be pulled off target.",
+      "The Laplace or Gaussian posterior form is accurate when the forward map is near-linear at the scale of the posterior width. With sigma=1e-3 this is plausible, and it motivates a Gauss-Newton or LM ref"
+     ],
+     "conjectures": [
+      "transfer of ts:thm:23749594 to this setting (screen: unknown)"
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 130.2,
+     "quality": 1.0
+    },
+    "P-004": {
+     "challenges": [],
+     "changed_assumptions": [
+      "noise model (from the simulator): additive i.i.d. Gaussian on every sensor reading; the likelihood must match it"
+     ],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "The CR relative std of about 0.02 for k1 and k4 makes posterior width non-negligible near bounds 0.5 and 2.0, so prior truncation is active for a fraction of samples.",
+      "In the Gaussian-linear case the Laplace posterior is exact, which justifies it as an importance proposal."
+     ],
+     "conjectures": [
+      "transfer of ts:thm:23749594 to this setting (screen: unknown)",
+      "If the posterior is narrow and nearly symmetric for most samples, mean and mode coincide and the gain will be under 1%."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 137.5,
+     "quality": 1.0
+    },
+    "P-005": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "CRB rel_l2 floor ~0.0185, well below the 0.05 success threshold, so an efficient estimator should succeed",
+      "Fisher condition number median 62 indicates locally well-conditioned problem, LM steps will be stable",
+      "k1 and k4 have ~2% rel std, so errors will be dominated by end segments; shrinkage toward prior helps there",
+      "Uniqueness theorems for coefficient recovery exist but assume smooth coefficients and boundary/final-time data, so global uniqueness here is not guaranteed by literature"
+     ],
+     "conjectures": [
+      "transfer of ts:thm:22398568 to this setting (screen: partial)",
+      "transfer of ts:thm:24476298 to this setting (screen: partial)"
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 19.4,
+     "quality": 1.0
+    },
+    "P-006": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "CRB floor 0.0185 bounds any estimator; refinement can only close gap down to this floor",
+      "Regularity results (Lipschitz continuity of parabolic solutions) suggest forward map is smooth in data, but these are for different equations and do not establish inverse-map smoothness"
+     ],
+     "conjectures": [
+      "Mean predictor baseline 0.33; smooth parabolic forward map suggests a smooth inverse learnable by MLP"
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 128.3,
+     "quality": 0.95
+    },
+    "P-007": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [
+      {
+       "query": "convergence of Levenberg-Marquardt for nonlinear least squares parameter estimation with bounds",
+       "why": "local convergence assumptions"
+      }
+     ],
+     "revision_directions": [],
+     "suggested_tests": [],
+     "facts": [
+      "numerical diagnostics: full-rank Fisher at sampled parameters (median condition 62.3); CRB rel_l2 floor ~0.01851",
+      "The CRB rel_l2 floor of about 0.0185 is well below the 0.05 success threshold, so near-efficient estimators should succeed.",
+      "k1 and k4 have CRB rel std 3\u20134x larger than k2 and k3, so the bound-truncation effect on the MLE concentrates there and the MMSE gain should too.",
+      "Fisher condition number 62 indicates local identifiability, so a Laplace approximation is reasonable."
+     ],
+     "conjectures": [
+      "transfer of ts:thm:24153014 to this setting (screen: unknown)",
+      "transfer of ts:thm:22602562 to this setting (screen: plausible)",
+      "With sigma = 0.001 the posterior may be so narrow that MMSE and MLE coincide numerically, which would make the readout change irrelevant."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 137.4,
+     "quality": 1.0
+    },
+    "P-008": {
+     "challenges": [],
+     "changed_assumptions": [],
+     "questions": [
+      "the physics floor (CRB rel_l2 ~0.01851) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?"
+     ],
+     "counterexamples": [],
+     "evidence_requests": [],
+     "revision_directions": [
+      "consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly"
+     ],
+     "suggested_tests": [],
+     "facts": [
+      "The problem has only 4 parameters, and the Fisher conditioning (median 62) suggests a locally well-conditioned, smooth map.",
+      "The mean-predictor baseline of 0.33 means the data must explain more than 85% of the error, with no physics, in order to reach 0.05."
+     ],
+     "conjectures": [
+      "transfer of ts:thm:21876495 to this setting (screen: partial)",
+      "End segments k1 and k4 influence the sensors only weakly and nonlinearly, which likely produces a curved, anisotropic inverse map that an isotropic RBF handles poorly."
+     ],
+     "blocking": [],
+     "duplicate_of": null,
+     "missing": [],
+     "diversify": false,
+     "completeness": 1.0,
+     "est_seconds": 45.0,
+     "quality": 1.0
+    }
+   },
+   "portfolio": {
+    "families": {
+     "physics": 2,
+     "hybrid": 5,
+     "data-driven": 1
+    },
+    "n_active": 8,
+    "diversity_warnings": [
+     "5/8 active proposals are 'hybrid'"
+    ],
+    "disagreements": [],
+    "summary": "",
+    "authors_active": {
+     "researcher-mathematical": 2,
+     "researcher-ml": 2,
+     "researcher-experimental": 2,
+     "researcher-exploratory": 2
+    },
+    "mean_quality": 0.994,
+    "all_meet_threshold": true,
+    "converged": true,
+    "llm_used": false
+   },
+   "artifact_id": "fdbk-00043"
+  }
+ ],
+ "abandoned": [],
+ "portfolio": [
+  {
+   "source": "proposal",
+   "proposal_id": "P-001",
+   "root_id": "P-001",
+   "title": "Per-sample bounded LM in log-conductivity with box-prior posterior mean reaches near the Cram\u00e9r\u2013Rao floor",
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "family": "physics",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 3,
+     "iters": 30,
+     "tikhonov": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "selection_reason": "best-rated proposal in family 'physics' (quality 1.00)",
+   "unresolved": [
+    "challenge: the proposal uses proof language ('proved'/'formally verified'); retrieval of a related theorem is not a proof of this claim \u2014 treated as conjecture until tested",
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "literature-supported",
+   "entry_id": "E-01"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-002",
+   "root_id": "P-002",
+   "title": "An amortised learned inverse plus a few LM steps matches per-sample physics accuracy and removes local-minimum failures",
+   "author": "researcher-mathematical",
+   "persona": "mathematical",
+   "family": "hybrid",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 200,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "log",
+     "scaler": "standard",
+     "pca": 0,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 0.001
+    },
+    "params": {
+     "transform": "log",
+     "iters": 10,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "posterior_mean",
+     "posterior_samples": 128
+    }
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_data_driven",
+    "improvement": 0.4,
+    "expect": "better"
+   },
+   "selection_reason": "best-rated proposal in family 'hybrid' (quality 1.00)",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?",
+    "revision_direction: the portfolio is dominated by 'hybrid' methods: branch into an under-represented family"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-02"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-008",
+   "root_id": "P-008",
+   "title": "Forward-model-free amortized inversion: kernel ridge in log-temperature / log-k coordinates is already sufficient (challenging the need for physics refinement)",
+   "author": "researcher-exploratory",
+   "persona": "exploratory",
+   "family": "data-driven",
+   "method": {
+    "kind": "library",
+    "method": "kernel_ridge",
+    "params": {
+     "alpha": 0.001,
+     "gamma_mult": 1.0
+    },
+    "features": "log",
+    "scaler": "standard",
+    "pca": 40,
+    "target_transform": "log",
+    "noise_aug": 2,
+    "noise_scale": 1.0
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "selection_reason": "best-rated proposal in family 'data-driven' (quality 1.00)",
+   "unresolved": [
+    "question: the physics floor (CRB rel_l2 ~0.01851) is known: what error do you expect relative to it, and what limits a learned inverse here (samples, capacity, noise)?",
+    "revision_direction: consider whether the forward model could correct this learner (e.g. as an initializer for LM) \u2014 a hybrid tests the 'approximation error' explanation directly"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-03"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-003",
+   "root_id": "P-003",
+   "title": "Learned amortized initializer + few-step Levenberg-Marquardt refinement (hybrid) approaches the Cram\u00e9r\u2013Rao floor",
+   "author": "researcher-ml",
+   "persona": "ml",
+   "family": "hybrid",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 64,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 10,
+     "tikhonov": 0,
+     "extra_starts": 1,
+     "estimator": "mode",
+     "posterior_samples": 64
+    }
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "selection_reason": "quality 1.00 with diversity penalty",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-04"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-005",
+   "root_id": "P-005",
+   "title": "Physics MLE via bounded LM in log-space reaches near the Cram\u00e9r\u2013Rao floor",
+   "author": "researcher-experimental",
+   "persona": "experimental",
+   "family": "physics",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 3,
+     "iters": 30,
+     "tikhonov": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 64
+    }
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "selection_reason": "quality 1.00 with diversity penalty",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-05"
+  },
+  {
+   "source": "proposal",
+   "proposal_id": "P-004",
+   "root_id": "P-004",
+   "title": "Posterior-mean (MMSE) refinement beats the MLE mode under the box prior for the weakly identified k1 and k4",
+   "author": "researcher-ml",
+   "persona": "ml",
+   "family": "hybrid",
+   "method": {
+    "kind": "hybrid",
+    "init": {
+     "kind": "library",
+     "method": "torch_mlp",
+     "params": {
+      "hidden": [
+       512,
+       256,
+       128
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "epochs": 150,
+      "batch_size": 128,
+      "activation": "gelu"
+     },
+     "features": "raw",
+     "scaler": "standard",
+     "pca": 64,
+     "target_transform": "log",
+     "noise_aug": 2,
+     "noise_scale": 1.0
+    },
+    "params": {
+     "transform": "log",
+     "iters": 10,
+     "tikhonov": 0,
+     "extra_starts": 0,
+     "estimator": "posterior_mean",
+     "posterior_samples": 256
+    }
+   },
+   "quality": 1.0,
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_hybrid",
+    "improvement": 0.05,
+    "expect": "better"
+   },
+   "selection_reason": "quality 1.00 with diversity penalty",
+   "unresolved": [
+    "question: the least determined parameters are ['k1', 'k4'] (CRB rel std k1=0.0215, k4=0.0174): does your estimator exploit the prior bounds for them?"
+   ],
+   "status": "conjectured",
+   "entry_id": "E-06"
+  },
+  {
+   "source": "baseline",
+   "proposal_id": null,
+   "root_id": null,
+   "title": "conventional ML baseline (torch_mlp, library defaults)",
+   "author": "scheduler",
+   "persona": "control",
+   "family": "data-driven",
+   "method": {
+    "kind": "library",
+    "method": "torch_mlp",
+    "params": {
+     "hidden": [
+      256,
+      256
+     ],
+     "dropout": 0.0,
+     "lr": 0.001,
+     "weight_decay": 0.0001,
+     "epochs": 150,
+     "batch_size": 128,
+     "activation": "gelu"
+    },
+    "features": "raw",
+    "scaler": "standard",
+    "pca": 0
+   },
+   "quality": null,
+   "prediction": null,
+   "selection_reason": "strong conventional learned-inverse default",
+   "unresolved": [],
+   "status": "baseline",
+   "entry_id": "E-07"
+  },
+  {
+   "source": "baseline",
+   "proposal_id": null,
+   "root_id": null,
+   "title": "random-search control (2 uniform random library configs)",
+   "author": "scheduler",
+   "persona": "control",
+   "family": "data-driven",
+   "method": {
+    "kind": "random_search",
+    "n": 2
+   },
+   "quality": null,
+   "prediction": null,
+   "selection_reason": "basic random search control",
+   "unresolved": [],
+   "status": "baseline",
+   "entry_id": "E-08"
+  },
+  {
+   "source": "baseline",
+   "proposal_id": null,
+   "root_id": null,
+   "title": "physics baseline: Levenberg-Marquardt MLE (defaults)",
+   "author": "scheduler",
+   "persona": "control",
+   "family": "physics",
+   "method": {
+    "kind": "physics",
+    "params": {
+     "transform": "log",
+     "multistart": 1,
+     "iters": 30,
+     "tikhonov": 0.0,
+     "estimator": "mode",
+     "posterior_samples": 128
+    }
+   },
+   "quality": null,
+   "prediction": null,
+   "selection_reason": "conventional optimisation through the forward model",
+   "unresolved": [],
+   "status": "baseline",
+   "entry_id": "E-09"
+  }
+ ],
+ "excluded": [
+  {
+   "proposal_id": "P-007",
+   "title": "MMSE-not-MLE: hybrid amortized init + log-space LM with posterior-mean readout to approach the Cram\u00e9r\u2013Rao floor under a rel_l2 loss",
+   "reason": "portfolio size limit (6); quality 1.00"
+  },
+  {
+   "proposal_id": "P-006",
+   "title": "Noise-augmented learned initializer + short LM refinement (hybrid) beats pure ML and matches physics at lower cost",
+   "reason": "portfolio size limit (6); quality 0.95"
+  }
+ ],
+ "prediction_outcomes": {
+  "E-01": {
+   "own": 0.01905548332908474,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.019055 vs predicted < 0.035",
+   "entry_id": "E-01",
+   "proposal_id": "P-001",
+   "title": "Per-sample bounded LM in log-conductivity with box-prior posterior mean reaches near the Cram\u00e9r\u2013Rao floor",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.035
+   },
+   "family": "physics",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-02": {
+   "outcome": "inconclusive",
+   "detail": "method did not produce a full-fidelity validation result",
+   "entry_id": "E-02",
+   "proposal_id": "P-002",
+   "title": "An amortised learned inverse plus a few LM steps matches per-sample physics accuracy and removes local-minimum failures",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_data_driven",
+    "improvement": 0.4,
+    "expect": "better"
+   },
+   "family": "hybrid",
+   "source": "proposal",
+   "new_status": "inconclusive"
+  },
+  "E-03": {
+   "own": 0.032066114917388984,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.032066 vs predicted < 0.05",
+   "entry_id": "E-03",
+   "proposal_id": "P-008",
+   "title": "Forward-model-free amortized inversion: kernel ridge in log-temperature / log-k coordinates is already sufficient (challenging the need for physics refinement)",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.05
+   },
+   "family": "data-driven",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-04": {
+   "own": 0.019342674747877875,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.019343 vs predicted < 0.03",
+   "entry_id": "E-04",
+   "proposal_id": "P-003",
+   "title": "Learned amortized initializer + few-step Levenberg-Marquardt refinement (hybrid) approaches the Cram\u00e9r\u2013Rao floor",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "family": "hybrid",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-05": {
+   "own": 0.019110249370996243,
+   "outcome": "supported",
+   "detail": "val rel_l2 = 0.01911 vs predicted < 0.03",
+   "entry_id": "E-05",
+   "proposal_id": "P-005",
+   "title": "Physics MLE via bounded LM in log-space reaches near the Cram\u00e9r\u2013Rao floor",
+   "prediction": {
+    "metric": "rel_l2",
+    "op": "<",
+    "value": 0.03
+   },
+   "family": "physics",
+   "source": "proposal",
+   "new_status": "experimentally-supported"
+  },
+  "E-06": {
+   "own": 0.019050191781030228,
+   "outcome": "contradicted",
+   "gain": 0.015121123146618395,
+   "reference": 0.019342674747877875,
+   "detail": "val rel_l2 0.01905 vs best_hybrid 0.019343: gain +1.51%; expected gain >= +5.0% vs best_hybrid",
+   "entry_id": "E-06",
+   "proposal_id": "P-004",
+   "title": "Posterior-mean (MMSE) refinement beats the MLE mode under the box prior for the weakly identified k1 and k4",
+   "prediction": {
+    "metric": "rel_l2",
+    "relative_to": "best_hybrid",
+    "improvement": 0.05,
+    "expect": "better"
+   },
+   "family": "hybrid",
+   "source": "proposal",
+   "new_status": "contradicted"
+  },
+  "E-07": {
+   "outcome": "untestable",
+   "detail": "no structured prediction",
+   "entry_id": "E-07",
+   "proposal_id": null,
+   "title": "conventional ML baseline (torch_mlp, library defaults)",
+   "prediction": null,
+   "family": "data-driven",
+   "source": "baseline",
+   "new_status": "baseline"
+  },
+  "E-08": {
+   "outcome": "untestable",
+   "detail": "no structured prediction",
+   "entry_id": "E-08",
+   "proposal_id": null,
+   "title": "random-search control (2 uniform random library configs)",
+   "prediction": null,
+   "family": "data-driven",
+   "source": "baseline",
+   "new_status": "baseline"
+  },
+  "E-09": {
+   "outcome": "untestable",
+   "detail": "no structured prediction",
+   "entry_id": "E-09",
+   "proposal_id": null,
+   "title": "physics baseline: Levenberg-Marquardt MLE (defaults)",
+   "prediction": null,
+   "family": "physics",
+   "source": "baseline",
+   "new_status": "baseline"
+  }
+ },
+ "pilots": {},
+ "literature": [
+  {
+   "query": "Lipschitz stability for identification of piecewise constant diffusion coefficient in parabolic equation from finitely many interior point measurements",
+   "agent": "researcher-ml",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": true,
+   "fallback_used": false,
+   "latency": 0.0,
+   "attempts": 0,
+   "results": [
+    {
+     "ref_id": "ts:thm:21876495",
+     "name": "Theorem 2.1",
+     "kind": "theorem",
+     "paper_title": "Smoothness dependent stability in corrosion detection",
+     "authors": [
+      "Eva Sincich"
+     ],
+     "year": 2014,
+     "link": "http://arxiv.org/abs/1406.5907v1",
+     "similarity": 0.6346888977660108,
+     "slogan": "For a Lipschitz domain with given parameters, if the L2 norm difference of two weak solutions on a boundary part is bounded by epsilon, then the L-infinity norm difference of the corresponding coefficients on a specific inner boundary region is bounded by a function of epsilon. This function is the composition of eta with itself applied to epsilon. The result establishes a stability estimate for t",
+     "body": "Let $\\Omega $ be a Lipschitz domain and let $\\gamma _1,\\gamma _2$ satisfy \\eqref{boundgamma}. Let $u_i, i=1,2$ be the weak solution to the problem \\eqref{P} with $\\gamma =\\gamma _i$ respectively. If for some $\\varepsilon $, we have\\begin{eqnarray}  \\| u_1 -u_2\\| _{L^2(\\Gamma _A)}\\le \\varepsilon \\end{eqnarray}then\\begin{eqnarray}  \\| \\gamma _1 -\\gamma _2 \\| _{L^{\\infty }(\\Gamma _I^{r_0})}\\le \\eta \\circ \\eta (\\epsilon ) \\end{eqnarray}",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:22602562",
+     "name": "Theorem 2.1",
+     "kind": "theorem",
+     "paper_title": "Reconstruction of coefficients in scalar second-order elliptic equations from knowledge of their solutions",
+     "authors": [
+      "Guillaume Bal",
+      "Gunther Uhlmann"
+     ],
+     "year": 2011,
+     "link": "http://arxiv.org/abs/1111.5051v1",
+     "similarity": 0.6328191976058972,
+     "slogan": "For sufficiently many boundary conditions and an open set of boundary data, the measurement operator uniquely determines the coefficients of the elliptic equation. Stability estimates bound the differences in coefficients by the differences in measurements. This holds when the coefficients are near certain reference classes, such as constant diffusion, scalar isotropic diffusion, or specific smoot",
+     "body": "Let $\\mathfrak c$ and $\\tilde\\mathfrak c$ be two classes of coefficients with elements $(a,b,c)$ of class $C^{m,\\alpha }(\\bar X)$ for $\\alpha >0$ and $\\nabla \\cdot a$ also of class $C^{m,\\alpha }(\\bar X)$ for $m=0$ or $m=1$. We assume that \\eqref{eq:galelliptic} is well posed for the coefficients $\\mathfrak c$.Then for $I$ sufficiently large and for an open set (for instance in the topology of $C^{2,\\alpha }(\\bar X)$) of boundary conditions ${\\mathfrak f}=(f_j)_{1\\leq j\\leq I}$, then $\\mathfrak M_{\\mathfrak f}(\\mathfrak c)$ uniquely determines $\\mathfrak c$. Moreover, for any other $\\tilde\\mathfrak c$ as given above, we have the stability results\\begin{equation}   \\begin{array}{rcl} \\| (a,b+\\nabla \\cdot a,c)-(\\tilde a,\\tilde b+\\nabla \\cdot \\tilde a,\\tilde c)\\| _{W^{m,\\infty }(X)} & \\leq &  C \\| \\mathfrak M_{{\\mathfrak f}}(\\mathfrak c)-\\mathfrak M_{{\\mathfrak f}}(\\tilde\\mathfrak c)\\| _{W^",
+     "applies": "plausible",
+     "conflicts": [],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "allows non-smooth / piecewise coefficients",
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:21098230",
+     "name": "Corollary 3.8",
+     "kind": "corollary",
+     "paper_title": "Diffusion Coefficients Estimation for Elliptic Partial Differential Equations",
+     "authors": [
+      "Andrea Bonito",
+      "Albert Cohen",
+      "Ronald DeVore",
+      "Guergana Petrova",
+      "Gerrit Welper"
+     ],
+     "year": 2016,
+     "link": "http://arxiv.org/abs/1609.05231v2",
+     "similarity": 0.6209670016844445,
+     "slogan": "For a Lipschitz domain D, given functions a and b in class A1, and a positive bounded function f, the L2 norm of the difference between a and b is bounded by a constant times the H01 norm of the difference between their corresponding solutions raised to the power one-sixth. The constant depends on the domain, dimension, ellipticity parameters, and the lower bound of f. The inequality also involves",
+     "body": "Let $D$ be a Lipschitz domain, $a,b\\in {\\cal A}_1$, $f\\in L_\\infty (D)$ with $f\\geq c_f>0$, and $u_a, u_b \\in H^1_0(D)$ be the corresponding solutions to {\\rm {\\rm (\\ref{i:equation})}}, then we have\\begin{equation}  \\| a-b\\| _{L_2(D)}\\le C\\sqrt{1+C_0}\\| u_a-u_b\\| _{H_0^1(D)}^{1/6}, \\end{equation}where {$C_0$ is the constant in {\\rm {\\rm (\\ref{2:defC})}} and} $C$ is a constant depending only on $D,d,\\lambda ,\\Lambda $ and the minimum $c_f$ of $f$.",
+     "applies": "no",
+     "conflicts": [
+      "different equation class (theorem is not about parabolic/diffusion equations)",
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:19142517",
+     "name": "Lemma 3",
+     "kind": "lemma",
+     "paper_title": "Higher order homogenization for random non-autonomous parabolic operators",
+     "authors": [
+      "Marina Kleptsyna",
+      "Andrey Piatnitski",
+      "Alexandre Popier"
+     ],
+     "year": 2023,
+     "link": "http://arxiv.org/abs/1612.07478v3",
+     "similarity": 0.6206818901273308,
+     "slogan": "The fundamental solution of a divergence-form parabolic equation with a measurable, uniformly elliptic coefficient matrix satisfies a specific derivative estimate. The coefficient matrix is assumed to be Lipschitz continuous in the spatial variable. The constants in the estimate depend only on the ellipticity constant, the dimension, and the Lipschitz constant.",
+     "body": "Let $a=a(x,t)$ be a measurable matrix function defined on $\\mathbb R^d\\times \\mathbb R^+$, and assume that the uniform ellipticity condition {\\bf a1.} holds. Assume moreover that there exists $K_\\mathrm{a}>0$ such that $|a(x,t)-a(x',t)|\\leq K_\\mathrm{a}|x-x'|$ for almost all $t\\in \\mathbb R^+$. Then the fundamental solution of\\begin{equation*}  \\frac{\\partial u}{\\partial t} \\displaystyle =\\mathrm{div} \\Big[a\\Big(x,t\\Big)\\nabla u\\Big], \\end{equation*}satisfies estimate \\eqref{eq:aronson_estim_der} where the constant $\\varpi $ only depends on the uniform ellipticity constant $\\lambda $ and the dimension $d$, and the constant $\\varrho $ only depends on $\\lambda $, $d$ and $K_\\mathrm{a}$.",
+     "applies": "no",
+     "conflicts": [
+      "theorem is stated for dimension >= 2; the problem is one-dimensional"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": []
+    }
+   ]
+  },
+  {
+   "query": "Lipschitz stability for identification of piecewise constant coefficient in parabolic equation from finitely many interior point measurements",
+   "agent": "researcher-exploratory",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 3.7,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:21876495",
+     "name": "Theorem 2.1",
+     "kind": "theorem",
+     "paper_title": "Smoothness dependent stability in corrosion detection",
+     "authors": [
+      "Eva Sincich"
+     ],
+     "year": 2014,
+     "link": "http://arxiv.org/abs/1406.5907v1",
+     "similarity": 0.6285070470554717,
+     "slogan": "For a Lipschitz domain with given parameters, if the L2 norm difference of two weak solutions on a boundary part is bounded by epsilon, then the L-infinity norm difference of the corresponding coefficients on a specific inner boundary region is bounded by a function of epsilon. This function is the composition of eta with itself applied to epsilon. The result establishes a stability estimate for t",
+     "body": "Let $\\Omega $ be a Lipschitz domain and let $\\gamma _1,\\gamma _2$ satisfy \\eqref{boundgamma}. Let $u_i, i=1,2$ be the weak solution to the problem \\eqref{P} with $\\gamma =\\gamma _i$ respectively. If for some $\\varepsilon $, we have\\begin{eqnarray}  \\| u_1 -u_2\\| _{L^2(\\Gamma _A)}\\le \\varepsilon \\end{eqnarray}then\\begin{eqnarray}  \\| \\gamma _1 -\\gamma _2 \\| _{L^{\\infty }(\\Gamma _I^{r_0})}\\le \\eta \\circ \\eta (\\epsilon ) \\end{eqnarray}",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:19142517",
+     "name": "Lemma 3",
+     "kind": "lemma",
+     "paper_title": "Higher order homogenization for random non-autonomous parabolic operators",
+     "authors": [
+      "Marina Kleptsyna",
+      "Andrey Piatnitski",
+      "Alexandre Popier"
+     ],
+     "year": 2023,
+     "link": "http://arxiv.org/abs/1612.07478v3",
+     "similarity": 0.6206645903990904,
+     "slogan": "The fundamental solution of a divergence-form parabolic equation with a measurable, uniformly elliptic coefficient matrix satisfies a specific derivative estimate. The coefficient matrix is assumed to be Lipschitz continuous in the spatial variable. The constants in the estimate depend only on the ellipticity constant, the dimension, and the Lipschitz constant.",
+     "body": "Let $a=a(x,t)$ be a measurable matrix function defined on $\\mathbb R^d\\times \\mathbb R^+$, and assume that the uniform ellipticity condition {\\bf a1.} holds. Assume moreover that there exists $K_\\mathrm{a}>0$ such that $|a(x,t)-a(x',t)|\\leq K_\\mathrm{a}|x-x'|$ for almost all $t\\in \\mathbb R^+$. Then the fundamental solution of\\begin{equation*}  \\frac{\\partial u}{\\partial t} \\displaystyle =\\mathrm{div} \\Big[a\\Big(x,t\\Big)\\nabla u\\Big], \\end{equation*}satisfies estimate \\eqref{eq:aronson_estim_der} where the constant $\\varpi $ only depends on the uniform ellipticity constant $\\lambda $ and the dimension $d$, and the constant $\\varrho $ only depends on $\\lambda $, $d$ and $K_\\mathrm{a}$.",
+     "applies": "no",
+     "conflicts": [
+      "theorem is stated for dimension >= 2; the problem is one-dimensional"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:20257501",
+     "name": "Corollary 2.5",
+     "kind": "corollary",
+     "paper_title": "Stability and error analysis for the Helmholtz equation with variable coefficients",
+     "authors": [
+      "I. G. Graham",
+      "S. A. Sauter"
+     ],
+     "year": 2019,
+     "link": "http://arxiv.org/abs/1803.00966v2",
+     "similarity": 0.618940614525053,
+     "slogan": "The theorem applies to a bounded Lipschitz domain with certain coefficient functions. It assumes specific boundary conditions and right-hand side functionals. There exists a stability constant independent of the forcing terms. This constant bounds the solutions of the given equations.",
+     "body": "Let $\\Omega \\subset \\mathbb {R}^{d}$ be a{ bounded Lipschitz} domain and assume $a\\in C^{0,1}\\left( \\Omega ,\\left[ a_{\\min },a_{\\max }\\right] \\right) $ and $c\\in L^{\\infty }\\left( \\Omega ,\\left[ c_{\\min },c_{\\max }\\right] \\right) $ for some $0<a_{\\min }\\leq a_{\\max }<\\infty $ and $0<c_{\\min }\\leq c_{\\max }<\\infty $. {\\color{black}Let $\\Gamma _{N} \\subseteq \\Gamma $ have positive $d-1$ dimensional measure}, and let $\\beta :=\\sqrt{a}/c$. Assume that the right-hand sides in \\eqref{HelmAbs} and \\eqref{DualAbs} are given by $F\\left( v\\right) :=\\left( f,v\\right) $ and $G\\left( v\\right) :=\\left( v,\\lambda \\right) $ for some functions $f,\\lambda \\in L^{2}\\left( \\Omega \\right) $. Then, there exists a constant $C_{\\mathrm{stab}}=C_{\\mathrm{stab}}\\left( \\omega ,a,c,\\Omega ,d\\right) $ independent of $f$ and $\\lambda $ such that the corresponding solutions $u$ and $z$ satisfy (\\ref{Cstabintro}).",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:22602562",
+     "name": "Theorem 2.1",
+     "kind": "theorem",
+     "paper_title": "Reconstruction of coefficients in scalar second-order elliptic equations from knowledge of their solutions",
+     "authors": [
+      "Guillaume Bal",
+      "Gunther Uhlmann"
+     ],
+     "year": 2011,
+     "link": "http://arxiv.org/abs/1111.5051v1",
+     "similarity": 0.6151168438583307,
+     "slogan": "For sufficiently many boundary conditions and an open set of boundary data, the measurement operator uniquely determines the coefficients of the elliptic equation. Stability estimates bound the differences in coefficients by the differences in measurements. This holds when the coefficients are near certain reference classes, such as constant diffusion, scalar isotropic diffusion, or specific smoot",
+     "body": "Let $\\mathfrak c$ and $\\tilde\\mathfrak c$ be two classes of coefficients with elements $(a,b,c)$ of class $C^{m,\\alpha }(\\bar X)$ for $\\alpha >0$ and $\\nabla \\cdot a$ also of class $C^{m,\\alpha }(\\bar X)$ for $m=0$ or $m=1$. We assume that \\eqref{eq:galelliptic} is well posed for the coefficients $\\mathfrak c$.Then for $I$ sufficiently large and for an open set (for instance in the topology of $C^{2,\\alpha }(\\bar X)$) of boundary conditions ${\\mathfrak f}=(f_j)_{1\\leq j\\leq I}$, then $\\mathfrak M_{\\mathfrak f}(\\mathfrak c)$ uniquely determines $\\mathfrak c$. Moreover, for any other $\\tilde\\mathfrak c$ as given above, we have the stability results\\begin{equation}   \\begin{array}{rcl} \\| (a,b+\\nabla \\cdot a,c)-(\\tilde a,\\tilde b+\\nabla \\cdot \\tilde a,\\tilde c)\\| _{W^{m,\\infty }(X)} & \\leq &  C \\| \\mathfrak M_{{\\mathfrak f}}(\\mathfrak c)-\\mathfrak M_{{\\mathfrak f}}(\\tilde\\mathfrak c)\\| _{W^",
+     "applies": "plausible",
+     "conflicts": [],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "allows non-smooth / piecewise coefficients",
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    }
+   ]
+  },
+  {
+   "query": "asymptotic efficiency of posterior mean or neural amortized estimator approaching Cramer-Rao bound under small Gaussian noise for smooth finite-dimensional inverse problems",
+   "agent": "researcher-ml",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 3.98,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:23749594",
+     "name": "Theorem 8",
+     "kind": "theorem",
+     "paper_title": "Generative models and Bayesian inversion using Laplace approximation",
+     "authors": [
+      "Manuel Marschall",
+      "Gerd W\u00fcbbeler",
+      "Franko Schm\u00e4hling",
+      "Clemens Elster"
+     ],
+     "year": 2022,
+     "link": "http://arxiv.org/abs/2203.07755v2",
+     "similarity": 0.6287590606151682,
+     "slogan": "Using the Laplace approximation as a prior in a Bayesian inverse problem yields a Gaussian posterior distribution. The posterior has a specific mean and covariance matrix. All moments of this posterior exist. As the noise parameter approaches zero, the posterior converges to a Gaussian centered at the maximum likelihood estimate with covariance given by the inverse of the Fisher information matrix",
+     "body": "Using the Laplace approximation $\\pi _L(x)$ as a prior for the Bayesian inverse problem yields a Gaussian distribution as posterior on $\\mathcal X$\\begin{equation}   \\pi _L(x\\vert y) = N(x\\vert \\hat{x}, \\hat{S}) \\end{equation}with covariance matrix\\begin{equation}  \\hat{S} = \\left(\\sigma ^{-2}A^TA + \\left(\\Gamma (z_0) + J_{z_0}J_{z_0}^T\\right)^{-1}\\right)^{-1} \\end{equation}and mean\\begin{equation}  \\hat{x} = \\hat S\\left[\\sigma ^{-2}A^Ty + \\left( \\Gamma (z_0) + J_{z_0}J_{z_0}^T \\right)^{-1}\\left(g(z_0)-J_{z_0}z_0\\right)\\right]. \\end{equation}For this posterior, moments of arbitrary order exist and $\\pi _L$ converges, as $\\sigma \\to 0$, to a Gaussian centered at the maximum likelihood estimate $(A^TA)^{-1}A^Ty$, with covariance given by the inverse of the Fisher information matrix $\\sigma ^{-2}A^TA$, for the linear model~ \\eqref{eq2.1}.",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [],
+     "notes": [
+      "method-level result: applies if its algorithmic assumptions (e.g. full-rank Jacobian, well-specified noise model) hold \u2014 check numerically"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:19966089",
+     "name": "Theorem 11",
+     "kind": "theorem",
+     "paper_title": "Bernstein-von Mises theorems and uncertainty quantification for linear inverse problems",
+     "authors": [
+      "Matteo Giordano",
+      "Hanne Kekkonen"
+     ],
+     "year": 2020,
+     "link": "http://arxiv.org/abs/1811.04058v4",
+     "similarity": 0.6214794024931163,
+     "slogan": "The posterior mean converges to a Gaussian limit under certain conditions. The convergence holds for test functions with sufficient smoothness. The limiting variance is given by the squared norm of a linear operator applied to the test function. This occurs in probability as the noise level approaches zero.",
+     "body": "Let $\\Pi $ be a Gaussian Borel probability measure on $L^2(\\mathcal{O})$ with RKHS $V_\\Pi =H^r(\\mathcal{O}), \\  r>d/2$. Assume that $f^\\dagger \\in H_c^\\alpha (\\mathcal{O}), \\  \\alpha \\ge r-d/2$, and let $P^M_{f^\\dagger }$ be the law of $M_\\varepsilon $ generated by (\\ref{invprobl1}) with $f=f^\\dagger $. Let $\\bar f={\\mathbb E}^\\Pi [f|M_\\varepsilon ]$ be the mean of the posterior distribution $\\Pi (\\cdot |M_\\varepsilon )$ arising from observing \\eqref{invprobl1}. Then, for all $\\beta >2+d/2$, and any $\\psi \\in H^\\beta _c(\\mathcal{O})$, we have\\begin{equation}  \\begin{split}    \\mathcal{L}(\\varepsilon ^{-1}\\langle f-\\bar f,\\psi \\rangle _{L^2}|M_\\varepsilon ) \\to ^\\mathcal{L}\\mathcal{N}(0,\\| L\\psi \\| ^2_{L^2})  \\end{split} \\end{equation}in $P^M_{f^\\dagger }$-probability as $\\varepsilon \\to 0$.",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": [
+      "method-level result: applies if its algorithmic assumptions (e.g. full-rank Jacobian, well-specified noise model) hold \u2014 check numerically"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:25496689",
+     "name": "Theorem",
+     "kind": "theorem",
+     "paper_title": "Uncertainty quantification and weak approximation of an elliptic inverse problem",
+     "authors": [
+      "Masoumeh Dashti",
+      "Andrew M. Stuart"
+     ],
+     "year": 2011,
+     "link": "http://arxiv.org/abs/1102.0143v1",
+     "similarity": 0.6120842780050644,
+     "slogan": "The theorem provides error bounds for an inverse problem involving a function u and noisy observations of p. It assumes a Gaussian prior distribution for u with a specified covariance structure. The expected value of p under the posterior distribution converges to its numerical approximation at a rate proportional to a negative power of N. Similarly, the covariance operator of p converges to its n",
+     "body": "Consider the inverse problem of finding $u$\nfrom noisy observations of $p$ in the form of (\\ref{eq:obs})\nand with $p$ solving (\\ref{eq:epde}).\nLet Assumption \\ref{asp:Gform} hold and\nconsider $\\mu_0$ to be distributed as $\\mathcal{N}(0,(-\\Delta)^{-s})$ with $\\Delta$ the Laplacian operator acting on $H^2(\\mathbb{T}^d)$ Sobolev functions with zero average on $\\mathbb{T}^d$,\nand $s>d/2$.\nThen, for any $t<s-\\frac{d}{2}$,\n$$\n\\|\\mathbb{E}^{\\mu^y}p-\\mathbb{E}^{\\nu^{N}}p^N\\|_{H^1}\\le C\\,N^{-t},\n$$\nand, with $\\bar{p}=\\mathbb{E}^{\\mu^y} p$, $\\bar{p}^N=\\mathbb{E}^{\\nu^{N}} p^N$\nand $S=\\mathcal{L}(H^1(\\mathbb{T}^d),H^1(\\mathbb{T}^d))$ we have\n$$\n\\|\\mathbb{E}^{\\mu^y}(p-\\bar{p})\\otimes (p-\\bar{p})\n-\\mathbb{E}^{\\nu^{N}}(p^N-\\bar{p}^N)\\otimes (p^N-\\bar{p}^N)\\|_S\n\\le C\\,N^{-t}.\n$$",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [],
+     "notes": [
+      "method-level result: applies if its algorithmic assumptions (e.g. full-rank Jacobian, well-specified noise model) hold \u2014 check numerically"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:17548220",
+     "name": "Theorem 2",
+     "kind": "theorem",
+     "paper_title": "Improvements on uncertainty quantification with variational autoencoders",
+     "authors": [
+      "Andrea Tonini",
+      "Tan Bui-Thanh",
+      "Francesco Regazzoni",
+      "Luca Dede'",
+      "Alfio Quarteroni"
+     ],
+     "year": 2025,
+     "link": "http://arxiv.org/abs/2509.11174v1",
+     "similarity": 0.6087793915442621,
+     "slogan": "Given a continuously differentiable function and Gaussian prior and noise models, the stationary points of a certain loss function converge to limits as a parameter approaches zero. These limits define a posterior mean and covariance matrix. The posterior mean equals the maximum a posteriori estimate, and the posterior covariance equals the Laplace approximation of the covariance. This holds under",
+     "body": "Assume that $\\mathcal F$ is a $C^\\mathrm {1}(\\mathbb {R}^\\mathrm {D},\\mathbb {R}^\\mathrm {O})$ function, $\\mathbf y \\in \\mathbb {R}^\\mathrm {O}$ and that the prior and noise models are Gaussian and independent, $\\mathcal N(\\boldsymbol \\mu _\\mathrm {pr}, \\Gamma _\\mathrm {pr})$ and $\\mathcal N (\\boldsymbol \\mu _\\mathrm {E}, \\Gamma _\\mathrm {E})$, respectively. Let $(\\hat{\\boldsymbol \\mu }(\\theta ), \\hat{C}(\\theta ))$ be the stationary points of $L_\\mathrm {\\theta }(\\boldsymbol \\mu ,C)$. Suppose that $\\hat{\\underline{\\boldsymbol \\mu }} = \\lim _{\\theta \\to 0} \\hat{\\boldsymbol \\mu }(\\theta )$ and $\\hat{\\underline{C}} = \\lim _{\\theta \\to 0} \\hat{C}(\\theta )$ exist and are bounded in norm, $\\hat{\\underline{C}}$ is invertible and the minimization problem \\eqref{eq:mapMu} has only one stationary point $\\mathbf u_\\mathrm {MAP}$.\\\\ Let $\\hat{\\underline{\\Gamma }}=\\hat{\\underline{C}}\\hat{\\underline{C",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise",
+      "method-level result: applies if its algorithmic assumptions (e.g. full-rank Jacobian, well-specified noise model) hold \u2014 check numerically"
+     ]
+    }
+   ]
+  },
+  {
+   "query": "Lipschitz stability for the inverse problem of identifying a piecewise constant conductivity coefficient in a parabolic equation from interior or boundary point measurements",
+   "agent": "researcher-mathematical",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 5.25,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:21223425",
+     "name": "Theorem 2.4",
+     "kind": "theorem",
+     "paper_title": "Quadratic Convergence of Levenberg-Marquardt Method for Elliptic and Parabolic Inverse Robin Problems",
+     "authors": [
+      "Jiang Daijun",
+      "Feng Hui",
+      "Zou Jun"
+     ],
+     "year": 2016,
+     "link": "http://arxiv.org/abs/1507.01711v2",
+     "similarity": 0.6893668420782061,
+     "slogan": "The inverse Robin problem for parabolic equations is locally Lipschitz stable. If the solution is bounded below by a positive constant on the inner boundary over time, then the difference in solutions on the accessible boundary controls the difference in Robin coefficients. This holds for all coefficients in a neighborhood of a given coefficient. The stability constant depends on the lower bound a",
+     "body": "{\\bf (Local Lipschitz stability of the parabolic inverse Robin problem)} Assume that $u(\\gamma ^*)\\geq c_0>0$ on $\\Gamma _i\\times [0,T]$, then there exists a constant $b>0$ such that\\begin{equation} \\| u(\\gamma _1)-u(\\gamma _2)\\| _{L^2(0,T;L^2(\\Gamma _a))}\\geq C\\| \\gamma _1-\\gamma _2\\| _{\\Gamma _i}\\,  \\quad \\forall \\,  \\gamma _1,\\gamma _2\\in N(\\gamma ^*,b)\\, .  \\end{equation}",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses Neumann/Robin boundary conditions; problem has Dirichlet"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:21098230",
+     "name": "Corollary 3.8",
+     "kind": "corollary",
+     "paper_title": "Diffusion Coefficients Estimation for Elliptic Partial Differential Equations",
+     "authors": [
+      "Andrea Bonito",
+      "Albert Cohen",
+      "Ronald DeVore",
+      "Guergana Petrova",
+      "Gerrit Welper"
+     ],
+     "year": 2016,
+     "link": "http://arxiv.org/abs/1609.05231v2",
+     "similarity": 0.6558263712136723,
+     "slogan": "For a Lipschitz domain D, given functions a and b in class A1, and a positive bounded function f, the L2 norm of the difference between a and b is bounded by a constant times the H01 norm of the difference between their corresponding solutions raised to the power one-sixth. The constant depends on the domain, dimension, ellipticity parameters, and the lower bound of f. The inequality also involves",
+     "body": "Let $D$ be a Lipschitz domain, $a,b\\in {\\cal A}_1$, $f\\in L_\\infty (D)$ with $f\\geq c_f>0$, and $u_a, u_b \\in H^1_0(D)$ be the corresponding solutions to {\\rm {\\rm (\\ref{i:equation})}}, then we have\\begin{equation}  \\| a-b\\| _{L_2(D)}\\le C\\sqrt{1+C_0}\\| u_a-u_b\\| _{H_0^1(D)}^{1/6}, \\end{equation}where {$C_0$ is the constant in {\\rm {\\rm (\\ref{2:defC})}} and} $C$ is a constant depending only on $D,d,\\lambda ,\\Lambda $ and the minimum $c_f$ of $f$.",
+     "applies": "no",
+     "conflicts": [
+      "different equation class (theorem is not about parabolic/diffusion equations)",
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:22198969",
+     "name": "Theorem 1.3",
+     "kind": "theorem",
+     "paper_title": "Conditional Stability for Single Interior Measurement",
+     "authors": [
+      "Naofumi Honda",
+      "Joyce McLaughlin",
+      "Gen Nakamura"
+     ],
+     "year": 2013,
+     "link": "http://arxiv.org/abs/1306.4433v2",
+     "similarity": 0.6500356197357362,
+     "slogan": "The theorem establishes a stability estimate for the difference between two conductivity functions in a domain. It bounds the L-infinity norm of their difference on an inner subdomain by a sum of boundary differences and solution differences raised to a fractional power. The constants depend on domain parameters, boundary data, and operator coefficients. Under analytic boundary and coefficient con",
+     "body": "{\\rm (Main Theorem)} {\\it Let $d > 0$ and $\\Omega _d := \\{ x \\in \\Omega \\, :\\,  \\operatorname {dist}(x,\\,  \\mathbb {R}^n \\setminus \\Omega ) > d\\} $. Let $\\gamma _1, \\gamma _2$ be an admissible pair and $A, \\rho , \\gamma _1, \\gamma _2, \\omega ^2$ satisfy Assumptions 1,2,3, with $||A||_{W^{1,\\infty }(\\Omega )} \\le \\sigma ^{-1}$ and $||\\gamma _k||_{W^{1,\\infty }(\\Omega )} \\le \\sigma ^{-1},\\,  k=1,2$. Then there exist constants $C>0$ and $\\alpha \\in (0,1)$ depending only on $\\Omega $, $d$, $\\sigma $, $g_1$ and the coefficients of $L_1$ such that \\begin{equation}  \\Vert \\gamma _2-\\gamma _1\\Vert _{L^\\infty (\\Omega _d)} \\le C\\left(\\Vert \\gamma _2-\\gamma _1\\Vert _{L^\\infty (\\partial \\Omega )} +\\Vert u_2-u_1\\Vert _{W^{2,1}(\\Omega )}\\right)^\\alpha \\end{equation} for any $g_2$ and $\\gamma _2$ of an admissible pair $(\\gamma _1,\\,  \\gamma _2)$. Furthermore, if $\\Omega $ has an analytic smooth boundar",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [
+      "one-dimensional setting",
+      "allows non-smooth / piecewise coefficients",
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:21876495",
+     "name": "Theorem 2.1",
+     "kind": "theorem",
+     "paper_title": "Smoothness dependent stability in corrosion detection",
+     "authors": [
+      "Eva Sincich"
+     ],
+     "year": 2014,
+     "link": "http://arxiv.org/abs/1406.5907v1",
+     "similarity": 0.6483400464058107,
+     "slogan": "For a Lipschitz domain with given parameters, if the L2 norm difference of two weak solutions on a boundary part is bounded by epsilon, then the L-infinity norm difference of the corresponding coefficients on a specific inner boundary region is bounded by a function of epsilon. This function is the composition of eta with itself applied to epsilon. The result establishes a stability estimate for t",
+     "body": "Let $\\Omega $ be a Lipschitz domain and let $\\gamma _1,\\gamma _2$ satisfy \\eqref{boundgamma}. Let $u_i, i=1,2$ be the weak solution to the problem \\eqref{P} with $\\gamma =\\gamma _i$ respectively. If for some $\\varepsilon $, we have\\begin{eqnarray}  \\| u_1 -u_2\\| _{L^2(\\Gamma _A)}\\le \\varepsilon \\end{eqnarray}then\\begin{eqnarray}  \\| \\gamma _1 -\\gamma _2 \\| _{L^{\\infty }(\\Gamma _I^{r_0})}\\le \\eta \\circ \\eta (\\epsilon ) \\end{eqnarray}",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "quantitative stability / noise statement"
+     ],
+     "notes": []
+    }
+   ]
+  },
+  {
+   "query": "Lipschitz stability for identification of piecewise constant diffusion coefficient in parabolic equation from interior point observations",
+   "agent": "researcher-experimental",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 5.65,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:19667864",
+     "name": "Proposition A.3",
+     "kind": "proposition",
+     "paper_title": "Stochastic homogenization of a class of nonconvex viscous HJ equations in one space dimension",
+     "authors": [
+      "Andrea Davini",
+      "Elena Kosygina"
+     ],
+     "year": 2020,
+     "link": "http://arxiv.org/abs/2002.02263v3",
+     "similarity": 0.6107970194216169,
+     "slogan": "Under given conditions, the unique solution to the parabolic equation with initial condition linear in x is Lipschitz continuous in both time and space. The Lipschitz constant depends on the slope parameter theta. This constant is given by a function kappa of theta, which is locally bounded. The result holds for all real values of theta.",
+     "body": "Assume conditions (AV) and (G1)-(G2). For every $\\theta \\in \\mathbb R$, the unique solution $u_\\theta $ of \\eqref{eq parabolic} in $\\mbox{\\rm UC}([0,+\\infty )\\times \\mathbb R)$ with initial condition $u(0,x)=\\theta x$ is $\\kappa (\\theta )$\u2013Lipschitz continuous in $[0,+\\infty )\\times \\mathbb R$, for some locally bounded functions $\\kappa :\\mathbb R\\to [0,+\\infty )$.",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:19142517",
+     "name": "Lemma 3",
+     "kind": "lemma",
+     "paper_title": "Higher order homogenization for random non-autonomous parabolic operators",
+     "authors": [
+      "Marina Kleptsyna",
+      "Andrey Piatnitski",
+      "Alexandre Popier"
+     ],
+     "year": 2023,
+     "link": "http://arxiv.org/abs/1612.07478v3",
+     "similarity": 0.6091853482987951,
+     "slogan": "The fundamental solution of a divergence-form parabolic equation with a measurable, uniformly elliptic coefficient matrix satisfies a specific derivative estimate. The coefficient matrix is assumed to be Lipschitz continuous in the spatial variable. The constants in the estimate depend only on the ellipticity constant, the dimension, and the Lipschitz constant.",
+     "body": "Let $a=a(x,t)$ be a measurable matrix function defined on $\\mathbb R^d\\times \\mathbb R^+$, and assume that the uniform ellipticity condition {\\bf a1.} holds. Assume moreover that there exists $K_\\mathrm{a}>0$ such that $|a(x,t)-a(x',t)|\\leq K_\\mathrm{a}|x-x'|$ for almost all $t\\in \\mathbb R^+$. Then the fundamental solution of\\begin{equation*}  \\frac{\\partial u}{\\partial t} \\displaystyle =\\mathrm{div} \\Big[a\\Big(x,t\\Big)\\nabla u\\Big], \\end{equation*}satisfies estimate \\eqref{eq:aronson_estim_der} where the constant $\\varpi $ only depends on the uniform ellipticity constant $\\lambda $ and the dimension $d$, and the constant $\\varrho $ only depends on $\\lambda $, $d$ and $K_\\mathrm{a}$.",
+     "applies": "no",
+     "conflicts": [
+      "theorem is stated for dimension >= 2; the problem is one-dimensional"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:26057828",
+     "name": "Lemma A.2",
+     "kind": "lemma",
+     "paper_title": "The exponential turnpike phenomenon for mean field game systems: weakly monotone drifts and small interactions",
+     "authors": [
+      "Alekos Cecchin",
+      "Giovanni Conforti",
+      "Alain Durmus",
+      "Katharina Eichinger"
+     ],
+     "year": 2024,
+     "link": "http://arxiv.org/abs/2409.09193v1",
+     "similarity": 0.6039640779538105,
+     "slogan": "The averaged diffusion coefficient is Lipschitz continuous. There exists a nonnegative constant such that the Frobenius norm of the difference between the coefficients at two points is bounded by this constant times the distance between the points.",
+     "body": "Assume \\Cref {ass:coupling}. The map $x \\mapsto \\bar {\\sigma }(x)$ is Lipschitz continuous,  it{i.e.} , there exists $L_{\\sigma } \\geq 0$ such that \\begin {equation} \\| \\bar {\\sigma }(x) - \\bar {\\sigma }(\\hat {x}) \\|_{\\mathrm {Fr}} \\leq L_{\\sigma } |x-\\hat {x}| \\end {equation}",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": []
+    },
+    {
+     "ref_id": "ts:thm:21806927",
+     "name": "Proposition 15",
+     "kind": "proposition",
+     "paper_title": "Mean curvature flow with obstacles: existence, uniqueness and regularity of solutions",
+     "authors": [
+      "Gwenael Mercier",
+      "Matteo Novaga"
+     ],
+     "year": 2014,
+     "link": "http://arxiv.org/abs/1409.7327v1",
+     "similarity": 0.5891214715387233,
+     "slogan": "The unique solution is Lipschitz continuous in space. Its Lipschitz constant matches that of the initial data and boundary functions.",
+     "body": "The unique solution $u$ of \\eqref{pb} is Lipschitz in space, with the same constant as $u_0,\\psi ^\\pm .$",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    }
+   ]
+  },
+  {
+   "query": "uniqueness and conditional stability of recovering discontinuous diffusion coefficient in one-dimensional heat equation from boundary or point observations with known initial condition",
+   "agent": "researcher-exploratory",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 3.79,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:17546409",
+     "name": "Theorem 1.2",
+     "kind": "theorem",
+     "paper_title": "Reconstruction of 1-D evolution equations and their initial data from one passive measurement",
+     "authors": [
+      "Ali Feizmohammadi"
+     ],
+     "year": 2025,
+     "link": "http://arxiv.org/abs/2501.10590v2",
+     "similarity": 0.6495351149385011,
+     "slogan": "Given a time T greater than zero and a sequence of times converging to a value between zero and T, consider two initial conditions and two coefficients, each with support conditions. The theorem states that if the spatial derivatives of the corresponding solutions at the boundary point x equals one are equal at each time in the sequence, then the initial conditions and coefficients must be identic",
+     "body": "Let $T>0$ and let $\\{ t_k\\} _{k=1}^\\infty \\subset \\mathbb R$ satisfy $\\lim \\limits _{k\\to \\infty }t_k=T_1$ for some $T_1\\in (0,T)$. For $j=1,2,$ let $b_j\\in C^{1}([0,1])$ and let $g_j \\in H^1_0((0,1))$ be not identical to zero. Assume that\\begin{equation}  \\textrm{supp}\\,  g_1 \\cup \\textrm{supp}\\,  g_2 \\subset [0,\\epsilon ] \\quad \\text{and} \\quad \\textrm{supp}\\, (b_1-b_2) \\subset [0,\\frac{1}{2}-\\epsilon ], \\end{equation}for some $\\epsilon \\in (0,\\frac{1}{2})$. Denote by $u_j$ the unique solution to \\eqref{pf2} with $g=g_j$ and $b=b_j$. Then,\\[ \\partial _xu_1(t_k,1)= \\partial _xu_2(t_k,1) \\quad \\forall \\, k\\in \\mathbb N\\implies (g_1,b_1)\\equiv (g_2,b_2). \\]",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses boundary measurements; the problem uses interior point sensors"
+     ],
+     "matched": [
+      "one-dimensional setting"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:22398568",
+     "name": "Theorem 5",
+     "kind": "theorem",
+     "paper_title": "A note on uniqueness in the identification of a spacewise dependent source and diffusion coefficient for the heat equation",
+     "authors": [
+      "Adriano De Cezaro",
+      "B. Tomas Johansson"
+     ],
+     "year": 2012,
+     "link": "http://arxiv.org/abs/1210.7346v1",
+     "similarity": 0.6473762568683942,
+     "slogan": "The inverse problem of identifying the conductivity coefficient, heat source, and solution from a final temperature measurement in a heat equation has a unique solution. This holds under specific regularity conditions on the initial data and final measurement. The conductivity coefficient and heat source belong to a defined set with certain properties. The solution must also satisfy boundedness co",
+     "body": "Let the spacewise conductivity coefficient and heat source $(a,f) \\in \\mathcal{A}$, where $\\mathcal{A}$ is given by~ \\eqref{ad_coefficients}, with the coefficient $a$ satisfying Assumption~ \\ref{ass:a}. Moreover, assume that the initial condition $h$ and the final time measurement $g$ are regular enough such that the corresponding solution $u(x,t)$ of \\eqref{eq:model2} satisfies\\[  {\\left\\lVert \\nabla u_t\\right\\rVert _{}}_{L^\\infty ((0,T) \\times \\Omega )} + {\\left\\lVert \\triangle u_t\\right\\rVert _{}}_{L^\\infty ((0,T) \\times \\Omega )} < M.  \\]Moreover, assume that the final time condition $g$ satisfies the Assumption~ \\eqref{eq:assumption_Lemma_6.1} in Lemma~ \\ref{lemma:Yamamoto_6.1} and \\eqref{eq:smoothness-g}. Then the inverse problem of identifying $\\{ a(x), f(x), u(a,f)\\} $ in the heat equation \\eqref{eq:model2} for a given additional measurement $g(x) = u(x,T)$ has a unique solution.",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses final-time (full spatial) data; the problem observes point sensors over time"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "allows non-smooth / piecewise coefficients"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:20610617",
+     "name": "Theorem 3.2",
+     "kind": "theorem",
+     "paper_title": "Approximation of the probability density function of the randomized heat equation with non-homogeneous boundary conditions",
+     "authors": [
+      "J. Calatayud",
+      "J. C. Cort\u00e9s",
+      "M. Jornet"
+     ],
+     "year": 2018,
+     "link": "http://arxiv.org/abs/1805.03738v1",
+     "similarity": 0.6407374930601636,
+     "slogan": "A solution exists almost surely for the heat equation with random diffusion coefficient and boundary and initial conditions, where derivatives are classical. The solution is unique. Under boundedness conditions on the diffusion coefficient, an L-squared solution exists with derivatives in the mean square sense. This solution is also unique.",
+     "body": "The following statements hold:\\\\ \\vspace{-0.5cm}\\begin{itemize} \\item[i)]a.s. solution: Suppose that $\\phi \\in \\mathrm{L}^2([L_1,L_2]\\times \\Omega )$ and $A,B\\in \\mathrm{L}^2(\\Omega )$. Then \n\n\\[  u_t(x,t)(\\omega )=\\alpha ^2(\\omega )\\, u_{xx}(x,t)(\\omega )  \\]\n\n a.s. for $x\\in (L_1,L_2)$ and $t>0$, where the derivatives are understood in the classical sense; $u(L_1,t)(\\omega )=A(\\omega )$ and $u(L_2,t)(\\omega )=B(\\omega )$ a.s. for $t\\geq 0$; and $u(x,0)(\\omega )=\\phi (x)(\\omega )$ a.s. for a.e. $x\\in [L_1,L_2]$. Moreover, the process $u(x,t)(\\omega )$ satisfying these conditions is unique. \n\n\\item[ii)]$\\mathrm{L}^2$ solution: Suppose that $\\phi \\in \\mathrm{L}^2([L_1,L_2]\\times \\Omega )$, $A,B\\in \\mathrm{L}^2(\\Omega )$ and $0<a\\leq \\alpha ^2(\\omega )\\leq b$, a.e. $\\omega \\in \\Omega $, for certain $a,b\\in \\mathbb {R}$. Then \n\n\\[  u_t(x,t)(\\omega )=\\alpha ^2(\\omega )\\, u_{xx}(x,t)(\\omega )",
+     "applies": "partial",
+     "conflicts": [
+      "theorem uses final-time (full spatial) data; the problem observes point sensors over time"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:24153014",
+     "name": "Lemma 2.1 (Uniqueness of solutions)",
+     "kind": "lemma",
+     "paper_title": "System of Porous Medium Equations",
+     "authors": [
+      "Sunghoon Kim",
+      "Ki-Ahm Lee"
+     ],
+     "year": 2019,
+     "link": "http://arxiv.org/abs/1812.11007v2",
+     "similarity": 0.6332768768021677,
+     "slogan": "The problem describes a diffusion equation with a positive, integrable coefficient function. It states that the initial value problem has at most one solution. This uniqueness holds under the condition that the solution is square integrable over space.",
+     "body": "Let $\\mathcal{A}(x,t)$ be positive, integrable function. Then the following problem\\begin{equation}  \\begin{cases} \\begin{aligned}  u_t& =\\nabla \\left(\\mathcal{A}\\, \\nabla u\\right) \\qquad \\mbox{in ${\\mathbb {R}}^n\\times \\left(0,\\infty \\right)$}\\\\ u(x,0)& =u_0(x) \\qquad \\qquad \\forall x\\in {\\mathbb {R}}^n \\end{aligned}\\end{cases} \\end{equation}has at most one solution if $u\\in L^2\\left({\\mathbb {R}}^n\\right)$.",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    }
+   ]
+  },
+  {
+   "query": "uniqueness of piecewise constant diffusion coefficient in one-dimensional heat equation from measurements at finitely many interior points over a finite time interval",
+   "agent": "researcher-mathematical",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 2.68,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:17546409",
+     "name": "Theorem 1.2",
+     "kind": "theorem",
+     "paper_title": "Reconstruction of 1-D evolution equations and their initial data from one passive measurement",
+     "authors": [
+      "Ali Feizmohammadi"
+     ],
+     "year": 2025,
+     "link": "http://arxiv.org/abs/2501.10590v2",
+     "similarity": 0.6596709661401085,
+     "slogan": "Given a time T greater than zero and a sequence of times converging to a value between zero and T, consider two initial conditions and two coefficients, each with support conditions. The theorem states that if the spatial derivatives of the corresponding solutions at the boundary point x equals one are equal at each time in the sequence, then the initial conditions and coefficients must be identic",
+     "body": "Let $T>0$ and let $\\{ t_k\\} _{k=1}^\\infty \\subset \\mathbb R$ satisfy $\\lim \\limits _{k\\to \\infty }t_k=T_1$ for some $T_1\\in (0,T)$. For $j=1,2,$ let $b_j\\in C^{1}([0,1])$ and let $g_j \\in H^1_0((0,1))$ be not identical to zero. Assume that\\begin{equation}  \\textrm{supp}\\,  g_1 \\cup \\textrm{supp}\\,  g_2 \\subset [0,\\epsilon ] \\quad \\text{and} \\quad \\textrm{supp}\\, (b_1-b_2) \\subset [0,\\frac{1}{2}-\\epsilon ], \\end{equation}for some $\\epsilon \\in (0,\\frac{1}{2})$. Denote by $u_j$ the unique solution to \\eqref{pf2} with $g=g_j$ and $b=b_j$. Then,\\[ \\partial _xu_1(t_k,1)= \\partial _xu_2(t_k,1) \\quad \\forall \\, k\\in \\mathbb N\\implies (g_1,b_1)\\equiv (g_2,b_2). \\]",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses boundary measurements; the problem uses interior point sensors"
+     ],
+     "matched": [
+      "one-dimensional setting"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:22398568",
+     "name": "Theorem 5",
+     "kind": "theorem",
+     "paper_title": "A note on uniqueness in the identification of a spacewise dependent source and diffusion coefficient for the heat equation",
+     "authors": [
+      "Adriano De Cezaro",
+      "B. Tomas Johansson"
+     ],
+     "year": 2012,
+     "link": "http://arxiv.org/abs/1210.7346v1",
+     "similarity": 0.6453873265713143,
+     "slogan": "The inverse problem of identifying the conductivity coefficient, heat source, and solution from a final temperature measurement in a heat equation has a unique solution. This holds under specific regularity conditions on the initial data and final measurement. The conductivity coefficient and heat source belong to a defined set with certain properties. The solution must also satisfy boundedness co",
+     "body": "Let the spacewise conductivity coefficient and heat source $(a,f) \\in \\mathcal{A}$, where $\\mathcal{A}$ is given by~ \\eqref{ad_coefficients}, with the coefficient $a$ satisfying Assumption~ \\ref{ass:a}. Moreover, assume that the initial condition $h$ and the final time measurement $g$ are regular enough such that the corresponding solution $u(x,t)$ of \\eqref{eq:model2} satisfies\\[  {\\left\\lVert \\nabla u_t\\right\\rVert _{}}_{L^\\infty ((0,T) \\times \\Omega )} + {\\left\\lVert \\triangle u_t\\right\\rVert _{}}_{L^\\infty ((0,T) \\times \\Omega )} < M.  \\]Moreover, assume that the final time condition $g$ satisfies the Assumption~ \\eqref{eq:assumption_Lemma_6.1} in Lemma~ \\ref{lemma:Yamamoto_6.1} and \\eqref{eq:smoothness-g}. Then the inverse problem of identifying $\\{ a(x), f(x), u(a,f)\\} $ in the heat equation \\eqref{eq:model2} for a given additional measurement $g(x) = u(x,T)$ has a unique solution.",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses final-time (full spatial) data; the problem observes point sensors over time"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "allows non-smooth / piecewise coefficients"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:17415891",
+     "name": "Lemma 5.1",
+     "kind": "lemma",
+     "paper_title": "Regularized Reconstruction of Scalar Parameters in Subdiffusion with Memory via a Nonlocal Observation",
+     "authors": [
+      "Andrii Hulianytskyi",
+      "Sergei Pereverzyev",
+      "Sergii Siryk",
+      "Nataliya Vasylyeva"
+     ],
+     "year": 2025,
+     "link": "http://arxiv.org/abs/2511.05277v1",
+     "similarity": 0.6301681962760008,
+     "slogan": "The inverse problem for finding the parameters and function from a given measurement has at most one solution. This holds under the assumptions of a referenced theorem. The parameters include two unknowns and a constant. The uniqueness is guaranteed for the specified system and measurement.",
+     "body": "Let $(\\nu _{1},\\nu _{2},\\rho _{2})$ be unknown parameters in \\eqref{2.2} with $\\rho _{2}$ being a constant. Moreover, we assume that assumptions of Theorem \\ref{t5.1} hold. Then IP \\eqref{2.2}-\\eqref{2.4} related with finding $(\\nu _{1},\\nu _{2},\\rho _{2}, u)$ by the measurement \\eqref{2.4} admits no more than one solution.",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:24153014",
+     "name": "Lemma 2.1 (Uniqueness of solutions)",
+     "kind": "lemma",
+     "paper_title": "System of Porous Medium Equations",
+     "authors": [
+      "Sunghoon Kim",
+      "Ki-Ahm Lee"
+     ],
+     "year": 2019,
+     "link": "http://arxiv.org/abs/1812.11007v2",
+     "similarity": 0.6295421244739094,
+     "slogan": "The problem describes a diffusion equation with a positive, integrable coefficient function. It states that the initial value problem has at most one solution. This uniqueness holds under the condition that the solution is square integrable over space.",
+     "body": "Let $\\mathcal{A}(x,t)$ be positive, integrable function. Then the following problem\\begin{equation}  \\begin{cases} \\begin{aligned}  u_t& =\\nabla \\left(\\mathcal{A}\\, \\nabla u\\right) \\qquad \\mbox{in ${\\mathbb {R}}^n\\times \\left(0,\\infty \\right)$}\\\\ u(x,0)& =u_0(x) \\qquad \\qquad \\forall x\\in {\\mathbb {R}}^n \\end{aligned}\\end{cases} \\end{equation}has at most one solution if $u\\in L^2\\left({\\mathbb {R}}^n\\right)$.",
+     "applies": "unknown",
+     "conflicts": [],
+     "matched": [
+      "same equation class (parabolic / diffusion)"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    }
+   ]
+  },
+  {
+   "query": "uniqueness of conductivity coefficient heat equation from boundary or point measurements finite time with known initial condition",
+   "agent": "researcher-experimental",
+   "round": 1,
+   "purpose": "background",
+   "ok": true,
+   "error": null,
+   "error_kind": null,
+   "endpoint": "/search",
+   "cached": false,
+   "fallback_used": false,
+   "latency": 2.68,
+   "attempts": 1,
+   "results": [
+    {
+     "ref_id": "ts:thm:17546409",
+     "name": "Theorem 1.2",
+     "kind": "theorem",
+     "paper_title": "Reconstruction of 1-D evolution equations and their initial data from one passive measurement",
+     "authors": [
+      "Ali Feizmohammadi"
+     ],
+     "year": 2025,
+     "link": "http://arxiv.org/abs/2501.10590v2",
+     "similarity": 0.7572527672498428,
+     "slogan": "Given a time T greater than zero and a sequence of times converging to a value between zero and T, consider two initial conditions and two coefficients, each with support conditions. The theorem states that if the spatial derivatives of the corresponding solutions at the boundary point x equals one are equal at each time in the sequence, then the initial conditions and coefficients must be identic",
+     "body": "Let $T>0$ and let $\\{ t_k\\} _{k=1}^\\infty \\subset \\mathbb R$ satisfy $\\lim \\limits _{k\\to \\infty }t_k=T_1$ for some $T_1\\in (0,T)$. For $j=1,2,$ let $b_j\\in C^{1}([0,1])$ and let $g_j \\in H^1_0((0,1))$ be not identical to zero. Assume that\\begin{equation}  \\textrm{supp}\\,  g_1 \\cup \\textrm{supp}\\,  g_2 \\subset [0,\\epsilon ] \\quad \\text{and} \\quad \\textrm{supp}\\, (b_1-b_2) \\subset [0,\\frac{1}{2}-\\epsilon ], \\end{equation}for some $\\epsilon \\in (0,\\frac{1}{2})$. Denote by $u_j$ the unique solution to \\eqref{pf2} with $g=g_j$ and $b=b_j$. Then,\\[ \\partial _xu_1(t_k,1)= \\partial _xu_2(t_k,1) \\quad \\forall \\, k\\in \\mathbb N\\implies (g_1,b_1)\\equiv (g_2,b_2). \\]",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses boundary measurements; the problem uses interior point sensors"
+     ],
+     "matched": [
+      "one-dimensional setting"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:22398568",
+     "name": "Theorem 5",
+     "kind": "theorem",
+     "paper_title": "A note on uniqueness in the identification of a spacewise dependent source and diffusion coefficient for the heat equation",
+     "authors": [
+      "Adriano De Cezaro",
+      "B. Tomas Johansson"
+     ],
+     "year": 2012,
+     "link": "http://arxiv.org/abs/1210.7346v1",
+     "similarity": 0.7372461211466206,
+     "slogan": "The inverse problem of identifying the conductivity coefficient, heat source, and solution from a final temperature measurement in a heat equation has a unique solution. This holds under specific regularity conditions on the initial data and final measurement. The conductivity coefficient and heat source belong to a defined set with certain properties. The solution must also satisfy boundedness co",
+     "body": "Let the spacewise conductivity coefficient and heat source $(a,f) \\in \\mathcal{A}$, where $\\mathcal{A}$ is given by~ \\eqref{ad_coefficients}, with the coefficient $a$ satisfying Assumption~ \\ref{ass:a}. Moreover, assume that the initial condition $h$ and the final time measurement $g$ are regular enough such that the corresponding solution $u(x,t)$ of \\eqref{eq:model2} satisfies\\[  {\\left\\lVert \\nabla u_t\\right\\rVert _{}}_{L^\\infty ((0,T) \\times \\Omega )} + {\\left\\lVert \\triangle u_t\\right\\rVert _{}}_{L^\\infty ((0,T) \\times \\Omega )} < M.  \\]Moreover, assume that the final time condition $g$ satisfies the Assumption~ \\eqref{eq:assumption_Lemma_6.1} in Lemma~ \\ref{lemma:Yamamoto_6.1} and \\eqref{eq:smoothness-g}. Then the inverse problem of identifying $\\{ a(x), f(x), u(a,f)\\} $ in the heat equation \\eqref{eq:model2} for a given additional measurement $g(x) = u(x,T)$ has a unique solution.",
+     "applies": "partial",
+     "conflicts": [
+      "theorem assumes a smooth/regular coefficient; the problem's conductivity is piecewise-constant (discontinuous) \u2014 the result may not transfer directly",
+      "theorem uses final-time (full spatial) data; the problem observes point sensors over time"
+     ],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "allows non-smooth / piecewise coefficients"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:24476298",
+     "name": "Theorem 3.2",
+     "kind": "theorem",
+     "paper_title": "Recovery of Multiple Parameters in Subdiffusion from One Lateral Boundary Measurement",
+     "authors": [
+      "Siyu Cen",
+      "Bangti Jin",
+      "Yikan Liu",
+      "Zhi Zhou"
+     ],
+     "year": 2023,
+     "link": "http://arxiv.org/abs/2307.03263v1",
+     "similarity": 0.692092354519573,
+     "slogan": "If a specific condition holds and two sets of parameters are given, then if their Dirichlet data match on a certain part of the boundary over a time interval, the corresponding coefficients are equal. This holds for any time length up to a fixed endpoint. The result establishes uniqueness of the coefficient based on boundary measurements.",
+     "body": " Let condition \\eqref {eq:g-2} be fulfilled, and let $(a,f,u_0)$, $(\\widetilde a,\\widetilde f,\\widetilde u_0)\\in \\mathfrak A\\times L^2(\\Omega )\\times L^2(\\Omega )$, and fix $g$ as \\eqref {eq:g}. Let $h$ and $\\widetilde h$ be the corresponding Dirichlet data. Then for any $\\sigma \\in (0,T_0]$, the condition $h=\\widetilde h$ on $\\Gamma _0\\times [T_0-\\sigma ,T]$ implies $a=\\widetilde a$.",
+     "applies": "partial",
+     "conflicts": [
+      "theorem uses boundary measurements; the problem uses interior point sensors"
+     ],
+     "matched": [
+      "one-dimensional setting",
+      "Dirichlet boundary conditions"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    },
+    {
+     "ref_id": "ts:thm:23637216",
+     "name": "Lemma 7.1",
+     "kind": "lemma",
+     "paper_title": "Classification of Weil-Petersson Isometries",
+     "authors": [
+      "Georgios Daskalopoulos",
+      "Richard Wentworth"
+     ],
+     "year": 2002,
+     "link": "http://arxiv.org/abs/math/0208010v1",
+     "similarity": 0.6821419961752548,
+     "slogan": "The solution to the heat equation exists and is unique for a finite time interval starting from any initial condition.",
+     "body": "For any initial condition, there is $T>0$ such that the solution $u(t,x)$ of (\\ref{E:heatflow}) exists and is unique for all $0\\leq t<T$.",
+     "applies": "plausible",
+     "conflicts": [],
+     "matched": [
+      "same equation class (parabolic / diffusion)",
+      "one-dimensional setting"
+     ],
+     "notes": [
+      "uniqueness from exact data only: says nothing about stability under the sensor noise"
+     ]
+    }
+   ]
+  }
+ ]
+}

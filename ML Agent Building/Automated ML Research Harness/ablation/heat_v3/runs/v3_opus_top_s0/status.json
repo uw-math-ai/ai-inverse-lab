@@ -1,0 +1,40 @@
+{
+ "run_id": "heat_v3_opus_top_s0_20261114_145516",
+ "stage": "done",
+ "ideas": 20,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-016",
+  "method": "custom-solver(fwd)",
+  "rel_l2": 0.019322146939217813
+ },
+ "resources": {
+  "compute_budget_s": 760.0,
+  "compute_used_s": 245.45,
+  "compute_remaining_s": 514.55,
+  "wall_elapsed_s": 1653.77,
+  "wall_budget_s": 7200.0,
+  "jobs": 19,
+  "by_stage_s": {
+   "study": 191.06,
+   "final": 54.38
+  },
+  "llm_calls": 30,
+  "llm_calls_max": 80,
+  "llm_seconds": 1504.69,
+  "llm_cost_usd": 9.3324,
+  "llm_by_phase": {
+   "execution": 30
+  },
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794698570.1898391,
+ "error": null,
+ "pipeline": "v3",
+ "elapsed": 1653.764121055603,
+ "research_stop": "Why stop. The study limit has been reached: action-012, a revise to S-Q1-007, was rejected with 'ValueError: study limit'. No new study or revision can be registered. The remaining open blocking objections cannot be closed with the actions still allowed:\n- 073 and 074 are redacted and cannot be addressed.\n- 030, 100, 101 and 102 require 2000 bootstrap replicates and labelled interval levels. The harness has capped n_bootstrap at 200 in every paired diagnostic (resu-00109, 00110, 00125, 00129, 00266, 00267), and a delegated re-run also returned 200.\n- 103 requires the treatment's printed diagnostics, which the harness discarded (runtime_diagnostics is empty).\n- 105 requires re-running mlp_fixed, which needs a new study.\nAnother diagnose or delegate would reproduce the same capped outputs, and delegation is blocked by the depth/children limit (action-006). Stopping now is better than spending budget on actions that cannot change any verdict.\n\nOutcome under the pre-registered rules. Every claim stays inconclusive / not evaluable, and none is self-certified:\n- C-Q1-1b and C-Q1-2b (S-Q1-002): blocking implementation objections are unresolved, and the bootstrap ran 200 replicates against 2000 registered.\n- C-Q1-5a and C-Q1-5c (S-Q1-005): the bootstrap ran 200 replicates against 2000 registered, the interval level is not reported, the reporting criteria were not observed, and redacted objections 073 and 074 are open.\n- C-Q1-5b: the control arm failed. The harness wraps custom_ml in TransformedTargetRegressor, so the arm's positivity guard raised (resu-00257). No MLP comparison exists for this study, and resu-00269 holds treatment-side values only.\n\nDescriptive development evidence. The validation split was reused across several validation-informed revisions, so none of this is confirmatory. n_val = 750; row_hash 260db427 and train_row_hash 4dea572e are identical across all arms.\n- Validation rel_l2:\n  - transparent_mle (resu-00261, source_hash ef4142b6, fit-time gates G1-G7 passed because the arm completed): 0.019322.\n  - harness physics_mle (resu-00107/00263): 0.019333.\n  - torch_mlp log-target: 0.02805 at seed 0, 0.03016 at seed 1.\n  - extra_trees log-target: 0.07741 at seed 0, 0.07711 at seed 1.\n- Paired relative improvement 1 - R (200 replicates, interval level unstated):\n  - transparent_mle vs ET: 0.750, interval [0.729, 0.770].\n  - harness MLE vs MLP: 0.311, interval [0.272, 0.352].\n  - transparent_mle vs harness reference: 0.00054, interval [-0.00026, 0.00133]. This is aggregate agreement only. It does not show row-level identity or identify the estimator (objections 071, 092, 108).\n- Per-segment rel_l2 for the likelihood arms is about [0.027, 0.006, 0.005, 0.026]. The outer segments 1 and 4 carry roughly 5x the error of the inner segments, and the same pattern appears in both learned arms. This is an early exploratory signal for Q-3 and is not a local-Fisher or identifiability result.\n- Cost asymmetry: transparent_mle used about 113k forward evaluations (about 139 per row in predict, 11.4 ms per row). The harness MLE used about 177k (about 20 ms per row). The learners used no forward evaluations and took 0.01-0.17 ms per row. About 0.47M forward evaluations were used in total, against a cap of 3M.\n\nFinal export. The best executed full-fidelity arm is S-Q1-005.transparent_mle (val rel_l2 0.019322). Its procedure is auditable code with source_hash ef4142b6. Its result is statistically indistinguishable from the harness physics_mle (0.019333).\n\nScope and caveats:\n- Inverse-crime condition: the forward model is exactly specified, with known sigma = 0.001 and a U[0.5,2]^4 prior.\n- The learned controls are fixed and untuned, with 1-2 seeds. Uncertainty covers row sampling only.\n- The output is the best-objective projected-LM iterate, not a certified MLE (objections 063, 111).\n- The CFL number and interface averaging are unverified (018, 040, 067, 080, 094).\n- Each comparison stands on its own; there is no family-wise claim.\n\nQ-2 (hybrid initializer) and Q-3 (Fisher identifiability) were not studied because the study limit was reached. They remain open.\n\nEverything above is for independent review."
+}

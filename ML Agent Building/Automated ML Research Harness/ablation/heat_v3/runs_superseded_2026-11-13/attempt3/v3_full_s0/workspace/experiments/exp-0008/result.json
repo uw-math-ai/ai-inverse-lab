@@ -1,0 +1,98 @@
+{
+ "exp_id": "exp-0008",
+ "idea_id": "idea-008",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.01933729343090818,
+  "r2": 0.996555975200928,
+  "rmse": 0.02550079017231679
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 0.0,
+ "predict_seconds": 18.64759659767151,
+ "latency_ms_per_sample": 24.86346213022868,
+ "warnings": [],
+ "kind": "physics",
+ "family": "physics",
+ "label": "physics-MLE[log,ms=3,it=30]",
+ "forward_evals": 175409,
+ "forward_evals_fit": 200,
+ "diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200
+  },
+  "last_chi2_per_dof": 0.9632060863640968,
+  "last_solve_seconds": 18.64759659767151,
+  "last_iters": 30
+ },
+ "val_per_target_rel_l2": [
+  0.026855287581599784,
+  0.006040215490973661,
+  0.004995911942749422,
+  0.026295258372174602
+ ],
+ "uncertainty": {
+  "coverage_1sigma": 0.7026666666666667,
+  "coverage_2sigma": 0.957,
+  "mean_std": 0.01900382255465472,
+  "z_rms": 0.983504982642104
+ },
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0008\\val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-002",
+ "arm_id": "S-Q1-002.physics_mle_seed1",
+ "claim_ids": [
+  "C-Q1-002.physics",
+  "C-Q1-002.hybrid",
+  "C-Q1-002.hybrid_equiv_physics"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "3be67b83aa14",
+ "effective_method": {
+  "kind": "physics",
+  "params": {
+   "transform": "log",
+   "multistart": 3,
+   "iters": 30,
+   "tikhonov": 0.0,
+   "estimator": "mode",
+   "posterior_samples": 128
+  }
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 1,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200
+  },
+  "last_chi2_per_dof": 0.9632060863640968,
+  "last_solve_seconds": 18.64759659767151,
+  "last_iters": 30
+ },
+ "val_idx_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0008\\val_idx.npy",
+ "status": "ok",
+ "elapsed": 20.42367696762085
+}

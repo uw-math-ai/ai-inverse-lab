@@ -1,0 +1,9 @@
+name: classification_demo
+problem: Classify samples from a synthetic 3-class problem with 20 features (8 informative).
+simulator: {name: classification, params: {n_features: 20, n_informative: 8, n_classes: 3}}
+data: {n_train: 2000, n_val: 500, n_test: 500, seed: 3}
+metrics: {primary: accuracy, secondary: [f1_macro]}
+success: {threshold: 0.9}
+budget: {compute_seconds: 240, max_ideas: 20, experiment_timeout: 90}
+search: {ideas_per_ideator: 3, refine_rounds: 1}
+llm: {backend: none}

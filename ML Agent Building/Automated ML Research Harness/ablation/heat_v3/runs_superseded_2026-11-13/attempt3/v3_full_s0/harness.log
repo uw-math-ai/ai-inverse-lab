@@ -1,0 +1,19 @@
+2026-11-14 13:06:46,858 INFO === stage: spec | compute used 0/760s | wall 0s
+2026-11-14 13:06:46,860 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-14 13:06:46,860 INFO llm backend: claude_code (claude-opus-5-5) | workers: 6 x 2 threads | gpus: none
+2026-11-14 13:06:46,860 INFO === stage: data | compute used 0/760s | wall 0s
+2026-11-14 13:06:46,873 INFO [simulator] dataset 346a0cfc9d47587b loaded from cache
+2026-11-14 13:06:47,025 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-14 13:06:47,026 INFO identifiability: Fisher cond median 46.6, CRB rel_l2 floor ~0.01949, least determined ['k1', 'k4']
+2026-11-14 13:06:47,072 INFO === stage: program | compute used 0/760s | wall 0s
+2026-11-14 13:08:32,610 INFO   exp-0001 idea-001  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (10.3s)
+2026-11-14 13:08:41,887 INFO   exp-0003 idea-003  hybrid[extra_trees/raw+logy- f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (19.6s)
+2026-11-14 13:08:42,604 INFO   exp-0002 idea-002  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01932 r2=0.9966 rmse=0.02548 (20.3s)
+2026-11-14 13:12:20,145 INFO   exp-0008 idea-008  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (23.3s)
+2026-11-14 13:12:40,595 INFO   exp-0009 idea-009  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (6.6s)
+2026-11-14 13:12:41,749 INFO   exp-0012 idea-012  extra_trees/raw+logy         f=1.00 rel_l2=0.07711 r2=0.9452 rmse=0.1017 (7.8s)
+2026-11-14 13:12:50,303 INFO   exp-0011 idea-011  hybrid[extra_trees/raw+logy- f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (16.3s)
+2026-11-14 13:12:51,327 INFO   exp-0010 idea-010  physics-MLE[log,ms=3,it=30]  f=1.00 rel_l2=0.01932 r2=0.9966 rmse=0.02548 (17.4s)
+2026-11-14 13:18:28,662 INFO === stage: final | compute used 134/760s | wall 702s
+2026-11-14 13:19:31,008 INFO   exp-0014 idea-002  FINAL                        f=1.00  (62.3s)
+2026-11-14 13:19:31,022 INFO === stage: report | compute used 196/760s | wall 764s

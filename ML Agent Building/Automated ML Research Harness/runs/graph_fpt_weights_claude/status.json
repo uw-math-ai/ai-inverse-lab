@@ -1,0 +1,44 @@
+{
+ "run_id": "graph_fpt_weights_20261107_153153",
+ "stage": "done",
+ "ideas": 35,
+ "pruned": 3,
+ "best": {
+  "idea": "idea-031",
+  "method": "kernel_ridge",
+  "rel_l2": 0.013179404113842955
+ },
+ "resources": {
+  "compute_budget_s": 900.0,
+  "compute_used_s": 719.46,
+  "compute_remaining_s": 180.54,
+  "wall_elapsed_s": 581.94,
+  "wall_budget_s": 600.0,
+  "jobs": 43,
+  "by_stage_s": {
+   "baseline": 1.91,
+   "screen": 173.98,
+   "halving": 153.98,
+   "refine": 381.5,
+   "final": 8.09
+  },
+  "llm_calls": 13,
+  "llm_calls_max": 30,
+  "llm_seconds": 231.95,
+  "llm_cost_usd": 1.0204,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "proposed": 16,
+  "prescreen_approved": 14,
+  "screen_survivors": 13,
+  "rung_0.33": 5,
+  "rung_1.00": 4,
+  "refine_proposed": 18,
+  "refine_approved": 18
+ },
+ "updated": 1794094895.4605765,
+ "error": null,
+ "elapsed": 581.9326276779175
+}

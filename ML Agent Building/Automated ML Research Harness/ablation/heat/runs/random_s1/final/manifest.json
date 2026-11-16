@@ -1,0 +1,78 @@
+{
+  "members": [
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 0.0004422906167031346,
+        "gamma_mult": 0.19546364342321004
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.29652243702248987,
+        "lr": 0.002079447741866517,
+        "weight_decay": 0.00011983043170155368,
+        "epochs": 177,
+        "batch_size": 64,
+        "activation": "relu"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          512
+        ],
+        "dropout": 0.04579938791735105,
+        "lr": 0.0009345938431869064,
+        "weight_decay": 1.0111965972213143e-05,
+        "epochs": 167,
+        "batch_size": 256,
+        "activation": "tanh"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0
+    },
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 2.102783947671146e-05,
+        "gamma_mult": 1.8649835924329932
+      },
+      "features": "raw",
+      "scaler": "none",
+      "pca": 64
+    }
+  ],
+  "weights": [
+    3.0,
+    2.0,
+    2.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.0227921198126852,
+    "r2": 0.9953380034456011,
+    "rmse": 0.029989962393681693
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

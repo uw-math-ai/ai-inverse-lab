@@ -1,0 +1,117 @@
+{
+  "pipeline": "v3",
+  "schema_version": 3,
+  "members": [
+    {
+      "kind": "custom_solver",
+      "params": {
+        "iters": 30,
+        "multistart": 3,
+        "fd_step": 0.0001,
+        "start_seed": 20261114,
+        "chi2_mean_lo": 74.0,
+        "chi2_mean_hi": 86.0,
+        "resid_std_lo": 0.00095,
+        "resid_std_hi": 0.00105,
+        "noiseless_max_rel_l2": 0.01,
+        "batch_tol": 1e-09
+      },
+      "uses_forward": true,
+      "code_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_opus_top_s0\\final\\member0_heat_v3_opus_top_s0_20261114_145516.py",
+      "module_name": "mlh_member0_heat_v3_opus_top_s0_20261114_145516"
+    }
+  ],
+  "member_info": [
+    {
+      "label": "custom-solver(fwd)",
+      "kind": "custom_solver",
+      "family": "physics-custom",
+      "method_hash": "f47bba887760",
+      "source_hash": "caae064c48785e14ff12e75f7f32a1fd665ca52734db6d8510a6b4cf9baf3fec",
+      "uses_forward": true,
+      "fit_diagnostics": {}
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "custom_modules": [
+    {
+      "file": "member0_heat_v3_opus_top_s0_20261114_145516.py",
+      "module_name": "mlh_member0_heat_v3_opus_top_s0_20261114_145516"
+    }
+  ],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    true
+  ],
+  "research_lineage": {
+    "idea-016": {
+      "label": "custom-solver(fwd)",
+      "origin": "proposal",
+      "study_id": "S-Q1-005",
+      "arm_id": "S-Q1-005.transparent_mle",
+      "gate": "gate-00241",
+      "baseline_identity": false
+    }
+  },
+  "reproducibility": {
+    "seed": 0,
+    "data_seed": 5,
+    "data_cache_key": "346a0cfc9d47587b",
+    "spec_hash": "2a50a93484",
+    "harness_version": "2.0.0",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    }
+  },
+  "model_sha256": "b596b69df2f5d5f1e2d6086c904877128adbb837e011bd6bd8aae69077a9ff61",
+  "export_certificate": {
+    "schema_version": 3,
+    "certified": false,
+    "passed": false,
+    "protocol": "pristine-repeat-reload-partition-v1",
+    "atol": 1e-10,
+    "rtol": 1e-08,
+    "checks": {
+      "finite_shape": true,
+      "repeat": true,
+      "reload": true,
+      "partition": false
+    },
+    "reasons": [
+      "partition check failed"
+    ],
+    "max_abs_differences": {
+      "repeat": 0.0,
+      "reload": 0.0,
+      "partition": 0.0010889326404079913
+    },
+    "input_role": "development",
+    "n_rows": 750,
+    "output_shape": [
+      750,
+      4
+    ]
+  },
+  "final_evaluation_blocked": true
+}

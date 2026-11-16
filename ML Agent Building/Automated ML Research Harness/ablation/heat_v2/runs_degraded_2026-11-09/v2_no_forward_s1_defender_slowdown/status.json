@@ -1,0 +1,48 @@
+{
+ "run_id": "heat_v2_no_forward_s1_20261109_102435",
+ "stage": "done",
+ "ideas": 10,
+ "pruned": 8,
+ "best": null,
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 548.01,
+  "compute_remaining_s": 0.0,
+  "wall_elapsed_s": 937.44,
+  "wall_budget_s": 1640.0,
+  "jobs": 12,
+  "by_stage_s": {
+   "baseline": 2.2,
+   "pilot": 87.23,
+   "screen": 446.15,
+   "final": 12.43
+  },
+  "llm_calls": 23,
+  "llm_calls_max": 38,
+  "llm_seconds": 1490.86,
+  "llm_cost_usd": 5.3276,
+  "llm_by_phase": {
+   "research": 19,
+   "execution": 4
+  },
+  "literature_queries": 24,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "research_rounds": 3,
+  "proposal_versions": 25,
+  "proposals_active_at_end": 7,
+  "proposals_abandoned": 4,
+  "portfolio_entries": 8,
+  "gate_approved": 9,
+  "screen_survivors": 1,
+  "evaluated_full": 0
+ },
+ "updated": 1794249613.079799,
+ "error": null,
+ "elapsed": 937.4412920475006,
+ "pipeline": "v2",
+ "research_stop": "iteration cap reached (max_rounds=3); unresolved issues are documented"
+}

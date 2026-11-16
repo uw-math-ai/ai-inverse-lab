@@ -1,0 +1,99 @@
+{
+  "pipeline": "v2",
+  "members": [
+    {
+      "kind": "physics",
+      "params": {
+        "transform": "log",
+        "multistart": 1,
+        "iters": 30,
+        "tikhonov": 0.0,
+        "estimator": "mode",
+        "posterior_samples": 128
+      }
+    }
+  ],
+  "member_info": [
+    {
+      "label": "physics-MLE[log,ms=1,it=30]",
+      "kind": "physics",
+      "family": "physics",
+      "uses_forward": true,
+      "method_hash": "74dff9ec37c0"
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.01841886806236584,
+    "r2": 0.9969618386959722,
+    "rmse": 0.024235620252272574
+  },
+  "test_bootstrap": {
+    "mean": 0.018351365102252413,
+    "std": 0.0005877143444078948,
+    "ci95": [
+      0.0172478546722959,
+      0.019624648573606792
+    ],
+    "n_boot": 200
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.12494414929093481,
+      "r2": 0.8926730245849349,
+      "rmse": 0.15560486806487978
+    },
+    "noise_x3": {
+      "rel_l2": 0.0520294521303912,
+      "r2": 0.97642188876497,
+      "rmse": 0.0693233392838876
+    }
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    true
+  ],
+  "reproducibility": {
+    "seed": 2,
+    "data_seed": 5,
+    "data_cache_key": "dbbb3d2541fda500",
+    "test_split_sha1": "5b49be1eb2715949",
+    "spec_hash": "b804920343",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "harness_version": "2.0.0"
+  },
+  "research_lineage": {
+    "idea-009": {
+      "proposal_chain": [],
+      "entry": "E-07",
+      "gate": "gate-00115",
+      "citations": [],
+      "label": "physics-MLE[log,ms=1,it=30]",
+      "origin": "baseline"
+    }
+  }
+}

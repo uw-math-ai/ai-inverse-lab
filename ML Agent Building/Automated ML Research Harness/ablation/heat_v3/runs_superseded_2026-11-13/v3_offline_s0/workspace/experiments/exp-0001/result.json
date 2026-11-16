@@ -1,0 +1,75 @@
+{
+ "exp_id": "exp-0001",
+ "idea_id": "idea-001",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.06864850713267057,
+  "r2": 0.9565820640182872,
+  "rmse": 0.09052927609998045
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 0.010582208633422852,
+ "predict_seconds": 0.001039266586303711,
+ "latency_ms_per_sample": 0.0013856887817382812,
+ "warnings": [],
+ "kind": "library",
+ "family": "data-driven",
+ "label": "ridge/raw",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.09898716636072519,
+  0.021793943962341265,
+  0.01709582957549882,
+  0.08953563125731377
+ ],
+ "train": {
+  "rel_l2": 0.06645112019721315
+ },
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794618085_exp-0001/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-1",
+ "arm_id": "S-1.control",
+ "claim_ids": [
+  "C-1"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "f3c36457d8ad",
+ "effective_method": {
+  "kind": "library",
+  "method": "ridge",
+  "params": {
+   "alpha": 1.0
+  },
+  "features": "raw",
+  "scaler": "standard",
+  "pca": 0,
+  "target_transform": "none",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 0,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794618085_exp-0001/val_idx.npy",
+ "status": "ok",
+ "elapsed": 0.668936014175415
+}

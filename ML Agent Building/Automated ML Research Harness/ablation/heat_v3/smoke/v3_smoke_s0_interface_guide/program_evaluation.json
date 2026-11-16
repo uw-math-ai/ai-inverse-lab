@@ -1,0 +1,86 @@
+{
+  "schema": "v3.1",
+  "model_quality": {
+    "rel_l2": 0.005490560987682502,
+    "r2": 0.9997051257578653,
+    "rmse": 0.007440878039646911
+  },
+  "study_count": 3,
+  "studies_complete": 1,
+  "study_completion_rate": 0.3333333333333333,
+  "orphan_studies": 0,
+  "claim_outcomes": {
+    "supported": 0,
+    "contradicted": 2,
+    "inconclusive": 6,
+    "untestable": 0
+  },
+  "claim_evidence_coverage": 1.0,
+  "claim_reliability": {
+    "unsupported_support_count": 0,
+    "supported_claims_have_evidence": true,
+    "scope": "record integrity; not an independent truth assessment"
+  },
+  "claim_resolution_rate": 0.25,
+  "reproducibility": {
+    "schema_version": 3,
+    "certified": true,
+    "passed": true,
+    "protocol": "pristine-repeat-reload-partition-v1",
+    "atol": 1e-10,
+    "rtol": 1e-08,
+    "checks": {
+      "finite_shape": true,
+      "repeat": true,
+      "reload": true,
+      "partition": true
+    },
+    "reasons": [],
+    "max_abs_differences": {
+      "repeat": 0.0,
+      "reload": 0.0,
+      "partition": 2.100711604668959e-09
+    },
+    "input_role": "development",
+    "n_rows": 80,
+    "output_shape": [
+      80,
+      2
+    ]
+  },
+  "cost": {
+    "compute_budget_s": 120.0,
+    "compute_used_s": 23.94,
+    "compute_remaining_s": 96.06,
+    "wall_elapsed_s": 1490.19,
+    "wall_budget_s": 2400.0,
+    "jobs": 9,
+    "by_stage_s": {
+      "study": 16.46,
+      "final": 7.49
+    },
+    "llm_calls": 17,
+    "llm_calls_max": 24,
+    "llm_seconds": 1472.85,
+    "llm_cost_usd": 9.8793,
+    "llm_by_phase": {
+      "execution": 17
+    },
+    "literature_queries": 0,
+    "literature_failures": 0,
+    "workers": 2,
+    "gpus": []
+  },
+  "discovery": {
+    "established": null,
+    "reason": "method novelty requires explicit independent attribution review"
+  },
+  "transfer": {
+    "established": null,
+    "reason": "no independent-instance transfer evaluation supplied"
+  },
+  "time_to_resolved_questions": {
+    "value": null,
+    "reason": "requires registered question-start and resolution timestamps"
+  }
+}

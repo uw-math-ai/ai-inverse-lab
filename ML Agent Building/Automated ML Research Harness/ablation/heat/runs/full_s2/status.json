@@ -1,0 +1,44 @@
+{
+ "run_id": "heat_full_s2_20261108_161319",
+ "stage": "done",
+ "ideas": 29,
+ "pruned": 2,
+ "best": {
+  "idea": "idea-009",
+  "method": "custom",
+  "rel_l2": 0.025454941036839422
+ },
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 289.67,
+  "compute_remaining_s": 110.33,
+  "wall_elapsed_s": 308.02,
+  "wall_budget_s": 1700.0,
+  "jobs": 37,
+  "by_stage_s": {
+   "baseline": 2.18,
+   "screen": 78.96,
+   "halving": 88.74,
+   "refine": 102.95,
+   "final": 16.84
+  },
+  "llm_calls": 13,
+  "llm_calls_max": 40,
+  "llm_seconds": 208.97,
+  "llm_cost_usd": 0.928,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "proposed": 16,
+  "prescreen_approved": 15,
+  "screen_survivors": 14,
+  "rung_0.33": 5,
+  "rung_1.00": 4,
+  "refine_proposed": 12,
+  "refine_approved": 12
+ },
+ "updated": 1794183507.9817495,
+ "error": null,
+ "elapsed": 308.0006670951843
+}

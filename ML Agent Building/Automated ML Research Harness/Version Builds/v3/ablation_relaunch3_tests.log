@@ -1,0 +1,111 @@
+test_store_lineage_and_resume (test_harness.TestArtifacts.test_store_lineage_and_resume) ... ok
+test_code_checks (test_harness.TestCriticAndLLMUtils.test_code_checks) ... ok
+test_extract_json (test_harness.TestCriticAndLLMUtils.test_extract_json) ... ok
+test_spec_validation (test_harness.TestCriticAndLLMUtils.test_spec_validation) ... ok
+test_llm_paths_with_scripted_agent (test_harness.TestEndToEnd.test_llm_paths_with_scripted_agent) ... ok
+test_offline_run_resume_and_predict (test_harness.TestEndToEnd.test_offline_run_resume_and_predict) ... ok
+test_clip_and_mutate_stay_in_space (test_harness.TestMethods.test_clip_and_mutate_stay_in_space) ... ok
+test_every_method_builds_and_fits (test_harness.TestMethods.test_every_method_builds_and_fits) ... ok
+test_fpt_features (test_harness.TestMethods.test_fpt_features) ... ok
+test_directions_and_scores (test_harness.TestMetrics.test_directions_and_scores) ... ok
+test_cross_check_with_lab_fptsim (test_harness.TestSimulators.test_cross_check_with_lab_fptsim) ... ok
+test_exact_recursion_matches_matrix_power_definition (test_harness.TestSimulators.test_exact_recursion_matches_matrix_power_definition) ... ok
+test_graph_fpt_mass_and_determinism (test_harness.TestSimulators.test_graph_fpt_mass_and_determinism) ... ok
+test_noisy_counts_are_close_to_exact (test_harness.TestSimulators.test_noisy_counts_are_close_to_exact) ... ok
+test_claim_hygiene_never_labels_conjecture_proved (test_v2.TestApplicabilityAndClaims.test_claim_hygiene_never_labels_conjecture_proved) ... ok
+test_screen_flags_assumption_conflicts (test_v2.TestApplicabilityAndClaims.test_screen_flags_assumption_conflicts) ... ok
+test_remote_result_paths_are_localized (test_v2.TestCacheAndBudget.test_remote_result_paths_are_localized)
+Remote result.json files name remote-host paths; the executor must point every downloaded ... ok
+test_research_llm_budget (test_v2.TestCacheAndBudget.test_research_llm_budget) ... ok
+test_stage_budget_skips_jobs (test_v2.TestCacheAndBudget.test_stage_budget_skips_jobs) ... ok
+test_v2_cache_key (test_v2.TestCacheAndBudget.test_v2_cache_key) ... ok
+test_env_file_names_only_and_scrub (test_v2.TestEnvAndRemote.test_env_file_names_only_and_scrub) ... ok
+test_remote_runner_with_fake_ssh (test_v2.TestEnvAndRemote.test_remote_runner_with_fake_ssh) ... ok
+test_gate_checks (test_v2.TestGateAndSafety.test_gate_checks) ... ok
+test_runtime_sandbox_blocks_writes_processes_network (test_v2.TestGateAndSafety.test_runtime_sandbox_blocks_writes_processes_network) ... ok
+test_persistence_retrieval_contradiction_redaction (test_v2.TestMemory.test_persistence_retrieval_contradiction_redaction) ... ok
+test_lm_recovers_and_forward_access_is_controlled (test_v2.TestPhysics.test_lm_recovers_and_forward_access_is_controlled) ... ok
+test_multistart_mode_is_batch_independent (test_v2.TestPhysics.test_multistart_mode_is_batch_independent)
+Random multistart points are per-observation, so partitioned/reordered batches re-predict ... ok
+test_posterior_mean_is_batch_independent (test_v2.TestPhysics.test_posterior_mean_is_batch_independent) ... ok
+test_iteration_cap_and_quality_stop (test_v2.TestResearchLoopAndEndToEnd.test_iteration_cap_and_quality_stop) ... ok
+test_literature_outage_is_recorded_and_run_completes (test_v2.TestResearchLoopAndEndToEnd.test_literature_outage_is_recorded_and_run_completes) ... ok
+test_llm_budget_halts_and_preserves_partial_work (test_v2.TestResearchLoopAndEndToEnd.test_llm_budget_halts_and_preserves_partial_work) ... ok
+test_no_forward_model_blocks_physics (test_v2.TestResearchLoopAndEndToEnd.test_no_forward_model_blocks_physics) ... ok
+test_offline_end_to_end_cross_run_memory_and_export (test_v2.TestResearchLoopAndEndToEnd.test_offline_end_to_end_cross_run_memory_and_export) ... ok
+test_scripted_llm_end_to_end (test_v2.TestResearchLoopAndEndToEnd.test_scripted_llm_end_to_end) ... ok
+test_fallback_to_embedding_endpoint (test_v2.TestTheoremSearch.test_fallback_to_embedding_endpoint) ... ok
+test_literature_tool_records_failures_and_budget (test_v2.TestTheoremSearch.test_literature_tool_records_failures_and_budget) ... ok
+test_outages_are_reported_not_raised (test_v2.TestTheoremSearch.test_outages_are_reported_not_raised) ... ok
+test_success_parses_attribution (test_v2.TestTheoremSearch.test_success_parses_attribution) ... ok
+test_at_least_worse_has_negative_gain_and_equality (test_v3_evidence.ClaimTests.test_at_least_worse_has_negative_gain_and_equality) ... ok
+test_claim_requires_actual_implementation_verification (test_v3_evidence.ClaimTests.test_claim_requires_actual_implementation_verification) ... ok
+test_effective_interventions_obey_registered_varying_paths (test_v3_evidence.ClaimTests.test_effective_interventions_obey_registered_varying_paths) ... ok
+test_higher_metric_gain_and_equivalence (test_v3_evidence.ClaimTests.test_higher_metric_gain_and_equivalence) ... ok
+test_malformed_claim_evidence_fails_closed (test_v3_evidence.ClaimTests.test_malformed_claim_evidence_fails_closed) ... ok
+test_missing_diagnostic_and_unenforced_gate_block (test_v3_evidence.ClaimTests.test_missing_diagnostic_and_unenforced_gate_block) ... ok
+test_nonfinite_zero_missing_and_unmatched_never_support (test_v3_evidence.ClaimTests.test_nonfinite_zero_missing_and_unmatched_never_support) ... ok
+test_paired_interval_must_clear_registered_boundary (test_v3_evidence.ClaimTests.test_paired_interval_must_clear_registered_boundary) ... ok
+test_paired_uncertainty_identity_protocol_and_estimand_match (test_v3_evidence.ClaimTests.test_paired_uncertainty_identity_protocol_and_estimand_match) ... ok
+test_scalar_threshold_cannot_certify_mechanism_or_proof (test_v3_evidence.ClaimTests.test_scalar_threshold_cannot_certify_mechanism_or_proof) ... ok
+test_scalar_uncertainty_handles_maximization_and_strict_boundary (test_v3_evidence.ClaimTests.test_scalar_uncertainty_handles_maximization_and_strict_boundary) ... ok
+test_scalar_uncertainty_is_mandatory_and_uses_scalar_estimand (test_v3_evidence.ClaimTests.test_scalar_uncertainty_is_mandatory_and_uses_scalar_estimand) ... ok
+test_actual_shapes_metric_and_noise_contract (test_v3_evidence.ContractTests.test_actual_shapes_metric_and_noise_contract) ... ok
+test_requested_effective_normalization_and_source_identity (test_v3_evidence.ContractTests.test_requested_effective_normalization_and_source_identity) ... ok
+test_control_failure_kept_and_negative_study_completes (test_v3_evidence.StudyTests.test_control_failure_kept_and_negative_study_completes) ... ok
+test_diagnostics_and_interventions_remain_obligations (test_v3_evidence.StudyTests.test_diagnostics_and_interventions_remain_obligations) ... ok
+test_implicit_scalar_uncertainty_work_is_required_but_overlap_completes (test_v3_evidence.StudyTests.test_implicit_scalar_uncertainty_work_is_required_but_overlap_completes) ... ok
+test_implicit_verification_mechanism_and_proof_work_remains_visible (test_v3_evidence.StudyTests.test_implicit_verification_mechanism_and_proof_work_remains_visible) ... ok
+test_measured_zero_relative_reference_is_complete_and_inconclusive (test_v3_evidence.StudyTests.test_measured_zero_relative_reference_is_complete_and_inconclusive) ... ok
+test_normalization_graph_and_stable_claims (test_v3_evidence.StudyTests.test_normalization_graph_and_stable_claims) ... ok
+test_paired_bootstrap_recomputes_global_metric (test_v3_evidence.StudyTests.test_paired_bootstrap_recomputes_global_metric) ... ok
+test_shared_prediction_protocol_reuses_artifact_identity (test_v3_evidence.StudyTests.test_shared_prediction_protocol_reuses_artifact_identity) ... ok
+test_atomic_reservations_protect_confirmation_and_reconcile_failure (test_v3_execution.ExecutionIntegrityTests.test_atomic_reservations_protect_confirmation_and_reconcile_failure) ... ok
+test_certificate_pristine_repeat_reload_partition (test_v3_execution.ExecutionIntegrityTests.test_certificate_pristine_repeat_reload_partition) ... ok
+test_certificate_rejects_stateful_batch_and_nonfinite (test_v3_execution.ExecutionIntegrityTests.test_certificate_rejects_stateful_batch_and_nonfinite) ... ok
+test_failed_certificate_does_not_touch_final_arrays (test_v3_execution.ExecutionIntegrityTests.test_failed_certificate_does_not_touch_final_arrays) ... ok
+test_final_exports_pristine_and_scores_exact_artifact (test_v3_execution.ExecutionIntegrityTests.test_final_exports_pristine_and_scores_exact_artifact) ... ok
+test_invalid_reservations_and_explicit_timeout (test_v3_execution.ExecutionIntegrityTests.test_invalid_reservations_and_explicit_timeout) ... ok
+test_method_eval_runtime_provenance_and_row_identity (test_v3_execution.ExecutionIntegrityTests.test_method_eval_runtime_provenance_and_row_identity) ... ok
+test_v3_cache_protocol_and_diagnostic_separation (test_v3_execution.ExecutionIntegrityTests.test_v3_cache_protocol_and_diagnostic_separation) ... ok
+test_artifact_projection_and_final_denial (test_v3_knowledge.TestEvidenceRoutingV3.test_artifact_projection_and_final_denial) ... ok
+test_diagnostic_executes_adapter_and_preserves_failure (test_v3_knowledge.TestEvidenceRoutingV3.test_diagnostic_executes_adapter_and_preserves_failure) ... ok
+test_frozen_memory_prioritizes_failures_and_hides_nested_holdout (test_v3_knowledge.TestEvidenceRoutingV3.test_frozen_memory_prioritizes_failures_and_hides_nested_holdout) ... ok
+test_local_source_never_queries_theorems (test_v3_knowledge.TestEvidenceRoutingV3.test_local_source_never_queries_theorems) ... ok
+test_recursive_projection_and_free_text (test_v3_knowledge.TestEvidenceRoutingV3.test_recursive_projection_and_free_text) ... ok
+test_theorem_is_a_lead_and_deduplicated (test_v3_knowledge.TestEvidenceRoutingV3.test_theorem_is_a_lead_and_deduplicated) ... ok
+test_concurrent_strict_reservation_allows_one (test_v3_knowledge.TestExposureAndEvaluationV3.test_concurrent_strict_reservation_allows_one) ... ok
+test_confounded_protocol_and_missing_snapshot_rejected (test_v3_knowledge.TestExposureAndEvaluationV3.test_confounded_protocol_and_missing_snapshot_rejected) ... ok
+test_good_baseline_does_not_hide_incomplete_study (test_v3_knowledge.TestExposureAndEvaluationV3.test_good_baseline_does_not_hide_incomplete_study) ... ok
+test_persistent_exposure_independent_of_memory (test_v3_knowledge.TestExposureAndEvaluationV3.test_persistent_exposure_independent_of_memory) ... ok
+test_valid_protocol_keeps_dataset_and_model_seeds_distinct (test_v3_knowledge.TestExposureAndEvaluationV3.test_valid_protocol_keeps_dataset_and_model_seeds_distinct) ... ok
+test_package_evidence_route_returns_regated_method (test_v3_knowledge.TestMethodPackagesV3.test_package_evidence_route_returns_regated_method) ... ok
+test_package_reapplies_gate (test_v3_knowledge.TestMethodPackagesV3.test_package_reapplies_gate) ... ok
+test_package_survives_source_removal_and_is_runnable (test_v3_knowledge.TestMethodPackagesV3.test_package_survives_source_removal_and_is_runnable) ... ok
+test_tamper_and_path_traversal_rejected (test_v3_knowledge.TestMethodPackagesV3.test_tamper_and_path_traversal_rejected) ... ok
+test_long_numeric_lists_are_summarized_short_ones_kept (test_v3_live_interface.CompactionTests.test_long_numeric_lists_are_summarized_short_ones_kept) ... ok
+test_router_sends_compacted_prompt_and_records_full_usage (test_v3_live_interface.CompactionTests.test_router_sends_compacted_prompt_and_records_full_usage) ... ok
+test_gate_rejects_class_nested_in_contract_function (test_v3_live_interface.ExportabilityTests.test_gate_rejects_class_nested_in_contract_function) ... ok
+test_v3_dev_eval_fails_visibly_on_unpicklable_model (test_v3_live_interface.ExportabilityTests.test_v3_dev_eval_fails_visibly_on_unpicklable_model) ... ok
+test_reset_time_parsing (test_v3_live_interface.UsageLimitTests.test_reset_time_parsing) ... ok
+test_router_pauses_wall_clock_for_waits (test_v3_live_interface.UsageLimitTests.test_router_pauses_wall_clock_for_waits) ... ok
+test_wait_and_retry_only_when_enabled (test_v3_live_interface.UsageLimitTests.test_wait_and_retry_only_when_enabled) ... ok
+test_comparison_disallows_unregistered_method_changes (test_v3_review.IndependentScientificReview.test_comparison_disallows_unregistered_method_changes) ... ok
+test_comparison_uncertainty_must_describe_registered_pair (test_v3_review.IndependentScientificReview.test_comparison_uncertainty_must_describe_registered_pair) ... ok
+test_concurrent_begin_consumes_exposure_once (test_v3_review.IndependentScientificReview.test_concurrent_begin_consumes_exposure_once) ... ok
+test_critic_objection_cannot_resolve_with_unrelated_work (test_v3_review.IndependentScientificReview.test_critic_objection_cannot_resolve_with_unrelated_work) ... ok
+test_duplicate_persona_instances_and_real_nested_callbacks (test_v3_review.IndependentScientificReview.test_duplicate_persona_instances_and_real_nested_callbacks) ... ok
+test_integrated_scripted_researcher_and_certified_resume (test_v3_review.IndependentScientificReview.test_integrated_scripted_researcher_and_certified_resume) ... ok
+test_malformed_protocol_returns_invalid_record (test_v3_review.IndependentScientificReview.test_malformed_protocol_returns_invalid_record) ... ok
+test_paired_evidence_scenarios_change_subsequent_action (test_v3_review.IndependentScientificReview.test_paired_evidence_scenarios_change_subsequent_action) ... ok
+test_scalar_uncertainty_is_an_evidence_obligation (test_v3_review.IndependentScientificReview.test_scalar_uncertainty_is_an_evidence_obligation) ... ok
+test_study_missing_uncertainty_differs_from_overlapping_interval (test_v3_review.IndependentScientificReview.test_study_missing_uncertainty_differs_from_overlapping_interval) ... ok
+test_offline_study_export_resume_and_rebuild (test_v3_runtime.RuntimeTests.test_offline_study_export_resume_and_rebuild) ... ok
+test_random_search_and_real_shared_prediction_computation (test_v3_runtime.RuntimeTests.test_random_search_and_real_shared_prediction_computation) ... ok
+
+----------------------------------------------------------------------
+Ran 102 tests in 220.082s
+
+OK
+
+[wrapper] exit=0 wall=222.8s

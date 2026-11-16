@@ -1,0 +1,14 @@
+2026-11-15 07:06:06,099 INFO === stage: spec | compute used 0/760s | wall 0s
+2026-11-15 07:06:06,103 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-15 07:06:06,103 INFO llm backend: none | workers: 6 x 2 threads | gpus: none
+2026-11-15 07:06:06,103 INFO === stage: data | compute used 0/760s | wall 0s
+2026-11-15 07:06:06,125 INFO [simulator] dataset 346a0cfc9d47587b loaded from cache
+2026-11-15 07:06:06,378 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-15 07:06:06,380 INFO identifiability: Fisher cond median 48.2, CRB rel_l2 floor ~0.01856, least determined ['k1', 'k4']
+2026-11-15 07:06:06,440 INFO === stage: program | compute used 0/760s | wall 0s
+2026-11-15 07:06:12,529 INFO   exp-0001 idea-001  ridge/raw                    f=1.00 rel_l2=0.06865 r2=0.9566 rmse=0.09053 (6.0s)
+2026-11-15 07:06:17,449 INFO   exp-0002 idea-002  extra_trees/raw              f=1.00 rel_l2=0.07561 r2=0.9473 rmse=0.0997 (10.9s)
+2026-11-15 07:06:18,520 INFO   exp-0003 idea-003  physics-MLE[log,ms=1,it=30]  f=1.00 rel_l2=0.01934 r2=0.9966 rmse=0.0255 (12.0s)
+2026-11-15 07:06:18,964 INFO === stage: final | compute used 29/760s | wall 13s
+2026-11-15 07:07:10,476 INFO   exp-0004 idea-003  FINAL                        f=1.00 rel_l2=0.01842 r2=0.997 rmse=0.02424 (51.4s)
+2026-11-15 07:07:10,495 INFO === stage: report | compute used 80/760s | wall 64s

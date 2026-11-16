@@ -1,0 +1,25 @@
+2026-11-13 21:26:24,433 INFO === stage: spec | compute used 0/760s | wall 0s
+2026-11-13 21:26:24,433 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-13 21:26:24,433 INFO llm backend: claude_code (claude-opus-5-5) | workers: 6 x 2 threads | gpus: none
+2026-11-13 21:26:24,433 INFO === stage: data | compute used 0/760s | wall 0s
+2026-11-13 21:26:24,433 INFO [simulator] dataset 346a0cfc9d47587b loaded from cache
+2026-11-13 21:26:24,605 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-13 21:26:24,606 INFO identifiability: Fisher cond median 46.6, CRB rel_l2 floor ~0.01949, least determined ['k1', 'k4']
+2026-11-13 21:26:24,643 INFO === stage: program | compute used 0/760s | wall 0s
+2026-11-13 21:42:43,607 INFO   exp-0002 idea-002  custom-solver(fwd)           f=1.00 rel_l2=0.3307 r2=-0.000891 rmse=0.436 (8.3s)
+2026-11-13 21:42:45,457 INFO   exp-0007 idea-007  mean_baseline/raw            f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.3s)
+2026-11-13 21:43:03,683 INFO   exp-0006 idea-006  torch_mlp/raw+logy           f=1.00 rel_l2=0.03016 r2=0.9916 rmse=0.03977 (28.3s)
+2026-11-13 21:43:27,927 INFO   exp-0010 idea-010  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (7.4s)
+2026-11-13 21:43:29,523 INFO   exp-0012 idea-012  extra_trees/raw+logy         f=1.00 rel_l2=0.07711 r2=0.9452 rmse=0.1017 (9.0s)
+2026-11-13 21:43:34,069 INFO   exp-0011 idea-011  torch_mlp/raw+logy           f=1.00 rel_l2=0.02805 r2=0.9928 rmse=0.03698 (13.6s)
+2026-11-13 21:45:21,295 INFO   exp-0008 idea-008  custom-solver(fwd)           f=1.00 timeout: timeout after 120s (120.8s)
+2026-11-13 21:57:08,777 INFO   exp-0016 idea-016  custom-solver(fwd)           f=1.00 rel_l2=0.3307 r2=-0.000891 rmse=0.436 (5.6s)
+2026-11-13 21:57:10,793 INFO   exp-0021 idea-021  mean_baseline/raw            f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.0s)
+2026-11-13 21:57:43,425 INFO   exp-0020 idea-020  torch_mlp/raw+logy           f=1.00 rel_l2=0.03016 r2=0.9916 rmse=0.03977 (40.2s)
+2026-11-13 21:57:56,554 INFO   exp-0024 idea-024  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (7.9s)
+2026-11-13 21:57:56,868 INFO   exp-0026 idea-026  extra_trees/raw+logy         f=1.00 rel_l2=0.07711 r2=0.9452 rmse=0.1017 (8.2s)
+2026-11-13 21:58:01,526 INFO   exp-0025 idea-025  torch_mlp/raw+logy           f=1.00 rel_l2=0.02805 r2=0.9928 rmse=0.03698 (12.9s)
+2026-11-13 21:58:25,766 INFO   exp-0022 idea-022  custom-solver(fwd)           f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (37.1s)
+2026-11-13 21:58:35,923 INFO === stage: final | compute used 358/760s | wall 1931s
+2026-11-13 21:58:38,877 INFO   exp-0029 idea-022  FINAL                        f=1.00 error: AttributeError: Can't pickle local object 'build_method.<locals>.BoxLMVec' (2.9s)
+2026-11-13 21:58:38,881 INFO === stage: report | compute used 361/760s | wall 1934s
