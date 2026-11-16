@@ -1,0 +1,6 @@
+# Tested together on Python 3.14.3. Python 3.11+ syntax is required.
+langgraph==1.2.19
+langchain==1.4.7
+langchain-openai==1.7.3
+pydantic==2.14.2
+numpy>=1.26,<3

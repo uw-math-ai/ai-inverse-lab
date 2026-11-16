@@ -1,0 +1,2 @@
+# Optional browser checks; the dashboard itself needs no JavaScript build tools.
+playwright==1.64.1
