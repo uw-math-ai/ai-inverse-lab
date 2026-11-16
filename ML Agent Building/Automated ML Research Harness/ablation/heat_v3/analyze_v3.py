@@ -58,7 +58,11 @@ def summarize(run: Path) -> dict:
     return {
         "run": run.name,
         # model product
-        "test_rel_l2": fin["test"]["rel_l2"], "test_r2": fin["test"].get("r2"),
+        # an uncertified export receives no final metrics by V3 design: keep the run, record None
+        "test_rel_l2": (fin.get("test") or {}).get("rel_l2"), "test_r2": (fin.get("test") or {}).get("r2"),
+        "final_evaluation_blocked": bool(res.get("final_evaluation_blocked")),
+        "certificate_reasons": (fin.get("certificate") or {}).get("reasons"),
+        "certificate_max_abs": (fin.get("certificate") or {}).get("max_abs_differences"),
         "test_ci95": (res.get("test_bootstrap") or {}).get("ci95"),
         "test_per_segment": res.get("test_per_target_rel_l2"), "shift": res.get("shift"),
         "final_val": fin["val"], "final_kind": fin["kind"], "final_labels": fin.get("labels"),
@@ -131,8 +135,8 @@ def main():
                 runs[d.name] = summarize(d)
             except Exception as exc:
                 runs[d.name] = {"run": d.name, "failed": True, "error": f"analysis: {type(exc).__name__}: {exc}"}
-    tests = {arm: [r["test_rel_l2"] for k, r in runs.items() if arm_of(k) == arm and not r.get("failed")]
-             for arm in ARMS}
+    tests = {arm: [r["test_rel_l2"] for k, r in runs.items() if arm_of(k) == arm and not r.get("failed")
+                   and r.get("test_rel_l2") is not None] for arm in ARMS}
     by_arm = {}
     for arm in ARMS:
         rs = [r for k, r in runs.items() if arm_of(k) == arm and not r.get("failed")]
@@ -147,7 +151,9 @@ def main():
         tiers = sorted({t for r in rs for t in (r.get("tokens_by_tier") or {})})
         A["tokens_by_tier"] = {t: {f: agg([(r["tokens_by_tier"] or {}).get(t, {}).get(f) for r in rs])
                                    for f in ("calls", "total_input_tokens", "output_tokens", "cost_usd")} for t in tiers}
-        A["test_per_segment"] = np.mean([r["test_per_segment"] for r in rs], axis=0).tolist()
+        segs = [r["test_per_segment"] for r in rs if r.get("test_per_segment")]
+        A["test_per_segment"] = np.mean(segs, axis=0).tolist() if segs else None
+        A["uncertified_runs"] = [r["run"] for r in rs if not r["certified"]]
         A["final_uses_forward"] = sum(bool(r["final_uses_forward"]) for r in rs)
         A["certified"] = sum(bool(r["certified"]) for r in rs)
         A["final_labels"] = [r["final_labels"] for r in rs]
@@ -167,13 +173,16 @@ def main():
     for arm in by_arm:
         mine = tests[arm]
         c = {}
+        if not mine:
+            comps[arm] = {"note": "no certified test metric"}
+            continue
         for label, ref in (("v1_full", v1_tests.get("full")), ("v2_full", v2_tests.get("v2_full")),
                            ("v2_" + arm[3:], v2_tests.get("v2_" + arm[3:]))):
             if ref:
                 c[f"vs_{label}"] = {"p_welch": welch(mine, ref),
                                     "rel_change": float((np.mean(mine) - np.mean(ref)) / np.mean(ref))}
         for other in by_arm:
-            if other != arm:
+            if other != arm and tests[other]:
                 c[f"vs_{other}"] = {"p_welch": welch(mine, tests[other]),
                                     "rel_change": float((np.mean(mine) - np.mean(tests[other])) / np.mean(tests[other]))}
         comps[arm] = c
@@ -187,7 +196,8 @@ def main():
           f"{'in tok':>10s} {'out tok':>9s} {'$/run':>7s} {'wall min':>8s}")
     for arm, A in by_arm.items():
         t, tk = A["test_rel_l2"], A["tokens"]
-        print(f"{arm:18s} {t['n']:2d} {t['mean']:.5f} ± {t['sd']:.5f} "
+        ts = f"{t['mean']:.5f} ± {t['sd']:.5f}" if t else "   uncertified   "
+        print(f"{arm:18s} {len(A['seeds']):2d} {ts} "
               f"{A['studies_complete']['mean']:4.1f}/{A['studies']['mean']:<4.1f} {A['objections']['mean']:5.0f} "
               f"{A['llm_calls']['mean']:6.1f} {tk['total_input_tokens']['mean']:10,.0f} "
               f"{tk['output_tokens']['mean']:9,.0f} {A['llm_cost_usd']['mean']:7.2f} {A['wall_s']['mean'] / 60:8.1f}")

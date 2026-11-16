@@ -34,3 +34,17 @@ V1/V2 remain available, including historical artifact interpretation and cache b
 Generic shared fitted-state/solver-trajectory adapters, formal proof verification and unconfigured empirical-literature access remain unsupported. Callback deadlines are observed soft limits, not arbitrary in-process preemption. Export certification is limited to its recorded development-input protocol. Discovery/transfer benefit across real independent problems remains unmeasured. These limitations stay visible rather than being counted as completed scientific evidence.
 
 No new scientific experiment campaign, live-model evaluation, external service campaign or historical-run rewrite was performed. See [V3_ARCHITECTURE.md](V3_ARCHITECTURE.md) for module responsibilities and preservation details, and [V3_USAGE.md](V3_USAGE.md) for commands and the example configuration.
+
+## Changes made during the first live V3 ablation (2026-11-13 to 11-15)
+
+The first runs against live models and the real AMATH GPU host exposed defects that fake-model fixtures could not. Each change is covered by a regression test; the full suite is 102 tests, OK (`ablation_relaunch3_tests.log`). Results: [ABLATION_RESULTS_v3.md](ABLATION_RESULTS_v3.md).
+
+| What changed | Why it changed |
+| --- | --- |
+| `_view()` carries an `interface_guide` (action, study, claim and method schemas, library catalogue, example study, last rejection); the coding specialist receives the study schema and gets a derived id when it omits one. | A live orchestrator given only the one-line interface spent all 6 actions on schema-guessing rejections; specialist studies were rejected for missing ids. |
+| `LLMResponse` records cache-creation, cache-read and thinking tokens plus per-model usage; role events and V2 agent ledgers store them. | Claude Code reports almost all prompt tokens as cache fields, so input tokens appeared as 2 per call. |
+| Model prompts pass through `compact_for_model` (long numeric lists become summary statistics) and `_view(model=True)` (superseded studies as stubs, actions reference studies, agent code stored once per arm). Persisted evidence and scripted `decision_fn` views are unchanged. | Per-row diagnostic arrays and repeated study/code copies grew the orchestrator prompt to 287 k tokens and exhausted a 5-hour usage window in one run. |
+| `MLH_WAIT_ON_USAGE_LIMIT=1` makes the Claude Code backend wait for the stated reset and retry; the pause is excluded from the run wall clock and logged as `usage_limit_wait_seconds`. | A usage limit mid-run previously discarded the run. |
+| The executor localizes every downloaded remote path (`val_idx_path` as well as `val_pred_path`). | The real SSH route crashed when V3 read the remote row-index path locally. |
+| The code gate rejects classes nested inside `build_model`/`build_method`; V3 development jobs verify the fitted model pickles; codegen rules state the requirement. | A selected agent solver evaluated fine but failed at export because local classes cannot be pickled. |
+| Physics/hybrid multistart random starts are seeded per observation. | Batch-wide RNG made predictions depend on batch composition, so multistart exports failed the V3 partition certificate (this also affected V2 physics methods). |

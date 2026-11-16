@@ -1,0 +1,6 @@
+{
+ "n": 1,
+ "errors": [
+  "LLMError: claude error: You've hit your Fable limit \u00b7 resets Nov 19, 11am (America/Los_Angeles). Switch to another model, or manage usage credits at https://claude.ai/settings/usage?from=cc_cli_limit_"
+ ]
+}

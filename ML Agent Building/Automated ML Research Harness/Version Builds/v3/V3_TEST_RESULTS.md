@@ -61,3 +61,16 @@ The independent integration fixture uses 30 training, 12 validation and 10 final
 ## Delivery limits
 
 This validation supports the implemented software contracts and bounded integrated paths. It does not establish that V3 discovers better science than V2, that more agents improve outcomes, or that a stored package transfers successfully to an independent problem instance. Formal proof checking, arbitrary shared fitted-state/trajectory adapters, comprehensive empirical literature retrieval, and universal callback preemption are not delivered capabilities. Unsupported requirements remain explicit or unresolved instead of being certified.
+
+## Addendum: live-ablation regression runs (2026-11-13 to 11-15)
+
+| Run | Result | Log |
+| --- | --- | --- |
+| Full suite before ablation changes | 93 passed, exit 0 | `ablation_pre_tests.log` |
+| After token-accounting change | 93 passed | `ablation_post_token_tests.log` |
+| After interface guide + remote path fix | 94 passed | `ablation_prelaunch_tests.log` |
+| After prompt compaction | 96 passed | `ablation_relaunch_tests.log` |
+| After pickle gate, usage-limit wait, model-view dedupe | 101 passed | `ablation_relaunch2_tests.log` |
+| After per-observation multistart seeding, specialist schema | **102 passed, exit 0** | `ablation_relaunch3_tests.log` |
+
+New tests: `tests/test_v3_live_interface.py` (compaction, token fields, usage-limit wait, wall-clock pause, export picklability) and, in `tests/test_v2.py`, `test_remote_result_paths_are_localized` and `test_multistart_mode_is_batch_independent`. The remote-path and multistart tests were confirmed to fail without their fixes. Live-run behavior (not unit-testable) is reported in [ABLATION_RESULTS_v3.md](ABLATION_RESULTS_v3.md).

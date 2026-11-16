@@ -2,13 +2,247 @@
  "runs": {
   "v3_full_s0": {
    "run": "v3_full_s0",
-   "failed": true,
-   "error": null
+   "test_rel_l2": 0.018334935911737203,
+   "test_r2": 0.996989327623733,
+   "final_evaluation_blocked": false,
+   "certificate_reasons": [],
+   "certificate_max_abs": {
+    "repeat": 0.0,
+    "reload": 0.0,
+    "partition": 0.0
+   },
+   "test_ci95": [
+    0.017214923962127624,
+    0.019424734595223623
+   ],
+   "test_per_segment": [
+    0.02679311799770612,
+    0.006057212041814213,
+    0.005222008179884106,
+    0.024149722818595665
+   ],
+   "shift": {
+    "k_low_0.3": {
+     "rel_l2": 0.10969297134262908,
+     "r2": 0.9181233780401845,
+     "rmse": 0.13661112129123798
+    },
+    "noise_x3": {
+     "rel_l2": 0.05118851494011075,
+     "r2": 0.9771863090481878,
+     "rmse": 0.06820288592965754
+    }
+   },
+   "final_val": 0.019046710309041506,
+   "final_kind": "single",
+   "final_labels": [
+    "physics-MMSE[log,ms=3,it=25]"
+   ],
+   "final_families": [
+    "physics"
+   ],
+   "final_member_kinds": [
+    "physics"
+   ],
+   "final_uses_forward": true,
+   "certified": true,
+   "reload_max_abs_diff": 0.0,
+   "latency_ms": 38.487158139546715,
+   "test_uncertainty": {
+    "coverage_1sigma": 0.6853333333333333,
+    "coverage_2sigma": 0.9486666666666667,
+    "mean_std": 0.017812174291617307,
+    "z_rms": 1.0063977790267402
+   },
+   "best_arm_val": 0.019046710309041506,
+   "best_arm_label": "physics-MMSE[log,ms=3,it=25]",
+   "stop_reason": "All three questions have been addressed as far as the available actions allow, and no remaining action can change a verdict or improve the export. Q-1: S-Q1-03 is complete (resu-00240) with six required arms and four required paired diagnostics on the same 750 validation rows (row_hash 260db427...); the physics box-clipped log-space MLE (val rel_l2 0.01933 at both seeds) beats extra_trees (0.0774/0.0771) and torch_mlp (0.0280/0.0302) at both matched seeds, with lower 95% paired-bootstrap bounds 0.728/0.727 and 0.272/0.318, all above the 0.10 margin under the pre-registered conjunctive rule. The verdicts remain 'inconclusive' solely because the independent critic has accepted no objection resolution: two resolve_objection attempts (action-008, action-009) were rejected, four specialist delegations (task-001 to task-004) returned 'no executable study' well inside their time limits, and the child-depth limit now binds, so the optimizer-adequacy, clipping, CFL and Fisher items (objections 018/025/036-040/044/053) stay as acknowledged uncertainty. Partial support exists in the arm fit_reports: residual_std_at_truth 0.000995 vs sigma 0.001, model_mismatch=false, chi2/dof 0.963, forward evals 174,077 of 3,000,000, 1-sigma/2-sigma coverage 0.702/0.957. Q-2: S-Q2-01's 'contradicted' verdict is void (treatment silently normalised to 'mode', identical effective hash, self-paired artifacts). S-Q2-02 ran the genuine posterior-mean contrast: rel_l2 0.019047 vs 0.019334, relative effect 1.5% with interval [-0.25%, 3.4%], inconclusive at the 2% margin and establishing neither superiority nor equivalence (objection-108). S-Q2-03 ran the hybrid (torch_mlp init + 10 LM iterations): rel_l2 0.019343 vs 0.019334, degradation interval upper bound 0.14% against the 2% margin, at 47,936 forward evals versus 174,077, but blocked by unresolved critic objections. Q-3: per-target evidence is consistent across every arm: outer segments k1/k4 have rel_l2 about 0.027 versus 0.005-0.006 for the central segments, roughly 4-5x worse, matching the expectation that the centred pulse deposits little energy near the Dirichlet ends; the local Fisher diagnostic was never produced and is recorded as an open item, not as a result. Synthesis framing must keep every qualifier: inverse-crime (exact forward model), simulator access versus 3000 training rows, fixed-configuration untuned baselines, single or two seeds with no seed-variance estimate, row-resampling-only bootstrap with n_bootstrap=200, development split only. Budget: 217 s of 760 s used, 543 s remaining, forward evals far under the cap. Export is the best executed full-fidelity arm by validation rel_l2, which is the S-Q2-02 posterior_mean arm (0.019047, resu-00348), with the S-Q1-03 physics mode arm (0.019334) as the pre-registered default; the difference between them is not statistically established. Nothing here certifies a claim; verdicts remain with the executor and critic.",
+   "actions": {
+    "decompose": 1,
+    "spawn": 1,
+    "revise": 1,
+    "execute": 7,
+    "resolve_objection": 2,
+    "propose_study": 2,
+    "stop": 1
+   },
+   "actions_total": 15,
+   "actions_rejected": 5,
+   "rejection_errors": [
+    "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "ValueError: depth/children limit",
+    "ValueError: objection evidence must belong to the challenged study",
+    "ValueError: independent critic has not accepted this requirement resolution"
+   ],
+   "questions": 3,
+   "studies": 6,
+   "studies_complete": 4,
+   "study_status": {
+    "superseded": 1,
+    "incomplete": 1,
+    "complete": 4
+   },
+   "study_completion_rate": 0.6666666666666666,
+   "claims": 7,
+   "claim_outcomes": {
+    "inconclusive": 6,
+    "contradicted": 1
+   },
+   "arms_registered": 23,
+   "arms_ok": 19,
+   "arm_method_kinds": {
+    "physics": 9,
+    "library": 13,
+    "hybrid": 1
+   },
+   "custom_code_arms": 0,
+   "researchers": 1,
+   "researcher_personas": {
+    "mathematical": 1
+   },
+   "specialist_tasks": 4,
+   "specialist_status": {
+    "incomplete": 4
+   },
+   "objections": 155,
+   "objections_blocking": 82,
+   "objections_resolved": 0,
+   "theorem_requests": 0,
+   "scientific_completion": false,
+   "role_fallbacks": {
+    "invalid_json": 2
+   },
+   "llm_timeouts": 0,
+   "tokens": {
+    "calls": 39,
+    "input_tokens": 1786483,
+    "output_tokens": 101162,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "thinking_tokens": 34416,
+    "total_input_tokens": 1786483,
+    "cost_usd": 17.267,
+    "seconds": 1099.961
+   },
+   "tokens_by_tier": {
+    "orchestrator": {
+     "calls": 15,
+     "input_tokens": 1186212,
+     "output_tokens": 22671,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 5454,
+     "total_input_tokens": 1186212,
+     "cost_usd": 13.322,
+     "seconds": 319.734
+    },
+    "researcher": {
+     "calls": 8,
+     "input_tokens": 284565,
+     "output_tokens": 21687,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 5793,
+     "total_input_tokens": 284565,
+     "cost_usd": 1.6419,
+     "seconds": 214.6003
+    },
+    "critic": {
+     "calls": 12,
+     "input_tokens": 280299,
+     "output_tokens": 45304,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 18737,
+     "total_input_tokens": 280299,
+     "cost_usd": 2.1148,
+     "seconds": 480.9106
+    },
+    "specialist": {
+     "calls": 4,
+     "input_tokens": 35407,
+     "output_tokens": 11500,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 4432,
+     "total_input_tokens": 35407,
+     "cost_usd": 0.1882,
+     "seconds": 84.7161
+    }
+   },
+   "tokens_by_model": {
+    "claude-haiku-5-5": {
+     "calls": 39,
+     "input_tokens": 1619550,
+     "output_tokens": 4628,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 3533,
+     "total_input_tokens": 1619550,
+     "cost_usd": 0.4862,
+     "seconds": 0.0
+    },
+    "claude-fable-5-1": {
+     "calls": 15,
+     "input_tokens": 1186212,
+     "output_tokens": 22671,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 5454,
+     "total_input_tokens": 1186212,
+     "cost_usd": 12.9957,
+     "seconds": 0.0
+    },
+    "claude-opus-5-5": {
+     "calls": 20,
+     "input_tokens": 564864,
+     "output_tokens": 66991,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 24530,
+     "total_input_tokens": 564864,
+     "cost_usd": 3.5993,
+     "seconds": 0.0
+    },
+    "claude-sonnet-5-5": {
+     "calls": 4,
+     "input_tokens": 35407,
+     "output_tokens": 11500,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 4432,
+     "total_input_tokens": 35407,
+     "cost_usd": 0.1858,
+     "seconds": 0.0
+    }
+   },
+   "llm_calls": 39,
+   "llm_cost_usd": 17.267,
+   "compute_s": 519.07,
+   "wall_s": 1457.33,
+   "jobs": 27,
+   "stage_s": {
+    "study": 343.28,
+    "final": 175.79
+   },
+   "devices": {
+    "doppio.amath.washington.edu:gpu1": 7,
+    "doppio.amath.washington.edu:gpu0": 8,
+    "cpu": 4
+   }
   },
   "v3_offline_s0": {
    "run": "v3_offline_s0",
    "test_rel_l2": 0.01841886806236584,
    "test_r2": 0.9969618386959722,
+   "final_evaluation_blocked": false,
+   "certificate_reasons": [],
+   "certificate_max_abs": {
+    "repeat": 0.0,
+    "reload": 0.0,
+    "partition": 0.0
+   },
    "test_ci95": [
     0.017292073249961584,
     0.019558946936356902
@@ -45,7 +279,7 @@
    "final_uses_forward": true,
    "certified": true,
    "reload_max_abs_diff": 0.0,
-   "latency_ms": 11.243633588155111,
+   "latency_ms": 7.821991602579753,
    "test_uncertainty": {
     "coverage_1sigma": 0.701,
     "coverage_2sigma": 0.956,
@@ -115,16 +349,471 @@
    "tokens_by_model": {},
    "llm_calls": 0,
    "llm_cost_usd": 0.0,
-   "compute_s": 83.38,
-   "wall_s": 66.54,
+   "compute_s": 67.11,
+   "wall_s": 51.25,
    "jobs": 4,
    "stage_s": {
-    "study": 30.46,
-    "final": 52.92
+    "study": 28.73,
+    "final": 38.38
    },
    "devices": {
     "doppio.amath.washington.edu:gpu0": 2,
     "doppio.amath.washington.edu:gpu1": 1
+   }
+  },
+  "v3_offline_s1": {
+   "run": "v3_offline_s1",
+   "test_rel_l2": 0.01841886806236584,
+   "test_r2": 0.9969618386959722,
+   "final_evaluation_blocked": false,
+   "certificate_reasons": [],
+   "certificate_max_abs": {
+    "repeat": 0.0,
+    "reload": 0.0,
+    "partition": 0.0
+   },
+   "test_ci95": [
+    0.0174123046407792,
+    0.01963229174281298
+   ],
+   "test_per_segment": [
+    0.0269799001673662,
+    0.006088333683040254,
+    0.005218525678847445,
+    0.02419188207713548
+   ],
+   "shift": {
+    "k_low_0.3": {
+     "rel_l2": 0.12494414929093481,
+     "r2": 0.8926730245849349,
+     "rmse": 0.15560486806487978
+    },
+    "noise_x3": {
+     "rel_l2": 0.0520294521303912,
+     "r2": 0.97642188876497,
+     "rmse": 0.0693233392838876
+    }
+   },
+   "final_val": 0.019335308875384715,
+   "final_kind": "single",
+   "final_labels": [
+    "physics-MLE[log,ms=1,it=30]"
+   ],
+   "final_families": [
+    "physics"
+   ],
+   "final_member_kinds": [
+    "physics"
+   ],
+   "final_uses_forward": true,
+   "certified": true,
+   "reload_max_abs_diff": 0.0,
+   "latency_ms": 10.640347162882486,
+   "test_uncertainty": {
+    "coverage_1sigma": 0.701,
+    "coverage_2sigma": 0.956,
+    "mean_std": 0.018403128846459282,
+    "z_rms": 0.98157672398061
+   },
+   "best_arm_val": 0.019335308875384715,
+   "best_arm_label": "physics-MLE[log,ms=1,it=30]",
+   "stop_reason": "registered work resolved or explicitly deferred; no justified next study",
+   "actions": {
+    "decompose": 1,
+    "spawn": 2,
+    "propose_study": 1,
+    "execute": 1,
+    "diagnose": 1,
+    "stop": 1
+   },
+   "actions_total": 7,
+   "actions_rejected": 0,
+   "rejection_errors": [],
+   "questions": 1,
+   "studies": 1,
+   "studies_complete": 1,
+   "study_status": {
+    "complete": 1
+   },
+   "study_completion_rate": 1.0,
+   "claims": 1,
+   "claim_outcomes": {
+    "contradicted": 1
+   },
+   "arms_registered": 3,
+   "arms_ok": 3,
+   "arm_method_kinds": {
+    "library": 2,
+    "physics": 1
+   },
+   "custom_code_arms": 0,
+   "researchers": 2,
+   "researcher_personas": {
+    "mathematical": 1,
+    "ml": 1
+   },
+   "specialist_tasks": 0,
+   "specialist_status": {},
+   "objections": 0,
+   "objections_blocking": 0,
+   "objections_resolved": 0,
+   "theorem_requests": 0,
+   "scientific_completion": true,
+   "role_fallbacks": {
+    "offline_choice": 13
+   },
+   "llm_timeouts": 0,
+   "tokens": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "thinking_tokens": 0,
+    "total_input_tokens": 0,
+    "cost_usd": 0.0,
+    "seconds": 0.0
+   },
+   "tokens_by_tier": {},
+   "tokens_by_model": {},
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "compute_s": 81.22,
+   "wall_s": 65.27,
+   "jobs": 4,
+   "stage_s": {
+    "study": 28.9,
+    "final": 52.31
+   },
+   "devices": {
+    "doppio.amath.washington.edu:gpu0": 2,
+    "doppio.amath.washington.edu:gpu1": 1
+   }
+  },
+  "v3_offline_s2": {
+   "run": "v3_offline_s2",
+   "test_rel_l2": 0.01841886806236584,
+   "test_r2": 0.9969618386959722,
+   "final_evaluation_blocked": false,
+   "certificate_reasons": [],
+   "certificate_max_abs": {
+    "repeat": 0.0,
+    "reload": 0.0,
+    "partition": 0.0
+   },
+   "test_ci95": [
+    0.0172478546722959,
+    0.019624648573606792
+   ],
+   "test_per_segment": [
+    0.0269799001673662,
+    0.006088333683040254,
+    0.005218525678847445,
+    0.02419188207713548
+   ],
+   "shift": {
+    "k_low_0.3": {
+     "rel_l2": 0.12494414929093481,
+     "r2": 0.8926730245849349,
+     "rmse": 0.15560486806487978
+    },
+    "noise_x3": {
+     "rel_l2": 0.0520294521303912,
+     "r2": 0.97642188876497,
+     "rmse": 0.0693233392838876
+    }
+   },
+   "final_val": 0.019335308875384715,
+   "final_kind": "single",
+   "final_labels": [
+    "physics-MLE[log,ms=1,it=30]"
+   ],
+   "final_families": [
+    "physics"
+   ],
+   "final_member_kinds": [
+    "physics"
+   ],
+   "final_uses_forward": true,
+   "certified": true,
+   "reload_max_abs_diff": 0.0,
+   "latency_ms": 10.595583279927572,
+   "test_uncertainty": {
+    "coverage_1sigma": 0.701,
+    "coverage_2sigma": 0.956,
+    "mean_std": 0.018403128846459282,
+    "z_rms": 0.98157672398061
+   },
+   "best_arm_val": 0.019335308875384715,
+   "best_arm_label": "physics-MLE[log,ms=1,it=30]",
+   "stop_reason": "registered work resolved or explicitly deferred; no justified next study",
+   "actions": {
+    "decompose": 1,
+    "spawn": 2,
+    "propose_study": 1,
+    "execute": 1,
+    "diagnose": 1,
+    "stop": 1
+   },
+   "actions_total": 7,
+   "actions_rejected": 0,
+   "rejection_errors": [],
+   "questions": 1,
+   "studies": 1,
+   "studies_complete": 1,
+   "study_status": {
+    "complete": 1
+   },
+   "study_completion_rate": 1.0,
+   "claims": 1,
+   "claim_outcomes": {
+    "contradicted": 1
+   },
+   "arms_registered": 3,
+   "arms_ok": 3,
+   "arm_method_kinds": {
+    "library": 2,
+    "physics": 1
+   },
+   "custom_code_arms": 0,
+   "researchers": 2,
+   "researcher_personas": {
+    "mathematical": 1,
+    "ml": 1
+   },
+   "specialist_tasks": 0,
+   "specialist_status": {},
+   "objections": 0,
+   "objections_blocking": 0,
+   "objections_resolved": 0,
+   "theorem_requests": 0,
+   "scientific_completion": true,
+   "role_fallbacks": {
+    "offline_choice": 13
+   },
+   "llm_timeouts": 0,
+   "tokens": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "thinking_tokens": 0,
+    "total_input_tokens": 0,
+    "cost_usd": 0.0,
+    "seconds": 0.0
+   },
+   "tokens_by_tier": {},
+   "tokens_by_model": {},
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "compute_s": 80.37,
+   "wall_s": 64.41,
+   "jobs": 4,
+   "stage_s": {
+    "study": 28.92,
+    "final": 51.45
+   },
+   "devices": {
+    "doppio.amath.washington.edu:gpu0": 2,
+    "doppio.amath.washington.edu:gpu1": 1
+   }
+  },
+  "v3_opus_top_s0": {
+   "run": "v3_opus_top_s0",
+   "test_rel_l2": null,
+   "test_r2": null,
+   "final_evaluation_blocked": true,
+   "certificate_reasons": [
+    "partition check failed"
+   ],
+   "certificate_max_abs": {
+    "repeat": 0.0,
+    "reload": 0.0,
+    "partition": 0.0010889326404079913
+   },
+   "test_ci95": null,
+   "test_per_segment": null,
+   "shift": {},
+   "final_val": 0.019322146939217813,
+   "final_kind": "single",
+   "final_labels": [
+    "custom-solver(fwd)"
+   ],
+   "final_families": [
+    "physics-custom"
+   ],
+   "final_member_kinds": [
+    "custom_solver"
+   ],
+   "final_uses_forward": true,
+   "certified": false,
+   "reload_max_abs_diff": null,
+   "latency_ms": null,
+   "test_uncertainty": null,
+   "best_arm_val": 0.019322146939217813,
+   "best_arm_label": "custom-solver(fwd)",
+   "stop_reason": "Why stop. The study limit has been reached: action-012, a revise to S-Q1-007, was rejected with 'ValueError: study limit'. No new study or revision can be registered. The remaining open blocking objections cannot be closed with the actions still allowed:\n- 073 and 074 are redacted and cannot be addressed.\n- 030, 100, 101 and 102 require 2000 bootstrap replicates and labelled interval levels. The harness has capped n_bootstrap at 200 in every paired diagnostic (resu-00109, 00110, 00125, 00129, 00266, 00267), and a delegated re-run also returned 200.\n- 103 requires the treatment's printed diagnostics, which the harness discarded (runtime_diagnostics is empty).\n- 105 requires re-running mlp_fixed, which needs a new study.\nAnother diagnose or delegate would reproduce the same capped outputs, and delegation is blocked by the depth/children limit (action-006). Stopping now is better than spending budget on actions that cannot change any verdict.\n\nOutcome under the pre-registered rules. Every claim stays inconclusive / not evaluable, and none is self-certified:\n- C-Q1-1b and C-Q1-2b (S-Q1-002): blocking implementation objections are unresolved, and the bootstrap ran 200 replicates against 2000 registered.\n- C-Q1-5a and C-Q1-5c (S-Q1-005): the bootstrap ran 200 replicates against 2000 registered, the interval level is not reported, the reporting criteria were not observed, and redacted objections 073 and 074 are open.\n- C-Q1-5b: the control arm failed. The harness wraps custom_ml in TransformedTargetRegressor, so the arm's positivity guard raised (resu-00257). No MLP comparison exists for this study, and resu-00269 holds treatment-side values only.\n\nDescriptive development evidence. The validation split was reused across several validation-informed revisions, so none of this is confirmatory. n_val = 750; row_hash 260db427 and train_row_hash 4dea572e are identical across all arms.\n- Validation rel_l2:\n  - transparent_mle (resu-00261, source_hash ef4142b6, fit-time gates G1-G7 passed because the arm completed): 0.019322.\n  - harness physics_mle (resu-00107/00263): 0.019333.\n  - torch_mlp log-target: 0.02805 at seed 0, 0.03016 at seed 1.\n  - extra_trees log-target: 0.07741 at seed 0, 0.07711 at seed 1.\n- Paired relative improvement 1 - R (200 replicates, interval level unstated):\n  - transparent_mle vs ET: 0.750, interval [0.729, 0.770].\n  - harness MLE vs MLP: 0.311, interval [0.272, 0.352].\n  - transparent_mle vs harness reference: 0.00054, interval [-0.00026, 0.00133]. This is aggregate agreement only. It does not show row-level identity or identify the estimator (objections 071, 092, 108).\n- Per-segment rel_l2 for the likelihood arms is about [0.027, 0.006, 0.005, 0.026]. The outer segments 1 and 4 carry roughly 5x the error of the inner segments, and the same pattern appears in both learned arms. This is an early exploratory signal for Q-3 and is not a local-Fisher or identifiability result.\n- Cost asymmetry: transparent_mle used about 113k forward evaluations (about 139 per row in predict, 11.4 ms per row). The harness MLE used about 177k (about 20 ms per row). The learners used no forward evaluations and took 0.01-0.17 ms per row. About 0.47M forward evaluations were used in total, against a cap of 3M.\n\nFinal export. The best executed full-fidelity arm is S-Q1-005.transparent_mle (val rel_l2 0.019322). Its procedure is auditable code with source_hash ef4142b6. Its result is statistically indistinguishable from the harness physics_mle (0.019333).\n\nScope and caveats:\n- Inverse-crime condition: the forward model is exactly specified, with known sigma = 0.001 and a U[0.5,2]^4 prior.\n- The learned controls are fixed and untuned, with 1-2 seeds. Uncertainty covers row sampling only.\n- The output is the best-objective projected-LM iterate, not a certified MLE (objections 063, 111).\n- The CFL number and interface averaging are unverified (018, 040, 067, 080, 094).\n- Each comparison stands on its own; there is no family-wise claim.\n\nQ-2 (hybrid initializer) and Q-3 (Fisher identifiability) were not studied because the study limit was reached. They remain open.\n\nEverything above is for independent review.",
+   "actions": {
+    "decompose": 1,
+    "spawn": 1,
+    "revise": 4,
+    "execute": 4,
+    "delegate": 1,
+    "propose_study": 1,
+    "stop": 1
+   },
+   "actions_total": 13,
+   "actions_rejected": 4,
+   "rejection_errors": [
+    "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "ValueError: depth/children limit",
+    "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "ValueError: study limit"
+   ],
+   "questions": 3,
+   "studies": 6,
+   "studies_complete": 1,
+   "study_status": {
+    "superseded": 4,
+    "complete": 1,
+    "incomplete": 1
+   },
+   "study_completion_rate": 0.16666666666666666,
+   "claims": 5,
+   "claim_outcomes": {
+    "inconclusive": 5
+   },
+   "arms_registered": 25,
+   "arms_ok": 9,
+   "arm_method_kinds": {
+    "library": 13,
+    "physics": 6,
+    "custom_solver": 4,
+    "custom_ml": 2
+   },
+   "custom_code_arms": 6,
+   "researchers": 1,
+   "researcher_personas": {
+    "mathematical": 1
+   },
+   "specialist_tasks": 4,
+   "specialist_status": {
+    "complete": 3,
+    "incomplete": 1
+   },
+   "objections": 126,
+   "objections_blocking": 50,
+   "objections_resolved": 0,
+   "theorem_requests": 0,
+   "scientific_completion": false,
+   "role_fallbacks": {},
+   "llm_timeouts": 0,
+   "tokens": {
+    "calls": 30,
+    "input_tokens": 1408079,
+    "output_tokens": 167228,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "thinking_tokens": 59774,
+    "total_input_tokens": 1408079,
+    "cost_usd": 9.3324,
+    "seconds": 1504.694
+   },
+   "tokens_by_tier": {
+    "orchestrator": {
+     "calls": 13,
+     "input_tokens": 894485,
+     "output_tokens": 86888,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 24817,
+     "total_input_tokens": 894485,
+     "cost_usd": 5.5543,
+     "seconds": 711.7539
+    },
+    "researcher": {
+     "calls": 7,
+     "input_tokens": 213450,
+     "output_tokens": 28424,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 6559,
+     "total_input_tokens": 213450,
+     "cost_usd": 1.4936,
+     "seconds": 250.085
+    },
+    "critic": {
+     "calls": 9,
+     "input_tokens": 291268,
+     "output_tokens": 49796,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 27745,
+     "total_input_tokens": 291268,
+     "cost_usd": 2.245,
+     "seconds": 525.8494
+    },
+    "specialist": {
+     "calls": 1,
+     "input_tokens": 8876,
+     "output_tokens": 2120,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 653,
+     "total_input_tokens": 8876,
+     "cost_usd": 0.0395,
+     "seconds": 17.0057
+    }
+   },
+   "tokens_by_model": {
+    "claude-haiku-5-5": {
+     "calls": 30,
+     "input_tokens": 1303440,
+     "output_tokens": 2510,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 1727,
+     "total_input_tokens": 1303440,
+     "cost_usd": 0.3944,
+     "seconds": 0.0
+    },
+    "claude-opus-5-5": {
+     "calls": 29,
+     "input_tokens": 1399203,
+     "output_tokens": 165108,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 59121,
+     "total_input_tokens": 1399203,
+     "cost_usd": 8.899,
+     "seconds": 0.0
+    },
+    "claude-sonnet-5-5": {
+     "calls": 1,
+     "input_tokens": 8876,
+     "output_tokens": 2120,
+     "cache_creation_tokens": 0,
+     "cache_read_tokens": 0,
+     "thinking_tokens": 653,
+     "total_input_tokens": 8876,
+     "cost_usd": 0.039,
+     "seconds": 0.0
+    }
+   },
+   "llm_calls": 30,
+   "llm_cost_usd": 9.3324,
+   "compute_s": 245.45,
+   "wall_s": 1653.38,
+   "jobs": 19,
+   "stage_s": {
+    "study": 191.06,
+    "final": 54.38
+   },
+   "devices": {
+    "doppio.amath.washington.edu:gpu0": 4,
+    "doppio.amath.washington.edu:gpu1": 4,
+    "cpu": 2
    }
   }
  },
@@ -135,97 +824,375 @@
     "sd": 0.0,
     "min": 0.01841886806236584,
     "max": 0.01841886806236584,
-    "n": 1
+    "n": 3
    },
    "final_val": {
     "mean": 0.019335308875384715,
     "sd": 0.0,
     "min": 0.019335308875384715,
     "max": 0.019335308875384715,
-    "n": 1
+    "n": 3
    },
    "best_arm_val": {
     "mean": 0.019335308875384715,
     "sd": 0.0,
     "min": 0.019335308875384715,
     "max": 0.019335308875384715,
-    "n": 1
+    "n": 3
    },
    "llm_calls": {
     "mean": 0.0,
     "sd": 0.0,
     "min": 0.0,
     "max": 0.0,
-    "n": 1
+    "n": 3
    },
    "llm_cost_usd": {
     "mean": 0.0,
     "sd": 0.0,
     "min": 0.0,
     "max": 0.0,
-    "n": 1
+    "n": 3
    },
    "compute_s": {
-    "mean": 83.38,
-    "sd": 0.0,
-    "min": 83.38,
-    "max": 83.38,
-    "n": 1
+    "mean": 76.23333333333333,
+    "sd": 7.912460637079552,
+    "min": 67.11,
+    "max": 81.22,
+    "n": 3
    },
    "wall_s": {
-    "mean": 66.54,
-    "sd": 0.0,
-    "min": 66.54,
-    "max": 66.54,
-    "n": 1
+    "mean": 60.31,
+    "sd": 7.857964112923904,
+    "min": 51.25,
+    "max": 65.27,
+    "n": 3
    },
    "actions_total": {
     "mean": 7.0,
     "sd": 0.0,
     "min": 7.0,
     "max": 7.0,
-    "n": 1
+    "n": 3
    },
    "actions_rejected": {
     "mean": 0.0,
     "sd": 0.0,
     "min": 0.0,
     "max": 0.0,
-    "n": 1
+    "n": 3
    },
    "studies": {
     "mean": 1.0,
     "sd": 0.0,
     "min": 1.0,
     "max": 1.0,
-    "n": 1
+    "n": 3
    },
    "studies_complete": {
     "mean": 1.0,
     "sd": 0.0,
     "min": 1.0,
     "max": 1.0,
-    "n": 1
+    "n": 3
    },
    "study_completion_rate": {
     "mean": 1.0,
     "sd": 0.0,
     "min": 1.0,
     "max": 1.0,
-    "n": 1
+    "n": 3
    },
    "claims": {
     "mean": 1.0,
     "sd": 0.0,
     "min": 1.0,
     "max": 1.0,
-    "n": 1
+    "n": 3
    },
    "arms_registered": {
     "mean": 3.0,
     "sd": 0.0,
     "min": 3.0,
     "max": 3.0,
+    "n": 3
+   },
+   "custom_code_arms": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "researchers": {
+    "mean": 2.0,
+    "sd": 0.0,
+    "min": 2.0,
+    "max": 2.0,
+    "n": 3
+   },
+   "specialist_tasks": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "objections": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "objections_blocking": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "objections_resolved": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "theorem_requests": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "llm_timeouts": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 3
+   },
+   "tokens": {
+    "calls": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "input_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "cache_creation_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "cache_read_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "total_input_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "output_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "thinking_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "cost_usd": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    },
+    "seconds": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 3
+    }
+   },
+   "tokens_by_tier": {},
+   "test_per_segment": [
+    0.026979900167366195,
+    0.006088333683040254,
+    0.005218525678847445,
+    0.02419188207713548
+   ],
+   "uncertified_runs": [],
+   "final_uses_forward": 3,
+   "certified": 3,
+   "final_labels": [
+    [
+     "physics-MLE[log,ms=1,it=30]"
+    ],
+    [
+     "physics-MLE[log,ms=1,it=30]"
+    ],
+    [
+     "physics-MLE[log,ms=1,it=30]"
+    ]
+   ],
+   "claim_outcomes": {
+    "contradicted": 3
+   },
+   "actions": {
+    "decompose": 3,
+    "spawn": 6,
+    "propose_study": 3,
+    "execute": 3,
+    "diagnose": 3,
+    "stop": 3
+   },
+   "arm_method_kinds": {
+    "library": 6,
+    "physics": 3
+   },
+   "shift": {
+    "k_low_0.3": {
+     "mean": 0.12494414929093482,
+     "sd": 1.6996749443881478e-17,
+     "min": 0.12494414929093481,
+     "max": 0.12494414929093481,
+     "n": 3
+    },
+    "noise_x3": {
+     "mean": 0.0520294521303912,
+     "sd": 0.0,
+     "min": 0.0520294521303912,
+     "max": 0.0520294521303912,
+     "n": 3
+    }
+   },
+   "seeds": [
+    "v3_offline_s0",
+    "v3_offline_s1",
+    "v3_offline_s2"
+   ]
+  },
+  "v3_full": {
+   "test_rel_l2": {
+    "mean": 0.018334935911737203,
+    "sd": 0.0,
+    "min": 0.018334935911737203,
+    "max": 0.018334935911737203,
+    "n": 1
+   },
+   "final_val": {
+    "mean": 0.019046710309041506,
+    "sd": 0.0,
+    "min": 0.019046710309041506,
+    "max": 0.019046710309041506,
+    "n": 1
+   },
+   "best_arm_val": {
+    "mean": 0.019046710309041506,
+    "sd": 0.0,
+    "min": 0.019046710309041506,
+    "max": 0.019046710309041506,
+    "n": 1
+   },
+   "llm_calls": {
+    "mean": 39.0,
+    "sd": 0.0,
+    "min": 39.0,
+    "max": 39.0,
+    "n": 1
+   },
+   "llm_cost_usd": {
+    "mean": 17.267,
+    "sd": 0.0,
+    "min": 17.267,
+    "max": 17.267,
+    "n": 1
+   },
+   "compute_s": {
+    "mean": 519.07,
+    "sd": 0.0,
+    "min": 519.07,
+    "max": 519.07,
+    "n": 1
+   },
+   "wall_s": {
+    "mean": 1457.33,
+    "sd": 0.0,
+    "min": 1457.33,
+    "max": 1457.33,
+    "n": 1
+   },
+   "actions_total": {
+    "mean": 15.0,
+    "sd": 0.0,
+    "min": 15.0,
+    "max": 15.0,
+    "n": 1
+   },
+   "actions_rejected": {
+    "mean": 5.0,
+    "sd": 0.0,
+    "min": 5.0,
+    "max": 5.0,
+    "n": 1
+   },
+   "studies": {
+    "mean": 6.0,
+    "sd": 0.0,
+    "min": 6.0,
+    "max": 6.0,
+    "n": 1
+   },
+   "studies_complete": {
+    "mean": 4.0,
+    "sd": 0.0,
+    "min": 4.0,
+    "max": 4.0,
+    "n": 1
+   },
+   "study_completion_rate": {
+    "mean": 0.6666666666666666,
+    "sd": 0.0,
+    "min": 0.6666666666666666,
+    "max": 0.6666666666666666,
+    "n": 1
+   },
+   "claims": {
+    "mean": 7.0,
+    "sd": 0.0,
+    "min": 7.0,
+    "max": 7.0,
+    "n": 1
+   },
+   "arms_registered": {
+    "mean": 23.0,
+    "sd": 0.0,
+    "min": 23.0,
+    "max": 23.0,
     "n": 1
    },
    "custom_code_arms": {
@@ -236,31 +1203,31 @@
     "n": 1
    },
    "researchers": {
-    "mean": 2.0,
+    "mean": 1.0,
     "sd": 0.0,
-    "min": 2.0,
-    "max": 2.0,
+    "min": 1.0,
+    "max": 1.0,
     "n": 1
    },
    "specialist_tasks": {
-    "mean": 0.0,
+    "mean": 4.0,
     "sd": 0.0,
-    "min": 0.0,
-    "max": 0.0,
+    "min": 4.0,
+    "max": 4.0,
     "n": 1
    },
    "objections": {
-    "mean": 0.0,
+    "mean": 155.0,
     "sd": 0.0,
-    "min": 0.0,
-    "max": 0.0,
+    "min": 155.0,
+    "max": 155.0,
     "n": 1
    },
    "objections_blocking": {
-    "mean": 0.0,
+    "mean": 82.0,
     "sd": 0.0,
-    "min": 0.0,
-    "max": 0.0,
+    "min": 82.0,
+    "max": 82.0,
     "n": 1
    },
    "objections_resolved": {
@@ -286,17 +1253,17 @@
    },
    "tokens": {
     "calls": {
-     "mean": 0.0,
+     "mean": 39.0,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 39.0,
+     "max": 39.0,
      "n": 1
     },
     "input_tokens": {
-     "mean": 0.0,
+     "mean": 1786483.0,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 1786483.0,
+     "max": 1786483.0,
      "n": 1
     },
     "cache_creation_tokens": {
@@ -314,105 +1281,621 @@
      "n": 1
     },
     "total_input_tokens": {
-     "mean": 0.0,
+     "mean": 1786483.0,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 1786483.0,
+     "max": 1786483.0,
      "n": 1
     },
     "output_tokens": {
-     "mean": 0.0,
+     "mean": 101162.0,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 101162.0,
+     "max": 101162.0,
      "n": 1
     },
     "thinking_tokens": {
-     "mean": 0.0,
+     "mean": 34416.0,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 34416.0,
+     "max": 34416.0,
      "n": 1
     },
     "cost_usd": {
-     "mean": 0.0,
+     "mean": 17.267,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 17.267,
+     "max": 17.267,
      "n": 1
     },
     "seconds": {
-     "mean": 0.0,
+     "mean": 1099.961,
      "sd": 0.0,
-     "min": 0.0,
-     "max": 0.0,
+     "min": 1099.961,
+     "max": 1099.961,
      "n": 1
     }
    },
-   "tokens_by_tier": {},
+   "tokens_by_tier": {
+    "critic": {
+     "calls": {
+      "mean": 12.0,
+      "sd": 0.0,
+      "min": 12.0,
+      "max": 12.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 280299.0,
+      "sd": 0.0,
+      "min": 280299.0,
+      "max": 280299.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 45304.0,
+      "sd": 0.0,
+      "min": 45304.0,
+      "max": 45304.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 2.1148,
+      "sd": 0.0,
+      "min": 2.1148,
+      "max": 2.1148,
+      "n": 1
+     }
+    },
+    "orchestrator": {
+     "calls": {
+      "mean": 15.0,
+      "sd": 0.0,
+      "min": 15.0,
+      "max": 15.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 1186212.0,
+      "sd": 0.0,
+      "min": 1186212.0,
+      "max": 1186212.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 22671.0,
+      "sd": 0.0,
+      "min": 22671.0,
+      "max": 22671.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 13.322,
+      "sd": 0.0,
+      "min": 13.322,
+      "max": 13.322,
+      "n": 1
+     }
+    },
+    "researcher": {
+     "calls": {
+      "mean": 8.0,
+      "sd": 0.0,
+      "min": 8.0,
+      "max": 8.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 284565.0,
+      "sd": 0.0,
+      "min": 284565.0,
+      "max": 284565.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 21687.0,
+      "sd": 0.0,
+      "min": 21687.0,
+      "max": 21687.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 1.6419,
+      "sd": 0.0,
+      "min": 1.6419,
+      "max": 1.6419,
+      "n": 1
+     }
+    },
+    "specialist": {
+     "calls": {
+      "mean": 4.0,
+      "sd": 0.0,
+      "min": 4.0,
+      "max": 4.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 35407.0,
+      "sd": 0.0,
+      "min": 35407.0,
+      "max": 35407.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 11500.0,
+      "sd": 0.0,
+      "min": 11500.0,
+      "max": 11500.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 0.1882,
+      "sd": 0.0,
+      "min": 0.1882,
+      "max": 0.1882,
+      "n": 1
+     }
+    }
+   },
    "test_per_segment": [
-    0.0269799001673662,
-    0.006088333683040254,
-    0.005218525678847445,
-    0.02419188207713548
+    0.02679311799770612,
+    0.006057212041814213,
+    0.005222008179884106,
+    0.024149722818595665
    ],
+   "uncertified_runs": [],
    "final_uses_forward": 1,
    "certified": 1,
    "final_labels": [
     [
-     "physics-MLE[log,ms=1,it=30]"
+     "physics-MMSE[log,ms=3,it=25]"
     ]
    ],
    "claim_outcomes": {
+    "inconclusive": 6,
     "contradicted": 1
    },
    "actions": {
     "decompose": 1,
-    "spawn": 2,
-    "propose_study": 1,
-    "execute": 1,
-    "diagnose": 1,
+    "spawn": 1,
+    "revise": 1,
+    "execute": 7,
+    "resolve_objection": 2,
+    "propose_study": 2,
     "stop": 1
    },
    "arm_method_kinds": {
-    "library": 2,
-    "physics": 1
+    "physics": 9,
+    "library": 13,
+    "hybrid": 1
    },
    "shift": {
     "k_low_0.3": {
-     "mean": 0.12494414929093481,
+     "mean": 0.10969297134262908,
      "sd": 0.0,
-     "min": 0.12494414929093481,
-     "max": 0.12494414929093481,
+     "min": 0.10969297134262908,
+     "max": 0.10969297134262908,
      "n": 1
     },
     "noise_x3": {
-     "mean": 0.0520294521303912,
+     "mean": 0.05118851494011075,
      "sd": 0.0,
-     "min": 0.0520294521303912,
-     "max": 0.0520294521303912,
+     "min": 0.05118851494011075,
+     "max": 0.05118851494011075,
      "n": 1
     }
    },
    "seeds": [
-    "v3_offline_s0"
+    "v3_full_s0"
+   ]
+  },
+  "v3_opus_top": {
+   "test_rel_l2": null,
+   "final_val": {
+    "mean": 0.019322146939217813,
+    "sd": 0.0,
+    "min": 0.019322146939217813,
+    "max": 0.019322146939217813,
+    "n": 1
+   },
+   "best_arm_val": {
+    "mean": 0.019322146939217813,
+    "sd": 0.0,
+    "min": 0.019322146939217813,
+    "max": 0.019322146939217813,
+    "n": 1
+   },
+   "llm_calls": {
+    "mean": 30.0,
+    "sd": 0.0,
+    "min": 30.0,
+    "max": 30.0,
+    "n": 1
+   },
+   "llm_cost_usd": {
+    "mean": 9.3324,
+    "sd": 0.0,
+    "min": 9.3324,
+    "max": 9.3324,
+    "n": 1
+   },
+   "compute_s": {
+    "mean": 245.45,
+    "sd": 0.0,
+    "min": 245.45,
+    "max": 245.45,
+    "n": 1
+   },
+   "wall_s": {
+    "mean": 1653.38,
+    "sd": 0.0,
+    "min": 1653.38,
+    "max": 1653.38,
+    "n": 1
+   },
+   "actions_total": {
+    "mean": 13.0,
+    "sd": 0.0,
+    "min": 13.0,
+    "max": 13.0,
+    "n": 1
+   },
+   "actions_rejected": {
+    "mean": 4.0,
+    "sd": 0.0,
+    "min": 4.0,
+    "max": 4.0,
+    "n": 1
+   },
+   "studies": {
+    "mean": 6.0,
+    "sd": 0.0,
+    "min": 6.0,
+    "max": 6.0,
+    "n": 1
+   },
+   "studies_complete": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "n": 1
+   },
+   "study_completion_rate": {
+    "mean": 0.16666666666666666,
+    "sd": 0.0,
+    "min": 0.16666666666666666,
+    "max": 0.16666666666666666,
+    "n": 1
+   },
+   "claims": {
+    "mean": 5.0,
+    "sd": 0.0,
+    "min": 5.0,
+    "max": 5.0,
+    "n": 1
+   },
+   "arms_registered": {
+    "mean": 25.0,
+    "sd": 0.0,
+    "min": 25.0,
+    "max": 25.0,
+    "n": 1
+   },
+   "custom_code_arms": {
+    "mean": 6.0,
+    "sd": 0.0,
+    "min": 6.0,
+    "max": 6.0,
+    "n": 1
+   },
+   "researchers": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0,
+    "n": 1
+   },
+   "specialist_tasks": {
+    "mean": 4.0,
+    "sd": 0.0,
+    "min": 4.0,
+    "max": 4.0,
+    "n": 1
+   },
+   "objections": {
+    "mean": 126.0,
+    "sd": 0.0,
+    "min": 126.0,
+    "max": 126.0,
+    "n": 1
+   },
+   "objections_blocking": {
+    "mean": 50.0,
+    "sd": 0.0,
+    "min": 50.0,
+    "max": 50.0,
+    "n": 1
+   },
+   "objections_resolved": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "theorem_requests": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "llm_timeouts": {
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n": 1
+   },
+   "tokens": {
+    "calls": {
+     "mean": 30.0,
+     "sd": 0.0,
+     "min": 30.0,
+     "max": 30.0,
+     "n": 1
+    },
+    "input_tokens": {
+     "mean": 1408079.0,
+     "sd": 0.0,
+     "min": 1408079.0,
+     "max": 1408079.0,
+     "n": 1
+    },
+    "cache_creation_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "cache_read_tokens": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n": 1
+    },
+    "total_input_tokens": {
+     "mean": 1408079.0,
+     "sd": 0.0,
+     "min": 1408079.0,
+     "max": 1408079.0,
+     "n": 1
+    },
+    "output_tokens": {
+     "mean": 167228.0,
+     "sd": 0.0,
+     "min": 167228.0,
+     "max": 167228.0,
+     "n": 1
+    },
+    "thinking_tokens": {
+     "mean": 59774.0,
+     "sd": 0.0,
+     "min": 59774.0,
+     "max": 59774.0,
+     "n": 1
+    },
+    "cost_usd": {
+     "mean": 9.3324,
+     "sd": 0.0,
+     "min": 9.3324,
+     "max": 9.3324,
+     "n": 1
+    },
+    "seconds": {
+     "mean": 1504.694,
+     "sd": 0.0,
+     "min": 1504.694,
+     "max": 1504.694,
+     "n": 1
+    }
+   },
+   "tokens_by_tier": {
+    "critic": {
+     "calls": {
+      "mean": 9.0,
+      "sd": 0.0,
+      "min": 9.0,
+      "max": 9.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 291268.0,
+      "sd": 0.0,
+      "min": 291268.0,
+      "max": 291268.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 49796.0,
+      "sd": 0.0,
+      "min": 49796.0,
+      "max": 49796.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 2.245,
+      "sd": 0.0,
+      "min": 2.245,
+      "max": 2.245,
+      "n": 1
+     }
+    },
+    "orchestrator": {
+     "calls": {
+      "mean": 13.0,
+      "sd": 0.0,
+      "min": 13.0,
+      "max": 13.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 894485.0,
+      "sd": 0.0,
+      "min": 894485.0,
+      "max": 894485.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 86888.0,
+      "sd": 0.0,
+      "min": 86888.0,
+      "max": 86888.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 5.5543,
+      "sd": 0.0,
+      "min": 5.5543,
+      "max": 5.5543,
+      "n": 1
+     }
+    },
+    "researcher": {
+     "calls": {
+      "mean": 7.0,
+      "sd": 0.0,
+      "min": 7.0,
+      "max": 7.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 213450.0,
+      "sd": 0.0,
+      "min": 213450.0,
+      "max": 213450.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 28424.0,
+      "sd": 0.0,
+      "min": 28424.0,
+      "max": 28424.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 1.4936,
+      "sd": 0.0,
+      "min": 1.4936,
+      "max": 1.4936,
+      "n": 1
+     }
+    },
+    "specialist": {
+     "calls": {
+      "mean": 1.0,
+      "sd": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n": 1
+     },
+     "total_input_tokens": {
+      "mean": 8876.0,
+      "sd": 0.0,
+      "min": 8876.0,
+      "max": 8876.0,
+      "n": 1
+     },
+     "output_tokens": {
+      "mean": 2120.0,
+      "sd": 0.0,
+      "min": 2120.0,
+      "max": 2120.0,
+      "n": 1
+     },
+     "cost_usd": {
+      "mean": 0.0395,
+      "sd": 0.0,
+      "min": 0.0395,
+      "max": 0.0395,
+      "n": 1
+     }
+    }
+   },
+   "test_per_segment": null,
+   "uncertified_runs": [
+    "v3_opus_top_s0"
+   ],
+   "final_uses_forward": 1,
+   "certified": 0,
+   "final_labels": [
+    [
+     "custom-solver(fwd)"
+    ]
+   ],
+   "claim_outcomes": {
+    "inconclusive": 5
+   },
+   "actions": {
+    "decompose": 1,
+    "spawn": 1,
+    "revise": 4,
+    "execute": 4,
+    "delegate": 1,
+    "propose_study": 1,
+    "stop": 1
+   },
+   "arm_method_kinds": {
+    "library": 13,
+    "physics": 6,
+    "custom_solver": 4,
+    "custom_ml": 2
+   },
+   "shift": {},
+   "seeds": [
+    "v3_opus_top_s0"
    ]
   }
  },
  "comparisons": {
   "v3_offline": {
    "vs_v1_full": {
-    "p_welch": null,
+    "p_welch": 0.008218798745051612,
     "rel_change": -0.22106797281504112
    },
    "vs_v2_full": {
-    "p_welch": null,
+    "p_welch": 0.38639323832568506,
     "rel_change": 0.002275677815319182
    },
    "vs_v2_offline": {
-    "p_welch": null,
+    "p_welch": 0.18021293750769773,
     "rel_change": 0.00232784853325786
+   },
+   "vs_v3_full": {
+    "p_welch": null,
+    "rel_change": 0.0045777171533447686
    }
+  },
+  "v3_full": {
+   "vs_v1_full": {
+    "p_welch": null,
+    "rel_change": -0.22461745479264097
+   },
+   "vs_v2_full": {
+    "p_welch": null,
+    "rel_change": -0.0022915492736080563
+   },
+   "vs_v3_offline": {
+    "p_welch": null,
+    "rel_change": -0.004556857150202943
+   }
+  },
+  "v3_opus_top": {
+   "note": "no certified test metric"
   }
  },
  "physics_reference": {

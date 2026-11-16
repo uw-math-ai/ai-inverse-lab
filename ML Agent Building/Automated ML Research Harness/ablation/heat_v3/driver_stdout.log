@@ -199,3 +199,49 @@ evidence: C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Bu
 tokens: 0 calls, in 0 (cache-write 0, cache-read 0), out 0, $0.00; fallbacks {'offline_choice': 13}
 
 ##### v3_full seed 1 #####
+WARNING: machine slept during v3_full s1 (['2026-11-15T00:09:30', '2026-11-14T22:41:32']); marked SUSPENDED.json, will be redone
+ open failed: Connect failed
+Secsh channel 53 open FAILED: open failed: Connect failed
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\__main__.py", line 4, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 365, in main
+    return args.fn(args)
+           ^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 58, in cmd_research
+    return cmd_research_v3(args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\cli.py", line 73, in cmd_research_v3
+    out = ResearchSchedulerV3(spec, run_dir, resume=args.resume, verbose=not args.quiet).run()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kusha\Research Code\UW Math AI Lab\ai-inverse-lab\ML Agent Building\Automated ML Research Harness\mlharness\scheduler_v3.py", line 150, in run
+    raise RuntimeError(error)
+RuntimeError: RuntimeError: final export failed: compute budget for this stage exhausted
+
+tokens: 38 calls, in 2,235,973 (cache-write 0, cache-read 0), out 146,536, $21.90; fallbacks {'invalid_json': 1, 'service_error': 1}
+WARNING: v3_full s1 had 1 failed LLM call(s); marked LLM_DEGRADED.json
+LLM usage/rate limit hit; stopping. Re-run the same command later: degraded runs are redone, valid ones are skipped.
+=== attempt 1 exits 0 1 2026-11-15T02:21:55-08:00
+=== attempt 2 2026-11-15T02:51:55-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+skip v3_full s0 (done)
+skip v3_opus_top s0 (done)
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s1 (done)
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-fable-5-1'): claude error: You've hit your Fable limit · resets Nov 19, 11am (America/Los_Angeles). Switch to another model, or manage usage credits at https://claude.ai/settings/usage?from=cc_cli_limit_message, to continue.
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 2 exits 0 1 2026-11-15T04:28:13-08:00
+=== attempt 3 2026-11-15T04:58:13-08:00
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s0 (done)
+skip v3_full s0 (done)
+skip v3_opus_top s0 (done)
+remote probe: {"host": "doppio.amath.washington.edu", "ok": true, "hostname": "doppio", "gpus": ["0, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %", "1, NVIDIA TITAN X (Pascal), 7 MiB, 12288 MiB, 0 %"], "python": "python 3.10.16", "stack": "stack 2.2.6 1.15.3 1.7.2", "torch": "torch 2.14.1+cu126 True 2", "python_path": "/home/kushalk3/.mlharness_venv/bin/python", "torch_cuda": true}
+skip v3_offline s1 (done)
+LLM backend unavailable before v3_full s1: ('claude_code', 'claude-fable-5-1'): claude error: You've hit your Fable limit · resets Nov 19, 11am (America/Los_Angeles). Switch to another model, or manage usage credits at https://claude.ai/settings/usage?from=cc_cli_limit_message, to continue.
+Stopping so that no LLM arm silently runs on offline fallbacks.
+=== attempt 3 exits 0 1 2026-11-15T06:34:34-08:00

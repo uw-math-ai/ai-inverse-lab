@@ -1,0 +1,39 @@
+{
+ "run_id": "heat_v3_full_s1_20261114_194223",
+ "stage": "failed",
+ "ideas": 56,
+ "pruned": 0,
+ "best": {
+  "idea": "idea-024",
+  "method": "physics-MLE[log,ms=6,it=80]",
+  "rel_l2": 0.01932159783553681
+ },
+ "resources": {
+  "compute_budget_s": 760.0,
+  "compute_used_s": 402.88,
+  "compute_remaining_s": 357.12,
+  "wall_elapsed_s": 7515.51,
+  "wall_budget_s": 7200.0,
+  "jobs": 36,
+  "by_stage_s": {
+   "study": 402.88
+  },
+  "llm_calls": 39,
+  "llm_calls_max": 80,
+  "llm_seconds": 7316.18,
+  "llm_cost_usd": 21.8953,
+  "llm_by_phase": {
+   "execution": 39
+  },
+  "literature_queries": 0,
+  "literature_failures": 0,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {},
+ "updated": 1794738106.3279302,
+ "error": "RuntimeError: final export failed: compute budget for this stage exhausted",
+ "pipeline": "v3",
+ "elapsed": 23962.909061670303,
+ "research_stop": "wall budget exhausted"
+}
