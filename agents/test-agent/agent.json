@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "name": "Test research agent",
+  "description": "Deterministic smoke-test agent. Waits a few seconds while reporting progress, then writes a Markdown report and a JSON result for the supplied topic. Can be told to fail on purpose. Uses only the Python standard library and makes no API calls.",
+  "image": "research-agent-runtime:v1",
+  "command": ["python", "run.py"],
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "topic": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000,
+        "description": "Research topic to include in the report."
+      },
+      "seconds": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 60,
+        "description": "How many seconds to simulate work. Defaults to 3."
+      },
+      "fail": {
+        "type": "boolean",
+        "description": "If true, the agent fails on purpose with a nonzero exit code. Defaults to false."
+      }
+    },
+    "required": ["topic"],
+    "additionalProperties": false
+  },
+  "connection": "none",
+  "network": "none",
+  "timeout_seconds": 180,
+  "cpu": 0.5,
+  "memory_mb": 128
+}
