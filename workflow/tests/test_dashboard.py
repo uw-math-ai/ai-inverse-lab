@@ -338,7 +338,7 @@ class DashboardTests(unittest.TestCase):
         status, saved, _ = self.request("POST", route, review)
         self.assertEqual(status, 201)
         self.assertEqual(saved["score"]["score"], 3)
-        self.assertEqual(saved["review"], review)
+        self.assertEqual(saved["review"], {**review, "assess_proof": True})
         self.assertEqual((directory / "summary.json").read_bytes(), original_bytes)
         detail = self.request("GET", f"/api/runs/{summary['run_id']}")[1]
         self.assertEqual(len(detail["reviews"]), 1)

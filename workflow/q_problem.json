@@ -1,0 +1,15 @@
+{
+  "id": "hidden-q-reference-v1",
+  "version": 1,
+  "status": "frozen_reference_not_executable",
+  "title": "Potential recovery from first positive-time passage observations",
+  "known": ["A finite connected labelled undirected graph X with at least two vertices", "Symmetric conductances w_xy, positive exactly on edges, and positive masses mu_x", "A nonempty proper observed set B", "A fixed known h > 0 and finite integer observation horizon T >= 1"],
+  "unknown": "q:X→R with q(x) >= 0 and h(r(x)+q(x)) <= 1 at every vertex; r(x)=sum_y w_xy/mu_x. Only q is unknown.",
+  "kernel": "K_q(x,y)=h*w_xy/mu_x for x != y; K_q(x,x)=1-h(r(x)+q(x)). Missing row mass h*q(x) goes to an absorbing cemetery state.",
+  "observations": "Exact F_xy(n)=P_x(tau_y=n), x,y in B, 1 <= n <= T, where tau_y=inf{n>=1:X_n=y}. Visits to other observed vertices are allowed before hitting y. Holding at x counts as a one-step return when x=y. These are first-passage probabilities, not occupancy probabilities or first returns to the set B.",
+  "question": "For which graph, observed-set and horizon conditions is q mapped to {F_xy(n)} injective? Under sufficient conditions, construct a recovery procedure; otherwise exhibit distinct admissible potentials with identical specified observations.",
+  "success": ["A precisely scoped identifiability/reconstruction theorem with proof", "Or a checked nonidentifiability counterexample satisfying the frozen assumptions"],
+  "excluded": ["Unknown masses or conductances", "Occupancy data substituted for first-passage data", "Noisy recovery and stability", "Automatic transfer of benchmark winners into hidden-q runs"],
+  "formalization": "Not formalized. Existing diagonal algebra proves recovery only on B. No sufficiency claim for hidden vertices or finite T is asserted.",
+  "change_policy": "Changes require a new contract version; benchmark jobs never modify or execute this research reference."
+}

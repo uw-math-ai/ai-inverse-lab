@@ -11,7 +11,7 @@ from .evaluation import is_validated_review, proposal_digest
 
 
 RUBRIC = {
-    "version": "agent-iteration-v1",
+    "version": "agent-iteration-v3",
     "CA_and_Repair": {
         "0": "No proof attempt supplied.",
         "1": "A prose or Lean proof was attempted; correctness is not established.",
@@ -35,6 +35,7 @@ def _skeptic_score(proposal: dict, critique: dict, benchmark: dict, review: dict
     ids = {gap["gap_id"] for gap in gaps}
     same_target = proposal.get("claim") == benchmark["statement"]
     same_assumptions = proposal.get("assumptions") == benchmark["assumptions"]
+    server_target = benchmark.get("verification_contract", {}).get("target_binding") == "repository_owned"
     dimensions = {
         "target_check_correct": critique.get("target_preserved") is same_target,
         "assumptions_check_correct": critique.get("assumptions_preserved") is same_assumptions,
@@ -45,11 +46,19 @@ def _skeptic_score(proposal: dict, critique: dict, benchmark: dict, review: dict
     }
     score = {"score": 1, "provisional": True, "evidence_type": "unreviewed_critique",
              "rationale": "Critique recorded. Lean's result does not establish whether these diagnoses are correct."}
-    if ((not same_target and critique.get("target_preserved") is False)
+    if server_target:
+        dimensions.update(claim_text_matches=same_target, assumptions_text_match=same_assumptions,
+                          target_check_correct=True if same_target and critique.get("target_preserved") else None,
+                          assumptions_check_correct=True if same_assumptions and critique.get("assumptions_preserved") else None,
+                          narrative_equivalence="not_assessed")
+    if not server_target and ((not same_target and critique.get("target_preserved") is False)
             or (not same_assumptions and critique.get("assumptions_preserved") is False)):
         score.update(score=2, provisional=False, evidence_type="packet_comparison",
                      rationale="The skeptic correctly flagged a literal mismatch with the fixed target or assumptions. Mathematical gap claims still require review.")
     if is_validated_review(review, proposal) and review is not None:
+        if server_target and review.get("assess_proof", True):
+            dimensions["target_check_correct"] = critique.get("target_preserved") is review["target_preserved"]
+            dimensions["assumptions_check_correct"] = critique.get("assumptions_preserved") is review["assumptions_preserved"]
         judgment = review.get("critique_review")
         if judgment and judgment["critique_sha256"] == proposal_digest(critique):
             confirmed, dismissed = set(judgment["confirmed_gap_ids"]), set(judgment["dismissed_gap_ids"])
@@ -104,10 +113,21 @@ def evaluate_actions(record: dict, benchmark: dict, calls: list[dict], previous:
                      "provisional": False, "evidence_type": "call_status",
                      "rationale": "Provider failure; mathematical ability was not assessed." if call["status"] == "provider_error"
                      else "The call produced no valid structured output. Its raw response remains in the event log."}
+        elif role == "VA":
+            prediction = output.get("predicted_status")
+            result = record.get("verification", {})
+            conclusive = result.get("status") in ("verified", "failed", "rejected") and not result.get("compiler", {}).get("output_truncated")
+            correct = prediction == ("verified" if result.get("status") == "verified" else "not_verified") if conclusive and prediction != "uncertain" else None
+            dimensions = {"predicted_status": prediction, "checker_status": result.get("status"),
+                          "prediction_correct": correct, "abstained": prediction == "uncertain",
+                          "diagnosis_validated": False}
+            score = {"score": None, "provisional": True, "evidence_type": "checker_prediction",
+                     "rationale": "Prediction accuracy is measured against conclusive checker results; the diagnostic explanation remains unreviewed. Not comparable to the 0–3 proof rubric."}
         elif role == "SA":
             score, dimensions = _skeptic_score(proposal, output, benchmark, review)
         else:
             repairs = output.get("repairs", [])
+            server_target = benchmark.get("verification_contract", {}).get("target_binding") == "repository_owned"
             dimensions = {
                 "target_preserved": output.get("claim") == benchmark["statement"],
                 "assumptions_preserved": output.get("assumptions") == benchmark["assumptions"],
@@ -119,10 +139,17 @@ def evaluate_actions(record: dict, benchmark: dict, calls: list[dict], previous:
                                   "independently_confirmed": repair["gap_id"] in score.get("confirmed_repairs", [])}
                                  for repair in repairs],
             }
+        if role in ("CA", "Repair") and call["status"] == "completed" and server_target:
+            dimensions.update(claim_text_matches=dimensions["target_preserved"],
+                              assumptions_text_match=dimensions["assumptions_preserved"],
+                              target_preserved=True if dimensions["target_preserved"] else None,
+                              assumptions_preserved=True if dimensions["assumptions_preserved"] else None)
         row = {
             "schema_version": 1, "rubric_version": RUBRIC["version"],
             "run_id": record["run_id"], "iteration": record["iteration"], "role": role,
             "call_id": call["call_id"], "call_status": call["status"],
+            "input": deepcopy(call.get("input")), "input_sha256": call.get("input_sha256"),
+            "model": call.get("model"),
             "usage": deepcopy(call.get("usage", {})), "elapsed_seconds": call.get("elapsed_seconds"),
             "output_sha256": proposal_digest(output) if output is not None else None,
             "claim": proposal.get("claim", benchmark["statement"]),
@@ -134,7 +161,7 @@ def evaluate_actions(record: dict, benchmark: dict, calls: list[dict], previous:
             "verification": {key: record.get("verification", {}).get(key) for key in ("engine", "status", "summary", "source_sha256")},
             "score": score, "dimensions": dimensions,
         }
-        comparable = next((item for item in previous_rows if (item["role"] == "SA") == (role == "SA")), None)
+        comparable = next((item for item in previous_rows if (item["role"] if item["role"] in ("SA", "VA") else "author") == (role if role in ("SA", "VA") else "author")), None)
         row["progress"] = progress(row, comparable)
         rows.append(row)
     return rows
@@ -157,5 +184,10 @@ def summarize_agents(rows: list[dict]) -> dict:
             "regressions": sum(row["progress"]["direction"] == "regressed" for row in members),
             "reported_tokens": sum(known) if known else None, "missing_token_records": len(tokens) - len(known),
             "elapsed_seconds": sum(row.get("elapsed_seconds") or 0 for row in members),
+            "checker_predictions": {
+                "correct": sum(row.get("dimensions", {}).get("prediction_correct") is True for row in members),
+                "incorrect": sum(row.get("dimensions", {}).get("prediction_correct") is False for row in members),
+                "abstained": sum(row.get("dimensions", {}).get("abstained") is True for row in members),
+            },
         }
     return result

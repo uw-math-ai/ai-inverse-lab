@@ -221,7 +221,7 @@ def _final_score(run: dict) -> int:
 
 def _verified(run: dict) -> bool:
     scores = _scores(run)
-    return bool(scores and scores[-1].get("score") == 3 and scores[-1].get("provisional") is False)
+    return any(score.get("score") == 3 and score.get("provisional") is False for score in scores)
 
 
 def _quantities(runs: list[dict], key: str, *, usage: bool = False) -> dict:
@@ -247,8 +247,9 @@ def aggregate_runs(runs: list[dict]) -> dict:
 
     agent_groups = defaultdict(list)
     for run in runs:
-        group = (str(run.get("mode", "unknown")), str(run.get("backend", "unknown")), str(run.get("model", "unknown")))
-        agent_groups[group].extend(run.get("agent_evaluations", []))
+        for row in run.get("agent_evaluations", []):
+            group = (str(run.get("mode", "unknown")), str(run.get("backend", "unknown")), str(row.get("model") or run.get("model", "unknown")))
+            agent_groups[group].append(row)
     grouped: dict[str, list[dict]] = defaultdict(list)
     for run in runs:
         grouped[str(run.get("mode", "unknown"))].append(run)
@@ -273,10 +274,11 @@ def aggregate_runs(runs: list[dict]) -> dict:
             runs_with_repairs += bool(confirmed)
         by_mode[mode] = {
             "runs": len(members),
+            "success_by_iteration": [{"iteration": i, "verified_runs": sum(any(r.get("score", {}).get("score") == 3 and r["score"].get("provisional") is False for j, r in enumerate(run.get("records", []), 1) if r.get("iteration", j) <= i) for run in members), "total_runs": len(members)} for i in range(1, max((len(run.get("records", [])) for run in members), default=0)+1)],
             "completed_runs": sum(run.get("status") in {"completed", "complete"} for run in members),
             "failed_runs": sum(run.get("status") in {"failed", "error"} for run in members),
             "independently_verified_runs": sum(_verified(run) for run in members),
-            "lean_verified_runs": sum(bool(_scores(run) and _scores(run)[-1].get("evidence_type") == "lean_kernel" and _verified(run)) for run in members),
+            "lean_verified_runs": sum(any(score.get("evidence_type") == "lean_kernel" and score.get("score") == 3 and score.get("provisional") is False for score in _scores(run)) for run in members),
             "independently_verified_rate": sum(_verified(run) for run in members) / len(members),
             "provisional_runs": sum(provisional),
             "mean_final_score": sum(final_scores) / len(members),
@@ -316,6 +318,7 @@ def aggregate_runs(runs: list[dict]) -> dict:
         single = next(run for run in members if run["mode"] == "single")
         multi = next(run for run in members if run["mode"] == "multi")
         mismatches = [key for key in matching_keys if key not in single or key not in multi or single[key] != multi[key]]
+        mismatches += [key for key in ("role_models", "verifier_enabled", "budget_policy", "rounds", "reasoning_effort", "stop_on_verified") if single.get(key) != multi.get(key)]
         if mismatches:
             excluded.append({"pair_id": pair_id, "reason": "Missing or mismatched controls: " + ", ".join(mismatches)})
             continue

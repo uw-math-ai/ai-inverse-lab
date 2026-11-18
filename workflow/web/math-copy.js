@@ -144,5 +144,40 @@
     ["T>=n", String.raw`$T\geq n$`],
   ]));
 
-  window.formatResearchText = text => typeof text === "string" ? presentations.get(text) ?? text : text;
+
+  // Presentation aliases for the new suite; saved statements remain untouched.
+  const suitePresentations = [
+    ["Over a field K, prove that a*x+b=a*y+b and a≠0 imply x=y.", String.raw`Over a field $K$, assume $a\ne0$ and $ax+b=ay+b$. Prove that $x=y$.`],
+    ["Over a field K, two linear measurements with determinant a*d-b*c≠0 identify both unknowns: if a*x+b*y=a*u+b*v and c*x+d*y=c*u+d*v, prove x=u and y=v.", String.raw`Over a field $K$, suppose the determinant $ad-bc$ is nonzero. If
+$$ax+by=au+bv,\qquad cx+dy=cu+dv,$$
+prove that $x=u$ and $y=v$.`],
+    ["Refute injectivity of observing only x+y: over any field K construct x,y,u,v with x+y=u+v and x≠u.", String.raw`Show that one sum does not uniquely identify its inputs. Over any field $K$, find $x,y,u,v$ such that $x+y=u+v$ but $x\ne u$.`],
+    ["Over a field K, if a≠0, c≠0 and a*(b*x+c)=a*(b*y+c), prove b=0 or x=y. Repair the supplied argument without adding b≠0.", String.raw`Over a field $K$, assume $a\ne0$, $c\ne0$, and
+$$a(bx+c)=a(by+c).$$
+Prove that $b=0$ or $x=y$. Repair the supplied argument without assuming $b\ne0$.`],
+    ["Formalize the argument: subtract b from a*x+b=a*y+b, giving a*x=a*y; cancellation of nonzero a gives x=y. Over a field K assume a≠0 and prove x=y.", String.raw`Write a formal proof of this argument: subtract $b$ from $ax+b=ay+b$ to get $ax=ay$. Cancel the nonzero factor $a$ to conclude $x=y$. Work over a field $K$ with $a\ne0$.`],
+    ["K is an arbitrary field satisfying Lean.Grind.Field.", String.raw`Work over an arbitrary field $K$: addition, subtraction, multiplication, and division by nonzero elements obey the usual field laws.`],
+    ["Use exactly the quantified hypotheses in the fixed Lean target; do not add hypotheses.", "Use precisely the assumptions stated in the task. Do not add assumptions to make the proof easier."],
+    ["Step 1: cancel a. Step 2: subtract c. Step 3: since c≠0, cancel b to get x=y. Hence the disjunction. Identify and repair any unjustified step.", String.raw`Argument to review:
+1. Cancel $a$.
+2. Subtract $c$.
+3. Because $c\ne0$, cancel $b$ to obtain $x=y$.
+Identify and repair any unjustified step.`],
+  ];
+  for (const [source, formatted] of suitePresentations) presentations.set(source, formatted);
+
+  for (const [source, formatted] of [["For which graph, observed-set and horizon conditions is q mapped to {F_xy(n)} injective? Under sufficient conditions, construct a recovery procedure; otherwise exhibit distinct admissible potentials with identical specified observations.", "For which graph, observation set, and time horizon does the data uniquely determine the potential $q$? Prove a reconstruction result under sufficient conditions, or exhibit different admissible potentials that give the same observations."], ["q:X→R with q(x) >= 0 and h(r(x)+q(x)) <= 1 at every vertex; r(x)=sum_y w_xy/mu_x. Only q is unknown.", "The only unknown is the potential $q:X\\to\\mathbb{R}$. At every vertex, $q(x)\\ge0$ and $h(r(x)+q(x))\\le1$, where $r(x)=\\sum_y w_{xy}/\\mu_x$."], ["Exact F_xy(n)=P_x(tau_y=n), x,y in B, 1 <= n <= T, where tau_y=inf{n>=1:X_n=y}. Visits to other observed vertices are allowed before hitting y. Holding at x counts as a one-step return when x=y. These are first-passage probabilities, not occupancy probabilities or first returns to the set B.", "We observe the exact probabilities $F_{xy}(n)=\\mathbb{P}_x(\\tau_y=n)$ for $x,y\\in B$ and $1\\le n\\le T$. Here $\\tau_y=\\inf\\{n\\ge1:X_n=y\\}$ is the first positive time the walk reaches $y$. It may visit other observed vertices first. Staying at the starting vertex counts as a one-step return. These are first-passage probabilities, not occupancy probabilities or first returns to the set $B$."], ["A finite connected labelled undirected graph X with at least two vertices", "A finite, connected, labelled undirected graph $X$ with at least two vertices."], ["Symmetric conductances w_xy, positive exactly on edges, and positive masses mu_x", "Known positive vertex masses $\\mu_x$ and symmetric conductances $w_{xy}$, positive exactly on graph edges."], ["A nonempty proper observed set B", "A nonempty observed set $B$ that is a proper subset of $X$."], ["A fixed known h > 0 and finite integer observation horizon T >= 1", "A fixed known time step $h>0$ and a finite integer observation horizon $T\\ge1$."]]) presentations.set(source, formatted);
+
+  function readableAlgebra(text) {
+    // Only simple, recognizable algebra; existing TeX and source code are opaque.
+    const opaque = /(```[\s\S]*?```|`[^`\n]*`|\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\\begin\{[^}]+\}[\s\S]*?\\end\{[^}]+\})/g;
+    const symbol = String.raw`(?:[A-Za-z](?:_(?:\{[A-Za-z0-9]+\}|[A-Za-z0-9]+))?(?:\([A-Za-z0-9, ]+\))?|\d+|\\(?:frac|dfrac|tfrac)\{[^{}]+\}\{[^{}]+\}|\\(?:alpha|beta|gamma|mu|lambda|Delta)|\\mathbb\{[A-Za-z]\})`;
+    const atom = String.raw`(?:${symbol}|\(${symbol}(?:\s*[+*\-/]\s*${symbol})*\))`;
+    const operator = String.raw`(?:[=≠≤≥+*/^−-]|\\(?:ne|neq|le|leq|ge|geq|in|cdot)\b)`;
+    const expression = new RegExp(String.raw`(?<![\w\\])${atom}(?:\s*${operator}\s*${atom})+(?![\w])`, "g");
+    return text.split(opaque).map((part, i) => i % 2 ? part : part.replace(expression, expression =>
+      "$" + expression.replaceAll("*", "\\cdot ").replaceAll("≠", "\\ne ").replaceAll("≤", "\\le ").replaceAll("≥", "\\ge ").replaceAll("−", "-") + "$"
+    )).join("");
+  }
+  window.formatResearchText = text => typeof text === "string" ? presentations.get(text) ?? readableAlgebra(text) : text;
 })();

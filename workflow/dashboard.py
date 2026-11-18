@@ -30,7 +30,9 @@ from .credentials import openai_key_configured
 from .evaluation import aggregate_runs
 from .records import utc_now, write_json
 from .response_call import apply_review, reviewed_summary
-from .runtime import RunConfig
+from .runtime import MAX_ITERATIONS, RunConfig
+from .ledger import describe_verification
+from .research_suite import frozen_problem, SUITE_ID, SUITE_BENCHMARK_IDS
 from .verification import lean_status
 
 
@@ -45,7 +47,7 @@ JOB_TIMEOUT_SECONDS = 3600
 IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}\Z")
 MODEL_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,119}\Z")
 RUN_FILES = ("report.md", "summary.json", "events.jsonl", "iterations.jsonl", "manifest.json",
-             "summary_adjudicated.json", "proof.lean", "lean-verification.json", "agent_evaluations.jsonl")
+             "summary_adjudicated.json", "proof.lean", "lean-verification.json", "agent_evaluations.jsonl", "proof-ledger.json", "verified-proof.lean", "verified-checkpoint.json")
 KATEX_FONT_STEMS = (
     "KaTeX_AMS-Regular", "KaTeX_Caligraphic-Bold", "KaTeX_Caligraphic-Regular",
     "KaTeX_Fraktur-Bold", "KaTeX_Fraktur-Regular", "KaTeX_Main-Bold",
@@ -68,10 +70,10 @@ STATIC_TYPES = {
     ".woff2": "font/woff2", ".woff": "font/woff", ".ttf": "font/ttf",
     ".md": "text/plain; charset=utf-8", "": "text/plain; charset=utf-8",
 }
-DEFAULTS = {"backend": "demo", "model": "gpt-4o-mini", "rounds": 3,
-            "max_output_tokens": 2400, "max_simulator_calls": 0, "seed": 2026,
-            "benchmark_id": DEFAULT_BENCHMARK_ID}
-LIMITS = {"rounds": {"min": 1, "max": 20}, "max_output_tokens": {"min": 256, "max": 16000},
+DEFAULTS = {"backend": "demo", "model": "gpt-4o-mini", "rounds": 10,
+            "max_output_tokens": 16000, "max_simulator_calls": 0, "seed": 2026,
+            "benchmark_id": "bench-two-measurements", "ca_model": "", "sa_model": "", "verifier_model": "", "budget_policy": "iterations", "reasoning_effort": "", "stop_on_verified": False}
+LIMITS = {"rounds": {"min": 1, "max": MAX_ITERATIONS}, "max_output_tokens": {"min": 256, "max": 131072},
           "max_simulator_calls": {"min": 0, "max": 80}, "seed": {"min": 0, "max": 2**31 - 1},
           "trials": {"min": 1, "max": 10}, "max_queued_jobs": MAX_PENDING_JOBS,
           "max_active_jobs": 1, "job_timeout_seconds": JOB_TIMEOUT_SECONDS}
@@ -120,7 +122,7 @@ class DashboardStore:
             saved = self.read_object(path)
             if not saved or not _valid_id(saved.get("id")) or saved["id"] != path.stem:
                 continue
-            if saved.get("kind") not in ("run", "compare") or not isinstance(saved.get("config"), dict):
+            if saved.get("kind") not in ("run", "compare", "suite") or not isinstance(saved.get("config"), dict):
                 continue
             if saved.get("status") in ("queued", "running"):
                 recovery = self._recover_process(saved)
@@ -260,6 +262,8 @@ class DashboardStore:
         if not isinstance(records, list):
             records = self.read_lines(directory / "iterations.jsonl")
         records = [record for record in records if isinstance(record, dict)]
+        for record in records:
+            record["verification_display"] = describe_verification(record.get("verification", {}))
         source = {**manifest, **_object(summary)}
         run_id = source.get("run_id", directory.name)
         if not _valid_id(run_id):
@@ -288,8 +292,11 @@ class DashboardStore:
             "provisional": score.get("provisional") is not False, "reviewed": bool(reviews),
             "score_evidence": score.get("evidence_type"),
             "verification_status": _object(last.get("verification")).get("status"),
+            "role_models": source.get("role_models", {}), "budget_policy": source.get("budget_policy"),
+            "trajectory": source.get("trajectory", {}),
+            "has_verified_proof": any(r.get("score", {}).get("evidence_type") == "lean_kernel" and r["score"].get("score") == 3 and r["score"].get("provisional") is False for r in records),
             "benchmark_id": source.get("benchmark_id", _object(source.get("benchmark")).get("id")),
-            "comparison_id": comparison_id, "job_id": job_id, "error": source.get("error") or job.get("error"),
+            "comparison_id": comparison_id, "pair_id": source.get("pair_id"), "job_id": job_id, "error": source.get("error") or job.get("error"),
         }
         if warnings:
             compact["warnings"] = warnings
@@ -324,7 +331,9 @@ class DashboardStore:
             aggregate = saved or {}
             if summaries:
                 try:
-                    aggregate = aggregate_runs(summaries)
+                    aggregate = {**(saved or {}), **aggregate_runs(summaries)}
+                    if (saved or {}).get("suite_id"):
+                        aggregate["by_benchmark"] = {key: aggregate_runs([r for r in summaries if r.get("benchmark_id") == key]) for key in SUITE_BENCHMARK_IDS}
                 except (ValueError, TypeError, KeyError, AttributeError):
                     pass
             # CLI comparison files contain machine-specific absolute paths.
@@ -337,7 +346,7 @@ class DashboardStore:
                 # This is orchestration completion, not mathematical verification.
                 failed = any(_nonnegative_int(_object(mode).get("failed_runs"))
                              for mode in _object(aggregate.get("by_mode")).values())
-                status = "failed" if failed else "completed"
+                status = "incomplete" if saved.get("campaign_complete") is False else "failed" if failed else "completed"
             else:
                 status = "incomplete"
             comparisons[identifier] = {"id": identifier, "aggregate": aggregate, "run_ids": run_ids,
@@ -358,10 +367,14 @@ class DashboardStore:
         with self.condition:
             runs, comparisons = self.catalog()
             jobs = [self._job_public(job, runs, comparisons) for job in self.jobs.values()]
-        return {"benchmark": load_benchmark(),
+        return {"benchmark": load_benchmark(DEFAULTS["benchmark_id"]), "q_problem": frozen_problem(),
+                "suite": {"id": SUITE_ID, "benchmark_ids": list(SUITE_BENCHMARK_IDS), "independent_human_review": "pending"},
+                "benchmark_packets": {key: load_benchmark(key) for key in BENCHMARK_IDS},
                 "benchmarks": [{"id": key, "title": load_benchmark(key)["title"],
                                 "short_title": load_benchmark(key)["short_title"],
-                                "formalization": load_benchmark(key)["verification_contract"]["status"]}
+                                "formalization": load_benchmark(key)["verification_contract"]["status"],
+                                "family": load_benchmark(key).get("family", "legacy"),
+                                "suite_id": load_benchmark(key).get("suite_id") }
                                for key in BENCHMARK_IDS],
                 "settings": {"api_key_configured": openai_key_configured(),
                              "defaults": deepcopy(DEFAULTS), "limits": deepcopy(LIMITS), "lean": lean_status()},
@@ -441,12 +454,12 @@ class DashboardStore:
         write_json(destination, job)
 
     def _validate_job(self, payload: dict) -> dict:
-        allowed = {"kind", "mode", "backend", "model", "rounds", "max_output_tokens", "max_simulator_calls", "seed", "trials", "benchmark_id"}
+        allowed = {"kind", "mode", "backend", "model", "rounds", "max_output_tokens", "max_simulator_calls", "seed", "trials", "benchmark_id", "ca_model", "sa_model", "verifier_model", "budget_policy", "reasoning_effort", "stop_on_verified"}
         if not isinstance(payload, dict) or set(payload) - allowed:
             raise APIError("Only documented job configuration fields are allowed.")
         kind = payload.get("kind", "run")
-        if kind not in ("run", "compare"):
-            raise APIError("kind must be run or compare.")
+        if kind not in ("run", "compare", "suite"):
+            raise APIError("kind must be run, compare or suite.")
         config = {**DEFAULTS, "mode": "multi", "trials": 1, **payload}
         config.pop("kind", None)
         if not isinstance(config["model"], str) or MODEL_NAME.fullmatch(config["model"]) is None:
@@ -457,7 +470,7 @@ class DashboardStore:
             RunConfig(**{key: value for key, value in config.items() if key != "trials"})
         except (TypeError, ValueError) as exc:
             raise APIError(str(exc)) from exc
-        if config["seed"] + (config["trials"] - 1 if kind == "compare" else 0) > LIMITS["seed"]["max"]:
+        if config["seed"] + (config["trials"] - 1 if kind in ("compare", "suite") else 0) > LIMITS["seed"]["max"]:
             raise APIError("The seed plus trial count exceeds the supported seed range.")
         if config["backend"] == "openai" and not openai_key_configured():
             raise APIError("No OpenAI API key configured. Run python -m workflow.response_call configure-openai in a terminal.", 409)
@@ -484,8 +497,12 @@ class DashboardStore:
         directory = self.confined(self.root / "managed" / job["id"])
         command = [sys.executable, "-m", "workflow.response_call", job["kind"],
                    "--output", str(directory)]
-        for key in ("backend", "model", "rounds", "max_output_tokens", "max_simulator_calls", "seed"):
+        for key in ("backend", "model", "rounds", "max_output_tokens", "max_simulator_calls", "seed", "ca_model", "sa_model", "verifier_model", "budget_policy", "reasoning_effort"):
+            if key not in config or config[key] == "":
+                continue
             command.extend(["--" + key.replace("_", "-"), str(config[key])])
+        if config.get("stop_on_verified", False):
+            command.append("--stop-on-verified")
         if "benchmark_id" in config:
             command.extend(["--benchmark", config["benchmark_id"]])
         command.extend(["--mode", config["mode"]] if job["kind"] == "run" else ["--trials", str(config["trials"])])

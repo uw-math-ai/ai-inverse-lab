@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Workflow: management dashboard",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/bin/python",
+			"args": [
+				"-m",
+				"workflow.dashboard",
+				"--port",
+				"8766"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Workflow: configure OpenAI API key",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/bin/python",
+			"args": [
+				"-m",
+				"workflow.response_call",
+				"configure-openai"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}

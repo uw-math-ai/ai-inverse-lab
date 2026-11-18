@@ -19,6 +19,8 @@ from .evaluation import aggregate_runs, proposal_digest, score_iteration, valida
 from .records import utc_now, write_json, write_jsonl
 from .runtime import RunConfig, run_workflow
 from .verification import lean_status, verify
+from .research_suite import SUITE_BENCHMARK_IDS, SUITE_ID
+from .ledger import trajectory_metrics
 
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parent / "runs"
@@ -69,21 +71,22 @@ def reviewed_summary(run_directory: Path) -> dict:
         previous = None
         for record in summary["records"]:
             calls = [{"stage": row["role"], "status": row["call_status"],
-                      **{key: row[key] for key in ("call_id", "output", "usage", "elapsed_seconds")}}
+                      **{key: row[key] for key in ("call_id", "output", "usage", "elapsed_seconds", "input", "input_sha256", "model") if key in row}}
                      for row in record.get("agent_evaluations", [])]
             record["agent_evaluations"] = evaluate_actions(
                 record, benchmark, calls, previous, latest_reviews.get(record["iteration"]))
             for row in record["agent_evaluations"]:
-                row.update(mode=summary["mode"], backend=summary["backend"], model=summary["model"])
+                row.update(mode=summary["mode"], backend=summary["backend"], model=row.get("model") or summary["model"])
             previous = record
         completed = {record["iteration"] for record in summary["records"]}
         pending = [row for row in summary["agent_evaluations"] if row["iteration"] not in completed]
         for row in pending:
             previous_rows = previous.get("agent_evaluations", []) if previous else []
-            comparable = next((item for item in previous_rows if (item["role"] == "SA") == (row["role"] == "SA")), None)
+            comparable = next((item for item in previous_rows if (item["role"] if item["role"] in ("SA", "VA") else "author") == (row["role"] if row["role"] in ("SA", "VA") else "author")), None)
             row["progress"] = progress(row, comparable)
         summary["agent_evaluations"] = [row for record in summary["records"] for row in record.get("agent_evaluations", [])] + pending
         summary["agent_metrics"] = summarize_agents(summary["agent_evaluations"])
+    summary["trajectory"] = trajectory_metrics(summary["records"])
     return summary
 
 
@@ -121,8 +124,14 @@ def _comparison_report(aggregate: dict, run_paths: list[Path]) -> str:
 def _add_run_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--backend", choices=("demo", "openai"), default="demo")
     parser.add_argument("--model", default="gpt-4o-mini")
-    parser.add_argument("--rounds", type=int, default=3, help="Multi-agent attempts; both arms get 2*rounds model calls.")
-    parser.add_argument("--max-output-tokens", type=int, default=2400)
+    parser.add_argument("--ca-model", default="")
+    parser.add_argument("--stop-on-verified", action="store_true", help="Optionally stop when Lean first verifies the target; otherwise continue refinement.")
+    parser.add_argument("--reasoning-effort", choices=("", "none", "low", "medium", "high"), default="")
+    parser.add_argument("--sa-model", default="")
+    parser.add_argument("--verifier-model", default="", help="Optional independent verifier adviser model.")
+    parser.add_argument("--budget-policy", choices=("calls", "iterations"), default="calls")
+    parser.add_argument("--rounds", type=int, default=10, help="Iteration target; calls policy gives the single agent an equal call budget.")
+    parser.add_argument("--max-output-tokens", type=int, default=16000)
     parser.add_argument("--max-simulator-calls", type=int, default=0)
     parser.add_argument("--benchmark", choices=BENCHMARK_IDS, default=DEFAULT_BENCHMARK_ID)
     parser.add_argument("--seed", type=int, default=2026)
@@ -133,7 +142,8 @@ def _config(args: argparse.Namespace) -> RunConfig:
     return RunConfig(mode=getattr(args, "mode", "multi"), backend=args.backend,
                      model=args.model, rounds=args.rounds, max_output_tokens=args.max_output_tokens,
                      max_simulator_calls=args.max_simulator_calls, seed=args.seed,
-                     benchmark_id=args.benchmark)
+                     benchmark_id=args.benchmark, ca_model=args.ca_model, sa_model=args.sa_model,
+                     verifier_model=args.verifier_model, budget_policy=args.budget_policy, reasoning_effort=args.reasoning_effort, stop_on_verified=args.stop_on_verified)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -153,6 +163,10 @@ def main(argv: list[str] | None = None) -> int:
     compare = commands.add_parser("compare", help="Run paired, budget-matched arms with alternating execution order.")
     _add_run_options(compare)
     compare.add_argument("--trials", type=int, default=3)
+    suite = commands.add_parser("suite", help="Run all development benchmarks as paired comparisons.")
+    _add_run_options(suite)
+    suite.add_argument("--trials", type=int, default=1)
+    commands.add_parser("suite-check", help="Check all private reference proofs in Lean.")
     benchmark = commands.add_parser("benchmark", help="Print exactly the public benchmark packet.")
     benchmark.add_argument("--benchmark", choices=BENCHMARK_IDS, default=DEFAULT_BENCHMARK_ID)
     commands.add_parser("lean-status", help="Check the local pinned Lean compiler.")
@@ -173,6 +187,46 @@ def main(argv: list[str] | None = None) -> int:
     arguments = sys.argv[1:] if argv is None else argv
     args = parser.parse_args(arguments or ["run"])
     try:
+        if args.command == "suite-check":
+            from .suite_references import check_suite
+            result = check_suite()
+            print(json.dumps(result, indent=2))
+            return 0 if result["passed"] else 1
+        if args.command == "suite":
+            if not 1 <= args.trials <= 10:
+                raise ValueError("trials must be in [1, 10].")
+            base = _config(args)
+            if base.seed + args.trials - 1 > 2**31 - 1:
+                raise ValueError("Seed plus trials exceeds the supported range.")
+            from .suite_references import check_suite
+            audit = check_suite()
+            if not audit["passed"]:
+                raise ValueError("Suite reference validation failed. Run suite-check for diagnostics.")
+            directory = args.output / ("comparison-suite-" + uuid4().hex[:12])
+            directory.mkdir(parents=True, exist_ok=False)
+            write_json(directory / "suite-review.json", audit)
+            runs, paths = [], []
+            for identifier in SUITE_BENCHMARK_IDS:
+                for trial in range(args.trials):
+                    for mode in (("single", "multi") if trial % 2 == 0 else ("multi", "single")):
+                        config = replace(base, mode=mode, benchmark_id=identifier, seed=base.seed + trial,
+                                         pair_id=f"{directory.name}-{identifier}-{trial}")
+                        path, summary = run_workflow(config, directory)
+                        paths.append(path)
+                        runs.append(summary)
+                        result = aggregate_runs(runs)
+                        result.update(suite_id=SUITE_ID, backend=base.backend,
+                                      run_directories=[str(p.resolve()) for p in paths],
+                                      planned_runs=len(SUITE_BENCHMARK_IDS)*args.trials*2,
+                                      campaign_complete=False,
+                                      by_benchmark={key: aggregate_runs([r for r in runs if r["benchmark_id"] == key]) for key in SUITE_BENCHMARK_IDS})
+                        write_json(directory / "comparison.json", result)
+                        print(f"{identifier} {mode}: {summary['status']} ({path.name})", flush=True)
+            result["campaign_complete"] = True
+            write_json(directory / "comparison.json", result)
+            (directory / "comparison.md").write_text(_comparison_report(result, paths))
+            print(f"Suite comparison: {directory / 'comparison.md'}")
+            return 0 if all(r["status"] == "completed" for r in runs) else 1
         if args.command == "export-training":
             if args.output.exists():
                 raise ValueError("Export destination already exists. Choose a new file to preserve existing records.")

@@ -41,6 +41,7 @@ class RuntimeTests(unittest.TestCase):
         return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
 
     def run_fake(self, mode="multi", backend=None, **kwargs):
+        kwargs.setdefault("stop_on_verified", True)
         return run_workflow(RunConfig(mode=mode, backend="demo", rounds=2, **kwargs),
                             self.output, backend or RecordingBackend())
 

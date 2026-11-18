@@ -6,13 +6,13 @@ from typing import Any
 from pydantic import BaseModel
 
 from .credentials import openai_api_key
-from .schemas import Critique, Proposal
+from .schemas import Critique, Proposal, VerificationAdvice
 
 
 class OpenAIBackend:
     name = "openai"
 
-    def __init__(self, model: str, max_output_tokens: int, seed: int):
+    def __init__(self, model: str, max_output_tokens: int, seed: int, reasoning_effort: str = ""):
         from langchain.chat_models import init_chat_model
 
         key = openai_api_key()
@@ -20,7 +20,8 @@ class OpenAIBackend:
             raise ValueError("No OpenAI API key configured. Run python -m workflow.response_call configure-openai.")
         self.model = init_chat_model(
             model, model_provider="openai", max_tokens=max_output_tokens,
-            max_retries=0, timeout=90, temperature=0, seed=seed, api_key=key,
+            max_retries=0, timeout=600, api_key=key,
+            **({"reasoning_effort": reasoning_effort} if reasoning_effort else {}),
         )
 
     def invoke(self, stage: str, schema: type[BaseModel], messages: list[dict]) -> dict:
@@ -28,12 +29,14 @@ class OpenAIBackend:
         response = runnable.invoke(messages)
         raw = response["raw"]
         parsed = response.get("parsed")
+        # Structured-output SDKs may retain a Pydantic Proposal inside
+        # additional_kwargs['parsed']. Convert the entire message before logging.
+        raw_json = raw.model_dump(mode="json")
         return {
             "parsed": parsed.model_dump() if isinstance(parsed, BaseModel) else parsed,
             "parsing_error": str(response["parsing_error"]) if response.get("parsing_error") else None,
-            "raw": {"content": raw.content, "tool_calls": raw.tool_calls,
-                    "additional_kwargs": raw.additional_kwargs,
-                    "response_metadata": raw.response_metadata},
+            "raw": {key: raw_json.get(key) for key in
+                    ("content", "tool_calls", "additional_kwargs", "response_metadata")},
             "usage": raw.usage_metadata,
         }
 
@@ -46,7 +49,11 @@ class DemoBackend:
         payload = json.loads(messages[-1]["content"])
         packet = payload["benchmark"]
         repaired = stage != "CA"
-        if schema is Critique:
+        if schema is VerificationAdvice:
+            parsed = {"assessment": "Scripted verifier prediction, not a mathematical evaluation.",
+                      "predicted_status": "uncertain", "diagnostic": "Only the trusted checker can certify the submitted target.",
+                      "suggested_next_step": "Inspect the compiler result."}
+        elif schema is Critique:
             repaired = bool(payload["proposal"]["repairs"])
             parsed = {
                 "assessment": "Scripted critique. Lean must check the exact fixed goal; this demo does not measure AI research ability.",
@@ -84,6 +91,12 @@ class DemoBackend:
                 "certificate": {"kind": "lean4", "target_id": packet["id"], "proof": body if repaired else "rfl"} if ready else None,
                 "simulator_requests": [],
             }
+        if schema is Proposal and packet.get("suite_id"):
+            from .suite_references import REFERENCE_PROOFS
+            parsed.update(proof="Scripted calibration fixture; not autonomous discovery.", repairs=[],
+                          remaining_gaps=[] if repaired else ["Initial scripted failure."],
+                          certificate={"kind": "lean4", "target_id": packet["id"],
+                                       "proof": REFERENCE_PROOFS[packet["id"]] if repaired else "rfl"})
         validated = schema.model_validate(parsed).model_dump()
         return {"parsed": validated, "parsing_error": None,
                 "raw": {"content": json.dumps(validated), "response_metadata": {"finish_reason": "stop", "scripted": True}},

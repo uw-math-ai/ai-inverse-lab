@@ -18,6 +18,26 @@ def candidate(benchmark_id=DEFAULT_BENCHMARK_ID, stage="Repair"):
 
 
 class VerificationTests(unittest.TestCase):
+    def test_user_chosen_local_names_are_checked_by_lean(self):
+        packet, proposal = candidate("bench-affine-injective")
+        proposal["certificate"]["proof"] = (
+            "intro Scalar fieldInstance coefficient offset leftValue rightValue nonzero sameObservation\n"
+            "have sameProduct : coefficient * leftValue = coefficient * rightValue := by grind\n"
+            "grind")
+        result = verify(proposal, packet)
+        self.assertEqual(result["status"], "verified", result)
+
+    def test_binders_cannot_enable_commands_or_untrusted_names(self):
+        packet, proposal = candidate("bench-affine-injective")
+        for body in ("intro sorry\nexact sorry", "intro run_tac\nrun_tac", "intro run_meta\nrun_meta",
+                     "intro by_elab\nexact by_elab", "intro customTactic\nall_goals customTactic",
+                     "have axiom : False := by trivial",
+                     "intro set_option\nset_option debug.skipKernelTC true in rfl", "intro hGood\nexact imaginaryLemma hGood"):
+            with self.subTest(body=body), patch("workflow.verification._compile") as compiler:
+                proposal["certificate"]["proof"] = body
+                self.assertEqual(verify(proposal, packet)["status"], "rejected")
+                compiler.assert_not_called()
+
     def test_real_lean_proves_both_fixed_targets(self):
         for benchmark_id in (DEFAULT_BENCHMARK_ID, UNIQUENESS_ID):
             with self.subTest(benchmark_id=benchmark_id):
@@ -71,8 +91,6 @@ class VerificationTests(unittest.TestCase):
     def test_fixed_target_and_assumptions_cannot_be_substituted(self):
         packet, proposal = candidate()
         variants = [
-            (packet, dict(proposal, claim="True")),
-            (packet, dict(proposal, assumptions=[])),
             (dict(packet, statement="True"), proposal),
             (packet, dict(proposal, certificate={**proposal["certificate"], "target_id": UNIQUENESS_ID})),
             (packet, dict(proposal, certificate={"kind": "fixture_ranks", "ranks": []})),
@@ -85,6 +103,23 @@ class VerificationTests(unittest.TestCase):
             with self.subTest(attempt=attempt), patch("workflow.verification._compile") as compiler:
                 self.assertEqual(verify(attempt, benchmark)["status"], "rejected")
                 compiler.assert_not_called()
+
+    def test_narrative_paraphrasing_cannot_block_or_weaken_the_formal_target(self):
+        packet, proposal = candidate("bench-two-measurements")
+        proposal["claim"] = packet["statement"].replace("prove x=u", "then x=u")
+        result = verify(proposal, packet)
+        self.assertEqual(result["status"], "verified", result)
+        self.assertFalse(result["narrative_alignment"]["claim_text_matches"])
+        self.assertFalse(result["narrative_alignment"]["blocks_formal_check"])
+        self.assertEqual(result["formal_target"], "MathAILab.MeasurementsGoal")
+        # Even a dishonest narrative cannot replace the theorem compiled.
+        proposal.update(claim="False", assumptions=["Assume the desired conclusion"])
+        result = verify(proposal, packet)
+        self.assertEqual(result["status"], "verified")
+        self.assertIn("MathAILab.candidate : MathAILab.MeasurementsGoal", result["source"])
+        self.assertEqual(result["narrative_alignment"]["semantic_equivalence"], "not_assessed")
+        proposal["certificate"]["proof"] = "trivial"
+        self.assertEqual(verify(proposal, packet)["status"], "failed")
 
     def test_axiom_audit_is_required_and_sorry_axioms_are_rejected(self):
         packet, proposal = candidate()

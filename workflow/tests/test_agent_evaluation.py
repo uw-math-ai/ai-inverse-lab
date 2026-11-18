@@ -75,6 +75,16 @@ class AgentEvaluationTests(unittest.TestCase):
         self.assertEqual(row["score"]["evidence_type"], "packet_comparison")
         self.assertEqual(row["dimensions"]["confirmed_gap_ids"], [])
 
+    def test_new_contract_does_not_reward_skeptic_for_literal_paraphrase_difference(self):
+        self.packet["verification_contract"] = {"target_binding": "repository_owned"}
+        self.proposal["claim"] = "Reworded theorem"
+        self.critique["target_preserved"] = False
+        rows = evaluate_actions(self.record, self.packet, self.calls)
+        self.assertEqual(rows[1]["score"]["score"], 1)
+        self.assertTrue(rows[1]["score"]["provisional"])
+        self.assertIsNone(rows[1]["dimensions"]["target_check_correct"])
+        self.assertIsNone(rows[0]["dimensions"]["target_preserved"])
+
     def test_repairs_reference_prior_gaps_and_do_not_self_certify(self):
         prior = deepcopy(self.record)
         prior["agent_evaluations"] = evaluate_actions(prior, self.packet, self.calls)

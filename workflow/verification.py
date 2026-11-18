@@ -16,25 +16,12 @@ import tempfile
 import time
 
 from .benchmarks import LEAN_DIR, LEAN_VERSION, load_benchmark
+from .proof_language import ALLOWED_WORDS, FORBIDDEN_WORDS, WORDS, SAFE_CHARACTERS, TACTIC_HEAD, introduced_names
 
 TIMEOUT_SECONDS = 30
 MAX_OUTPUT_BYTES = 128 * 1024
 MAX_PROOF_CHARS = 16000
 STANDARD_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
-# Extend only after reviewing the elaboration behavior of new identifiers.
-ALLOWED_WORDS = frozenset("""
-intro intros have let show from by exact apply refine simpa simp simp_all only
-rw rfl constructor funext calc at all_goals assumption trivial change dsimp
-grind first next case obtain rcases with h₁ h₂
-K inst V B h rate q observed hh data x hx hxdata q₁ q₂
-oneStepReturn recoverPotential RecoveryGoal FullObservationGoal
-MathAILab.oneStepReturn MathAILab.recoverPotential MathAILab.RecoveryGoal
-MathAILab.FullObservationGoal
-Eq Eq.refl Eq.symm Eq.trans congrArg congrFun And.intro
-True False True.intro False.elim fun
-""".split())
-WORDS = re.compile(r"[^\W\d]\w*(?:\.[^\W\d]\w*)*", re.UNICODE)
-SAFE_CHARACTERS = re.compile(r"[A-Za-z0-9_\s.,:(){}\[\]=+*/<>!?|;^\-₁₂→←↔≠≤≥∀∃λ⟨⟩·]*\Z")
 
 
 def _digest(value: object) -> str:
@@ -91,9 +78,18 @@ def _proof_error(proof: object) -> str | None:
         return "Supply a nonempty Lean tactic body of at most 16000 characters."
     if any(token in proof for token in ("--", "/-", "-/")) or not SAFE_CHARACTERS.fullmatch(proof):
         return "Only the documented tactic body is allowed; comments, strings and commands are rejected."
-    unknown = set(WORDS.findall(proof)) - ALLOWED_WORDS
+    words = set(WORDS.findall(proof))
+    forbidden = {word for word in words if word.split(".")[0] in FORBIDDEN_WORDS}
+    if forbidden:
+        return "Disallowed proof commands or identifiers: " + ", ".join(sorted(forbidden)) + "."
+    local_names = introduced_names(proof)
+    if (set(TACTIC_HEAD.findall(proof)) & local_names) - ALLOWED_WORDS:
+        return "A newly bound local name cannot introduce a new tactic. Use the documented tactic language."
+    unknown = words - ALLOWED_WORDS - local_names
     if unknown:
-        return "Unsupported Lean identifiers: " + ", ".join(sorted(unknown)) + ". Use the public proof-language contract."
+        return ("Unsupported Lean identifiers: " + ", ".join(sorted(unknown)) +
+                ". Lean has not run. Use identifiers in verification_contract.proof_language; "
+                "Mathlib is not installed. Use Lean core tactics and valid Lean 4 syntax, or submit no certificate.")
     return None
 
 
@@ -180,9 +176,15 @@ def verify(proposal: dict, benchmark: dict) -> dict:
     if not isinstance(proposal, dict):
         result["gaps"] = ["Proposal must be an object."]
         return result
-    if proposal.get("claim") != trusted["statement"] or proposal.get("assumptions") != trusted["assumptions"]:
-        result.update(status="rejected", gaps=["Claim and assumptions must match the fixed benchmark exactly; copy them from the packet."])
-        return result
+    # Prose is evidence for human review, never the source of a Lean declaration.
+    # Even a wildly different narrative cannot weaken the repository-owned goal.
+    result["narrative_alignment"] = {
+        "claim_text_matches": proposal.get("claim") == trusted["statement"],
+        "assumptions_text_match": proposal.get("assumptions") == trusted["assumptions"],
+        "semantic_equivalence": "not_assessed",
+        "blocks_formal_check": False,
+    }
+    result["target_binding"] = "repository_owned"
     certificate = proposal.get("certificate")
     if certificate is None:
         result["gaps"] = ["No Lean certificate was submitted. Natural-language reasoning alone is not checked by Lean."]

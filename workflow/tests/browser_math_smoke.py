@@ -115,7 +115,7 @@ def main(argv=None):
                     page.screenshot(path=str(args.screenshots / "preview-math.png"))
                     page.locator("#run-dialog [data-action=close-run]").click()
                     page.locator('.nav-link[data-view="benchmark"]').click()
-                    expect(page.locator("#view-benchmark .katex").first).to_be_visible()
+                    expect(page.locator("#view-benchmark .katex:visible").first).to_be_visible()
                     assert page.locator("#view-benchmark .katex-mathml math").count() >= 4
 
                     samples = [
@@ -137,6 +137,13 @@ def main(argv=None):
                         {"id": "unbalanced", "text": r"Unbalanced $\frac{1}{$ must stay visible."},
                         {"id": "long-display", "text": "$$" + "+".join(r"\frac{x_{" + str(index) + r"}^2+\alpha}{1+\beta}" for index in range(20)) + "$$"},
                     ]
+                    samples += [
+                        {"id": "bare-inline-algebra", "text": "Assume a*x+b=a*y+b and a≠0. Then x=y."},
+                        {"id": "bare-inline-fraction", "text": r"Consider q(x)=\frac{1-d}{h} in the argument."},
+                        {"id": "preserved-explicit-math", "text": r"Keep $a*x+b=a*y+b$ and `a*x+b` intact."},
+                    ]
+                    for sample in samples[-3:]:
+                        sample["text"] = page.evaluate("text => window.formatResearchText(text)", sample["text"])
                     literal = r'{"proof":"$x^2$ and \\(y\\)"}'
                     page.evaluate("""({samples, literal}) => {
                         const board = document.createElement('section');
@@ -164,6 +171,10 @@ def main(argv=None):
                         expect(node).to_have_attribute("data-math-rendered", "true")
                         visible = node.inner_text()
                         assert not any(delimiter in visible for delimiter in ("$$", r"\(", r"\)", r"\[", r"\]", r"\begin{align}")), visible
+                    assert page.locator("#bare-inline-algebra .katex-mathml math").count() == 3
+                    assert page.locator("#bare-inline-fraction .katex-mathml math").count() == 1
+                    assert page.locator("#preserved-explicit-math .katex-mathml math").count() == 1
+                    expect(page.locator("#preserved-explicit-math code")).to_have_text("a*x+b")
                     assert page.locator("#display-dollar .katex-display").count() == 1
                     assert page.locator("#display-bracket .katex-display").count() == 1
                     for identifier in ("multiline-dollar", "multiline-bracket", "bare-latex", "latex-fence"):

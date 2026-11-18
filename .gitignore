@@ -1,5 +1,9 @@
+.venv/
 __pycache__/
-tests/__pycache__/
-runs/
-lean/.lake/
+*.py[cod]
+.DS_Store
+.env
+.env.*
 .secrets/
+workflow/runs/
+workflow/lean/.lake/

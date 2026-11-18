@@ -135,8 +135,11 @@ def main(argv=None):
                     page.locator("#view-overview .section-heading [data-action=open-launch]").click()
                     form = page.locator("#launch-form")
                     expect(form.locator("[name=max_simulator_calls]")).to_have_value("0")
-                    expect(form.locator("[name=benchmark_id]")).to_have_value("q-recovery-one-step")
-                    expect(form.locator("[name=benchmark_id] option")).to_have_count(3)
+                    expect(form.locator("[name=stop_on_verified]")).to_have_value("false")
+                    expect(form.locator("[name=rounds]")).to_have_attribute("max", "10")
+                    expect(form.locator("[name=benchmark_id]")).to_have_value("bench-two-measurements")
+                    form.locator("[name=benchmark_id]").select_option("q-recovery-one-step")
+                    expect(form.locator("[name=benchmark_id] option")).to_have_count(8)
                     form.locator("[name=backend]").select_option("demo")
                     form.locator("[name=mode]").select_option("multi")
                     form.locator("[name=rounds]").fill("2")
@@ -149,7 +152,7 @@ def main(argv=None):
                     expect(page.locator("#run-dialog .iteration-button")).to_have_count(2)
                     expect(page.locator('#run-dialog .iteration-button[data-iteration="2"]')).to_have_attribute("aria-current", "true")
                     expect(page.locator("#tab-evaluation")).to_have_attribute("aria-selected", "true")
-                    expect(page.locator("#run-panel .agent-evaluation-card")).to_have_count(3)
+                    expect(page.locator("#run-panel .agent-evaluation-card")).to_have_count(4)
                     assert page.locator("[data-result-stage]").evaluate_all("nodes => nodes.map(node => node.dataset.resultStage)") == ["proposal", "skeptic", "verification"]
                     expect(page.locator('[data-agent-role="Repair"] .score-pill')).to_have_text("3 / 3")
                     expect(page.locator('[data-agent-role="SA"] .score-pill')).to_have_text("1 / 3")
@@ -173,14 +176,15 @@ def main(argv=None):
                     expect(page.locator('[data-result-stage="skeptic"]')).to_contain_text("Suggested repair:")
                     expect(page.locator('[data-result-stage="skeptic"]')).to_contain_text("awaiting review")
                     expect(page.locator('[data-agent-role="Verification"] .score-pill')).to_have_text("0 / 1")
-                    expect(page.locator('[data-result-stage="verification"] details').first).to_have_attribute("open", "")
+                    expect(page.locator('[data-result-stage="verification"] .checker-diagnostics')).to_be_visible()
+                    expect(page.locator('[data-result-stage="verification"] details').first).not_to_have_attribute("open", "")
                     page.locator('#run-dialog .iteration-button[data-iteration="2"]').click()
                     page.locator("#tab-proof").click()
                     expect(page.locator("#run-panel")).to_contain_text("Proposed proof")
                     expect(page.locator(".attempt-summary")).to_contain_text("Lean verified")
 
                     page.locator("#tab-verification").click()
-                    expect(page.locator("#run-panel")).to_contain_text("Lean-verified formal target")
+                    expect(page.locator("#run-panel")).to_contain_text("Formal proof verified")
                     expect(page.locator("#run-panel")).to_contain_text("MathAILab.RecoveryGoal")
                     expect(page.locator("#run-panel")).to_contain_text("propext")
                     page.locator("#tab-activity").click()
@@ -193,7 +197,9 @@ def main(argv=None):
                     assert original["mode"] == "multi" and len(original["records"]) == 2
                     assert original["backend"] == "demo" and original["model_calls"] == 4
                     assert original["final_score"] == 3
-                    assert original["stop_reason"] == "formal_target_verified"
+                    assert original["stop_reason"] == "iteration_limit"
+                    assert original["has_verified_proof"] is True
+                    assert original["stop_on_verified"] is False
                     assert original["records"][0]["verification"]["status"] == "failed"
                     assert original["records"][1]["verification"]["status"] == "verified"
                     assert original["simulator_calls"] == 0
@@ -262,6 +268,14 @@ def main(argv=None):
                     page.locator('[data-filter="mode"]').select_option("")
                     expect(page.locator("#run-table-body tr")).to_have_count(1)
 
+                    # Blurring the search field must not replace a button between
+                    # pointer-down and click, swallowing the Inspect action.
+                    page.locator("#run-search").fill("q-recovery")
+                    page.locator("#run-table-body").get_by_role("button", name="Inspect", exact=True).click()
+                    expect(page.locator("#run-dialog")).to_be_visible()
+                    page.locator("#run-dialog [data-action=close-run]").click()
+                    page.locator("#run-search").fill("")
+
                     page.locator('.nav-link[data-view="comparisons"]').click()
                     page.locator("#view-comparisons .section-heading [data-action=open-launch]").click()
                     form = page.locator("#launch-form")
@@ -299,7 +313,7 @@ def main(argv=None):
                     page.locator('.nav-link[data-view="benchmark"]').click()
                     expect(page.locator("#view-benchmark")).to_contain_text("Permitted assumptions")
                     expect(page.locator("#view-benchmark")).to_contain_text("Allowed prior results")
-                    expect(page.locator("#view-benchmark")).to_contain_text("MathAILab.RecoveryGoal")
+                    expect(page.locator("#view-benchmark")).to_contain_text("MathAILab.MeasurementsGoal")
                     expect(page.locator("#view-benchmark")).to_contain_text("Formalization milestones")
                     assert page.locator("#view-benchmark pre .katex").count() == 0
                     page.locator('.nav-link[data-view="overview"]').click()

@@ -7,12 +7,14 @@ the workflow gives model agents no retrieval or filesystem tools.
 
 from copy import deepcopy
 from pathlib import Path
+from .research_suite import SUITE_BENCHMARK_IDS, suite_packet
+from .proof_language import public_language
 
 
 CONTROLLABILITY_ID = "arxiv-2603.20710-lemma-2.3"
 DEFAULT_BENCHMARK_ID = "q-recovery-one-step"
 UNIQUENESS_ID = "q-uniqueness-full-observation"
-BENCHMARK_IDS = (DEFAULT_BENCHMARK_ID, UNIQUENESS_ID, CONTROLLABILITY_ID)
+BENCHMARK_IDS = (DEFAULT_BENCHMARK_ID, UNIQUENESS_ID, CONTROLLABILITY_ID) + SUITE_BENCHMARK_IDS
 LEAN_DIR = Path(__file__).resolve().parent / "lean"
 LEAN_VERSION = "4.35.0"
 
@@ -88,6 +90,8 @@ _BENCHMARK = {
 
 def load_benchmark(benchmark_id: str = DEFAULT_BENCHMARK_ID) -> dict:
     """Return the fixed statement and specification, never a reference proof."""
+    if benchmark_id in SUITE_BENCHMARK_IDS:
+        return suite_packet(benchmark_id, LEAN_VERSION)
     if benchmark_id == CONTROLLABILITY_ID:
         packet = deepcopy(_BENCHMARK)
         packet["verification_contract"] = {
@@ -153,11 +157,13 @@ def load_benchmark(benchmark_id: str = DEFAULT_BENCHMARK_ID) -> dict:
         ],
         "verification_contract": {
             "kind": "lean4", "status": "ready", "target_id": benchmark_id,
+            "target_binding": "repository_owned",
+            "proof_language": public_language(),
             "target": target, "toolchain": "leanprover/lean4:v" + LEAN_VERSION,
             "specification": (LEAN_DIR / "MathAILab" / "Spec.lean").read_text(encoding="utf-8"),
             "declaration": f"theorem MathAILab.candidate : {target} := by\n  <proof body>",
             "certificate": {"kind": "lean4", "target_id": benchmark_id, "proof": "Lean tactic body only, without the enclosing by"},
-            "instructions": "Copy the claim and assumptions exactly. Submit only a proof body for the fixed goal. "
+            "instructions": "The server owns the goal and hypotheses; narrative wording is reviewed separately. Submit only a proof body for the fixed goal. "
                 "The verifier supplies imports, definitions, declaration and axiom audit. Never change the target or add hypotheses. "
                 "No sorry/admit, new axioms, commands, comments, strings, macros, imports, IO, native_decide or metaprogramming. "
                 "Use intro, have, simp only, rw, exact, apply, funext, rfl, constructor, calc or grind. "

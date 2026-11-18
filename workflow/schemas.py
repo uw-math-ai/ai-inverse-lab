@@ -30,10 +30,16 @@ class Repair(StructuredModel):
     change: str = Field(min_length=1, max_length=4000)
 
 
+class MilestoneAttempt(StructuredModel):
+    benchmark_id: str = Field(min_length=1, max_length=100)
+    proof: str = Field(min_length=1, max_length=16000)
+
+
 class Proposal(StructuredModel):
     claim: str = Field(min_length=1, max_length=12000)
     assumptions: list[str] = Field(max_length=40)
-    proof: str = Field(max_length=24000)
+    proof: str = Field(max_length=200000)
+    milestone_attempts: list[MilestoneAttempt] = Field(default_factory=list, max_length=8)
     repairs: list[Repair] = Field(max_length=20)
     remaining_gaps: list[str] = Field(max_length=20)
     certificate: Certificate | None
@@ -54,3 +60,10 @@ class Critique(StructuredModel):
     assumptions_preserved: bool
     gaps: list[Gap] = Field(max_length=20)
     simulator_requests: list[SimulatorRequest] = Field(max_length=2)
+
+
+class VerificationAdvice(StructuredModel):
+    assessment: str = Field(max_length=24000)
+    predicted_status: Literal["verified", "not_verified", "uncertain"]
+    diagnostic: str = Field(max_length=24000)
+    suggested_next_step: str = Field(max_length=24000)
