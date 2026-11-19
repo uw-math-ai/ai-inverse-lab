@@ -1,0 +1,12 @@
+module
+
+import VertexCentrality.DirichletPolynomial
+
+#print axioms VertexCentrality.WeightedGraph.conductanceDirichletMatrix_det_ne_zero
+#print axioms VertexCentrality.WeightedGraph.harmonicExtension_eq_inverse
+#print axioms VertexCentrality.WeightedGraph.harmonicBasis_eq_adjugate_div_det
+#print axioms VertexCentrality.WeightedGraph.polynomialDirichletMatrix_eval
+#print axioms VertexCentrality.WeightedGraph.polynomialDirichletMatrix_det_eval_ne_zero
+#print axioms VertexCentrality.WeightedGraph.harmonicBasis_eq_polynomial_ratio
+#print axioms VertexCentrality.WeightedGraph.harmonicBasis_product_eq_polynomial_ratio
+#print axioms VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_polynomial_ratio

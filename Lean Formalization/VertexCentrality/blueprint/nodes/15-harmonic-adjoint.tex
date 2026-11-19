@@ -2,16 +2,18 @@
 id: harmonic-adjoint
 title: Adjoint on harmonic functions
 type: proposition
-status: in-progress
+status: proved
 source: Proposition 2.7, p. 10
 dependencies:
 - harmonic
 - response-adjoint
 lean_declarations:
 - VertexCentrality.WeightedGraph.heatSolution_harmonic_adjoint
+- VertexCentrality.WeightedGraph.controlToState_harmonic_adjoint
 order: 15
-handoff_note: Concrete harmonic pairing checked; weighted Hilbert operator integration
-  remains.
+handoff_note: The concrete weighted Hilbert adjoint on harmonic functions equals the short-response formula.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Let $\iota$ extend a boundary function constantly in time. If $\phi$ is interior harmonic, then \[W^*\phi=R\Lambda_TR\iota(C\Delta\phi)+\iota(C\phi).\] The right side is computable using $\Lambda_T,w,\mu|_B,\phi$.
 

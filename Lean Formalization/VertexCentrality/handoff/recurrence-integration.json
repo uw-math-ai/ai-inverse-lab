@@ -1,0 +1,93 @@
+{
+  "time": "2026-11-19T22:15:49.703419+00:00",
+  "revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "fingerprint": "3b0147f9b2db4d07b9e8a537f0f5fb766b84e85c12b3d723fe4ed7f225f0e491",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Combined VertexCentrality build (3659 jobs), including explicit finite-path recovery and composition expansion; not the complete paper.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": true,
+  "axiom_command": "lake env lean scripts/audit_recurrence.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.recoverTransition_congr",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.prependComposition_bijective",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.compositionWeight_cons_eq_prod",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.recoverTransition_eq_compositionSum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoverTransition_firstPassageProbability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_pow_eq_compositionSum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoverTransition_boundary_probability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoveredResponse_congr",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoveredResponse_eq_heatSolution",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "remaining": [
+    "Infinite-path hittingAfter identification",
+    "Rational dependence and generic rank from a full-rank witness"
+  ],
+  "tooling_limitations": [
+    "Pinned swarmalize unavailable (HTTP 403); no dashboard/blueprint rebuild",
+    "No Lean LSP connected"
+  ]
+}

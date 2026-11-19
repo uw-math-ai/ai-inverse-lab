@@ -2,16 +2,25 @@
 id: algorithm
 title: Algorithm 1 in consistent coordinates
 type: theorem
-status: planned
+status: proved
 source: Algorithm 1 and equations (4.1)–(4.3), pp. 13–14
 dependencies:
 - response-data
 - controls
 - moments
 - full-recovery
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.exists_data_normal_solution
+- VertexCentrality.WeightedGraph.moment_eq_of_data_normal_eq
+- VertexCentrality.WeightedGraph.reconstruction_unique
+- VertexCentrality.WeightedGraph.reconstruction_controls_exist_unique_mass
+- VertexCentrality.recoverTransition_eq_compositionSum
+- VertexCentrality.WeightedGraph.recoveredResponse_eq_heatSolution
 order: 24
 deviation: User approved corrected target on 2026-11-19; see CORRECTIONS.md.
+handoff_note: The explicit response algorithm, consistent control normal equations, corrected weighted moments, and unique full-rank mass solve are checked. Infinite-path compatibility is integrated.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Approved corrected algorithm: recover observed transition powers by renewal; form short and extended responses; form $K=W^*W$ and $a_j=W^*\phi^{(j)}$; solve $Kh_j=a_j$; form $b_{jk}=h_j^\top D_Ba_k-\sum_{x\in B}\mu_x\phi_x^{(j)}\phi_x^{(k)}$, where $D_B=I_T\otimes\operatorname{diag}(\mu_B)$; solve $H^\top m=b$. Under full rank and Assumption 1 this returns $\mu_I$.
 

@@ -2,18 +2,21 @@
 id: projection
 title: Euclidean projection reconstruction
 type: theorem
-status: in-progress
+status: proved
 source: Theorem 3.2, p. 12; equation (4.3), p. 14
 dependencies:
 - moments
 - product-span
 lean_declarations:
+- VertexCentrality.WeightedGraph.projection_eq_of_hittingProbability_eq
 - VertexCentrality.projection_span_eq_iff
 - VertexCentrality.matrix_projection_eq_iff
+- VertexCentrality.WeightedGraph.projection_eq_of_firstPassageProbability_eq
 order: 20
 deviation: User approved corrected target on 2026-11-19; see CORRECTIONS.md.
-handoff_note: Euclidean moment-to-projection algebra checked. Full data-to-moments
-  theorem remains open.
+handoff_note: Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE_REVIEW.md.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Approved corrected target: under Assumption 1 and $T\geq|X|$, the known input $(G,w,\mu|_B,r|_{1\leq t<2T,B\times B})$ determines the counting-measure Euclidean projection $\Pi_Q^{\mathrm{Euc}}(\mu|_I)$. The printed theorem names the previously mass-weighted space instead; that convention is not silently identified with this target.
 

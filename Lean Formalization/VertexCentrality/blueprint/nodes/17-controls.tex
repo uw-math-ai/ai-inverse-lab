@@ -2,7 +2,7 @@
 id: controls
 title: Data-derived exact controls
 type: proposition
-status: in-progress
+status: proved
 source: Proposition 3.1, p. 11
 dependencies:
 - controllability
@@ -12,9 +12,13 @@ dependencies:
 - pseudoinverse
 lean_declarations:
 - VertexCentrality.apply_gram_moorePenrose_adjoint_of_surjective
+- VertexCentrality.WeightedGraph.gramControl_exact
+- VertexCentrality.WeightedGraph.gramControl_norm_le
+- VertexCentrality.WeightedGraph.exact_control_transfer
 order: 17
-handoff_note: Generic exact Gram control theorem checked. Concrete W, adjoint and
-  data-derived Gram identification remain.
+handoff_note: Exact controls transfer between models with equal responses and known boundary coefficients. Together with the finite-path probability bridge this yields data invariance without assuming controls are already known.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Under Assumption 1 and $T\geq|X|$, every interior harmonic $\psi$ has an exact control $h_\psi=(W^*W)^\dagger W^*\psi$, with $Wh_\psi=\psi$. It is computable from the known graph, boundary masses, and observed first-passage data.
 

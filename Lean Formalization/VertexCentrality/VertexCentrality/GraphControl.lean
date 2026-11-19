@@ -1,6 +1,7 @@
 module
 
 public import VertexCentrality.Graph
+public import VertexCentrality.GraphHeat
 public import VertexCentrality.Observability
 
 /-!
@@ -88,6 +89,17 @@ def UniqueContinuation (G : WeightedGraph X) (B : Set X) : Prop :=
   ∀ (a : ℝ) (u : X → ℝ), (∀ x, -G.laplacian u x = a * u x) →
     (∀ x ∈ B, u x = 0) → u = 0
 
+/-- On a nonempty graph, unique continuation excludes an empty boundary. -/
+theorem boundary_nonempty_of_uniqueContinuation [Nonempty X]
+    (G : WeightedGraph X) (B : Set X) (huc : G.UniqueContinuation B) : B.Nonempty := by
+  by_contra hB
+  have hu := huc 0 (fun _ ↦ 1) (by intro x; simp) (by
+    intro x hx
+    exact (hB ⟨x, hx⟩).elim)
+  obtain ⟨x⟩ := ‹Nonempty X›
+  have hx := congrFun hu x
+  norm_num at hx
+
 /-- Unique continuation also holds for the actual transition operator. -/
 theorem transition_uniqueContinuation (G : WeightedGraph X) (B : Set X)
     (huc : G.UniqueContinuation B) (a : ℝ) (u : G.Space)
@@ -112,5 +124,48 @@ theorem boundary_reachability_surjective (G : WeightedGraph X) (B : Set X)
     (G.transition_uniqueContinuation B huc) T
   change Module.finrank ℝ (X → ℝ) ≤ T
   simpa using hT
+
+omit [Fintype X] in
+/-- Restriction followed by zero extension is the boundary mask. -/
+theorem boundaryExtend_restrict_eq_mask (G : WeightedGraph X) (B : Finset X)
+    (u : G.Space) : boundaryExtend B (boundaryRestrict B u) = G.boundaryMask B u := by
+  classical
+  have hm : G.boundaryMask (↑B : Set X) u =
+      (fun x ↦ @ite ℝ (x ∈ (↑B : Set X)) (Classical.propDecidable _) (u x) 0 :
+        G.Space) := rfl
+  rw [hm]
+  funext x
+  by_cases hx : x ∈ B <;> simp [boundaryExtend, boundaryRestrict, hx]
+
+/-- Reversing power-indexed vertex controls and restricting to the boundary gives
+the same terminal state for the concrete heat recurrence. -/
+theorem heatSolution_reverse_restrict (G : WeightedGraph X) (B : Finset X) (T : ℕ)
+    (f : Fin T → G.Space) :
+    G.heatSolution B (fun t ↦ boundaryRestrict B (f t.rev)) T =
+      reachability G.spaceTransition (G.boundaryMask B) T f := by
+  classical
+  rw [heatSolution, forcedHeat_eq_sum, ← Fin.sum_univ_eq_sum_range,
+    reachability_apply]
+  calc
+    _ = ∑ t : Fin T, (G.spaceTransition ^ (t.rev : ℕ))
+        (G.boundaryMask B (f t.rev)) := by
+      apply Finset.sum_congr rfl
+      intro t _
+      rw [extendControl_apply, G.boundaryExtend_restrict_eq_mask]
+      have ht : T - 1 - (t : ℕ) = (t.rev : ℕ) := by simp [Fin.val_rev]; omega
+      rw [ht]
+      rfl
+    _ = _ := Equiv.sum_comp Fin.revPerm
+      (fun k : Fin T ↦ (G.spaceTransition ^ (k : ℕ)) (G.boundaryMask B (f k)))
+
+/-- Unique continuation implies exact controllability for the actual finite
+boundary-time heat map, including the empty-time/empty-vertex edge case. -/
+theorem heatSolutionLinear_surjective (G : WeightedGraph X) (B : Finset X)
+    (huc : G.UniqueContinuation B) (T : ℕ) (hT : Fintype.card X ≤ T) :
+    Function.Surjective (G.heatSolutionLinear B T T) := by
+  intro u
+  obtain ⟨f, hf⟩ := G.boundary_reachability_surjective B huc T hT u
+  exact ⟨fun t ↦ boundaryRestrict B (f t.rev),
+    (G.heatSolution_reverse_restrict B T f).trans hf⟩
 
 end VertexCentrality.WeightedGraph

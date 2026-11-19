@@ -2,7 +2,7 @@
 id: dirichlet
 title: Harmonic extension and basis
 type: lemma
-status: in-progress
+status: proved
 source: Equation (2.12), p. 11; cited [24, Lemma 10.1]
 dependencies:
 - harmonic
@@ -11,8 +11,9 @@ lean_declarations:
 - VertexCentrality.WeightedGraph.existsUnique_harmonicExtension
 - VertexCentrality.WeightedGraph.harmonicBasis
 order: 13
-handoff_note: Actual harmonic extension and basis constructed under connectedness
-  and nonempty boundary.
+handoff_note: Actual harmonic extension and basis constructed under connectedness and nonempty boundary.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Assume $B\ne\varnothing$. Every $g:B\to\mathbb R$ has a unique interior harmonic extension $Eg:X\to\mathbb R$ with $CEg=g$. For boundary standard basis $e_j$ put $\phi^{(j)}=Ee_j$. These functions form a basis of the harmonic subspace.
 

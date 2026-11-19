@@ -2,12 +2,22 @@
 id: first-passage
 title: Positive-time first passage
 type: definition
-status: planned
+status: proved
 source: Section 1.2, p. 3
 dependencies:
 - transition
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.positivePathLaw_map_prefix
+- VertexCentrality.WeightedGraph.hittingAfter_pathProcess_iff
+- VertexCentrality.WeightedGraph.positivePathLaw_hittingAfter
+- VertexCentrality.WeightedGraph.finitePathLaw
+- VertexCentrality.WeightedGraph.firstPassageProbability
+- VertexCentrality.WeightedGraph.firstPassageProbability_zero
+- VertexCentrality.WeightedGraph.firstPassageProbability_eq_weight
 order: 5
+handoff_note: Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE_REVIEW.md.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 For the Markov chain $H^x$ with transition $P$ and initial state $x$, define $\tau(x,y)=\inf\{s\geq1:H_s^x=y\}\in\mathbb N\cup\{\infty\}$ and $r(t,x,y)=\mathbb P_x(\tau(x,y)=t)$ for $t\geq1$. Thus $r(1,x,y)=p_{xy}$, including $x=y$.
 

@@ -58,4 +58,4 @@ def snapshot():
     return dict(nodes=items, status_counts=counts, swarm=swarm_snapshot(),
                 branch=git('branch', '--show-current'),
                 revision=git('rev-parse', 'HEAD'), dirty=bool(git('status', '--porcelain', '--', '.')),
-                evidence=evidence, phase='Paused for server handoff · full corrected paper incomplete')
+                evidence=evidence, phase='Corrected reconstruction checked · see scope and axiom audit')

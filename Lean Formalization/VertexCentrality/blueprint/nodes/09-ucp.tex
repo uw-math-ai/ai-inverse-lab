@@ -2,16 +2,18 @@
 id: ucp
 title: Unique continuation hypothesis
 type: definition
-status: in-progress
+status: proved
 source: Assumption 1(i), p. 4
 dependencies:
 - laplacian
 lean_declarations:
+- VertexCentrality.WeightedGraph.boundary_nonempty_of_uniqueContinuation
 - VertexCentrality.WeightedGraph.UniqueContinuation
 - VertexCentrality.WeightedGraph.transition_uniqueContinuation
 order: 9
-handoff_note: UCP is an explicit graph hypothesis, transported from negative Laplacian
-  to transition eigenvectors. No generic UCP claim proved.
+handoff_note: UCP is an explicit graph hypothesis, transported from negative Laplacian to transition eigenvectors. No generic UCP claim proved.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 The unique continuation hypothesis is: for every $\lambda\in\mathbb R$ and $v:X\to\mathbb R$, if $-\Delta v=\lambda v$ and $Cv=0$, then $v=0$. In this nonempty connected graph it implies $B\ne\varnothing$.
 

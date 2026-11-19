@@ -2,13 +2,19 @@
 id: rationality
 title: Rational dependence on conductances
 type: lemma
-status: planned
+status: proved
 source: Corollary 3.3 proof, pp. 12–13; cited [24]
 dependencies:
 - dirichlet
 - product-span
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.conductanceDirichletMatrix_det_ne_zero
+- VertexCentrality.WeightedGraph.harmonicBasis_eq_polynomial_ratio
+- VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_polynomial_ratio
 order: 22
+handoff_note: Actual harmonic-product entries are polynomial ratios with nonzero determinant denominators on connected graph parameters.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 For fixed connected graph and nonempty $B$, let $w$ range over the positive edge orthant. Every entry of $H(w)$ is rational in the edge variables, with denominators nonzero throughout that orthant.
 

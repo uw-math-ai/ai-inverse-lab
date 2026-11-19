@@ -2,8 +2,8 @@
 This blueprint prepares the exact mathematical formalization of Gao--Li--Yang,
 \emph{Vertex Centrality Reconstruction in an Inverse Problem for Information Diffusion},
 arXiv:2603.20710v1 (21 March 2026). All paper references below refer to that version.
-The full corrected paper remains incomplete. Per-node metadata records the current
-proof frontier; partial prerequisites do not certify their consumers. A passing build
+The corrected exact reconstruction route is implemented. See the scope review
+for endpoint statements, explicit hypotheses, and excluded numerical claims. A passing build
 is not by itself a proof or axiom certificate. The existing parent-folder proof audit and historical
 Tau Ceti candidates are preserved; they are not counted as checked project proofs.
 
@@ -19,8 +19,8 @@ These are local audited corrections, not author-confirmed errata.
 The target includes Sections 1--4 and Appendix A, including the cited control,
 Dirichlet, and linear-algebra prerequisites. Numerical experiments in Section 5,
 Monte Carlo accuracy, numerical stability, and the complexity count in Remark 2.2
-are outside this initial exact-theorem scope. The renewal algorithm is equivalent
-to the paper's composition sum only after that equivalence is proved.
+are outside this initial exact-theorem scope. The finite renewal recurrence and
+its composition expansion are proved in the reconstruction modules.
 A dependency edge records a mathematical need, not a proof certificate.
 Definitions, statements, proofs, and axiom audits must be tracked separately as work progresses.
 Throughout, Assumption 1 means the weighted-graph hypotheses,
@@ -30,7 +30,7 @@ defined below. Status labels describe progress, not independent certificates.
 \chapter{Mathematical dependency blueprint}
 \nodebreak
 \section{Finite weighted graph}
-Source: Section 1.1, pp. 1–2. Status: in-progress.
+Source: Section 1.1, pp. 1–2. Status: proved.
 \begin{definition}\label{weighted-graph}
 
 Let $X$ be finite and nonempty and $G$ a connected simple undirected graph on $X$. Let $\mu:X\to\mathbb R$ satisfy $\mu_x>0$. Let $w:X\times X\to\mathbb R$ be symmetric and nonnegative, with $w_{xy}>0$ exactly when $x\sim y$. In particular $w_{xx}=0$. Fix $B\subseteq X$ and put $I=X\setminus B$. Define $d_w(x)=\sum_y w_{xy}$.
@@ -39,12 +39,12 @@ Let $X$ be finite and nonempty and $G$ a connected simple undirected graph on $X
 \paragraph{Checkpoint status.}
 Finite weighted graph definitions are implemented; connectivity is an explicit hypothesis where needed.
 \end{definition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Use a finite vertex type and Mathlib's simple graph API. Sum over all vertices with zero conductance on nonedges. Connectivity and nonemptiness are hypotheses, not consequences of positivity.
 \nodebreak
 \section{Weighted spaces and restriction}
-Source: Section 1.1, p. 2. Status: in-progress.
+Source: Section 1.1, p. 2. Status: proved.
 \begin{definition}\label{weighted-spaces}
 
 \uses{weighted-graph}
@@ -52,14 +52,14 @@ For $S\subseteq X$ set $\langle u,v\rangle_{S,\mu}=\sum_{x\in S}\mu_xu_xv_x$. Fo
 
 
 \paragraph{Checkpoint status.}
-Weighted vertex Hilbert space and boundary pairing identity checked. The finite boundary-control Hilbert realization still needs integration with pseudoinverse APIs.
+Weighted vertex and boundary-time Hilbert spaces are implemented; boundary masses are retained in the actual adjoints.
 \end{definition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Positivity of $\mu$ gives positive definiteness. Transport the Euclidean structure by $u_x\mapsto\sqrt{\mu_x}u_x$, or use an existing weighted-space construction. Splitting a finite sum shows $\langle Jf,u\rangle_{X,\mu}=\langle f,Cu\rangle_{B,\mu}$.
 \nodebreak
 \section{Laplacian and energy identity}
-Source: Section 1.1, p. 2. Status: in-progress.
+Source: Section 1.1, p. 2. Status: proved.
 \begin{lemma}\label{laplacian}
 
 \uses{weighted-spaces}
@@ -69,12 +69,12 @@ Define $\Delta u(x)=\mu_x^{-1}\sum_yw_{xy}(u_y-u_x)$ and $P=1+\Delta$. For all $
 \paragraph{Checkpoint status.}
 Energy and weighted self-adjointness identities checked.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Cancel $\mu_x$ using strict positivity, interchange the two finite summations, swap $x,y$, and average the two expressions using symmetry of $w$. Constants have zero differences. This gives weighted self-adjointness, not ordinary matrix symmetry of $\Delta$.
 \nodebreak
 \section{Stochastic transition and heat evolution}
-Source: Equations (1.1)–(1.3), p. 3. Status: in-progress.
+Source: Equations (1.1)–(1.3), p. 3. Status: proved.
 \begin{lemma}\label{transition}
 
 \uses{laplacian}
@@ -82,38 +82,44 @@ Assume $d_w(x)\leq\mu_x$ for all $x$. Put $p_{xy}=w_{xy}/\mu_x$ for $x\ne y$ and
 
 
 \paragraph{Checkpoint status.}
-Stochastic matrix identities checked. Markov path-law realization remains open.
+Concrete transition and all powers are Mathlib row-stochastic matrices; transitionPMF realizes the one-step law using Mathlib PMF.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Separate the diagonal term in each row. Off-diagonal detailed balance is symmetry of $w$; the diagonal identity is reflexive. Matrix action agrees with $1+\Delta$. Induction on time proves the recurrence and uniqueness. Connect this finite stochastic matrix to the existing Markov kernel and path-law APIs.
 \nodebreak
 \section{Positive-time first passage}
-Source: Section 1.2, p. 3. Status: planned.
+Source: Section 1.2, p. 3. Status: proved.
 \begin{definition}\label{first-passage}
 
 \uses{transition}
 For the Markov chain $H^x$ with transition $P$ and initial state $x$, define $\tau(x,y)=\inf\{s\geq1:H_s^x=y\}\in\mathbb N\cup\{\infty\}$ and $r(t,x,y)=\mathbb P_x(\tau(x,y)=t)$ for $t\geq1$. Thus $r(1,x,y)=p_{xy}$, including $x=y$.
 
+
+\paragraph{Checkpoint status.}
+Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE\_REVIEW.md.
 \end{definition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Use a hitting-time construction with start index one and retain the value infinity. On the diagonal this is first return; replacing it with a hitting time starting at zero would invalidate renewal. Finite cylinder events give an alternative elementary finite-horizon construction, but must be bridged to the stated probability law.
 \nodebreak
 \section{Finite renewal identity}
-Source: Equation (2.5), p. 6; cited [12]. Status: planned.
+Source: Equation (2.5), p. 6; cited [12]. Status: proved.
 \begin{lemma}\label{renewal}
 
 \uses{first-passage}
 For $t\geq1$ and $x,y\in X$, \[(P^t)_{xy}=\sum_{s=1}^t r(s,x,y)(P^{t-s})_{yy}.\] Consequently observed $r(s,x,y)$ with $x,y\in B$, $1\leq s\leq N$ determines $(P^t)_{xy}$ on $B\times B$ for $0\leq t\leq N$.
 
+
+\paragraph{Checkpoint status.}
+Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE\_REVIEW.md.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Partition the event $H_t^x=y$ by its first positive visit $s\leq t$ and apply the Markov property at that deterministic time on each event. The suffix contributes $(P^{t-s})_{yy}$. For reconstruction first compute diagonal entries by induction from $(P^0)_{yy}=1$, then other observed entries by the same sum. Iterating gives the composition expansion (2.5); prove that equality rather than assuming the cited result.
 \nodebreak
 \section{Forced heat recurrence and Duhamel sum}
-Source: Equations (2.1), (2.4), pp. 5–6. Status: in-progress.
+Source: Equations (2.1), (2.4), pp. 5–6. Status: proved.
 \begin{lemma}\label{forced-heat}
 
 \uses{transition,weighted-spaces}
@@ -123,24 +129,27 @@ For $f:Z_T\times B\to\mathbb R$, extend $f$ by zero in time and space. Define $U
 \paragraph{Checkpoint status.}
 Generic recursion, uniqueness and Duhamel representation checked; concrete boundary controls implemented.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Induct on $t$. The successor sum splits into earlier sources multiplied by $P$ and the new $s=t$ term. The natural-time recurrence defines $U_f(2T)$ as needed for endpoint differences, while measurements still end at $2T-1$.
 \nodebreak
 \section{Response reconstructed from first passages}
-Source: Lemma 2.1, pp. 6–7. Status: planned.
+Source: Lemma 2.1, pp. 6–7. Status: proved.
 \begin{lemma}\label{response-data}
 
 \uses{renewal,forced-heat}
 For $T>0$, define $\Lambda_T f=(CU_f(t))_{t<T}$ and $\widehat\Lambda_T f=(CU_f(t))_{t<2T}$. Both maps are determined by $r(t,x,y)$ for $1\leq t<2T$, $x,y\in B$.
 
+
+\paragraph{Checkpoint status.}
+Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE\_REVIEW.md.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Insert the recovered observed transition powers into the Duhamel sum. Every source vertex and every measured vertex lies in $B$, so no unobserved entry of $P$ is used. Terms have exponent $t-1-s\leq2T-2$. Handle $t=0$ and $t=1$ separately to recover precisely the cases in (2.2). The stated measurement horizon is sufficient, possibly redundant.
 \nodebreak
 \section{Unique continuation hypothesis}
-Source: Assumption 1(i), p. 4. Status: in-progress.
+Source: Assumption 1(i), p. 4. Status: proved.
 \begin{definition}\label{ucp}
 
 \uses{laplacian}
@@ -150,12 +159,12 @@ The unique continuation hypothesis is: for every $\lambda\in\mathbb R$ and $v:X\
 \paragraph{Checkpoint status.}
 UCP is an explicit graph hypothesis, transported from negative Laplacian to transition eigenvectors. No generic UCP claim proved.
 \end{definition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Apply the hypothesis to the nonzero constant function, which has eigenvalue zero, to exclude empty observation. Keep unique continuation as an explicit hypothesis of the reconstruction theorem; do not claim it for all connected graphs.
 \nodebreak
 \section{Exact controllability}
-Source: Lemma 2.3, p. 8; cited [12, Proposition 5.3]. Status: in-progress.
+Source: Lemma 2.3, p. 8; cited [12, Proposition 5.3]. Status: proved.
 \begin{lemma}\label{controllability}
 
 \uses{ucp,forced-heat}
@@ -163,14 +172,14 @@ Assume unique continuation and $T\geq|X|$. The linear map $W:f\mapsto U_f(T)$ fr
 
 
 \paragraph{Checkpoint status.}
-Spectral finite-horizon reachability checked, including Cayley-Hamilton. Current graph endpoint uses masked full-vertex controls; the time-reversal/index bridge to heatSolutionLinear on boundary controls remains open.
+Concrete boundary-time heat-map surjectivity is proved by restriction and time reversal of masked vertex controls, including empty cases.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 The adjoint formula gives $\ker W^*=\bigcap_{k<T}\ker(CP^k)$. Cayley--Hamilton makes the intersection for $0\leq k<|X|$ invariant under $P$. If nonzero, the restriction of the self-adjoint $P$ to it has a real nonzero eigenvector. It vanishes on $B$ and is also an eigenvector of $-\Delta=1-P$, contradicting unique continuation. Finite-dimensional orthogonal range duality now proves surjectivity. The invariant-subspace and spectral steps are obligations, not imported axioms.
 \nodebreak
 \section{Blagovescenskii Gram identity}
-Source: Proposition 2.4, pp. 8–9. Status: in-progress.
+Source: Proposition 2.4, pp. 8–9. Status: proved.
 \begin{proposition}\label{gram-identity}
 
 \uses{forced-heat,laplacian}
@@ -178,14 +187,14 @@ Let $T>0$ and $f,g$ vanish outside $Z_T\times B$. Then \[\langle Wf,Wg\rangle_{X
 
 
 \paragraph{Checkpoint status.}
-Generic and concrete graph pairing identities checked. Data-derived operator identification remains an integration obligation.
+Weighted Gram identity checked; infinite-path data-to-response recovery is now integrated.
 \end{proposition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Set $I(s,t)=\langle U_f(s),U_g(t)\rangle$. Self-adjointness gives $I(s+1,t)-I(s,t+1)=F(s,t)$ with $F(s,t)=\langle f(s),CU_g(t)\rangle-\langle CU_f(s),g(t)\rangle$. Induction yields $I(s,t)=\sum_{j<s}F(j,t+s-1-j)$. At $s=t=T$, the second source term vanishes because its time is at least $T$. Adjoint uniqueness proves the operator equality.
 \nodebreak
 \section{Interior harmonic functions}
-Source: Definition 2.5, Remark 2.6, p. 9. Status: in-progress.
+Source: Definition 2.5, Remark 2.6, p. 9. Status: proved.
 \begin{definition}\label{harmonic}
 
 \uses{laplacian}
@@ -195,12 +204,12 @@ A function $\phi:X\to\mathbb R$ is interior harmonic if $\Delta\phi(x)=0$ for ev
 \paragraph{Checkpoint status.}
 Harmonicity and independence of extension from vertex masses checked.
 \end{definition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Multiply by the positive number $\mu_x$ at each interior vertex. The resulting equation has no vertex mass. This equivalence must precede claims of data independence.
 \nodebreak
 \section{Harmonic extension and basis}
-Source: Equation (2.12), p. 11; cited [24, Lemma 10.1]. Status: in-progress.
+Source: Equation (2.12), p. 11; cited [24, Lemma 10.1]. Status: proved.
 \begin{lemma}\label{dirichlet}
 
 \uses{harmonic,weighted-spaces}
@@ -210,12 +219,12 @@ Assume $B\ne\varnothing$. Every $g:B\to\mathbb R$ has a unique interior harmonic
 \paragraph{Checkpoint status.}
 Actual harmonic extension and basis constructed under connectedness and nonempty boundary.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 For zero boundary data the energy identity forces equal values across every positive-conductance edge. Connectivity and a boundary vertex force the function to be zero. The square interior Dirichlet block is therefore injective and hence invertible. Solve it with the given boundary data. Linearity and $CE=1$ prove the basis assertion. Handle empty interior by the unique empty solution.
 \nodebreak
 \section{Time reversal and response adjoint}
-Source: Appendix A, pp. 18–19. Status: in-progress.
+Source: Appendix A, pp. 18–19. Status: proved.
 \begin{lemma}\label{response-adjoint}
 
 \uses{forced-heat,laplacian}
@@ -225,12 +234,12 @@ Let $R$ reverse $Z_T$ and use weighted space-time inner products. Then $R$ is an
 \paragraph{Checkpoint status.}
 Concrete weighted boundary-control response time-reversal identity checked.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Write the lower-triangular time blocks of $\Lambda_T$: for $s<t$ they are $CP^{t-1-s}J$, and otherwise zero. Each spatial block is self-adjoint because $J^*=C$ and $P$ is self-adjoint. Transposing time blocks agrees with reversing both indices. This also avoids terminal-index ambiguity in the backward equation. Encode reversal with a finite-index equivalence.
 \nodebreak
 \section{Adjoint on harmonic functions}
-Source: Proposition 2.7, p. 10. Status: in-progress.
+Source: Proposition 2.7, p. 10. Status: proved.
 \begin{proposition}\label{harmonic-adjoint}
 
 \uses{harmonic,response-adjoint}
@@ -238,14 +247,14 @@ Let $\iota$ extend a boundary function constantly in time. If $\phi$ is interior
 
 
 \paragraph{Checkpoint status.}
-Concrete harmonic pairing checked; weighted Hilbert operator integration remains.
+The concrete weighted Hilbert adjoint on harmonic functions equals the short-response formula.
 \end{proposition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Telescope $\langle U_f(t+1)-U_f(t),\phi\rangle$. Move $\Delta$ across the inner product and use its vanishing on $I$ to leave $\langle CU_f(t),C\Delta\phi\rangle_B+\langle f(t),C\phi\rangle_B$. Sum over time and use the response adjoint. On $B$, $\Delta\phi$ uses only known boundary masses.
 \nodebreak
 \section{Gram pseudoinverse exact preimage}
-Source: Linear algebra prerequisite to Proposition 3.1. Status: in-progress.
+Source: Linear algebra prerequisite to Proposition 3.1. Status: proved.
 \begin{lemma}\label{pseudoinverse}
 
 \uses{weighted-spaces}
@@ -253,14 +262,14 @@ For a linear map $A:E\to F$ between finite-dimensional real inner-product spaces
 
 
 \paragraph{Checkpoint status.}
-Actual orthogonal-complement inverse constructed, four Penrose identities and unique minimum-norm preimage proved.
+The checkpoint inverse is proved equal to the canonical inverse imported from pinned Tau Ceti; weighted minimum-norm and Gram results apply to it.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Use $\operatorname{range}(A^*A)=\operatorname{range}(A^*)$ and the Penrose projection property to obtain the normal equations. If $y=Az$, these equations say $A^*A(h-z)=0$; taking inner product with $h-z$ proves $A(h-z)=0$. The inverse selects the orthogonal complement of the kernel, and Pythagoras proves minimality. The existing candidate in the parent folder is historical evidence only until ported and checked at this project's pins.
 \nodebreak
 \section{Data-derived exact controls}
-Source: Proposition 3.1, p. 11. Status: in-progress.
+Source: Proposition 3.1, p. 11. Status: proved.
 \begin{proposition}\label{controls}
 
 \uses{controllability,gram-identity,harmonic-adjoint,response-data,pseudoinverse}
@@ -268,38 +277,44 @@ Under Assumption 1 and $T\geq|X|$, every interior harmonic $\psi$ has an exact c
 
 
 \paragraph{Checkpoint status.}
-Generic exact Gram control theorem checked. Concrete W, adjoint and data-derived Gram identification remain.
+Exact controls transfer between models with equal responses and known boundary coefficients. Together with the finite-path probability bridge this yields data invariance without assuming controls are already known.
 \end{proposition}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Controllability puts $\psi$ in the range of $W$; apply the Gram preimage lemma. The Gram operator and harmonic adjoint are available from the measured extended and short responses. Weighted control-space masses are known. Distinguish this weighted minimum-norm assertion from ordinary pseudoinversion in value coordinates.
 \nodebreak
 \section{Interior harmonic-product moments}
-Source: Equation (3.2), p. 11. Status: planned.
+Source: Equation (3.2), p. 11. Status: proved.
 \begin{lemma}\label{moments}
 
 \uses{controls}
 For interior harmonic $\phi,\psi$ and the exact control $h_\psi$, \[\sum_{x\in I}\mu_x\psi_x\phi_x=\langle h_\psi,W^*\phi\rangle_{Z_T\times B,\mu}-\sum_{x\in B}\mu_x\psi_x\phi_x.\] Both terms on the right are determined by the data and known quantities.
 
+
+\paragraph{Checkpoint status.}
+Interior harmonic-product moments agree for admissible UCP models with equal conductances, boundary masses, and finite-path first-passage laws.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Replace $\psi$ with $Wh_\psi$, apply the weighted adjoint identity, and split the vertex sum into disjoint boundary and interior parts. Keep the mass factor in the space-time inner product throughout.
 \nodebreak
 \section{Harmonic product space and rank}
-Source: Equations (3.4)–(3.5), p. 12. Status: planned.
+Source: Equations (3.4)–(3.5), p. 12. Status: proved.
 \begin{lemma}\label{product-span}
 
 \uses{dirichlet}
 Let $Q\subseteq\mathbb R^I$ be spanned by $(\phi\psi)|_I$ for harmonic $\phi,\psi$. Let $H$ have columns $(\phi^{(j)}\phi^{(k)})|_I$ for $j\leq k$. Then $Q=\operatorname{range}H$. In particular $Q=\mathbb R^I$ iff $\operatorname{rank}H=|I|$, which requires $|B|(|B|+1)/2\geq|I|$.
 
+
+\paragraph{Checkpoint status.}
+All harmonic products are spanned by the finite Dirichlet basis products. Sym2 removes duplicate pairs; full row rank is equivalent to full span, and the boundary-pair count is a proved necessary condition. The actual matrix is independent of masses.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Expand each harmonic function in the boundary basis and distribute products. Commutativity reduces ordered pairs to $j\leq k$; each column is itself a harmonic product. Use rank equals dimension of the range, followed by the column-count bound. The count alone is not sufficient for full rank.
 \nodebreak
 \section{Euclidean projection reconstruction}
-Source: Theorem 3.2, p. 12; equation (4.3), p. 14. Status: in-progress.
+Source: Theorem 3.2, p. 12; equation (4.3), p. 14. Status: proved.
 \begin{theorem}\label{projection}
 
 \uses{moments,product-span}
@@ -307,14 +322,14 @@ Approved corrected target: under Assumption 1 and $T\geq|X|$, the known input $(
 
 
 \paragraph{Checkpoint status.}
-Euclidean moment-to-projection algebra checked. Full data-to-moments theorem remains open.
+Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE\_REVIEW.md.
 \end{theorem}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Moments give $H^\top\mu_I=b$. The unique Euclidean minimum-norm solution is the Euclidean projection onto $\operatorname{range}H=Q$. A mass-weighted projection would instead pair $\mu_I$ with another factor of $\mu_I$. The parent audit's path example gives $5/2$ versus $13/5$. The user approved the Euclidean target on 19 November 2026; retain the distinction in the Lean statement. Prove dependence on equal observed input, not just existence using the unknown interior mass.
 \nodebreak
 \section{Full-rank reconstruction}
-Source: Theorem 3.2 with equation (3.5). Status: in-progress.
+Source: Theorem 3.2 with equation (3.5). Status: proved.
 \begin{theorem}\label{full-recovery}
 
 \uses{moments,product-span}
@@ -322,44 +337,53 @@ Under Assumption 1, $T\geq|X|$, and $\operatorname{rank}H=|I|$, the known input 
 
 
 \paragraph{Checkpoint status.}
-Full-rank uniqueness algebra checked; full paper-level recovery and generic-rank integration remain open.
+Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE\_REVIEW.md.
 \end{theorem}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 The matrix $H$ is independent of the unknown masses. Equal observed data and boundary masses give equal Gram and harmonic-adjoint operators, hence the same computed moments. Full row rank of $H$ makes $H^\top$ injective, forcing equality of the interior vectors. Empty interior is automatic. This statement does not require choosing a projection convention.
 \nodebreak
 \section{Rational dependence on conductances}
-Source: Corollary 3.3 proof, pp. 12–13; cited [24]. Status: planned.
+Source: Corollary 3.3 proof, pp. 12–13; cited [24]. Status: proved.
 \begin{lemma}\label{rationality}
 
 \uses{dirichlet,product-span}
 For fixed connected graph and nonempty $B$, let $w$ range over the positive edge orthant. Every entry of $H(w)$ is rational in the edge variables, with denominators nonzero throughout that orthant.
 
+
+\paragraph{Checkpoint status.}
+Actual harmonic-product entries are polynomial ratios with nonzero determinant denominators on connected graph parameters.
 \end{lemma}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 The interior Dirichlet block has polynomial entries and is invertible for every positive conductance assignment by the energy argument. The adjugate formula writes its inverse as polynomial entries divided by the nonvanishing determinant. Harmonic basis entries and their pairwise products remain rational. The determinant of an empty block is one.
 \nodebreak
 \section{Generic full rank from one witness}
-Source: Corollary 3.3, pp. 12–13. Status: planned.
+Source: Corollary 3.3, pp. 12–13. Status: proved.
 \begin{corollary}\label{generic-rank}
 
 \uses{rationality,full-recovery}
 If some positive conductance assignment $w_0$ has $\operatorname{rank}H(w_0)=|I|$, the rank-deficient assignments form a Lebesgue-null subset of the positive edge orthant. Full reconstruction follows outside that null set for assignments that additionally satisfy admissibility and unique continuation.
 
-\end{corollary}
-\paragraph{Proof plan (not yet formalized).}
 
-Choose one full-size minor nonzero at $w_0$. Its rational numerator is a nonzero polynomial and its denominator never vanishes in the positive orthant. The deficient locus is contained in the zero set of that numerator, which has measure zero. Intersect with admissibility only afterward. This repairs the printed dichotomy for sets already intersected with the admissible region. The witness must be supplied, not inferred from the number of columns. Formalize the nonzero-polynomial null-set prerequisite or reuse a checked library theorem.
+\paragraph{Checkpoint status.}
+Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE\_REVIEW.md.
+\end{corollary}
+\paragraph{Proof outline.}
+
+Use the determinant of the row Gram matrix of the polynomial numerator matrix. Mathlib proves that the real matrix and its row Gram matrix have the same rank, so the full-rank witness makes this certificate polynomial nonzero. Tau Ceti proves its zero locus is Lebesgue-null. Clearing the common squared Dirichlet determinant preserves rank on connected positive graph parameters. Intersect with admissibility only afterward. This repairs the printed dichotomy for sets already intersected with the admissible region. The witness must be supplied, not inferred from the number of columns. Formalize the nonzero-polynomial null-set prerequisite or reuse a checked library theorem.
 \nodebreak
 \section{Algorithm 1 in consistent coordinates}
-Source: Algorithm 1 and equations (4.1)–(4.3), pp. 13–14. Status: planned.
+Source: Algorithm 1 and equations (4.1)–(4.3), pp. 13–14. Status: proved.
 \begin{theorem}\label{algorithm}
 
 \uses{response-data,controls,moments,full-recovery}
 Approved corrected algorithm: recover observed transition powers by renewal; form short and extended responses; form $K=W^*W$ and $a_j=W^*\phi^{(j)}$; solve $Kh_j=a_j$; form $b_{jk}=h_j^\top D_Ba_k-\sum_{x\in B}\mu_x\phi_x^{(j)}\phi_x^{(k)}$, where $D_B=I_T\otimes\operatorname{diag}(\mu_B)$; solve $H^\top m=b$. Under full rank and Assumption 1 this returns $\mu_I$.
 
+
+\paragraph{Checkpoint status.}
+The explicit response algorithm, consistent control normal equations, corrected weighted moments, and unique full-rank mass solve are checked. Infinite-path compatibility is integrated.
 \end{theorem}
-\paragraph{Proof plan (not yet formalized).}
+\paragraph{Proof outline.}
 
 Each normal equation is consistent and any exact solution gives $Wh_j=\phi^{(j)}$. Use the moment lemma with the required control-space mass matrix $D_B$. The printed equation (4.3) omits this factor in value coordinates; the audit's exact example returns $-1/2$ instead of $1$ without it. The user approved this explicit correction on 19 November 2026. No floating-point stability or Monte Carlo guarantee is claimed.

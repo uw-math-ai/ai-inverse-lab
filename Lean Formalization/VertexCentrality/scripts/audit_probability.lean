@@ -1,0 +1,12 @@
+module
+
+import VertexCentrality.GraphProbability
+
+#print axioms VertexCentrality.WeightedGraph.transitionMatrix_pow_mem_rowStochastic
+#print axioms VertexCentrality.WeightedGraph.transition_pow_renewal
+#print axioms VertexCentrality.WeightedGraph.finitePathLaw_cons
+#print axioms VertexCentrality.WeightedGraph.firstPassageProbability_zero
+#print axioms VertexCentrality.WeightedGraph.firstPassageProbability_eq_weight
+#print axioms VertexCentrality.WeightedGraph.transition_powers_eq_of_firstPassageProbability_eq
+#print axioms VertexCentrality.WeightedGraph.responseLinear_eq_of_firstPassageProbability_eq
+#print axioms VertexCentrality.WeightedGraph.extendedResponseLinear_eq_of_firstPassageProbability_eq

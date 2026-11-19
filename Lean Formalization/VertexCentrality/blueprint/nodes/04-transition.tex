@@ -2,7 +2,7 @@
 id: transition
 title: Stochastic transition and heat evolution
 type: lemma
-status: in-progress
+status: proved
 source: Equations (1.1)–(1.3), p. 3
 dependencies:
 - laplacian
@@ -11,9 +11,12 @@ lean_declarations:
 - VertexCentrality.WeightedGraph.sum_transition
 - VertexCentrality.WeightedGraph.detailed_balance
 - VertexCentrality.WeightedGraph.transition_mul
+- VertexCentrality.WeightedGraph.transitionMatrix_pow_mem_rowStochastic
+- VertexCentrality.WeightedGraph.transitionPMF_toReal
 order: 4
-handoff_note: Stochastic matrix identities checked. Markov path-law realization remains
-  open.
+handoff_note: Concrete transition and all powers are Mathlib row-stochastic matrices; transitionPMF realizes the one-step law using Mathlib PMF.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Assume $d_w(x)\leq\mu_x$ for all $x$. Put $p_{xy}=w_{xy}/\mu_x$ for $x\ne y$ and $p_{xx}=1-d_w(x)/\mu_x$. Then $p_{xy}\geq0$, $\sum_yp_{xy}=1$, and $\mu_xp_{xy}=\mu_yp_{yx}$. The unique homogeneous heat solution with initial value $g$ is $u(t)=P^tg$.
 

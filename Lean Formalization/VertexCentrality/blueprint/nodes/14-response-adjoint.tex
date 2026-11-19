@@ -2,15 +2,19 @@
 id: response-adjoint
 title: Time reversal and response adjoint
 type: lemma
-status: in-progress
+status: proved
 source: Appendix A, pp. 18–19
 dependencies:
 - forced-heat
 - laplacian
 lean_declarations:
+- VertexCentrality.WeightedGraph.timeReverse_timeReverse
+- VertexCentrality.WeightedGraph.controlPair_timeReverse
 - VertexCentrality.WeightedGraph.response_adjoint
 order: 14
 handoff_note: Concrete weighted boundary-control response time-reversal identity checked.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Let $R$ reverse $Z_T$ and use weighted space-time inner products. Then $R$ is an involutive isometry and $\Lambda_T^*=R\Lambda_TR$.
 

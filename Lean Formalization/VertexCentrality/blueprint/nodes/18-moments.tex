@@ -2,12 +2,17 @@
 id: moments
 title: Interior harmonic-product moments
 type: lemma
-status: planned
+status: proved
 source: Equation (3.2), p. 11
 dependencies:
 - controls
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.gramControl_harmonic_moment
+- VertexCentrality.WeightedGraph.harmonic_moments_eq_of_firstPassageProbability_eq
 order: 18
+handoff_note: Interior harmonic-product moments agree for admissible UCP models with equal conductances, boundary masses, and finite-path first-passage laws.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 For interior harmonic $\phi,\psi$ and the exact control $h_\psi$, \[\sum_{x\in I}\mu_x\psi_x\phi_x=\langle h_\psi,W^*\phi\rangle_{Z_T\times B,\mu}-\sum_{x\in B}\mu_x\psi_x\phi_x.\] Both terms on the right are determined by the data and known quantities.
 

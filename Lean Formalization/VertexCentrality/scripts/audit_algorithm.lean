@@ -1,0 +1,13 @@
+module
+
+import VertexCentrality.Algorithm
+
+#print axioms VertexCentrality.WeightedGraph.harmonicProductSpace_eq_columnSpan
+#print axioms VertexCentrality.WeightedGraph.harmonicProductSpace_eq_top_iff_rank
+#print axioms VertexCentrality.WeightedGraph.interior_card_le_boundary_products_of_rank
+#print axioms VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_of_conductance_eq
+#print axioms VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq_of_rank
+#print axioms VertexCentrality.WeightedGraph.exists_data_normal_solution
+#print axioms VertexCentrality.WeightedGraph.moment_eq_of_data_normal_eq
+#print axioms VertexCentrality.WeightedGraph.reconstruction_unique
+#print axioms VertexCentrality.WeightedGraph.reconstruction_controls_exist_unique_mass

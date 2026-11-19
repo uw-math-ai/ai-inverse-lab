@@ -1,0 +1,860 @@
+{
+  "time": "2026-11-19T22:49:45.394979+00:00",
+  "revision": "9a12bb1f2373701f7be12d99df95f1f3045e34ae",
+  "fingerprint": "e5d851dce3ac2f63269e16572aa91c0c9782470d99010ae88394748576dafe48",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Corrected exact reconstruction: 3746 build jobs, 24 blueprint nodes reviewed, 105 declarations axiom-audited. Excludes numerical/complexity claims and rendered blueprint tooling.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": false,
+  "axiom_command": "lake env lean scripts/audit_scope.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.WeightedGraph",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.UniqueContinuation",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.ae_harmonicProduct_full_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.ae_mass_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.ae_mass_eq_of_hittingProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.boundary_nonempty_of_uniqueContinuation",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.boundary_reachability_surjective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.conductanceDirichletMatrix_det_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.controlPair_timeReverse",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.controlSpace_inner",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.controlToState_gram",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.controlToState_harmonic_adjoint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.detailed_balance",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.energy_identity",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.exact_control_transfer",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.existsUnique_harmonicExtension",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.exists_data_normal_solution",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.extendedResponseLinear_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.finitePathLaw",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.finitePathLaw_cons",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.firstPassageProbability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.firstPassageProbability_eq_weight",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.firstPassageProbability_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.gramControl_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.gramControl_harmonic_moment",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.gramControl_norm_le",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis_eq_adjugate_div_det",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis_eq_polynomial_ratio",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis_product_eq_polynomial_ratio",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicExtension_eq_inverse",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicExtension_eq_of_conductance_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicOn_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_of_conductance_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_polynomial_ratio",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductSpace",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductSpace_eq_columnSpan",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductSpace_eq_of_conductance_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductSpace_eq_top_iff_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonic_moments_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.heatSolutionLinear",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.heatSolutionLinear_surjective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.heatSolution_gram",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.heatSolution_harmonic_adjoint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.hittingAfter_pathProcess_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.interiorMass_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.interior_card_le_boundary_products_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.laplacian_const",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.laplacian_selfAdjoint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.mass_eq_of_hittingProbability_eq_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.moment_eq_of_data_normal_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialDirichletMatrix_det_eval_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialDirichletMatrix_eval",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialProductMatrix_eval",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialProductMatrix_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.positivePathLaw_hittingAfter",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.positivePathLaw_isProbability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.positivePathLaw_map_prefix",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.projection_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.projection_eq_of_hittingProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.reconstruction_controls_exist_unique_mass",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.reconstruction_unique",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoverTransition_boundary_probability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoverTransition_firstPassageProbability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoveredResponse_congr",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoveredResponse_eq_heatSolution",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoveredResponse_hitting_eq_heatSolution",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.responseLinear_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.response_adjoint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.space_inner",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.sum_transition",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.timeReverse_timeReverse",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.toSimpleGraph",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transitionMatrix_pow_mem_rowStochastic",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transitionPMF_toReal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_mul",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_nonneg",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_pow_eq_compositionSum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_pow_eq_hitting_compositionSum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_pow_renewal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_powers_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_uniqueContinuation",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.volume_harmonicProduct_rank_deficient_eq_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.weightedPair_boundaryExtend",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.apply_gram_moorePenrose_adjoint_of_surjective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.compositionWeight_cons_eq_prod",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.existsUnique_minimumNorm_preimage",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.forcedHeat_eq_sum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.forcedHeat_gram",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.forcedHeat_unique",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.matrix_eq_of_moments_eq_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.matrix_projection_eq_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.moorePenrose",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.moorePenrose_eq_tauceti",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.polynomialRankCertificate_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.prependComposition_bijective",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.projection_span_eq_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.rank_eq_card_iff_gram_det_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.reachability_surjective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.recoverTransition",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.recoverTransition_congr",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.recoverTransition_eq_compositionSum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.volume_rank_deficient_eq_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "dependency_working_trees_pristine": true,
+  "coordinate_check": "python3 ../scripts/check_paper_coordinates.py: passed both exact-rational correction examples",
+  "limitations": [
+    "Blueprint PDF/HTML and dashboard tests not rebuilt: pinned swarmalize dependency returns HTTP 403.",
+    "No coordinator running.",
+    "Numerical simulation, stability, Monte Carlo convergence, and complexity claims excluded.",
+    "Full rank, admissibility and UCP assumptions remain explicit; genericity requires a witness."
+  ]
+}

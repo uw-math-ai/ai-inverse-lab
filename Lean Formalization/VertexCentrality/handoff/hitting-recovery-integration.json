@@ -1,0 +1,92 @@
+{
+  "time": "2026-11-19T22:38:11.384977+00:00",
+  "revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "fingerprint": "66def93f9d389b9a4125a59a5f31515ba72556f4d7dd7d0f16b34e8426900748",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Combined VertexCentrality build (3746 jobs), including infinite-path hitting recovery using Tau Ceti Markov-chain law and Mathlib hittingAfter; final paper-scope audit pending.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": true,
+  "axiom_command": "lake env lean scripts/audit_hitting_recovery.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.WeightedGraph.positivePathLaw_isProbability",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.positivePathLaw_map_prefix",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.hittingAfter_pathProcess_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.positivePathLaw_hittingAfter",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.transition_pow_eq_hitting_compositionSum",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.recoveredResponse_hitting_eq_heatSolution",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.projection_eq_of_hittingProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.mass_eq_of_hittingProbability_eq_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.ae_mass_eq_of_hittingProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "limitations": [
+    "Full-rank witness, admissibility and UCP remain explicit hypotheses.",
+    "Final paper-scope and blueprint review pending.",
+    "Blueprint rendering and coordinator were not run.",
+    "Local working tree only; not committed or pushed."
+  ]
+}

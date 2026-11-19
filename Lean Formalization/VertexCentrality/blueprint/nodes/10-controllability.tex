@@ -2,7 +2,7 @@
 id: controllability
 title: Exact controllability
 type: lemma
-status: in-progress
+status: proved
 source: Lemma 2.3, p. 8; cited [12, Proposition 5.3]
 dependencies:
 - ucp
@@ -10,10 +10,11 @@ dependencies:
 lean_declarations:
 - VertexCentrality.reachability_surjective
 - VertexCentrality.WeightedGraph.boundary_reachability_surjective
+- VertexCentrality.WeightedGraph.heatSolutionLinear_surjective
 order: 10
-handoff_note: Spectral finite-horizon reachability checked, including Cayley-Hamilton.
-  Current graph endpoint uses masked full-vertex controls; the time-reversal/index
-  bridge to heatSolutionLinear on boundary controls remains open.
+handoff_note: Concrete boundary-time heat-map surjectivity is proved by restriction and time reversal of masked vertex controls, including empty cases.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Assume unique continuation and $T\geq|X|$. The linear map $W:f\mapsto U_f(T)$ from $\mathbb R^{Z_T\times B}$ onto $\mathbb R^X$ is surjective.
 

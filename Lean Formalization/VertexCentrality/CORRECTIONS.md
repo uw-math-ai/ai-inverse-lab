@@ -2,7 +2,7 @@
 
 The user approved corrected targets with documented deviations on 2026-11-19.
 These are project decisions supported by the existing [proof audit](../PROOF_AUDIT.md),
-not author-confirmed errata. All affected claims still need Lean proofs.
+not author-confirmed errata. The corrected reconstruction endpoints are now proved; see [SCOPE_REVIEW.md](SCOPE_REVIEW.md).
 
 | Paper location | Project target | Reason |
 | --- | --- | --- |
@@ -29,3 +29,12 @@ checks, not Lean proofs or a refutation of every possible interpretation of the 
 The first-passage definition always starts at positive time, including on the
 diagonal. The full-rank witness remains an explicit hypothesis. Numerical accuracy,
 Monte Carlo convergence, and complexity estimates are outside the initial scope.
+
+## Checked generic-rank certificate
+
+The implementation uses an equivalent single polynomial certificate:
+`det (N * N.transpose)`, where `N` is the polynomial numerator matrix of
+harmonic products. Mathlib proves that a real matrix and its row Gram matrix
+have the same rank. A full-rank witness therefore makes this polynomial
+nonzero, and Tau Ceti proves its zero locus is null. This avoids choosing
+one minor and preserves the approved witness and domain restrictions.

@@ -1,0 +1,13 @@
+module
+
+import VertexCentrality.RecoveryRecurrence
+
+#print axioms VertexCentrality.recoverTransition_congr
+#print axioms VertexCentrality.prependComposition_bijective
+#print axioms VertexCentrality.compositionWeight_cons_eq_prod
+#print axioms VertexCentrality.recoverTransition_eq_compositionSum
+#print axioms VertexCentrality.WeightedGraph.recoverTransition_firstPassageProbability
+#print axioms VertexCentrality.WeightedGraph.transition_pow_eq_compositionSum
+#print axioms VertexCentrality.WeightedGraph.recoverTransition_boundary_probability
+#print axioms VertexCentrality.WeightedGraph.recoveredResponse_congr
+#print axioms VertexCentrality.WeightedGraph.recoveredResponse_eq_heatSolution

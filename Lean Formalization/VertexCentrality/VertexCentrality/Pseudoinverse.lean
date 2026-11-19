@@ -6,6 +6,7 @@ module
 
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
 public import Mathlib.Analysis.InnerProductSpace.Projection.Basic
+public import TauCeti.Analysis.InnerProductSpace.MoorePenrose
 
 /-!
 # Moore–Penrose inverses and exact Gram controls
@@ -147,6 +148,15 @@ theorem existsUnique_minimumNorm_preimage (A : E →ₗ[ℝ] F) {y : F} (hy : y 
     (moorePenrose_norm_le A hx.1)
 
 variable [FiniteDimensional ℝ F]
+
+/-- The checkpoint's orthogonal-restriction construction agrees with Tau Ceti's
+canonical Moore–Penrose inverse. Downstream formulas may use the upstream API. -/
+theorem moorePenrose_eq_tauceti (A : E →ₗ[ℝ] F) :
+    moorePenrose A = A.moorePenroseInverse := by
+  apply (A.isMoorePenroseInverse_iff_eq_moorePenroseInverse).mp
+  exact ⟨LinearMap.ext (apply_moorePenrose_apply A),
+    LinearMap.ext (moorePenrose_apply_moorePenrose A),
+    self_comp_moorePenrose_isSymmetric A, moorePenrose_comp_self_isSymmetric A⟩
 
 /-- Any solution of consistent Gram normal equations is an exact preimage. -/
 theorem apply_eq_of_normal_eq (A : E →ₗ[ℝ] F) {y : F} (hy : y ∈ A.range) {x : E}

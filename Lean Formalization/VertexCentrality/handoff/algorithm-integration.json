@@ -1,0 +1,95 @@
+{
+  "time": "2026-11-19T22:10:07.331313+00:00",
+  "revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "fingerprint": "0201a4dfaddf378b1ef8a5f9bb2e14db962534d94bcea96f4e02f1f3c04a9cdb",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Combined VertexCentrality build (3658 jobs), including finite product rank and exact normal-equation reconstruction; not the complete paper.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": true,
+  "axiom_command": "lake env lean scripts/audit_algorithm.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductSpace_eq_columnSpan",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductSpace_eq_top_iff_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.interior_card_le_boundary_products_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_of_conductance_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq_of_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.exists_data_normal_solution",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.moment_eq_of_data_normal_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.reconstruction_unique",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.reconstruction_controls_exist_unique_mass",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "remaining": [
+    "Infinite-path hittingAfter identification",
+    "Paper composition expansion and algorithm equivalence",
+    "Rational dependence and generic rank from a full-rank witness"
+  ],
+  "tooling_limitations": [
+    "Pinned swarmalize unavailable (HTTP 403); no dashboard/blueprint rebuild",
+    "No Lean LSP connected"
+  ]
+}

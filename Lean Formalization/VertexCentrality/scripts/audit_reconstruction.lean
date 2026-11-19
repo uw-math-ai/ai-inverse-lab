@@ -1,0 +1,10 @@
+module
+
+import VertexCentrality.DataInvariance
+
+#print axioms VertexCentrality.WeightedGraph.exact_control_transfer
+#print axioms VertexCentrality.WeightedGraph.harmonic_moments_eq_of_firstPassageProbability_eq
+#print axioms VertexCentrality.WeightedGraph.harmonicProductSpace_eq_of_conductance_eq
+#print axioms VertexCentrality.WeightedGraph.projection_eq_of_firstPassageProbability_eq
+#print axioms VertexCentrality.WeightedGraph.interiorMass_eq_of_firstPassageProbability_eq
+#print axioms VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq

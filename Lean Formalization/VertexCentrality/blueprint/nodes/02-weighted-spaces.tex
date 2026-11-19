@@ -2,17 +2,18 @@
 id: weighted-spaces
 title: Weighted spaces and restriction
 type: definition
-status: in-progress
+status: proved
 source: Section 1.1, p. 2
 dependencies:
 - weighted-graph
 lean_declarations:
 - VertexCentrality.WeightedGraph.space_inner
 - VertexCentrality.WeightedGraph.weightedPair_boundaryExtend
+- VertexCentrality.WeightedGraph.controlSpace_inner
 order: 2
-handoff_note: Weighted vertex Hilbert space and boundary pairing identity checked.
-  The finite boundary-control Hilbert realization still needs integration with pseudoinverse
-  APIs.
+handoff_note: Weighted vertex and boundary-time Hilbert spaces are implemented; boundary masses are retained in the actual adjoints.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 For $S\subseteq X$ set $\langle u,v\rangle_{S,\mu}=\sum_{x\in S}\mu_xu_xv_x$. For $Z_T=\{0,\ldots,T-1\}$ use the sum of these inner products over time. Let $J:\mathbb R^B\to\mathbb R^X$ extend by zero and $C:\mathbb R^X\to\mathbb R^B$ restrict. Then $J^*=C$.
 

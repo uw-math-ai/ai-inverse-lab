@@ -1,0 +1,54 @@
+name: Vertex Centrality
+on:
+  push:
+    branches: [owen-working-branch]
+    paths: ['Lean Formalization/VertexCentrality/**', 'Lean Formalization/scripts/**', '.github/workflows/vertex-centrality.yml']
+  pull_request:
+    paths: ['Lean Formalization/VertexCentrality/**', 'Lean Formalization/scripts/**', '.github/workflows/vertex-centrality.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: vertex-centrality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: Lean Formalization/VertexCentrality
+          auto-config: 'false'
+          build: 'true'
+          use-mathlib-cache: 'true'
+          axiom-audit: 'true'
+          axiom-audit-root: VertexCentrality
+      - name: Check blueprint endpoint axioms
+        working-directory: Lean Formalization/VertexCentrality
+        run: python3 scripts/check_axioms.py
+      - name: Check corrected coordinate examples
+        working-directory: Lean Formalization
+        run: python3 scripts/check_paper_coordinates.py
+  blueprint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: Lean Formalization/VertexCentrality
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install rendering tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz libgraphviz-dev pkg-config texlive-xetex texlive-latex-extra latexmk
+          python -m pip install -r requirements-tools.txt
+      - name: Check dashboard and blueprint
+        run: |
+          python scripts/test_dashboard.py
+          python scripts/build_blueprint.py
+          git diff --exit-code -- blueprint/src/content.tex

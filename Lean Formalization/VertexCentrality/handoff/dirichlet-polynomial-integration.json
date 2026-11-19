@@ -1,0 +1,84 @@
+{
+  "time": "2026-11-19T22:22:46.049994+00:00",
+  "revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "fingerprint": "199f5dd95601f0eeb29793dbce3879486f8f854773bc3bec30676b39a8db7080",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Combined VertexCentrality build (3661 jobs), including actual Dirichlet and harmonic-product polynomial ratios; not the complete paper.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": true,
+  "axiom_command": "lake env lean scripts/audit_dirichlet_polynomial.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.WeightedGraph.conductanceDirichletMatrix_det_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicExtension_eq_inverse",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis_eq_adjugate_div_det",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialDirichletMatrix_eval",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialDirichletMatrix_det_eval_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis_eq_polynomial_ratio",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicBasis_product_eq_polynomial_ratio",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.harmonicProductMatrix_eq_polynomial_ratio",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "limitations": [
+    "Generic-rank minor and measure-zero conclusion remain open.",
+    "Infinite-path hittingAfter compatibility remains open.",
+    "Blueprint rendering and coordinator were not run.",
+    "Local working tree only; not committed or pushed."
+  ]
+}

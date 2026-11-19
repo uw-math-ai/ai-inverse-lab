@@ -32,6 +32,8 @@ class DashboardTests(unittest.TestCase):
                 self.assertEqual(after,project.fingerprint())
     def test_evidence(self):
         self.assertEqual(len(fingerprint()),64)
-        self.assertEqual(snapshot()['branch'],'owen-working-branch')
+        with patch.object(project,'git',return_value='test-revision'), \
+             patch.object(project,'swarm_snapshot',return_value={'available': False}):
+            self.assertEqual(snapshot()['revision'],'test-revision')
 
 if __name__=='__main__':unittest.main()

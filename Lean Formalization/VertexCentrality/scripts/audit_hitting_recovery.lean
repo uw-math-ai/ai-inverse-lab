@@ -1,0 +1,13 @@
+module
+
+import VertexCentrality.HittingRecovery
+
+#print axioms VertexCentrality.WeightedGraph.positivePathLaw_isProbability
+#print axioms VertexCentrality.WeightedGraph.positivePathLaw_map_prefix
+#print axioms VertexCentrality.WeightedGraph.hittingAfter_pathProcess_iff
+#print axioms VertexCentrality.WeightedGraph.positivePathLaw_hittingAfter
+#print axioms VertexCentrality.WeightedGraph.transition_pow_eq_hitting_compositionSum
+#print axioms VertexCentrality.WeightedGraph.recoveredResponse_hitting_eq_heatSolution
+#print axioms VertexCentrality.WeightedGraph.projection_eq_of_hittingProbability_eq
+#print axioms VertexCentrality.WeightedGraph.mass_eq_of_hittingProbability_eq_of_rank
+#print axioms VertexCentrality.WeightedGraph.ae_mass_eq_of_hittingProbability_eq

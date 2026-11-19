@@ -1,0 +1,11 @@
+module
+
+import VertexCentrality.BoundaryControl
+
+#print axioms VertexCentrality.WeightedGraph.heatSolutionLinear_surjective
+#print axioms VertexCentrality.moorePenrose_eq_tauceti
+#print axioms VertexCentrality.WeightedGraph.controlToState_gram
+#print axioms VertexCentrality.WeightedGraph.controlToState_harmonic_adjoint
+#print axioms VertexCentrality.WeightedGraph.gramControl_exact
+#print axioms VertexCentrality.WeightedGraph.gramControl_norm_le
+#print axioms VertexCentrality.WeightedGraph.gramControl_harmonic_moment

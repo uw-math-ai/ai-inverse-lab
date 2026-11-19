@@ -2,13 +2,22 @@
 id: response-data
 title: Response reconstructed from first passages
 type: lemma
-status: planned
+status: proved
 source: Lemma 2.1, pp. 6–7
 dependencies:
 - renewal
 - forced-heat
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.recoveredResponse_hitting_eq_heatSolution
+- VertexCentrality.WeightedGraph.responseLinear_eq_of_firstPassageProbability_eq
+- VertexCentrality.WeightedGraph.extendedResponseLinear_eq_of_firstPassageProbability_eq
+- VertexCentrality.WeightedGraph.recoverTransition_boundary_probability
+- VertexCentrality.WeightedGraph.recoveredResponse_congr
+- VertexCentrality.WeightedGraph.recoveredResponse_eq_heatSolution
 order: 8
+handoff_note: Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE_REVIEW.md.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 For $T>0$, define $\Lambda_T f=(CU_f(t))_{t<T}$ and $\widehat\Lambda_T f=(CU_f(t))_{t<2T}$. Both maps are determined by $r(t,x,y)$ for $1\leq t<2T$, $x,y\in B$.
 

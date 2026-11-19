@@ -1,102 +1,95 @@
 # Vertex centrality reconstruction
 
-A blueprint-first Lean project for Gao–Li–Yang, *Vertex Centrality Reconstruction
-in an Inverse Problem for Information Diffusion*, arXiv:2603.20710v1.
-Work belongs to `uw-math-ai/ai-inverse-lab`, branch `owen-working-branch`.
+Lean formalization of the corrected exact reconstruction results in Gao–Li–Yang,
+*Vertex Centrality Reconstruction in an Inverse Problem for Information Diffusion*,
+arXiv:2603.20710v1, Sections 1–4 and Appendix A.
 
-The blueprint, dashboard, and checked prerequisite modules are available. **The full
-corrected reconstruction theorem remains incomplete.** Work is paused for migration;
-start with [HANDOFF.md](HANDOFF.md). The user approved the [corrections](CORRECTIONS.md).
-Historical candidates outside this project do not count toward its proofs.
+The library now connects infinite-path positive hitting-time probabilities to
+response recovery, weighted boundary controls, harmonic moments, Euclidean
+projection recovery, full-rank mass uniqueness, and generic recovery from one
+full-rank witness. The [correction register](CORRECTIONS.md) records the projection
+convention, missing boundary mass factor, and genericity restrictions.
+See [SCOPE_REVIEW.md](SCOPE_REVIEW.md) for the statement-to-declaration review and
+[HANDOFF.md](HANDOFF.md) for historical checkpoints.
 
-## Quick start
+## Build and audit
 
-Run these commands from this directory. Prerequisites: Git, elan/Lean, Python 3.11+
-and uv; Graphviz (including development libraries), XeLaTeX and latexmk for the blueprint.
-On macOS Graphviz and MacTeX supply the latter tools.
+From this directory, with elan installed:
+
+```sh
+lake exe cache get
+lake build
+lake env lean scripts/audit_scope.lean
+```
+
+`VertexCentrality.lean` publicly re-exports the library. The scope audit checks all
+blueprint-linked declarations plus the integration endpoints (105 declarations).
+The recorded build and axiom results are in `handoff/scope-integration.json`.
+A successful build alone is not an axiom audit; the latter checks for `sorryAx`
+and unexpected axioms. The accepted foundational axioms are `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+## Library foundations
+
+- Lean 4.35.0; Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679` (v4.35.0).
+- Tau Ceti `5a01f5fe3621126cccf9ba22e700493cbc7b7156`.
+- Direct Tau Ceti uses: the canonical Moore–Penrose inverse, homogeneous
+  Markov-chain path law, and nullity of nonzero polynomial zero loci.
+- Mathlib supplies weighted inner-product machinery, finite-dimensional spectral
+  and matrix results, PMFs, hitting times, polynomials, and measure theory.
+
+The root Mathlib pin overrides Tau Ceti's historical Mathlib pin. The imported
+dependency closure is checked with both dependency working trees pristine; no
+claim is made that every module in that Tau Ceti revision builds with this override.
+Historical candidates outside this Lake project are not included in its proof claims.
+
+## Main endpoints
+
+In `VertexCentrality.WeightedGraph`:
+
+- `positivePathLaw_hittingAfter`: infinite-path and finite-path probabilities agree.
+- `transition_pow_eq_hitting_compositionSum`: the visit-gap expansion.
+- `recoveredResponse_hitting_eq_heatSolution`: explicit boundary response recovery.
+- `projection_eq_of_hittingProbability_eq`: corrected Euclidean projection recovery.
+- `mass_eq_of_hittingProbability_eq_of_rank`: full-rank mass uniqueness.
+- `ae_mass_eq_of_hittingProbability_eq`: generic recovery from one witness.
+- `reconstruction_controls_exist_unique_mass`: consistent normal equations and
+  exact full-rank moment solving for the corrected algorithm.
+
+Admissibility, unique continuation, the observation horizon, known conductances
+and boundary masses, and the full-rank witness remain explicit where required.
+The dimension count is only necessary for full rank. First passage starts at
+time one, including first returns. Numerical experiments, Monte Carlo convergence,
+floating-point stability, and Remark 2.2 complexity estimates are excluded.
+
+## Blueprint and dashboard
+
+`blueprint/nodes/*.tex` contains the mathematical statements, declaration links,
+and progress metadata. `proof_revision` records the checked code revision;
+statuses are review metadata, not independent certificates. The generated
+blueprint assets must be rebuilt after changing nodes:
 
 ```sh
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements-tools.txt
-lake exe cache get
 .venv/bin/python scripts/build_blueprint.py
 .venv/bin/python scripts/check.py
 .venv/bin/python scripts/test_dashboard.py
 .venv/bin/python scripts/serve.py --port 8766
 ```
 
-Open <http://127.0.0.1:8766/>. The server is read-only, binds only to loopback,
-and serves only the dashboard and generated blueprint assets. Stop it with Ctrl-C.
-It is a foreground service, not a login service; restart it after quitting the terminal
-or rebooting. The initial desktop session may keep its server in a retained process.
+The dashboard binds to loopback and reads source-bound build evidence from ignored
+`.local/checks.json`; it does not independently certify proofs. The ZIP integration
+review rebuilt the PDF/HTML and passed the dashboard tests. No dashboard or coordinator
+is currently running.
 
-For the setup machine, the tools are already installed in
-`/Users/owenparks/IBP/.venv`; substitute that path for `.venv` above.
-The requested tool repositories are cloned at `/Users/owenparks/IBP/tools/swarmalize`
-and `/Users/owenparks/IBP/tools/leanblueprint`. Their revisions are recorded in
-[tools.lock.json](tools.lock.json) and pinned in the installation requirements.
+## Continuous integration
 
-Lean is pinned to 4.35.0, Mathlib to its matching release and exact manifest revisions.
-The previous parent-folder Windows/Tau Ceti setup uses a different toolchain; it is
-not silently reused. The Lean LSP MCP was successfully exercised on this project's
-`VertexCentrality.lean`, returning no diagnostics. Future agents should use the
-existing Lean LSP MCP with absolute paths inside this project. A fresh client must
-connect its own Lean LSP MCP; repository files cannot install a live MCP connection.
+The `Vertex Centrality` GitHub Actions workflow builds this nested project, audits
+all declarations under the `VertexCentrality` namespace, checks all 105 blueprint
+audit endpoints, runs the exact coordinate examples, tests the dashboard, and
+rebuilds the blueprint. `scripts/check_axioms.py` fails on missing audit results or
+axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
 
-## Blueprint and progress workflow
-
-`blueprint/nodes/*.tex` is the authoritative mathematical source. Each file has
-swarmalize YAML metadata, a quantified mathematical statement, and a proof plan.
-`blueprint/src/content.tex` is generated; edit nodes and regenerate it rather than
-maintaining two versions. Use `scripts/build_blueprint.py` to regenerate content and
-build both outputs. It calls the official leanblueprint plasTeX plugin directly:
-the upstream `leanblueprint` CLI assumes Lake lives at the Git root, whereas this
-project lives inside a larger repository.
-
-- HTML and dependency graph: `blueprint/web/`.
-- PDF: `blueprint/print/print.pdf`.
-- Live dashboard: node metadata, dependencies, source references, corrections,
-  current branch/commit, dirty status, and source-bound local build evidence.
-- Mathematical coverage: Sections 1–4 and Appendix A, including cited prerequisites.
-- Excluded initial scope: Section 5 simulations, numerical stability and Remark 2.2's
-  arithmetic complexity analysis.
-
-The dashboard refreshes node metadata every ten seconds. Rebuild the rendered blueprint
-after editing the nodes. Suggested statuses are `planned`, `in-progress`, `stated`,
-`proved`, and `needs-review`; these are metadata claims, never independent certificates.
-When a node is formalized, record its fully qualified `lean_declarations` and exact
-`proof_revision`, check the Lean statement against the prose, inspect its axioms, and
-only then update proof status. This initial dashboard displays the labels and counts
-linked nodes; it does not yet automatically certify declaration existence or axioms.
-`lake build` may accept `sorry`, so a green build is deliberately separate from proof completion.
-
-`scripts/check.py` records its command, time and source fingerprint under ignored
-`.local/checks.json`. The dashboard marks it stale if Lean sources, toolchain or Lake
-configuration change. It does not certify external package modifications. Keep
-pinned dependencies pristine. No verification evidence or secret is published from
-`.local/`. Historical candidate files outside this project are not built by this target.
-
-## Swarmalize reference integration
-
-```sh
-.venv/bin/swarmalize blueprint --root blueprint/nodes check
-.venv/bin/swarmalize blueprint --root blueprint/nodes list
-.venv/bin/swarmalize blueprint --root blueprint/nodes get full-recovery
-.venv/bin/swarmalize blueprint --root blueprint/nodes dependencies algorithm --transitive
-```
-
-The dashboard uses swarmalize's actual blueprint parser and dependency validator.
-A local coordinator was used with isolated native agent clones. It has been stopped
-for handoff. Its sanitized final task snapshot is in `handoff/swarm-tasks.json`;
-leases and credentials must not be reused on another server. See HANDOFF.md for
-fresh coordinator and dashboard startup. Node dependencies are informational.
-
-## Source provenance
-
-The supplied PDF was read directly from the user's Downloads folder. SHA-256:
-`6051e651202b2863c454416fd164db55c8c0cfeab46333a40cb2d225b4f63090`.
-The repository already contains a copy under the sibling paper-title directory,
-with different PDF bytes/text encoding. It has not been overwritten or assumed
-byte-identical. References and displayed formulas were checked against the supplied
-v1 paper. The existing [proof audit](../PROOF_AUDIT.md) supplied additional local
-analysis; its claims of past library checks remain historical until revalidated.
+This is exact mathematical reconstruction, with the approved corrections and explicit
+hypotheses. It is not a verified floating-point implementation of Algorithm 1.

@@ -2,12 +2,21 @@
 id: renewal
 title: Finite renewal identity
 type: lemma
-status: planned
+status: proved
 source: Equation (2.5), p. 6; cited [12]
 dependencies:
 - first-passage
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.transition_pow_eq_hitting_compositionSum
+- VertexCentrality.WeightedGraph.transition_pow_renewal
+- VertexCentrality.WeightedGraph.transition_powers_eq_of_firstPassageProbability_eq
+- VertexCentrality.recoverTransition
+- VertexCentrality.recoverTransition_eq_compositionSum
+- VertexCentrality.WeightedGraph.transition_pow_eq_compositionSum
 order: 6
+handoff_note: Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE_REVIEW.md.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 For $t\geq1$ and $x,y\in X$, \[(P^t)_{xy}=\sum_{s=1}^t r(s,x,y)(P^{t-s})_{yy}.\] Consequently observed $r(s,x,y)$ with $x,y\in B$, $1\leq s\leq N$ determines $(P^t)_{xy}$ on $B\times B$ for $0\leq t\leq N$.
 

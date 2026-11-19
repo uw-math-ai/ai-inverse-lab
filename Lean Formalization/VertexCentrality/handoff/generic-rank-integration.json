@@ -1,0 +1,84 @@
+{
+  "time": "2026-11-19T22:27:38.036706+00:00",
+  "revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "fingerprint": "fae02b2f48c9a01f3d87d7cf4e9323de4257eabb49bf8c513c3ea4d9b0b016de",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Combined VertexCentrality build (3664 jobs), including generic finite-path recovery using Tau Ceti polynomial zero-locus nullity; not the complete paper.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": true,
+  "axiom_command": "lake env lean scripts/audit_generic_rank.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.rank_eq_card_iff_gram_det_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.polynomialRankCertificate_ne_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.volume_rank_deficient_eq_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialProductMatrix_eval",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.polynomialProductMatrix_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.volume_harmonicProduct_rank_deficient_eq_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.ae_harmonicProduct_full_rank",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.ae_mass_eq_of_firstPassageProbability_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "limitations": [
+    "Full-rank witness is an explicit hypothesis, not inferred from a dimension count.",
+    "Infinite-path hittingAfter compatibility remains open.",
+    "Blueprint rendering and coordinator were not run.",
+    "Local working tree only; not committed or pushed."
+  ]
+}

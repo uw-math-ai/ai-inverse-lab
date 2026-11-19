@@ -2,16 +2,23 @@
 id: generic-rank
 title: Generic full rank from one witness
 type: corollary
-status: planned
+status: proved
 source: Corollary 3.3, pp. 12–13
 dependencies:
 - rationality
 - full-recovery
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.ae_mass_eq_of_hittingProbability_eq
+- VertexCentrality.volume_rank_deficient_eq_zero
+- VertexCentrality.WeightedGraph.volume_harmonicProduct_rank_deficient_eq_zero
+- VertexCentrality.WeightedGraph.ae_mass_eq_of_firstPassageProbability_eq
 order: 23
 deviation: User approved corrected target on 2026-11-19; see CORRECTIONS.md.
+handoff_note: Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE_REVIEW.md.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 If some positive conductance assignment $w_0$ has $\operatorname{rank}H(w_0)=|I|$, the rank-deficient assignments form a Lebesgue-null subset of the positive edge orthant. Full reconstruction follows outside that null set for assignments that additionally satisfy admissibility and unique continuation.
 
 \paragraph{Proof plan.}
-Choose one full-size minor nonzero at $w_0$. Its rational numerator is a nonzero polynomial and its denominator never vanishes in the positive orthant. The deficient locus is contained in the zero set of that numerator, which has measure zero. Intersect with admissibility only afterward. This repairs the printed dichotomy for sets already intersected with the admissible region. The witness must be supplied, not inferred from the number of columns. Formalize the nonzero-polynomial null-set prerequisite or reuse a checked library theorem.
+Use the determinant of the row Gram matrix of the polynomial numerator matrix. Mathlib proves that the real matrix and its row Gram matrix have the same rank, so the full-rank witness makes this certificate polynomial nonzero. Tau Ceti proves its zero locus is Lebesgue-null. Clearing the common squared Dirichlet determinant preserves rank on connected positive graph parameters. Intersect with admissibility only afterward. This repairs the printed dichotomy for sets already intersected with the admissible region. The witness must be supplied, not inferred from the number of columns. Formalize the nonzero-polynomial null-set prerequisite or reuse a checked library theorem.

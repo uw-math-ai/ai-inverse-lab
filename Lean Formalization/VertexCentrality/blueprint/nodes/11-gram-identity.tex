@@ -2,7 +2,7 @@
 id: gram-identity
 title: Blagovescenskii Gram identity
 type: proposition
-status: in-progress
+status: proved
 source: Proposition 2.4, pp. 8–9
 dependencies:
 - forced-heat
@@ -10,9 +10,11 @@ dependencies:
 lean_declarations:
 - VertexCentrality.forcedHeat_gram
 - VertexCentrality.WeightedGraph.heatSolution_gram
+- VertexCentrality.WeightedGraph.controlToState_gram
 order: 11
-handoff_note: Generic and concrete graph pairing identities checked. Data-derived
-  operator identification remains an integration obligation.
+handoff_note: Weighted Gram identity checked; infinite-path data-to-response recovery is now integrated.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Let $T>0$ and $f,g$ vanish outside $Z_T\times B$. Then \[\langle Wf,Wg\rangle_{X,\mu}=\sum_{j=0}^{T-1}\langle f(j),CU_g(2T-1-j)\rangle_{B,\mu}.\] Thus $W^*W=P_TR_{2T-1}\widehat\Lambda_T$, where $P_T$ restricts time and $R_{2T-1}$ reverses the $2T$ time indices.
 

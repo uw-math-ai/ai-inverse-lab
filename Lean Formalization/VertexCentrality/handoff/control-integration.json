@@ -1,0 +1,74 @@
+{
+  "time": "2026-11-19T21:47:51.545305+00:00",
+  "revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "fingerprint": "5771e96fc12ab3f341a9e5b62ef8e64ad940302e900a73797986bcfa2df5cbce",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Combined VertexCentrality build (3373 jobs) including imported Tau Ceti closure; not the full Tau Ceti library or full paper.",
+  "base_revision": "c08f181cc653fef45214a2d53d1b2db869f163b1",
+  "working_tree": true,
+  "axiom_command": "lake env lean scripts/audit_controls.lean",
+  "selected_axiom_audits": [
+    {
+      "declaration": "VertexCentrality.WeightedGraph.heatSolutionLinear_surjective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.moorePenrose_eq_tauceti",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.controlToState_gram",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.controlToState_harmonic_adjoint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.gramControl_exact",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.gramControl_norm_le",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "declaration": "VertexCentrality.WeightedGraph.gramControl_harmonic_moment",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "tooling_limitations": [
+    "swarmalize installation HTTP 403; dashboard and rendered blueprint not checked",
+    "No Lean LSP tool connected"
+  ]
+}

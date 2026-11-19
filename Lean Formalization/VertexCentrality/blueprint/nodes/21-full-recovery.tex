@@ -2,16 +2,20 @@
 id: full-recovery
 title: Full-rank reconstruction
 type: theorem
-status: in-progress
+status: proved
 source: Theorem 3.2 with equation (3.5)
 dependencies:
 - moments
 - product-span
 lean_declarations:
+- VertexCentrality.WeightedGraph.mass_eq_of_hittingProbability_eq_of_rank
 - VertexCentrality.matrix_eq_of_moments_eq_of_rank
+- VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq
+- VertexCentrality.WeightedGraph.mass_eq_of_firstPassageProbability_eq_of_rank
 order: 21
-handoff_note: Full-rank uniqueness algebra checked; full paper-level recovery and
-  generic-rank integration remain open.
+handoff_note: Infinite-path hitting observations now integrated and axiom-audited; see handoff/hitting-recovery-integration.json. Scope reviewed; see SCOPE_REVIEW.md.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Under Assumption 1, $T\geq|X|$, and $\operatorname{rank}H=|I|$, the known input uniquely determines $\mu|_I$ as the unique solution of $H^\top m=b$. In particular two admissible mass functions agreeing on $B$ and on all observed first-passage data have equal interior masses. Require the same known graph and conductances and unique continuation for both models.
 

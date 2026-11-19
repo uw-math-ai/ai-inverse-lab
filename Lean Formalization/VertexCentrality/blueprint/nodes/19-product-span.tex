@@ -2,12 +2,20 @@
 id: product-span
 title: Harmonic product space and rank
 type: lemma
-status: planned
+status: proved
 source: Equations (3.4)–(3.5), p. 12
 dependencies:
 - dirichlet
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.harmonicProductSpace
+- VertexCentrality.WeightedGraph.harmonicProductSpace_eq_of_conductance_eq
+- VertexCentrality.WeightedGraph.harmonicProductSpace_eq_columnSpan
+- VertexCentrality.WeightedGraph.harmonicProductSpace_eq_top_iff_rank
+- VertexCentrality.WeightedGraph.interior_card_le_boundary_products_of_rank
 order: 19
+handoff_note: All harmonic products are spanned by the finite Dirichlet basis products. Sym2 removes duplicate pairs; full row rank is equivalent to full span, and the boundary-pair count is a proved necessary condition. The actual matrix is independent of masses.
+proof_revision: 9a12bb1f2373701f7be12d99df95f1f3045e34ae
+proof_evidence: handoff/scope-integration.json
 ---
 Let $Q\subseteq\mathbb R^I$ be spanned by $(\phi\psi)|_I$ for harmonic $\phi,\psi$. Let $H$ have columns $(\phi^{(j)}\phi^{(k)})|_I$ for $j\leq k$. Then $Q=\operatorname{range}H$. In particular $Q=\mathbb R^I$ iff $\operatorname{rank}H=|I|$, which requires $|B|(|B|+1)/2\geq|I|$.
 

@@ -1,0 +1,12 @@
+module
+
+import VertexCentrality.GenericRank
+
+#print axioms VertexCentrality.rank_eq_card_iff_gram_det_ne_zero
+#print axioms VertexCentrality.polynomialRankCertificate_ne_zero
+#print axioms VertexCentrality.volume_rank_deficient_eq_zero
+#print axioms VertexCentrality.WeightedGraph.polynomialProductMatrix_eval
+#print axioms VertexCentrality.WeightedGraph.polynomialProductMatrix_rank
+#print axioms VertexCentrality.WeightedGraph.volume_harmonicProduct_rank_deficient_eq_zero
+#print axioms VertexCentrality.WeightedGraph.ae_harmonicProduct_full_rank
+#print axioms VertexCentrality.WeightedGraph.ae_mass_eq_of_firstPassageProbability_eq
