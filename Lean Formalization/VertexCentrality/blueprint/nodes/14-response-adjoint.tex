@@ -1,0 +1,16 @@
+---
+id: response-adjoint
+title: Time reversal and response adjoint
+type: lemma
+status: planned
+source: Appendix A, pp. 18–19
+dependencies:
+- forced-heat
+- laplacian
+lean_declarations: []
+order: 14
+---
+Let $R$ reverse $Z_T$ and use weighted space-time inner products. Then $R$ is an involutive isometry and $\Lambda_T^*=R\Lambda_TR$.
+
+\paragraph{Proof plan.}
+Write the lower-triangular time blocks of $\Lambda_T$: for $s<t$ they are $CP^{t-1-s}J$, and otherwise zero. Each spatial block is self-adjoint because $J^*=C$ and $P$ is self-adjoint. Transposing time blocks agrees with reversing both indices. This also avoids terminal-index ambiguity in the backward equation. Encode reversal with a finite-index equivalence.

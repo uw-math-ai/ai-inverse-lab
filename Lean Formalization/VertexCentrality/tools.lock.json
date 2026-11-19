@@ -1,0 +1,10 @@
+{
+  "swarmalize": {
+    "url": "https://github.com/deancureton/swarmalize.git",
+    "revision": "56573f6b8c2686beca7fcaf40e1b6407384d66bb"
+  },
+  "leanblueprint": {
+    "url": "https://github.com/PatrickMassot/leanblueprint.git",
+    "revision": "56e066d30fb7b608a63f4241fee80982d7eae3ef"
+  }
+}

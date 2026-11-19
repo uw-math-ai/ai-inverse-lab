@@ -1,0 +1,14 @@
+---
+id: weighted-graph
+title: Finite weighted graph
+type: definition
+status: planned
+source: Section 1.1, pp. 1–2
+dependencies: []
+lean_declarations: []
+order: 1
+---
+Let $X$ be finite and nonempty and $G$ a connected simple undirected graph on $X$. Let $\mu:X\to\mathbb R$ satisfy $\mu_x>0$. Let $w:X\times X\to\mathbb R$ be symmetric and nonnegative, with $w_{xy}>0$ exactly when $x\sim y$. In particular $w_{xx}=0$. Fix $B\subseteq X$ and put $I=X\setminus B$. Define $d_w(x)=\sum_y w_{xy}$.
+
+\paragraph{Proof plan.}
+Use a finite vertex type and Mathlib's simple graph API. Sum over all vertices with zero conductance on nonedges. Connectivity and nonemptiness are hypotheses, not consequences of positivity.

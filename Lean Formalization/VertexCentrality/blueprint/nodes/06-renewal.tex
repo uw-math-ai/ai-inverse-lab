@@ -1,0 +1,15 @@
+---
+id: renewal
+title: Finite renewal identity
+type: lemma
+status: planned
+source: Equation (2.5), p. 6; cited [12]
+dependencies:
+- first-passage
+lean_declarations: []
+order: 6
+---
+For $t\geq1$ and $x,y\in X$, \[(P^t)_{xy}=\sum_{s=1}^t r(s,x,y)(P^{t-s})_{yy}.\] Consequently observed $r(s,x,y)$ with $x,y\in B$, $1\leq s\leq N$ determines $(P^t)_{xy}$ on $B\times B$ for $0\leq t\leq N$.
+
+\paragraph{Proof plan.}
+Partition the event $H_t^x=y$ by its first positive visit $s\leq t$ and apply the Markov property at that deterministic time on each event. The suffix contributes $(P^{t-s})_{yy}$. For reconstruction first compute diagonal entries by induction from $(P^0)_{yy}=1$, then other observed entries by the same sum. Iterating gives the composition expansion (2.5); prove that equality rather than assuming the cited result.

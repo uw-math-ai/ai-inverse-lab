@@ -1,0 +1,5 @@
+The macro and latexmk templates in src/ are derived from leanblueprint:
+https://github.com/PatrickMassot/leanblueprint
+Copyright 2020-2024, Patrick Massot
+See LEANBLUEPRINT_LICENSE for the upstream Apache License 2.0.
+Project adaptations include the document configuration and generated content.

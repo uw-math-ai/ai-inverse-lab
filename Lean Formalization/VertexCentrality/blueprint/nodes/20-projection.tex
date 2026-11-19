@@ -1,0 +1,17 @@
+---
+id: projection
+title: Euclidean projection reconstruction
+type: theorem
+status: planned
+source: Theorem 3.2, p. 12; equation (4.3), p. 14
+dependencies:
+- moments
+- product-span
+lean_declarations: []
+order: 20
+deviation: User approved corrected target on 2026-11-19; see CORRECTIONS.md.
+---
+Approved corrected target: under Assumption 1 and $T\geq|X|$, the known input $(G,w,\mu|_B,r|_{1\leq t<2T,B\times B})$ determines the counting-measure Euclidean projection $\Pi_Q^{\mathrm{Euc}}(\mu|_I)$. The printed theorem names the previously mass-weighted space instead; that convention is not silently identified with this target.
+
+\paragraph{Proof plan.}
+Moments give $H^\top\mu_I=b$. The unique Euclidean minimum-norm solution is the Euclidean projection onto $\operatorname{range}H=Q$. A mass-weighted projection would instead pair $\mu_I$ with another factor of $\mu_I$. The parent audit's path example gives $5/2$ versus $13/5$. The user approved the Euclidean target on 19 November 2026; retain the distinction in the Lean statement. Prove dependence on equal observed input, not just existence using the unknown interior mass.

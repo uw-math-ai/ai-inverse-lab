@@ -1,0 +1,15 @@
+---
+id: pseudoinverse
+title: Gram pseudoinverse exact preimage
+type: lemma
+status: planned
+source: Linear algebra prerequisite to Proposition 3.1
+dependencies:
+- weighted-spaces
+lean_declarations: []
+order: 16
+---
+For a linear map $A:E\to F$ between finite-dimensional real inner-product spaces and $y\in\operatorname{range}A$, let $h=(A^*A)^\dagger A^*y$, with the Hilbert-space Moore--Penrose inverse. Then $Ah=y$, $h\perp\ker A$, and $h$ is the unique minimum-norm preimage of $y$.
+
+\paragraph{Proof plan.}
+Use $\operatorname{range}(A^*A)=\operatorname{range}(A^*)$ and the Penrose projection property to obtain the normal equations. If $y=Az$, these equations say $A^*A(h-z)=0$; taking inner product with $h-z$ proves $A(h-z)=0$. The inverse selects the orthogonal complement of the kernel, and Pythagoras proves minimality. The existing candidate in the parent folder is historical evidence only until ported and checked at this project's pins.

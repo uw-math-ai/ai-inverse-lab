@@ -1,0 +1,16 @@
+---
+id: harmonic-adjoint
+title: Adjoint on harmonic functions
+type: proposition
+status: planned
+source: Proposition 2.7, p. 10
+dependencies:
+- harmonic
+- response-adjoint
+lean_declarations: []
+order: 15
+---
+Let $\iota$ extend a boundary function constantly in time. If $\phi$ is interior harmonic, then \[W^*\phi=R\Lambda_TR\iota(C\Delta\phi)+\iota(C\phi).\] The right side is computable using $\Lambda_T,w,\mu|_B,\phi$.
+
+\paragraph{Proof plan.}
+Telescope $\langle U_f(t+1)-U_f(t),\phi\rangle$. Move $\Delta$ across the inner product and use its vanishing on $I$ to leave $\langle CU_f(t),C\Delta\phi\rangle_B+\langle f(t),C\phi\rangle_B$. Sum over time and use the response adjoint. On $B$, $\Delta\phi$ uses only known boundary masses.

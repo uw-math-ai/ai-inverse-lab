@@ -1,0 +1,15 @@
+---
+id: transition
+title: Stochastic transition and heat evolution
+type: lemma
+status: planned
+source: Equations (1.1)–(1.3), p. 3
+dependencies:
+- laplacian
+lean_declarations: []
+order: 4
+---
+Assume $d_w(x)\leq\mu_x$ for all $x$. Put $p_{xy}=w_{xy}/\mu_x$ for $x\ne y$ and $p_{xx}=1-d_w(x)/\mu_x$. Then $p_{xy}\geq0$, $\sum_yp_{xy}=1$, and $\mu_xp_{xy}=\mu_yp_{yx}$. The unique homogeneous heat solution with initial value $g$ is $u(t)=P^tg$.
+
+\paragraph{Proof plan.}
+Separate the diagonal term in each row. Off-diagonal detailed balance is symmetry of $w$; the diagonal identity is reflexive. Matrix action agrees with $1+\Delta$. Induction on time proves the recurrence and uniqueness. Connect this finite stochastic matrix to the existing Markov kernel and path-law APIs.

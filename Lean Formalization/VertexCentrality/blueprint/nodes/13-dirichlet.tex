@@ -1,0 +1,16 @@
+---
+id: dirichlet
+title: Harmonic extension and basis
+type: lemma
+status: planned
+source: Equation (2.12), p. 11; cited [24, Lemma 10.1]
+dependencies:
+- harmonic
+- weighted-spaces
+lean_declarations: []
+order: 13
+---
+Assume $B\ne\varnothing$. Every $g:B\to\mathbb R$ has a unique interior harmonic extension $Eg:X\to\mathbb R$ with $CEg=g$. For boundary standard basis $e_j$ put $\phi^{(j)}=Ee_j$. These functions form a basis of the harmonic subspace.
+
+\paragraph{Proof plan.}
+For zero boundary data the energy identity forces equal values across every positive-conductance edge. Connectivity and a boundary vertex force the function to be zero. The square interior Dirichlet block is therefore injective and hence invertible. Solve it with the given boundary data. Linearity and $CE=1$ prove the basis assertion. Handle empty interior by the unique empty solution.

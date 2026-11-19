@@ -1,0 +1,15 @@
+---
+id: first-passage
+title: Positive-time first passage
+type: definition
+status: planned
+source: Section 1.2, p. 3
+dependencies:
+- transition
+lean_declarations: []
+order: 5
+---
+For the Markov chain $H^x$ with transition $P$ and initial state $x$, define $\tau(x,y)=\inf\{s\geq1:H_s^x=y\}\in\mathbb N\cup\{\infty\}$ and $r(t,x,y)=\mathbb P_x(\tau(x,y)=t)$ for $t\geq1$. Thus $r(1,x,y)=p_{xy}$, including $x=y$.
+
+\paragraph{Proof plan.}
+Use a hitting-time construction with start index one and retain the value infinity. On the diagonal this is first return; replacing it with a hitting time starting at zero would invalidate renewal. Finite cylinder events give an alternative elementary finite-horizon construction, but must be bridged to the stated probability law.

@@ -1,0 +1,15 @@
+---
+id: laplacian
+title: Laplacian and energy identity
+type: lemma
+status: planned
+source: Section 1.1, p. 2
+dependencies:
+- weighted-spaces
+lean_declarations: []
+order: 3
+---
+Define $\Delta u(x)=\mu_x^{-1}\sum_yw_{xy}(u_y-u_x)$ and $P=1+\Delta$. For all $u,v$, \[\langle\Delta u,v\rangle_{X,\mu}=-\tfrac12\sum_{x,y}w_{xy}(u_y-u_x)(v_y-v_x)=\langle u,\Delta v\rangle_{X,\mu}.\] Also $\Delta 1=0$.
+
+\paragraph{Proof plan.}
+Cancel $\mu_x$ using strict positivity, interchange the two finite summations, swap $x,y$, and average the two expressions using symmetry of $w$. Constants have zero differences. This gives weighted self-adjointness, not ordinary matrix symmetry of $\Delta$.

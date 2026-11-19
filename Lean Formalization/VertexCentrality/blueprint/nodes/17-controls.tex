@@ -1,0 +1,19 @@
+---
+id: controls
+title: Data-derived exact controls
+type: proposition
+status: planned
+source: Proposition 3.1, p. 11
+dependencies:
+- controllability
+- gram-identity
+- harmonic-adjoint
+- response-data
+- pseudoinverse
+lean_declarations: []
+order: 17
+---
+Under Assumption 1 and $T\geq|X|$, every interior harmonic $\psi$ has an exact control $h_\psi=(W^*W)^\dagger W^*\psi$, with $Wh_\psi=\psi$. It is computable from the known graph, boundary masses, and observed first-passage data.
+
+\paragraph{Proof plan.}
+Controllability puts $\psi$ in the range of $W$; apply the Gram preimage lemma. The Gram operator and harmonic adjoint are available from the measured extended and short responses. Weighted control-space masses are known. Distinguish this weighted minimum-norm assertion from ordinary pseudoinversion in value coordinates.

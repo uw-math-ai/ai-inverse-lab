@@ -1,0 +1,15 @@
+---
+id: ucp
+title: Unique continuation hypothesis
+type: definition
+status: planned
+source: Assumption 1(i), p. 4
+dependencies:
+- laplacian
+lean_declarations: []
+order: 9
+---
+The unique continuation hypothesis is: for every $\lambda\in\mathbb R$ and $v:X\to\mathbb R$, if $-\Delta v=\lambda v$ and $Cv=0$, then $v=0$. In this nonempty connected graph it implies $B\ne\varnothing$.
+
+\paragraph{Proof plan.}
+Apply the hypothesis to the nonzero constant function, which has eigenvalue zero, to exclude empty observation. Keep unique continuation as an explicit hypothesis of the reconstruction theorem; do not claim it for all connected graphs.

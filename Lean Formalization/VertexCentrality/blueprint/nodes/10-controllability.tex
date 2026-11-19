@@ -1,0 +1,16 @@
+---
+id: controllability
+title: Exact controllability
+type: lemma
+status: planned
+source: Lemma 2.3, p. 8; cited [12, Proposition 5.3]
+dependencies:
+- ucp
+- forced-heat
+lean_declarations: []
+order: 10
+---
+Assume unique continuation and $T\geq|X|$. The linear map $W:f\mapsto U_f(T)$ from $\mathbb R^{Z_T\times B}$ onto $\mathbb R^X$ is surjective.
+
+\paragraph{Proof plan.}
+The adjoint formula gives $\ker W^*=\bigcap_{k<T}\ker(CP^k)$. Cayley--Hamilton makes the intersection for $0\leq k<|X|$ invariant under $P$. If nonzero, the restriction of the self-adjoint $P$ to it has a real nonzero eigenvector. It vanishes on $B$ and is also an eigenvector of $-\Delta=1-P$, contradicting unique continuation. Finite-dimensional orthogonal range duality now proves surjectivity. The invariant-subspace and spectral steps are obligations, not imported axioms.

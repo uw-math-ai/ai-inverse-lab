@@ -1,0 +1,15 @@
+---
+id: weighted-spaces
+title: Weighted spaces and restriction
+type: definition
+status: planned
+source: Section 1.1, p. 2
+dependencies:
+- weighted-graph
+lean_declarations: []
+order: 2
+---
+For $S\subseteq X$ set $\langle u,v\rangle_{S,\mu}=\sum_{x\in S}\mu_xu_xv_x$. For $Z_T=\{0,\ldots,T-1\}$ use the sum of these inner products over time. Let $J:\mathbb R^B\to\mathbb R^X$ extend by zero and $C:\mathbb R^X\to\mathbb R^B$ restrict. Then $J^*=C$.
+
+\paragraph{Proof plan.}
+Positivity of $\mu$ gives positive definiteness. Transport the Euclidean structure by $u_x\mapsto\sqrt{\mu_x}u_x$, or use an existing weighted-space construction. Splitting a finite sum shows $\langle Jf,u\rangle_{X,\mu}=\langle f,Cu\rangle_{B,\mu}$.

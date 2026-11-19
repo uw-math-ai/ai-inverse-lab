@@ -1,0 +1,16 @@
+---
+id: forced-heat
+title: Forced heat recurrence and Duhamel sum
+type: lemma
+status: planned
+source: Equations (2.1), (2.4), pp. 5–6
+dependencies:
+- transition
+- weighted-spaces
+lean_declarations: []
+order: 7
+---
+For $f:Z_T\times B\to\mathbb R$, extend $f$ by zero in time and space. Define $U_f(0)=0$ and $U_f(t+1)=PU_f(t)+Jf(t)$ for every $t\in\mathbb N$. Then \[U_f(t)=\sum_{s<t}P^{t-1-s}Jf(s).\] The solution is unique and linear in $f$.
+
+\paragraph{Proof plan.}
+Induct on $t$. The successor sum splits into earlier sources multiplied by $P$ and the new $s=t$ term. The natural-time recurrence defines $U_f(2T)$ as needed for endpoint differences, while measurements still end at $2T-1$.

@@ -1,0 +1,15 @@
+---
+id: moments
+title: Interior harmonic-product moments
+type: lemma
+status: planned
+source: Equation (3.2), p. 11
+dependencies:
+- controls
+lean_declarations: []
+order: 18
+---
+For interior harmonic $\phi,\psi$ and the exact control $h_\psi$, \[\sum_{x\in I}\mu_x\psi_x\phi_x=\langle h_\psi,W^*\phi\rangle_{Z_T\times B,\mu}-\sum_{x\in B}\mu_x\psi_x\phi_x.\] Both terms on the right are determined by the data and known quantities.
+
+\paragraph{Proof plan.}
+Replace $\psi$ with $Wh_\psi$, apply the weighted adjoint identity, and split the vertex sum into disjoint boundary and interior parts. Keep the mass factor in the space-time inner product throughout.

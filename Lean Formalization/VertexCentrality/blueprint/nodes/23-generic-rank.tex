@@ -1,0 +1,17 @@
+---
+id: generic-rank
+title: Generic full rank from one witness
+type: corollary
+status: planned
+source: Corollary 3.3, pp. 12–13
+dependencies:
+- rationality
+- full-recovery
+lean_declarations: []
+order: 23
+deviation: User approved corrected target on 2026-11-19; see CORRECTIONS.md.
+---
+If some positive conductance assignment $w_0$ has $\operatorname{rank}H(w_0)=|I|$, the rank-deficient assignments form a Lebesgue-null subset of the positive edge orthant. Full reconstruction follows outside that null set for assignments that additionally satisfy admissibility and unique continuation.
+
+\paragraph{Proof plan.}
+Choose one full-size minor nonzero at $w_0$. Its rational numerator is a nonzero polynomial and its denominator never vanishes in the positive orthant. The deficient locus is contained in the zero set of that numerator, which has measure zero. Intersect with admissibility only afterward. This repairs the printed dichotomy for sets already intersected with the admissible region. The witness must be supplied, not inferred from the number of columns. Formalize the nonzero-polynomial null-set prerequisite or reuse a checked library theorem.

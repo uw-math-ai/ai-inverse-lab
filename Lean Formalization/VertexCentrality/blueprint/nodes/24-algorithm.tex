@@ -1,0 +1,19 @@
+---
+id: algorithm
+title: Algorithm 1 in consistent coordinates
+type: theorem
+status: planned
+source: Algorithm 1 and equations (4.1)–(4.3), pp. 13–14
+dependencies:
+- response-data
+- controls
+- moments
+- full-recovery
+lean_declarations: []
+order: 24
+deviation: User approved corrected target on 2026-11-19; see CORRECTIONS.md.
+---
+Approved corrected algorithm: recover observed transition powers by renewal; form short and extended responses; form $K=W^*W$ and $a_j=W^*\phi^{(j)}$; solve $Kh_j=a_j$; form $b_{jk}=h_j^\top D_Ba_k-\sum_{x\in B}\mu_x\phi_x^{(j)}\phi_x^{(k)}$, where $D_B=I_T\otimes\operatorname{diag}(\mu_B)$; solve $H^\top m=b$. Under full rank and Assumption 1 this returns $\mu_I$.
+
+\paragraph{Proof plan.}
+Each normal equation is consistent and any exact solution gives $Wh_j=\phi^{(j)}$. Use the moment lemma with the required control-space mass matrix $D_B$. The printed equation (4.3) omits this factor in value coordinates; the audit's exact example returns $-1/2$ instead of $1$ without it. The user approved this explicit correction on 19 November 2026. No floating-point stability or Monte Carlo guarantee is claimed.

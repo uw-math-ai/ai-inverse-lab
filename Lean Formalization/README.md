@@ -42,3 +42,12 @@ Do not open dependent PRs until their prerequisites land. Do not submit new
 roadmaps from this agent: roadmap proposals require human curation. The requested
 roadmap tutorial is due after the existing-roadmap contribution work is complete,
 including review and merge; that milestone has not been reached.
+
+## Local blueprint-first project (2026-11-19)
+
+[VertexCentrality](VertexCentrality/README.md) now contains the runnable, pinned
+Lean project, a 24-node leanblueprint, and a localhost progress dashboard for this
+paper. The user approved the explicit corrections recorded in
+[CORRECTIONS.md](VertexCentrality/CORRECTIONS.md). Its scaffold builds, but paper
+proof development has not started. The older Tau Ceti contribution history above
+and in STATUS remains separate and is not a completion certificate for this project.

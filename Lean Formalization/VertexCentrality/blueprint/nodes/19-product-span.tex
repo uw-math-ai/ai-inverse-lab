@@ -1,0 +1,15 @@
+---
+id: product-span
+title: Harmonic product space and rank
+type: lemma
+status: planned
+source: Equations (3.4)–(3.5), p. 12
+dependencies:
+- dirichlet
+lean_declarations: []
+order: 19
+---
+Let $Q\subseteq\mathbb R^I$ be spanned by $(\phi\psi)|_I$ for harmonic $\phi,\psi$. Let $H$ have columns $(\phi^{(j)}\phi^{(k)})|_I$ for $j\leq k$. Then $Q=\operatorname{range}H$. In particular $Q=\mathbb R^I$ iff $\operatorname{rank}H=|I|$, which requires $|B|(|B|+1)/2\geq|I|$.
+
+\paragraph{Proof plan.}
+Expand each harmonic function in the boundary basis and distribute products. Commutativity reduces ordered pairs to $j\leq k$; each column is itself a harmonic product. Use rank equals dimension of the range, followed by the column-count bound. The count alone is not sufficient for full rank.

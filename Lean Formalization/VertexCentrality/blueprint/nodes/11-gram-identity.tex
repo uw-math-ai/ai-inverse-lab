@@ -1,0 +1,16 @@
+---
+id: gram-identity
+title: Blagovescenskii Gram identity
+type: proposition
+status: planned
+source: Proposition 2.4, pp. 8–9
+dependencies:
+- forced-heat
+- laplacian
+lean_declarations: []
+order: 11
+---
+Let $T>0$ and $f,g$ vanish outside $Z_T\times B$. Then \[\langle Wf,Wg\rangle_{X,\mu}=\sum_{j=0}^{T-1}\langle f(j),CU_g(2T-1-j)\rangle_{B,\mu}.\] Thus $W^*W=P_TR_{2T-1}\widehat\Lambda_T$, where $P_T$ restricts time and $R_{2T-1}$ reverses the $2T$ time indices.
+
+\paragraph{Proof plan.}
+Set $I(s,t)=\langle U_f(s),U_g(t)\rangle$. Self-adjointness gives $I(s+1,t)-I(s,t+1)=F(s,t)$ with $F(s,t)=\langle f(s),CU_g(t)\rangle-\langle CU_f(s),g(t)\rangle$. Induction yields $I(s,t)=\sum_{j<s}F(j,t+s-1-j)$. At $s=t=T$, the second source term vanishes because its time is at least $T$. Adjoint uniqueness proves the operator equality.

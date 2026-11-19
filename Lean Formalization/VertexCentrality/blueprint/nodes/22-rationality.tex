@@ -1,0 +1,16 @@
+---
+id: rationality
+title: Rational dependence on conductances
+type: lemma
+status: planned
+source: Corollary 3.3 proof, pp. 12–13; cited [24]
+dependencies:
+- dirichlet
+- product-span
+lean_declarations: []
+order: 22
+---
+For fixed connected graph and nonempty $B$, let $w$ range over the positive edge orthant. Every entry of $H(w)$ is rational in the edge variables, with denominators nonzero throughout that orthant.
+
+\paragraph{Proof plan.}
+The interior Dirichlet block has polynomial entries and is invertible for every positive conductance assignment by the energy argument. The adjugate formula writes its inverse as polynomial entries divided by the nonvanishing determinant. Harmonic basis entries and their pairwise products remain rational. The determinant of an empty block is one.
