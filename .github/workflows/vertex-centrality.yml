@@ -46,7 +46,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz libgraphviz-dev pkg-config texlive-xetex texlive-latex-extra latexmk
-          python -m pip install -r requirements-tools.txt
+          python -m pip install -r requirements-blueprint.txt
       - name: Check dashboard and blueprint
         run: |
           python scripts/test_dashboard.py

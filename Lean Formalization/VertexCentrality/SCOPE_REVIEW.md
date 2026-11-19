@@ -83,10 +83,17 @@ statement is data-invariance/identifiability, combined with exact algebraic cont
 and moment-solving theorems; this is not executable numerical software. Generic
 recovery still requires the explicitly supplied full-rank witness and UCP.
 
-The four dashboard tests and both exact coordinate examples passed. Blueprint
+The dashboard tests and both exact coordinate examples passed. Blueprint
 PDF/HTML generation passed after escaping plain metadata for LaTeX (the imported
 `SCOPE_REVIEW.md` note previously caused `Missing $ inserted`). The detached-HEAD
 assumption in the dashboard test was removed for CI. A GitHub Actions workflow
 now repeats the build, full namespace axiom audit, endpoint checks, dashboard
 checks, and blueprint generation. Historical cloud audit JSON files remain
 provenance records, not substitutes for these checks. No coordinator was restarted.
+
+The initial GitHub run passed the Linux Lean build and full namespace/endpoint
+axiom audits, but its blueprint job could not authenticate to the private
+swarmalize repository. Read-only tooling now uses a public PyYAML parser; its
+output was compared with swarmalize and matched all 24 nodes exactly. Optional
+coordinator support still uses swarmalize when installed. CI installs only
+`requirements-blueprint.txt`, without private repository credentials.

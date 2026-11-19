@@ -13,6 +13,19 @@ class DashboardTests(unittest.TestCase):
         self.assertTrue(items)
         self.assertEqual(len(items),len({n['id'] for n in items}))
         self.assertTrue(all(n['body'].strip() and n['source'] for n in items))
+    def test_dependency_errors(self):
+        import yaml
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            directory = root/'blueprint/nodes'
+            directory.mkdir(parents=True)
+            node = dict(id='a', title='A', type='lemma', status='planned',
+                        source='test', order=1, lean_declarations=[])
+            for dependencies in (['missing'], ['a']):
+                node['dependencies'] = dependencies
+                (directory/'a.tex').write_text('---\n'+yaml.safe_dump(node)+'---\nBody')
+                with patch.object(project, 'ROOT', root), self.assertRaises(ValueError):
+                    project.nodes()
     def test_routes(self):
         self.assertEqual(asset_path('/'),ROOT/'dashboard/index.html')
         for path in ('/.git/config','/api/../.env','/blueprint/../../.git/config',

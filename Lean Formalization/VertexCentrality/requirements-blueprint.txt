@@ -1,0 +1,2 @@
+PyYAML==6.0.3
+leanblueprint @ git+https://github.com/PatrickMassot/leanblueprint.git@56e066d30fb7b608a63f4241fee80982d7eae3ef

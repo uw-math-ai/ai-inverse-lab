@@ -3,19 +3,76 @@ from pathlib import Path
 import hashlib
 import json
 import subprocess
-from swarmalize.blueprint import Blueprint
-from swarmalize.client import Client
+import yaml
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
+class NodeLoader(yaml.SafeLoader):
+    """Reject ambiguous duplicate keys in blueprint metadata."""
+
+
+def node_mapping(loader, mapping):
+    result = {}
+    for key_node, value_node in mapping.value:
+        key = loader.construct_object(key_node)
+        if not isinstance(key, str) or key in result:
+            raise ValueError('Blueprint keys must be unique strings')
+        result[key] = loader.construct_object(value_node, deep=True)
+    return result
+
+
+NodeLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, node_mapping)
+
+
 def nodes():
-    blueprint = Blueprint(ROOT / 'blueprint/nodes')
-    check = blueprint.blueprint_check()
-    if not check['ok']:
-        raise ValueError(check['diagnostics'])
-    return sorted((blueprint.blueprint_get(n['id']) for n in blueprint.blueprint_list()),
-                  key=lambda n: n['order'])
+    """Read the shared YAML/LaTeX nodes without requiring a private coordinator package."""
+    items = {}
+    for path in sorted((ROOT/'blueprint/nodes').glob('*.tex')):
+        if not path.resolve().is_relative_to((ROOT/'blueprint/nodes').resolve()):
+            raise ValueError(f'Node escapes blueprint directory: {path.name}')
+        pieces = path.read_text().split('---', 2)
+        if len(pieces) != 3 or pieces[0].strip():
+            raise ValueError(f'Missing frontmatter: {path.name}')
+        node = yaml.load(pieces[1], Loader=NodeLoader)
+        if not isinstance(node, dict):
+            raise ValueError(f'Invalid metadata: {path.name}')
+        for key in ('id', 'title', 'type', 'status', 'source'):
+            if not isinstance(node.get(key), str) or not node[key].strip():
+                raise ValueError(f'Missing {key}: {path.name}')
+        if 'body' in node or 'path' in node or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]*', node['id']):
+            raise ValueError(f'Invalid/reserved metadata: {path.name}')
+        json.dumps(node, allow_nan=False)
+        for key in ('dependencies', 'lean_declarations'):
+            values = node.get(key)
+            if (not isinstance(values, list) or
+                    not all(isinstance(v, str) and v for v in values) or
+                    len(values) != len(set(values))):
+                raise ValueError(f'Invalid {key}: {path.name}')
+        if not isinstance(node.get('order'), int) or not pieces[2].strip():
+            raise ValueError(f'Missing order/body: {path.name}')
+        if node['id'] in items:
+            raise ValueError(f'Duplicate node: {node["id"]}')
+        items[node['id']] = dict(node, path=path.name, body=pieces[2].removeprefix('\n'))
+    if not items:
+        raise ValueError('No blueprint nodes found')
+    visiting, done = set(), set()
+    def visit(key):
+        if key not in items:
+            raise ValueError(f'Unknown dependency: {key}')
+        if key in visiting:
+            raise ValueError(f'Dependency cycle: {key}')
+        if key in done:
+            return
+        visiting.add(key)
+        for dependency in items[key]['dependencies']:
+            visit(dependency)
+        visiting.remove(key)
+        done.add(key)
+    for key in items:
+        visit(key)
+    return sorted(items.values(), key=lambda n: n['order'])
 
 
 def fingerprint():
@@ -39,11 +96,12 @@ def swarm_snapshot():
     if not config_file.exists():
         return dict(available=False, error='No coordinator configured')
     try:
+        from swarmalize.client import Client
         config = json.loads(config_file.read_text())
         token = Path(config['token_file']).read_text().strip()
         result = Client(config['url'], token, timeout=2).call('overview')
         return dict(available=True, **result)
-    except (OSError, ValueError, KeyError, RuntimeError):
+    except (ImportError, OSError, ValueError, KeyError, RuntimeError):
         return dict(available=False, error='Coordinator unavailable; task state is not current')
 
 

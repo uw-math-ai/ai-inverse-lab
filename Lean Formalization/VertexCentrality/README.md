@@ -71,7 +71,7 @@ blueprint assets must be rebuilt after changing nodes:
 
 ```sh
 uv venv .venv --python 3.12
-uv pip install --python .venv/bin/python -r requirements-tools.txt
+uv pip install --python .venv/bin/python -r requirements-blueprint.txt
 .venv/bin/python scripts/build_blueprint.py
 .venv/bin/python scripts/check.py
 .venv/bin/python scripts/test_dashboard.py
@@ -93,3 +93,8 @@ axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
 
 This is exact mathematical reconstruction, with the approved corrections and explicit
 hypotheses. It is not a verified floating-point implementation of Algorithm 1.
+
+Read-only dashboard and blueprint rendering use public dependencies in
+`requirements-blueprint.txt`. Coordinator users may additionally install
+`requirements-tools.txt` with access to the pinned swarmalize repository. CI does
+not require its credentials; node files remain compatible with swarmalize.
