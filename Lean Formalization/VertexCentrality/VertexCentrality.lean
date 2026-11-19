@@ -1,12 +1,17 @@
 module
 
-import Mathlib.Basic.Real.Basic
+import VertexCentrality.Graph
+import VertexCentrality.Heat
+import VertexCentrality.GraphHeat
+import VertexCentrality.Observability
+import VertexCentrality.GraphControl
+import VertexCentrality.Dirichlet
+import VertexCentrality.Pseudoinverse
+import VertexCentrality.Reconstruction
 
 /-!
 # Vertex centrality reconstruction
 
-Project entry point for Gao–Li–Yang, arXiv:2603.20710v1.
-The blueprint is prepared before proof development. No paper statements have yet been
-formalized here. In particular, successful compilation of this entry point is only an
-environment check, not evidence for the reconstruction theorem.
+Checked prerequisites for Gao–Li–Yang, arXiv:2603.20710v1, with the corrections
+recorded in the blueprint. The end-to-end reconstruction theorem remains open.
 -/
