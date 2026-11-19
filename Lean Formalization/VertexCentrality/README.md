@@ -4,11 +4,10 @@ A blueprint-first Lean project for Gao–Li–Yang, *Vertex Centrality Reconstru
 in an Inverse Problem for Information Diffusion*, arXiv:2603.20710v1.
 Work belongs to `uw-math-ai/ai-inverse-lab`, branch `owen-working-branch`.
 
-The initial deliverable is a 24-node mathematical blueprint, a live local progress
-dashboard, and a pinned, compiling Lean environment. **No paper theorem is proved
-by the scaffold.** The existing parent-folder audit, candidate proofs, patches,
-and contribution records are preserved and do not count toward this project's proofs.
-The user approved the [documented corrections](CORRECTIONS.md) before proof work.
+The blueprint, dashboard, and checked prerequisite modules are available. **The full
+corrected reconstruction theorem remains incomplete.** Work is paused for migration;
+start with [HANDOFF.md](HANDOFF.md). The user approved the [corrections](CORRECTIONS.md).
+Historical candidates outside this project do not count toward its proofs.
 
 ## Quick start
 
@@ -19,7 +18,6 @@ On macOS Graphviz and MacTeX supply the latter tools.
 ```sh
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements-tools.txt
-lake update
 lake exe cache get
 .venv/bin/python scripts/build_blueprint.py
 .venv/bin/python scripts/check.py
@@ -88,9 +86,10 @@ pinned dependencies pristine. No verification evidence or secret is published fr
 ```
 
 The dashboard uses swarmalize's actual blueprint parser and dependency validator.
-No coordinator, autonomous worker, credential, overnight run, or extra publication
-branch is created by this setup. Worker scheduling can be added after the blueprint
-review; node dependencies are informational, not task leases.
+A local coordinator was used with isolated native agent clones. It has been stopped
+for handoff. Its sanitized final task snapshot is in `handoff/swarm-tasks.json`;
+leases and credentials must not be reused on another server. See HANDOFF.md for
+fresh coordinator and dashboard startup. Node dependencies are informational.
 
 ## Source provenance
 

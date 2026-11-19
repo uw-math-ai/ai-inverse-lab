@@ -1,0 +1,149 @@
+{
+  "observed_at": 1795124150.157591,
+  "integration_mode": "optimistic",
+  "task_counts": {
+    "done": 7,
+    "pending": 1
+  },
+  "agents": [
+    {
+      "agent": "graph",
+      "parent": "lead",
+      "last_seen": 1795124150.1553721,
+      "unread": 0
+    },
+    {
+      "agent": "heat",
+      "parent": "lead",
+      "last_seen": 1795124150.154252,
+      "unread": 0
+    },
+    {
+      "agent": "lead",
+      "parent": null,
+      "last_seen": 1795124150.1517591,
+      "unread": 0
+    },
+    {
+      "agent": "reconstruction",
+      "parent": "lead",
+      "last_seen": 1795124150.15681,
+      "unread": 0
+    }
+  ],
+  "tasks": [
+    {
+      "id": 8,
+      "title": "Generic full rank from one nonzero minor",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "pending",
+      "agent": null,
+      "lease_expires": null,
+      "created_at": 1795123675.905215,
+      "updated_at": 1795124150.156846,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": null
+    },
+    {
+      "id": 7,
+      "title": "Harmonic Dirichlet extension",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "graph",
+      "lease_expires": null,
+      "created_at": 1795123379.3616729,
+      "updated_at": 1795124150.155381,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "97bd4e2b35d3a339904079ad473f881c2d54dd98"
+    },
+    {
+      "id": 6,
+      "title": "Realize graph heat response and harmonic adjoints",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "heat",
+      "lease_expires": null,
+      "created_at": 1795123316.103422,
+      "updated_at": 1795124150.1542609,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "97bd4e2b35d3a339904079ad473f881c2d54dd98"
+    },
+    {
+      "id": 5,
+      "title": "Construct minimum-norm Gram controls",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "reconstruction",
+      "lease_expires": null,
+      "created_at": 1795123250.058864,
+      "updated_at": 1795124150.153109,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "97bd4e2b35d3a339904079ad473f881c2d54dd98"
+    },
+    {
+      "id": 4,
+      "title": "Unique continuation to observability",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "lead",
+      "lease_expires": null,
+      "created_at": 1795122947.2038982,
+      "updated_at": 1795124150.151772,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "97bd4e2b35d3a339904079ad473f881c2d54dd98"
+    },
+    {
+      "id": 1,
+      "title": "Weighted graph operators and harmonicity",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "graph",
+      "lease_expires": null,
+      "created_at": 1795122842.24652,
+      "updated_at": 1795124150.1493351,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "97bd4e2b35d3a339904079ad473f881c2d54dd98"
+    },
+    {
+      "id": 2,
+      "title": "Forced heat and Gram identity",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "heat",
+      "lease_expires": null,
+      "created_at": 1795122842.27543,
+      "updated_at": 1795123411.7406569,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "a2d724ad611a7b055faed3ab40256792f3238f8a"
+    },
+    {
+      "id": 3,
+      "title": "Moment reconstruction via Euclidean projection",
+      "dependencies": [],
+      "queue": "proof",
+      "state": "done",
+      "agent": "reconstruction",
+      "lease_expires": null,
+      "created_at": 1795122842.3043032,
+      "updated_at": 1795123316.067403,
+      "waiting_on": [],
+      "blocked_at": null,
+      "commit": "963e63123a44c92fe2595c64a82d98f9f822eb25"
+    }
+  ],
+  "latest_event": 44
+}

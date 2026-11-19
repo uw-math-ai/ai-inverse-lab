@@ -2,13 +2,18 @@
 id: controllability
 title: Exact controllability
 type: lemma
-status: planned
+status: in-progress
 source: Lemma 2.3, p. 8; cited [12, Proposition 5.3]
 dependencies:
 - ucp
 - forced-heat
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.reachability_surjective
+- VertexCentrality.WeightedGraph.boundary_reachability_surjective
 order: 10
+handoff_note: Spectral finite-horizon reachability checked, including Cayley-Hamilton.
+  Current graph endpoint uses masked full-vertex controls; the time-reversal/index
+  bridge to heatSolutionLinear on boundary controls remains open.
 ---
 Assume unique continuation and $T\geq|X|$. The linear map $W:f\mapsto U_f(T)$ from $\mathbb R^{Z_T\times B}$ onto $\mathbb R^X$ is surjective.
 

@@ -2,11 +2,15 @@
 id: weighted-graph
 title: Finite weighted graph
 type: definition
-status: planned
+status: in-progress
 source: Section 1.1, pp. 1–2
 dependencies: []
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph
+- VertexCentrality.WeightedGraph.toSimpleGraph
 order: 1
+handoff_note: Finite weighted graph definitions are implemented; connectivity is an
+  explicit hypothesis where needed.
 ---
 Let $X$ be finite and nonempty and $G$ a connected simple undirected graph on $X$. Let $\mu:X\to\mathbb R$ satisfy $\mu_x>0$. Let $w:X\times X\to\mathbb R$ be symmetric and nonnegative, with $w_{xy}>0$ exactly when $x\sim y$. In particular $w_{xx}=0$. Fix $B\subseteq X$ and put $I=X\setminus B$. Define $d_w(x)=\sum_y w_{xy}$.
 

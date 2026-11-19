@@ -2,13 +2,16 @@
 id: harmonic-adjoint
 title: Adjoint on harmonic functions
 type: proposition
-status: planned
+status: in-progress
 source: Proposition 2.7, p. 10
 dependencies:
 - harmonic
 - response-adjoint
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.heatSolution_harmonic_adjoint
 order: 15
+handoff_note: Concrete harmonic pairing checked; weighted Hilbert operator integration
+  remains.
 ---
 Let $\iota$ extend a boundary function constantly in time. If $\phi$ is interior harmonic, then \[W^*\phi=R\Lambda_TR\iota(C\Delta\phi)+\iota(C\phi).\] The right side is computable using $\Lambda_T,w,\mu|_B,\phi$.
 

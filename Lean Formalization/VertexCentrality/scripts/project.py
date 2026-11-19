@@ -4,6 +4,7 @@ import hashlib
 import json
 import subprocess
 from swarmalize.blueprint import Blueprint
+from swarmalize.client import Client
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,11 +34,28 @@ def git(*args):
     return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
 
 
+def swarm_snapshot():
+    config_file = ROOT / '.local/swarm.json'
+    if not config_file.exists():
+        return dict(available=False, error='No coordinator configured')
+    try:
+        config = json.loads(config_file.read_text())
+        token = Path(config['token_file']).read_text().strip()
+        result = Client(config['url'], token, timeout=2).call('overview')
+        return dict(available=True, **result)
+    except (OSError, ValueError, KeyError, RuntimeError):
+        return dict(available=False, error='Coordinator unavailable; task state is not current')
+
+
 def snapshot():
     evidence_file = ROOT / '.local/checks.json'
     evidence = json.loads(evidence_file.read_text()) if evidence_file.exists() else None
     if evidence:
         evidence['current'] = evidence.get('fingerprint') == fingerprint()
-    return dict(nodes=nodes(), branch=git('branch', '--show-current'),
+    items = nodes()
+    counts = {status: sum(n['status'] == status for n in items)
+              for status in sorted({n['status'] for n in items})}
+    return dict(nodes=items, status_counts=counts, swarm=swarm_snapshot(),
+                branch=git('branch', '--show-current'),
                 revision=git('rev-parse', 'HEAD'), dirty=bool(git('status', '--porcelain', '--', '.')),
-                evidence=evidence, phase='Blueprint prepared; proof development not started')
+                evidence=evidence, phase='Paused for server handoff · full corrected paper incomplete')

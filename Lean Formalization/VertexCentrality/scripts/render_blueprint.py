@@ -5,8 +5,9 @@ INTRO = r"""\chapter{Scope and conventions}
 This blueprint prepares the exact mathematical formalization of Gao--Li--Yang,
 \emph{Vertex Centrality Reconstruction in an Inverse Problem for Information Diffusion},
 arXiv:2603.20710v1 (21 March 2026). All paper references below refer to that version.
-No paper claim has yet been formalized in this project. A passing scaffold build is
-only an environment check. The existing parent-folder proof audit and historical
+The full corrected paper remains incomplete. Per-node metadata records the current
+proof frontier; partial prerequisites do not certify their consumers. A passing build
+is not by itself a proof or axiom certificate. The existing parent-folder proof audit and historical
 Tau Ceti candidates are preserved; they are not counted as checked project proofs.
 
 \section{Approved deviations}
@@ -27,7 +28,7 @@ A dependency edge records a mathematical need, not a proof certificate.
 Definitions, statements, proofs, and axiom audits must be tracked separately as work progresses.
 Throughout, Assumption 1 means the weighted-graph hypotheses,
 $\mu_x\geq d_w(x)$ for all vertices, and the unique continuation property
-defined below. All nodes are initially planned; none is marked with a formalization completion flag.
+defined below. Status labels describe progress, not independent certificates.
 
 \chapter{Mathematical dependency blueprint}
 """
@@ -39,7 +40,7 @@ for n in nodes():
               f"Source: {n['source']}. Status: {n['status']}.\n",
               f"\\begin{{{n['type']}}}\\label{{{n['id']}}}\n{flags}\n",
               '\\uses{'+','.join(n['dependencies'])+'}\n' if n['dependencies'] else '',
-              body[0], f"\\end{{{n['type']}}}\n",
+              body[0], '\n\\paragraph{Checkpoint status.}\n'+n.get('handoff_note','')+'\n' if n.get('handoff_note') else '', f"\\end{{{n['type']}}}\n",
               '\\paragraph{Proof plan (not yet formalized).}\n'+body[1] if len(body)>1 else '']
 (ROOT/'blueprint/src/content.tex').write_text(''.join(parts))
 print(f'Rendered {len(nodes())} blueprint nodes')

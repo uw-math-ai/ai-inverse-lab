@@ -1,0 +1,68 @@
+{
+  "time": "2026-11-19T21:32:44.162657+00:00",
+  "revision": "51a2af4dc48ef1bf794ca7b68cd714a9b2dc7141",
+  "fingerprint": "56d52f8c655ca073fbaf89b914ddfdfa1c84e886f596fff0ecc006cbe4c05630",
+  "passed": true,
+  "source_unchanged": true,
+  "command": "lake build",
+  "scope": "Project build only; may accept sorry. Not a theorem or axiom audit.",
+  "checked_source_revision": "97bd4e2b35d3a339904079ad473f881c2d54dd98",
+  "fingerprint_matches_checkpoint": true,
+  "selected_axiom_audits": {
+    "VertexCentrality.WeightedGraph.energy_identity": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "non_standard_axioms": [],
+      "warnings": []
+    },
+    "VertexCentrality.WeightedGraph.heatSolution_harmonic_adjoint": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "non_standard_axioms": [],
+      "warnings": []
+    },
+    "VertexCentrality.WeightedGraph.boundary_reachability_surjective": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "non_standard_axioms": [],
+      "warnings": []
+    },
+    "VertexCentrality.WeightedGraph.existsUnique_harmonicExtension": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "non_standard_axioms": [],
+      "warnings": []
+    },
+    "VertexCentrality.apply_gram_moorePenrose_adjoint_of_surjective": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "non_standard_axioms": [],
+      "warnings": []
+    },
+    "VertexCentrality.matrix_eq_of_moments_eq_of_rank": {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "non_standard_axioms": [],
+      "warnings": []
+    }
+  },
+  "audit_method": "Lean LSP MCP lean_verify, at wind-down; selected endpoints, not full semantic correspondence certification"
+}

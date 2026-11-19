@@ -2,7 +2,7 @@
 id: controls
 title: Data-derived exact controls
 type: proposition
-status: planned
+status: in-progress
 source: Proposition 3.1, p. 11
 dependencies:
 - controllability
@@ -10,8 +10,11 @@ dependencies:
 - harmonic-adjoint
 - response-data
 - pseudoinverse
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.apply_gram_moorePenrose_adjoint_of_surjective
 order: 17
+handoff_note: Generic exact Gram control theorem checked. Concrete W, adjoint and
+  data-derived Gram identification remain.
 ---
 Under Assumption 1 and $T\geq|X|$, every interior harmonic $\psi$ has an exact control $h_\psi=(W^*W)^\dagger W^*\psi$, with $Wh_\psi=\psi$. It is computable from the known graph, boundary masses, and observed first-passage data.
 

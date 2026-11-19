@@ -2,12 +2,15 @@
 id: laplacian
 title: Laplacian and energy identity
 type: lemma
-status: planned
+status: in-progress
 source: Section 1.1, p. 2
 dependencies:
 - weighted-spaces
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.energy_identity
+- VertexCentrality.WeightedGraph.laplacian_selfAdjoint
 order: 3
+handoff_note: Energy and weighted self-adjointness identities checked.
 ---
 Define $\Delta u(x)=\mu_x^{-1}\sum_yw_{xy}(u_y-u_x)$ and $P=1+\Delta$. For all $u,v$, \[\langle\Delta u,v\rangle_{X,\mu}=-\tfrac12\sum_{x,y}w_{xy}(u_y-u_x)(v_y-v_x)=\langle u,\Delta v\rangle_{X,\mu}.\] Also $\Delta 1=0$.
 

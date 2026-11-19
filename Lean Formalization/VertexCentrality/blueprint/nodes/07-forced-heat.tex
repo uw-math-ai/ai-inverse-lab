@@ -2,13 +2,18 @@
 id: forced-heat
 title: Forced heat recurrence and Duhamel sum
 type: lemma
-status: planned
+status: in-progress
 source: Equations (2.1), (2.4), pp. 5–6
 dependencies:
 - transition
 - weighted-spaces
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.forcedHeat_unique
+- VertexCentrality.forcedHeat_eq_sum
+- VertexCentrality.WeightedGraph.heatSolutionLinear
 order: 7
+handoff_note: Generic recursion, uniqueness and Duhamel representation checked; concrete
+  boundary controls implemented.
 ---
 For $f:Z_T\times B\to\mathbb R$, extend $f$ by zero in time and space. Define $U_f(0)=0$ and $U_f(t+1)=PU_f(t)+Jf(t)$ for every $t\in\mathbb N$. Then \[U_f(t)=\sum_{s<t}P^{t-1-s}Jf(s).\] The solution is unique and linear in $f$.
 

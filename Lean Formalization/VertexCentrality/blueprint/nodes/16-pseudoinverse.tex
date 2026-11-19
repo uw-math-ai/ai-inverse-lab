@@ -2,12 +2,16 @@
 id: pseudoinverse
 title: Gram pseudoinverse exact preimage
 type: lemma
-status: planned
+status: in-progress
 source: Linear algebra prerequisite to Proposition 3.1
 dependencies:
 - weighted-spaces
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.moorePenrose
+- VertexCentrality.existsUnique_minimumNorm_preimage
 order: 16
+handoff_note: Actual orthogonal-complement inverse constructed, four Penrose identities
+  and unique minimum-norm preimage proved.
 ---
 For a linear map $A:E\to F$ between finite-dimensional real inner-product spaces and $y\in\operatorname{range}A$, let $h=(A^*A)^\dagger A^*y$, with the Hilbert-space Moore--Penrose inverse. Then $Ah=y$, $h\perp\ker A$, and $h$ is the unique minimum-norm preimage of $y$.
 

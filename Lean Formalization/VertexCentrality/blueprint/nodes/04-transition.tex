@@ -2,12 +2,18 @@
 id: transition
 title: Stochastic transition and heat evolution
 type: lemma
-status: planned
+status: in-progress
 source: Equations (1.1)–(1.3), p. 3
 dependencies:
 - laplacian
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.transition_nonneg
+- VertexCentrality.WeightedGraph.sum_transition
+- VertexCentrality.WeightedGraph.detailed_balance
+- VertexCentrality.WeightedGraph.transition_mul
 order: 4
+handoff_note: Stochastic matrix identities checked. Markov path-law realization remains
+  open.
 ---
 Assume $d_w(x)\leq\mu_x$ for all $x$. Put $p_{xy}=w_{xy}/\mu_x$ for $x\ne y$ and $p_{xx}=1-d_w(x)/\mu_x$. Then $p_{xy}\geq0$, $\sum_yp_{xy}=1$, and $\mu_xp_{xy}=\mu_yp_{yx}$. The unique homogeneous heat solution with initial value $g$ is $u(t)=P^tg$.
 

@@ -2,12 +2,15 @@
 id: harmonic
 title: Interior harmonic functions
 type: definition
-status: planned
+status: in-progress
 source: Definition 2.5, Remark 2.6, p. 9
 dependencies:
 - laplacian
-lean_declarations: []
+lean_declarations:
+- VertexCentrality.WeightedGraph.harmonicOn_iff
+- VertexCentrality.WeightedGraph.harmonicExtension_eq_of_conductance_eq
 order: 12
+handoff_note: Harmonicity and independence of extension from vertex masses checked.
 ---
 A function $\phi:X\to\mathbb R$ is interior harmonic if $\Delta\phi(x)=0$ for every $x\in I$. This is equivalent to $\sum_yw_{xy}(\phi_y-\phi_x)=0$ on $I$, so the harmonic subspace depends only on $w$, $G$, and $B$.
 
