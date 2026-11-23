@@ -7,3 +7,4 @@ pyarrow>=14
 matplotlib>=3.7
 tqdm>=4.66            # listed for notebooks; the CLI reports progress via logging
 pytest>=7.4
+# anthropic           # optional: LLM challenger / meta implementer for autodata (pip install anthropic)

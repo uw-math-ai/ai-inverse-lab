@@ -1,0 +1,405 @@
+{
+  "version": 1,
+  "name": "Autodata: inverse-problem data generator",
+  "description": "Autodata-style harness (Meta FAIR, arXiv:2606.25996) for the vertex-centrality inverse problem (Gao, Li & Yang, arXiv:2603.20710). A rule-based challenger proposes fptsim simulation settings, a verifier checks the instance is identifiable and not noise-dominated, a weak and a strong solver reconstruct mu on the unobserved vertices from noisy first-passage times, and only instances that separate them are kept. Mode meta tunes the challenger. Standard library only, no model calls, no charges. Optional subagents run scenarios in parallel. Recommended server: an AMATH worker.",
+  "image": "research-agent-runtime:v1",
+  "command": [
+    "python",
+    "run.py"
+  ],
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "mode": {
+        "type": "string",
+        "enum": [
+          "run",
+          "meta"
+        ],
+        "title": "Mode",
+        "description": "run: build the dataset over the scenarios. meta: meta-optimize the challenger strategy on a train/validation split of the scenarios. Default run."
+      },
+      "scenario_ids": {
+        "type": "array",
+        "title": "Scenarios",
+        "uniqueItems": true,
+        "maxItems": 50,
+        "items": {
+          "type": "string",
+          "enum": [
+            "paper8_ladder",
+            "paper9_grid",
+            "grid_boundary",
+            "grid_holes",
+            "tree_leaves",
+            "path_ends",
+            "cycle_sparse",
+            "erdos_renyi_low_degree",
+            "geometric_killing",
+            "small_world_hubs",
+            "scale_free_periphery",
+            "grid_sparse_potential"
+          ]
+        },
+        "description": "Subset of the bundled scenarios (default: all 12)."
+      },
+      "skip_scenarios": {
+        "type": "array",
+        "uniqueItems": true,
+        "maxItems": 50,
+        "items": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "title": "Skip scenarios",
+        "description": "Scenario ids to skip, e.g. those finished before a handoff."
+      },
+      "custom_scenarios": {
+        "type": "array",
+        "maxItems": 50,
+        "title": "Custom scenarios",
+        "description": "Replace the bundled corpus: [{id, brief, base_spec: {graphs: <fptsim graphs block>, simulation: {T, T_mode?, N}}, families?}].",
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "base_spec"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,56}$"
+            },
+            "brief": {
+              "type": "string",
+              "maxLength": 2000
+            },
+            "base_spec": {
+              "type": "object"
+            },
+            "families": {
+              "type": "array",
+              "maxItems": 10,
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "seed": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740992,
+        "title": "Seed",
+        "description": "Root seed for graphs, noise and solver restarts. Default 0."
+      },
+      "max_rounds": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "title": "Max rounds",
+        "description": "Challenger rounds per scenario. Default 12."
+      },
+      "items_per_scenario": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 50,
+        "title": "Items per scenario",
+        "description": "Accepted items to collect per scenario. Default 1."
+      },
+      "attempts": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20,
+        "title": "Attempts",
+        "description": "Noise draws per round, shared by both solvers. Default 3."
+      },
+      "noise": {
+        "type": "string",
+        "enum": [
+          "multinomial",
+          "exact"
+        ],
+        "title": "Noise model",
+        "description": "multinomial: N walks per ordered pair (default). exact: noise-free r."
+      },
+      "err_ref": {
+        "type": "number",
+        "minimum": 1e-06,
+        "maximum": 10,
+        "title": "Error scale",
+        "description": "score = exp(-relative_error / err_ref). Default 0.10."
+      },
+      "gates": {
+        "type": "object",
+        "title": "Acceptance gates",
+        "additionalProperties": false,
+        "description": "Autodata thresholds on scores in [0, 1]. Defaults: weak_avg_max 0.65, weak_max_max 0.75, weak_min_min 0, strong_avg_min 0.60, strong_avg_max 1 (off), gap_min 0.20.",
+        "properties": {
+          "weak_avg_max": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "weak_max_max": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "weak_min_min": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "strong_avg_min": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "strong_avg_max": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "gap_min": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      },
+      "solvers": {
+        "type": "object",
+        "title": "Solvers",
+        "additionalProperties": false,
+        "description": "Override the weak (default lsq, T 4, prior_weight 0.1) and strong (default lsq, full horizon, 1 restart) solvers.",
+        "properties": {
+          "weak": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "solver": {
+                "type": "string",
+                "enum": [
+                  "lsq",
+                  "prior"
+                ]
+              },
+              "T": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "description": "Time steps used (null = all)."
+              },
+              "restarts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10,
+                "description": "Extra random starts."
+              },
+              "max_iter": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "description": "Levenberg-Marquardt iterations."
+              },
+              "tol": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Relative cost tolerance."
+              },
+              "prior_weight": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Pull toward the degree prior (0 = none)."
+              }
+            }
+          },
+          "strong": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "solver": {
+                "type": "string",
+                "enum": [
+                  "lsq",
+                  "prior"
+                ]
+              },
+              "T": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "description": "Time steps used (null = all)."
+              },
+              "restarts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10,
+                "description": "Extra random starts."
+              },
+              "max_iter": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "description": "Levenberg-Marquardt iterations."
+              },
+              "tol": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Relative cost tolerance."
+              },
+              "prior_weight": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Pull toward the degree prior (0 = none)."
+              }
+            }
+          }
+        }
+      },
+      "limits": {
+        "type": "object",
+        "title": "Limits",
+        "additionalProperties": false,
+        "description": "Guardrails the challenger cannot change. Defaults: max_n 30, max_k 12, max_T 80, min_N 100, max_N 1000000.",
+        "properties": {
+          "max_n": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_k": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_T": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "min_N": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_N": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "verifier": {
+        "type": "object",
+        "title": "Verifier",
+        "additionalProperties": false,
+        "description": "Defaults: min_unknowns 1, min_hit_mass 0.02, max_jac_cond 1e6, max_crb_rel 0.10.",
+        "properties": {
+          "min_unknowns": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "min_hit_mass": {
+            "type": "number",
+            "minimum": 0
+          },
+          "max_jac_cond": {
+            "type": "number",
+            "minimum": 1
+          },
+          "max_crb_rel": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "toggles": {
+        "type": "object",
+        "title": "Toggles",
+        "additionalProperties": false,
+        "properties": {
+          "quality_verifier": {
+            "type": "boolean"
+          },
+          "identifiability_check": {
+            "type": "boolean"
+          },
+          "crb_check": {
+            "type": "boolean"
+          },
+          "lazy_strong": {
+            "type": "boolean"
+          },
+          "save_observations": {
+            "type": "boolean"
+          },
+          "final_verifier": {
+            "type": "boolean"
+          }
+        }
+      },
+      "strategy": {
+        "type": "object",
+        "title": "Strategy",
+        "description": "Challenger strategy, e.g. best_strategy.json from a meta run: {heuristic: {...}, guidance: \"...\"}."
+      },
+      "meta": {
+        "type": "object",
+        "title": "Meta settings",
+        "additionalProperties": false,
+        "description": "mode meta only. Defaults: iterations 6, temperature 0.1, train_fraction 0.5, minibatch 3, eval_rounds 4.",
+        "properties": {
+          "iterations": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 500
+          },
+          "temperature": {
+            "type": "number",
+            "minimum": 1e-06
+          },
+          "train_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minibatch": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "eval_rounds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      },
+      "time_budget_seconds": {
+        "type": "integer",
+        "minimum": 60,
+        "maximum": 86400,
+        "title": "Time budget",
+        "description": "Stop starting new work after this long (default: just under the run timeout)."
+      },
+      "parallel": {
+        "type": "boolean",
+        "title": "Parallel (subagents)",
+        "description": "mode run: one subagent per scenario, spread over the servers approved at launch. Default false."
+      }
+    },
+    "additionalProperties": false
+  },
+  "connection": "none",
+  "network": "none",
+  "timeout_seconds": 14400,
+  "cpu": 1,
+  "memory_mb": 512,
+  "swarm": {
+    "max_children": 10,
+    "max_total": 60
+  }
+}
