@@ -12,6 +12,11 @@ Reference implementations it was built from (read-only, not imported at runtime)
 `../Graphs - First Passage Time Simulation/First Passage Time Simulation (executed on americano).ipynb` and
 `Kevin_data_simulation/forward_sim/`. The paper is Gao, Li & Yang, arXiv:2603.20710, Section 5.
 
+**Autodata harness.** `autodata/` builds curated inverse-problem datasets on top of fptsim. A challenger
+proposes fptsim toggles, a verifier checks well-posedness, and only instances that separate a weak and a
+strong μ-reconstruction solver are kept. An outer loop meta-optimizes the challenger. See
+[AUTODATA.md](AUTODATA.md) and run `python -m autodata run --config configs/autodata_small.yaml`.
+
 ```bash
 cd "Toggable Simulation of Data Code"
 pip install -r requirements.txt

@@ -1,0 +1,46 @@
+# Autodata harness on fptsim: a small run over the whole scenario corpus (a few minutes on a laptop CPU).
+#   python -m autodata run --config configs/autodata_small.yaml
+#   python -m autodata show --run results/autodata_small --scenario paper9_grid
+#   python -m autodata meta --config configs/autodata_small.yaml       (outer loop, see meta: below)
+# Every key not set here takes its default from autodata/config.py (DEFAULTS).
+run_name: autodata_small
+output_dir: results/autodata_small
+seed: 2026
+scenarios: autodata_scenarios.yaml      # relative to this file
+
+toggles:
+  llm_challenger: false     # true: an LLM proposes specs (needs anthropic SDK + key, or the claude CLI)
+  quality_verifier: true
+  identifiability_check: true
+  crb_check: true
+  lazy_strong: true
+  save_observations: true
+  resume: true
+  final_verifier: true
+
+loop: {max_rounds: 12, items_per_scenario: 1}
+
+evaluation:
+  attempts: 3               # noise draws per round, shared by both solvers
+  noise: multinomial        # multinomial | monte_carlo | exact
+  err_ref: 0.10             # score = exp(-relative_error / err_ref)
+
+gates: {weak_avg_max: 0.65, weak_max_max: 0.75, weak_min_min: 0.0,
+        strong_avg_min: 0.60, strong_avg_max: 1.0, gap_min: 0.20}
+
+solvers:
+  weak:   {solver: lsq, T: 4, restarts: 0, max_iter: 60, prior_weight: 0.1}  # short horizon + degree prior
+  strong: {solver: lsq, T: null, restarts: 2, max_iter: 200}   # full horizon, multi-start
+
+verifier: {min_unknowns: 1, min_hit_mass: 0.02, max_jac_cond: 1.0e8, max_crb_rel: 0.10}
+limits: {max_n: 30, max_k: 12, max_T: 80, min_N: 100, max_N: 1_000_000}
+
+llm: {backend: auto, model: claude-opus-5-5, effort: medium, timeout: 300}
+
+meta:
+  iterations: 6
+  temperature: 0.1
+  train_fraction: 0.5
+  minibatch: 3
+  eval_rounds: 4
+  llm_implementer: false

@@ -1,0 +1,488 @@
+{
+ "_comment": "Scenario corpus for the autodata agents (JSON copy of Toggable Simulation of Data Code/configs/autodata_scenarios.yaml). Each scenario is a brief plus a base fptsim spec; families lists alternatives the challenger may switch to.",
+ "scenarios": [
+  {
+   "id": "paper8_ladder",
+   "brief": "The paper's Fig. 1 setting: a 2 x 4 ladder observed on three top vertices. Recover the centrality of the remaining vertices; make it non-trivial (not a constant or degree law).",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "ladder": {
+       "length": 4
+      }
+     },
+     "weights": {
+      "dist": "constant",
+      "value": 0.25
+     },
+     "mu": {
+      "mode": "constant",
+      "value": 1.0
+     },
+     "B": {
+      "mode": "explicit",
+      "vertices": [
+       1,
+       2,
+       3
+      ]
+     }
+    },
+    "simulation": {
+     "T": 9,
+     "T_mode": "paper",
+     "N": 20000
+    }
+   },
+   "families": [
+    {
+     "ladder": {
+      "length": [
+       4,
+       7
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "paper9_grid",
+   "brief": "The paper's Fig. 4 setting: a 3 x 3 grid observed on its top row. Push toward grids where the bottom rows are only visible through long walks.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "grid": {
+       "rows": 3,
+       "cols": 3
+      }
+     },
+     "weights": {
+      "dist": "constant",
+      "value": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "explicit",
+      "vertices": [
+       0,
+       1,
+       2
+      ]
+     }
+    },
+    "simulation": {
+     "T": 9,
+     "T_mode": "paper",
+     "N": 20000
+    }
+   },
+   "families": [
+    {
+     "grid": {
+      "rows": [
+       3,
+       4
+      ],
+      "cols": [
+       3,
+       4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "grid_boundary",
+   "brief": "Lattice observed on (part of) its boundary; interior centrality is hidden.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "grid": {
+       "rows": [
+        4,
+        5
+       ],
+       "cols": [
+        4,
+        5
+       ]
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.3,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "slack",
+      "a": 0.0,
+      "b": 0.5
+     },
+     "B": {
+      "mode": "boundary",
+      "max_k": 6
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 20000
+    }
+   },
+   "families": [
+    {
+     "grid_holes": {
+      "rows": [
+       4,
+       5
+      ],
+      "cols": [
+       4,
+       5
+      ],
+      "hole_frac": [
+       0.0,
+       0.2
+      ]
+     }
+    },
+    {
+     "ladder": {
+      "length": [
+       6,
+       10
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "grid_holes",
+   "brief": "Grids with holes (obstacles) and a few random observers.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "grid_holes": {
+       "rows": 5,
+       "cols": 5,
+       "hole_frac": 0.2
+      }
+     },
+     "weights": {
+      "dist": "lognormal",
+      "mean": 0.0,
+      "sigma": 0.4
+     },
+     "mu": {
+      "mode": "weighted_deg"
+     },
+     "B": {
+      "mode": "random_k",
+      "k": [
+       4,
+       6
+      ]
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 20000
+    }
+   }
+  },
+  {
+   "id": "tree_leaves",
+   "brief": "Random trees observed at their leaves; internal (branching) vertices are hidden.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "random_tree": {
+       "n": [
+        10,
+        14
+       ]
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.5,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "leaves",
+      "max_k": 6
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 20000
+    }
+   },
+   "families": [
+    {
+     "random_tree": {
+      "n": [
+       14,
+       20
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "path_ends",
+   "brief": "A path observed at both ends; every interior vertex is hidden.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "path": {
+       "n": [
+        6,
+        9
+       ]
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.5,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "weighted_deg"
+     },
+     "B": {
+      "mode": "leaves"
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 50000
+    }
+   }
+  },
+  {
+   "id": "cycle_sparse",
+   "brief": "Cycles with a handful of observers spread around the ring.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "cycle": {
+       "n": [
+        10,
+        14
+       ]
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.3,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "random_k",
+      "k": 4
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 20000
+    }
+   }
+  },
+  {
+   "id": "erdos_renyi_low_degree",
+   "brief": "Erdos-Renyi graphs observed at their lowest-degree vertices (peripheral sensors).",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "erdos_renyi": {
+       "n": [
+        10,
+        16
+       ],
+       "p": [
+        0.25,
+        0.4
+       ]
+      }
+     },
+     "weights": {
+      "dist": "gamma",
+      "shape": 2.0,
+      "scale": 0.4
+     },
+     "mu": {
+      "mode": "slack",
+      "a": 0.0,
+      "b": 0.3
+     },
+     "B": {
+      "mode": "low_degree",
+      "k": 4
+     }
+    },
+    "simulation": {
+     "T": 25,
+     "N": 20000
+    }
+   }
+  },
+  {
+   "id": "geometric_killing",
+   "brief": "Random geometric graphs with a localized killing potential q (known) around one vertex.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "random_geometric": {
+       "n": [
+        12,
+        18
+       ],
+       "radius": [
+        0.4,
+        0.55
+       ]
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.3,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "random_k",
+      "k": [
+       3,
+       5
+      ]
+     },
+     "q": {
+      "mode": "localized",
+      "center": "random",
+      "decay": 1.0,
+      "amplitude": 0.1
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 20000
+    }
+   }
+  },
+  {
+   "id": "small_world_hubs",
+   "brief": "Watts-Strogatz small worlds observed at their best-connected vertices.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "watts_strogatz": {
+       "n": [
+        12,
+        16
+       ],
+       "k": 4,
+       "beta": [
+        0.1,
+        0.3
+       ]
+      }
+     },
+     "weights": {
+      "dist": "constant",
+      "value": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "high_degree",
+      "k": 3
+     }
+    },
+    "simulation": {
+     "T": 25,
+     "N": 20000
+    }
+   }
+  },
+  {
+   "id": "scale_free_periphery",
+   "brief": "Barabasi-Albert graphs observed at the periphery, so the hubs' centrality is hidden.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "barabasi_albert": {
+       "n": [
+        12,
+        16
+       ],
+       "m": 2
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.5,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "low_degree",
+      "k": 4
+     }
+    },
+    "simulation": {
+     "T": 25,
+     "N": 20000
+    }
+   }
+  },
+  {
+   "id": "grid_sparse_potential",
+   "brief": "Square grids with a sparse killing potential, observed on the boundary.",
+   "base_spec": {
+    "graphs": {
+     "families": {
+      "grid": {
+       "rows": 4,
+       "cols": 4
+      }
+     },
+     "weights": {
+      "dist": "uniform",
+      "low": 0.5,
+      "high": 1.0
+     },
+     "mu": {
+      "mode": "deg"
+     },
+     "B": {
+      "mode": "boundary",
+      "max_k": 5
+     },
+     "q": {
+      "mode": "sparse",
+      "fraction": 0.25,
+      "low": 0.0,
+      "high": 0.1
+     }
+    },
+    "simulation": {
+     "T": 30,
+     "N": 20000
+    }
+   }
+  }
+ ]
+}
