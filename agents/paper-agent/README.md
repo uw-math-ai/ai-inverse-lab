@@ -4,7 +4,7 @@ Generate an English manuscript from one completed ML Research Harness run. The a
 
 ## Launch on the research website
 
-Select a shared dataset containing the raw run files and an **OpenAI API** connection with the **sol** tier or higher. Model calls incur usage charges. The default VPS worker is sufficient for the tested runs. The agent uses Python's standard library and runs on one worker.
+Select a shared dataset containing the raw run files and an **OpenRouter** or **OpenAI API** connection with the **sol** tier or higher. For the lab's OpenRouter subscription, select **UW Math AI Lab Open Router Subscription**. The agent uses the connection's configured model, falling back to `openrouter/free` on OpenRouter if no model is set. Model charges may apply. The default VPS worker is sufficient for the tested runs. The agent uses Python's standard library and runs on one worker.
 
 Enter the dataset name and, if needed, the path within it to the run. For a dataset named graph-demo with a subfolder named graph_fpt_weights_claude, the website input is:
 
