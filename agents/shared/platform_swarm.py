@@ -24,6 +24,17 @@ per-child status appears in ``AGENT_SWARM_CHILDREN`` and finished results in
 
 Inside a subagent, ``parent_files()`` returns the directory of files the
 parent handed over (or None) and ``child_id()`` its swarm ID.
+
+GPU work: an agent running on a CPU server can run code it wrote on an
+approved GPU server and get the outputs back::
+
+    job = swarm.gpu_run("train-1", "/work/train", "train.py", timeout_seconds=3600)
+    if job["status"] == "succeeded":
+        metrics = (job["output_dir"] / "metrics.json").read_text()
+
+The folder is copied to the GPU job's read-only ``/run/parent-files``; the job
+starts in ``/work`` (writable disk, for checkpoints), writes results to
+``/output`` and has no network access or provider credential.
 """
 from __future__ import annotations
 
@@ -79,7 +90,7 @@ def spawn(child_id: str, *, command: list[str] | None = None, inputs: dict | Non
           agent: str | None = None, connection: str | None = None, tier: str | None = None,
           server: str | None = None, cpu: float | None = None, memory_mb: int | None = None,
           timeout_seconds: int | None = None, datasets: list[str] | None = None,
-          files: str | os.PathLike | None = None) -> str:
+          files: str | os.PathLike | None = None, gpus: int | None = None) -> str:
     """Ask the platform to start one subagent; returns child_id.
 
     child_id   lowercase letters, digits, '-' and '_' (max 64), unique in this run.
@@ -92,6 +103,9 @@ def spawn(child_id: str, *, command: list[str] | None = None, inputs: dict | Non
     files      a directory under /work or /tmp copied to the child's
                /run/parent-files (64 MiB, 2000 files at most).
     datasets   a subset of this run's datasets (default: all of them).
+    gpus       GPUs for the child (1-8). It runs on an approved server with enough
+               GPUs (the first one unless server is given), from the GPU image,
+               with no network access and no provider account.
     cpu, memory_mb, timeout_seconds may only lower the manifest's values.
 
     Spawning is asynchronous; rejected requests show up in status()["errors"].
@@ -99,13 +113,44 @@ def spawn(child_id: str, *, command: list[str] | None = None, inputs: dict | Non
     request: dict = {"action": "spawn", "id": child_id, "inputs": inputs or {}}
     for key, value in (("command", command), ("agent", agent), ("connection", connection), ("tier", tier),
                        ("server", server), ("cpu", cpu), ("memory_mb", memory_mb),
-                       ("timeout_seconds", timeout_seconds), ("datasets", datasets)):
+                       ("timeout_seconds", timeout_seconds), ("datasets", datasets), ("gpus", gpus)):
         if value is not None:
             request[key] = value
     if files is not None:
         request["files"] = str(Path(files).resolve())
     _submit(request)
     return child_id
+
+
+def gpu_run(child_id: str, folder: str | os.PathLike, command: str | list[str], *, gpus: int = 1,
+            inputs: dict | None = None, server: str | None = None, timeout_seconds: int | None = None,
+            memory_mb: int | None = None, datasets: list[str] | None = None,
+            wait_timeout: float | None = None) -> dict:
+    """Run code this agent wrote on an approved GPU server, wait, and return the outcome.
+
+    folder   a directory under /work or /tmp holding the script and its small
+             inputs (64 MiB at most); the GPU job sees it at /run/parent-files.
+    command  a script name in folder (run as ``python /run/parent-files/<name>``)
+             or a full argv list.
+    Returns the final child status plus "output_dir" (a Path to the job's
+    /output files, read-only here), "result" (result.json with artifact hashes)
+    and "log_tail". A rejected request has status "rejected" and an "error".
+    The job starts in /work, has no network access and no provider credential.
+    """
+    argv = ["python", f"/run/parent-files/{command}"] if isinstance(command, str) else list(command)
+    spawn(child_id, command=argv, inputs=inputs, server=server, gpus=gpus, files=folder,
+          timeout_seconds=timeout_seconds, memory_mb=memory_mb, datasets=datasets)
+    final: dict = {"id": child_id, "status": "unknown"}
+    for item in wait([child_id], timeout=wait_timeout):
+        final = dict(item)
+    final["output_dir"] = output_dir(child_id)
+    final["result"] = result(child_id) if final.get("status") != "rejected" else None
+    return final
+
+
+def gpu_servers() -> list[dict]:
+    """Approved servers with GPUs, as {"id", "label", "gpus", "mode"} (empty if none were approved)."""
+    return [item for item in status().get("servers", []) if item.get("gpus")]
 
 
 def cancel(child_id: str = "*") -> None:

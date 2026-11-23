@@ -19,7 +19,7 @@ What an agent can use, and the manifest setting that enables each feature:
 | Shared datasets from the lab OneDrive folder, mounted read-only | `datasets` | 7 |
 | Subagents: up to 20 child containers on other servers and accounts | `swarm`, via `agents/shared/platform_swarm.py` | 8 |
 | Running on an AMATH worker server instead of the VPS | chosen by the researcher at launch | 9 |
-| NVIDIA GPUs (americano) | `gpus` and the `research-agent-runtime-gpu:v1` image | 4, 9 |
+| NVIDIA GPUs (americano): run GPU code your agent writes, such as model training | `swarm` plus `platform_swarm.gpu_run` | 8 |
 
 ## 1. Repository layout
 
@@ -104,7 +104,7 @@ Use strict JSON: no comments, trailing commas, duplicate keys or unknown fields 
 | `timeout_seconds` | no | Integer, 1–86,400. Default 3,600. |
 | `cpu` | no | Number, 0.1–256. Omit it (recommended) to let the job use every CPU core on its server. Set it only to cap the job deliberately. |
 | `memory_mb` | no | Integer, 128–4,096. Default 512. |
-| `gpus` | no | Integer, 0–8. Default 0. NVIDIA GPUs the job needs. A nonzero value runs only on a worker server with GPUs (section 9). |
+| `gpus` | no | Integer, 0–8. Default 0. GPUs for the whole agent. This needs a Docker GPU worker, and **none exists yet**. To use americano's GPUs now, leave `gpus` out and send GPU code to a GPU subagent (section 8). |
 | `datasets` | no | Up to 16 unique dataset folder names to mount read-only (section 7). Default: none. |
 | `swarm` | no | `{"max_children": 1–20, "max_total": 1–500}` lets the agent start subagents (section 8). Absent means no subagents. |
 
@@ -209,7 +209,7 @@ There are two approved images.
 - the `codex` CLI (OpenAI Codex, pinned 0.169.0) and the `claude` CLI (Claude Code, pinned 2.1.326);
 - `rg` (ripgrep).
 
-**`research-agent-runtime-gpu:v1`** (GPU worker servers only, currently americano) contains everything above plus PyTorch 2.14.1 built for CUDA 12.6. Use it with `"gpus": 1` (or more) in the manifest:
+**`research-agent-runtime-gpu:v1`** (GPU servers only, currently americano) contains Python 3.12, the same NumPy/SciPy/scikit-learn/PyYAML, and PyTorch 2.14.1 built for CUDA 12.6. On americano it has no `codex`/`claude` CLIs, because GPU jobs there have no network. GPU subagents (section 8) run on it automatically. In GPU code:
 
 ```python
 import torch
@@ -455,11 +455,53 @@ Rules and behavior:
 
 The platform's swarm demo (`examples/agents/swarm-demo/` in the platform repository) is a complete orchestrator that spreads shards over servers and accounts and gathers their results.
 
+### GPU subagents: run GPU code from a CPU agent
+
+Agents run on CPU servers (the VPS or doppio). When an agent writes code that needs a GPU, such as training a model, it hands that code to a **GPU subagent**. The subagent runs on americano's TITAN RTX GPUs (24 GiB each), and the agent gets the outputs back. This works today, even though americano's Docker is too old to run whole agents.
+
+Manifest of the CPU agent: add a `swarm` section, and use `"network": "internet"` or `"provider"` as needed for the agent itself:
+
+```json
+"network": "internet",
+"connection": "required",
+"swarm": { "max_children": 2, "max_total": 50 }
+```
+
+At launch, the researcher ticks **americano** (shown as "2 GPUs · GPU subagents only") under **Subagents**. Then, in the agent:
+
+```python
+import json, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "shared"))
+import platform_swarm as swarm
+
+folder = Path("/work/train-1"); folder.mkdir(parents=True, exist_ok=True)
+(folder / "train.py").write_text(training_code)          # code the agent wrote
+(folder / "config.json").write_text(json.dumps({"epochs": 20, "lr": 1e-3}))
+
+job = swarm.gpu_run("train-1", folder, "train.py", timeout_seconds=3600)
+print(job["status"], job.get("error"), job.get("log_tail"), flush=True)
+if job["status"] == "succeeded":
+    metrics = json.loads((job["output_dir"] / "metrics.json").read_text())
+```
+
+`gpu_run(child_id, folder, command, *, gpus=1, inputs=None, server=None, timeout_seconds=None, memory_mb=None, datasets=None, wait_timeout=None)` spawns the subagent, waits for it and returns its final status. That includes `status` (`succeeded`, `failed`, `cancelled` or `rejected`), `error`, `log_tail`, `output_dir` (a `Path` to the job's `/output` files) and `result` (result.json with artifact sizes and SHA-256 hashes). Pass a script name such as `"train.py"` (run as `python /run/parent-files/train.py`) or a full argv list. For several GPU jobs at once, call `swarm.spawn("train-2", command=[...], files=folder, gpus=1)` for each, then `swarm.wait([...])`. Each job gets a whole GPU of its own, and extra jobs wait for a free one. `swarm.gpu_servers()` lists the approved GPU servers.
+
+Write the GPU script for this environment:
+
+- The folder appears read-only at `/run/parent-files` (64 MiB and 2,000 files at most). Read inputs from there (for example `Path(__file__).parent / "config.json"`), or pass a small JSON `inputs=` (read from `AGENT_INPUT_PATH`).
+- The job starts in `/work`, a writable on-disk scratch folder with no 64 MiB limit, for checkpoints and temporary files. It is deleted afterwards. `/tmp` is 1 GiB in memory.
+- Write results to `/output`: metrics, plots and small models, within the normal limits of 50 MiB and 100 files. They come back in `job["output_dir"]`; copy what you keep into the parent's `AGENT_OUTPUT_DIR`.
+- Use `torch.device("cuda")`. The assigned GPU is CUDA device 0, and `AGENT_GPUS` holds the count. Print `{"progress": x}` lines; they appear in the child's status.
+- **No network and no provider credential.** The GPU job cannot download data, packages or weights, or call a model. Do that in the parent, which can use `"network": "internet"`, and hand the files over in the folder. Shared datasets are passed through with `datasets=`.
+- Available packages: those in `research-agent-runtime-gpu:v1` (section 4). Host memory is capped at 2,048 MiB by default, which was enough for a 20k-sample MLP training test. Ask the operator to raise it for large data loaders.
+- Exit nonzero on failure, so the parent sees `failed` and the log tail.
+
 ## 9. Where runs execute
 
 The researcher chooses the execution server at launch: the VPS (default) or a registered AMATH Docker worker such as **doppio**. Agent code does not choose, except for subagents (section 8). The same container, paths and environment apply on every server, so do not hard-code hostnames or assume host software. The VPS is small (1 CPU, 2 GB, 2 jobs at once), so put CPU-heavy, memory-heavy or large-dataset work on a worker server, and say so in the README.
 
-**GPU agents** (`"gpus"` above 0) can only be launched on a worker server whose test found NVIDIA GPUs, such as **americano** (2× TITAN RTX, 24 GiB each). The launch form preselects such a server, and the website refuses the VPS or a server without enough GPUs. The same applies to GPU subagents (section 8). A GPU run waits in the queue while all of its server's GPUs are in use. Host memory is still capped at 2,048 MiB per job by default, and CUDA PyTorch needs about 1–2 GiB just to start, so declare `"memory_mb": 4096` for GPU agents and ask the operator to raise the cap for heavy work.
+**GPUs.** **americano** (2× TITAN RTX, 24 GiB each) is a *GPU-only* server. It runs GPU subagents only (section 8), with no network or credentials, and the website refuses to launch normal agents on it. Run the agent on the VPS or doppio, and send its GPU code to americano with `platform_swarm.gpu_run`. If an administrator later upgrades americano's Docker, whole agents with `"gpus"` can run there too.
 
 ## 10. Limits
 
@@ -492,7 +534,7 @@ Operators can change these values. Keep generated results, large datasets (use s
 
    On Windows PowerShell, set the variables with `$env:AGENT_INPUT_PATH = "..."`.
 4. Success produces readable logs, progress lines and regular files in the output folder. Invalid input or failed work exits nonzero.
-5. The code uses only Python 3.12's standard library, NumPy, SciPy, scikit-learn, PyYAML and the `codex`/`claude` CLIs (plus PyTorch for GPU agents on `research-agent-runtime-gpu:v1`). A pass in a richer local environment proves nothing.
+5. The code uses only Python 3.12's standard library, NumPy, SciPy, scikit-learn, PyYAML and the `codex`/`claude` CLIs, plus PyTorch in GPU subagent code. GPU code keeps a CPU fallback (`"cuda" if torch.cuda.is_available() else "cpu"`), so it can be smoke-tested locally. A pass in a richer local environment proves nothing.
 6. Tests make no paid model requests unless the user explicitly asks for one.
 7. Each agent folder has a short README covering purpose, inputs, sample input JSON, outputs, required connection/provider/tier, datasets, swarm use, recommended server, dependencies and whether it incurs charges.
 
