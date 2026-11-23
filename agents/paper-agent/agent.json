@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "Research paper from a harness run",
-  "description": "Generate an evidence-linked English manuscript from a mounted V1 or V3 harness run. Uses an OpenAI API connection.",
+  "description": "Turn one completed ML Research Harness run into an English research paper. Select a dataset with the run files. The agent drafts an outline around the research question, explains the main findings and their limits, and checks reported measurements against the run evidence. Download the Markdown paper, its evidence-linked outline, and the validation record. See the README for V1, V2, and V3 input details. Uses a paid OpenAI API connection.",
   "image": "research-agent-runtime:v1",
   "command": ["python", "website.py"],
   "inputs_schema": {

@@ -17,6 +17,9 @@ If the run files are at the dataset root, enter just the dataset name. Keep the 
 | Harness format | Required files in the selected folder |
 | --- | --- |
 | V1 | `spec.json`, `status.json`, `artifacts.jsonl`, `final/manifest.json` |
+| V2 (shared V1 log format) | `spec.json`, `status.json`, `artifacts.jsonl`, `final/manifest.json` |
 | V3 | `spec.json`, `evidence_bundle.json`, `program_evaluation.json` |
+
+For V2, evidence extraction and prompt preparation were checked on 17 archived heat runs. The reader uses the baseline, selection, final checkpoint, and audit records shared with V1. It does not read the separate V2 research trace. Full manuscript generation on V2 has yet to be verified.
 
 Download `paper.md` for the reader-facing manuscript, `outline.md` for the evidence-linked outline, and `run.json` for the generation and validation record.
