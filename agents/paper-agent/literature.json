@@ -1,0 +1,30 @@
+[
+  {
+    "id": "giordano-heat",
+    "title": "Bayesian Inference for Initial Heat States with Gaussian Series Priors",
+    "url": "https://arxiv.org/html/2506.14241v1",
+    "note": "Studies Bayesian inference for an unknown initial heat state from later temperature measurements using Gaussian series priors. Initial-state recovery and conductivity recovery are different inverse problems.",
+    "attribution": "M. Giordano (2025)."
+  },
+  {
+    "id": "bpinn",
+    "title": "B-PINNs: Bayesian Physics-Informed Neural Networks for Forward and Inverse PDE Problems with Noisy Data",
+    "url": "https://arxiv.org/pdf/2003.06097",
+    "note": "Studies Bayesian physics-informed neural networks for forward and inverse PDE problems with noisy observations, and compares approaches to quantifying uncertainty.",
+    "attribution": "L. Yang, X. Meng and G. E. Karniadakis (2020 preprint)."
+  },
+  {
+    "id": "pdeinvbench",
+    "title": "PDEInvBench: A Comprehensive Dataset and Design Space Exploration of Neural Networks for PDE Inverse Problems",
+    "url": "https://arxiv.org/html/2605.25353",
+    "note": "A benchmark for PDE inverse problems that investigates optimization, representation and scaling. It supplies context for the design of PDE benchmarks. Its measurements do not describe the present study.",
+    "attribution": "D. Goel, N. Chalapathi, S. Raja and A. S. Krishnapriyan (2026)."
+  },
+  {
+    "id": "blasten-walks",
+    "title": "Inverse problems for discrete heat equations and random walks for a class of graphs",
+    "url": "https://arxiv.org/abs/2107.00494",
+    "note": "Under the Two-Points Condition, the authors establish recovery of graph structure and transition probabilities from distributions of first passing times on an observation set. Their result does not establish that the present simulator satisfies the assumptions.",
+    "attribution": "E. Blåsten, H. Isozaki, M. Lassas and J. Lu (2023 revision)."
+  }
+]
