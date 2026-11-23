@@ -1,0 +1,76 @@
+{
+ "exp_id": "exp-0007",
+ "idea_id": "idea-007",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.330697038745562,
+  "r2": -0.0011333917959855389,
+  "rmse": 0.4361021787143162
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 0.0006797313690185547,
+ "predict_seconds": 0.00021767616271972656,
+ "latency_ms_per_sample": 0.00029023488362630207,
+ "warnings": [],
+ "kind": "library",
+ "family": "data-driven",
+ "label": "mean_baseline/raw",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.3269009452514201,
+  0.32916919941894274,
+  0.3398573845671218,
+  0.32692614443138585
+ ],
+ "train": {
+  "rel_l2": 0.32782098613949384
+ },
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794634964_exp-0007/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-5",
+ "arm_id": "S-Q1-5.mean",
+ "claim_ids": [
+  "C-Q1-5a",
+  "C-Q1-5b",
+  "C-Q1-5c",
+  "C-Q1-5d"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "7050304668ef",
+ "effective_method": {
+  "kind": "library",
+  "method": "mean_baseline",
+  "params": {},
+  "features": "raw",
+  "scaler": "none",
+  "pca": 0,
+  "target_transform": "none",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 0,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794634964_exp-0007/val_idx.npy",
+ "status": "ok",
+ "elapsed": 0.7043883800506592
+}

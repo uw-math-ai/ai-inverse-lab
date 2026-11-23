@@ -1,0 +1,48 @@
+{
+  "members": [
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 8.97887840661626e-05,
+        "gamma_mult": 0.022183576308829955
+      },
+      "features": "raw",
+      "scaler": "none",
+      "pca": 64
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.10915612691301553,
+        "lr": 0.0020211962125925662,
+        "weight_decay": 9.12620611000693e-06,
+        "epochs": 265,
+        "batch_size": 64,
+        "activation": "gelu"
+      },
+      "features": "log",
+      "scaler": "robust",
+      "pca": 32
+    }
+  ],
+  "weights": [
+    1.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.024142615404035676,
+    "r2": 0.9947605647729811,
+    "rmse": 0.031766949893321475
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

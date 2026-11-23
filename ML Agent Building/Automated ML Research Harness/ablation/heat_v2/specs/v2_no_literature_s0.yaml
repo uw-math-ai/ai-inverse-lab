@@ -1,0 +1,76 @@
+name: heat_v2_no_literature_s0
+pipeline: v2
+problem: Given noisy temperature measurements at four sensor locations over time,
+  recover the four unknown piecewise-constant thermal conductivities of a 1-D rod
+  governed by the heat equation.
+simulator:
+  name: python
+  params:
+    path: examples/heat_diffusion_simulator.py
+    function: simulate
+    n_segments: 4
+    noise: 0.001
+data:
+  n_train: 3000
+  n_val: 750
+  n_test: 750
+  seed: 5
+metrics:
+  primary: rel_l2
+  secondary:
+  - r2
+  - rmse
+success:
+  threshold: 0.05
+budget:
+  compute_seconds: 400
+  experiment_timeout: 120
+hardware:
+  workers: 6
+  gpus: auto
+constraints:
+  allowed_methods: all
+  forbidden_methods: []
+  allow_custom_code: true
+  allow_forward_model: true
+  max_forward_evals: 3000000
+  notes:
+  - Models may only be trained on simulated data; the test split is never used for
+    selection
+research:
+  researchers:
+  - mathematical
+  - ml
+  - experimental
+  - exploratory
+  max_rounds: 3
+  min_rounds: 2
+  proposals_per_researcher: 2
+  quality_threshold: 0.75
+  llm_calls: 30
+  pilot_tests: true
+  llm_critic: true
+literature:
+  enabled: false
+  max_total_queries: 32
+  n_results: 4
+memory:
+  enabled: true
+execution:
+  portfolio_size: 6
+  include_baselines: true
+  refine_rounds: 1
+  ensemble: true
+evaluation:
+  shift_n: 300
+  shift_sets:
+  - name: noise_x3
+    params:
+      noise: 0.003
+  - name: k_low_0.3
+    params:
+      k_low: 0.3
+llm:
+  backend: claude_code
+  effort: medium
+seed: 0

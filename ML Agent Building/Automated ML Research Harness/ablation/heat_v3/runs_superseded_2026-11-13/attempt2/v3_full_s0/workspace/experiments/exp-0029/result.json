@@ -1,0 +1,11 @@
+{
+ "exp_id": "exp-0029",
+ "idea_id": "idea-022",
+ "mode": "final_v3",
+ "fraction": 1.0,
+ "device": "cpu",
+ "status": "error",
+ "error": "AttributeError: Can't pickle local object 'build_method.<locals>.BoxLMVec'",
+ "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\mlharness\\runner.py\", line 568, in main\n    result.update(run_final_v2(job, data, out_dir))\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\mlharness\\runner.py\", line 340, in run_final_v2\n    return run_final_v3(job, data, out_dir)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\mlharness\\runner.py\", line 488, in run_final_v3\n    pickle.dump(fm, f)\nAttributeError: Can't pickle local object 'build_method.<locals>.BoxLMVec'\n",
+ "elapsed": 2.6099023818969727
+}

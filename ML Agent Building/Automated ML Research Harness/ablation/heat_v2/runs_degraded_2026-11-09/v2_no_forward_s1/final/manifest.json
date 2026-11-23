@@ -1,0 +1,155 @@
+{
+  "pipeline": "v2",
+  "members": [
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          256,
+          256
+        ],
+        "dropout": 0.08041015762623084,
+        "lr": 0.001,
+        "weight_decay": 0.0004638729855994778,
+        "epochs": 150,
+        "batch_size": 128,
+        "activation": "gelu"
+      },
+      "features": "sqrt",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "log",
+      "noise_aug": 1,
+      "noise_scale": 1.0
+    },
+    {
+      "kind": "library",
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          256,
+          256
+        ],
+        "dropout": 0.0,
+        "lr": 0.002055990700659324,
+        "weight_decay": 0.0001,
+        "epochs": 150,
+        "batch_size": 64,
+        "activation": "tanh"
+      },
+      "features": "raw",
+      "scaler": "standard",
+      "pca": 0,
+      "target_transform": "log",
+      "noise_aug": 1,
+      "noise_scale": 1.0
+    }
+  ],
+  "member_info": [
+    {
+      "label": "torch_mlp/sqrt+logy+aug1",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "a737ed47e023"
+    },
+    {
+      "label": "torch_mlp/raw+logy+aug1",
+      "kind": "library",
+      "family": "data-driven",
+      "uses_forward": false,
+      "method_hash": "132a35ea40ae"
+    }
+  ],
+  "weights": [
+    2.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.021810296918971496,
+    "r2": 0.995722844725607,
+    "rmse": 0.028698075903889644
+  },
+  "test_bootstrap": {
+    "mean": 0.02183330806920436,
+    "std": 0.0006223356927227014,
+    "ci95": [
+      0.020671910286943814,
+      0.022949806374573393
+    ],
+    "n_boot": 200
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.07728263072779142,
+      "r2": 0.9589972528245243,
+      "rmse": 0.09624743236358413
+    },
+    "noise_x3": {
+      "rel_l2": 0.05769699694049492,
+      "r2": 0.9709348547590331,
+      "rmse": 0.07687469944030105
+    }
+  },
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    false,
+    false
+  ],
+  "reproducibility": {
+    "seed": 1,
+    "data_seed": 5,
+    "data_cache_key": "dbbb3d2541fda500",
+    "test_split_sha1": "5b49be1eb2715949",
+    "spec_hash": "8e97e94bdd",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "harness_version": "2.0.0"
+  },
+  "research_lineage": {
+    "idea-011": {
+      "proposal_chain": [
+        "P-011",
+        "P-005"
+      ],
+      "entry": "E-05",
+      "gate": "gate-00136",
+      "citations": [],
+      "label": "torch_mlp/sqrt+logy+aug1",
+      "origin": "refine"
+    },
+    "idea-010": {
+      "proposal_chain": [
+        "P-011",
+        "P-005"
+      ],
+      "entry": "E-05",
+      "gate": "gate-00134",
+      "citations": [],
+      "label": "torch_mlp/raw+logy+aug1",
+      "origin": "refine"
+    }
+  }
+}

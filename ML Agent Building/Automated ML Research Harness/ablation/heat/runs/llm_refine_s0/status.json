@@ -1,0 +1,44 @@
+{
+ "run_id": "heat_llm_refine_s0_20261108_154149",
+ "stage": "done",
+ "ideas": 29,
+ "pruned": 2,
+ "best": {
+  "idea": "idea-011",
+  "method": "torch_mlp",
+  "rel_l2": 0.02773068357018907
+ },
+ "resources": {
+  "compute_budget_s": 400.0,
+  "compute_used_s": 380.74,
+  "compute_remaining_s": 19.26,
+  "wall_elapsed_s": 294.83,
+  "wall_budget_s": 1700.0,
+  "jobs": 29,
+  "by_stage_s": {
+   "baseline": 2.13,
+   "screen": 70.41,
+   "halving": 146.41,
+   "refine": 110.03,
+   "final": 51.76
+  },
+  "llm_calls": 11,
+  "llm_calls_max": 40,
+  "llm_seconds": 161.36,
+  "llm_cost_usd": 0.7349,
+  "workers": 6,
+  "gpus": []
+ },
+ "funnel": {
+  "proposed": 16,
+  "prescreen_approved": 15,
+  "screen_survivors": 14,
+  "rung_0.33": 5,
+  "rung_1.00": 4,
+  "refine_proposed": 12,
+  "refine_approved": 12
+ },
+ "updated": 1794181603.8861265,
+ "error": null,
+ "elapsed": 294.8051755428314
+}

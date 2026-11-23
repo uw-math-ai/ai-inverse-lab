@@ -1,0 +1,57 @@
+2026-11-08 15:20:06,493 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-08 15:20:06,499 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-08 15:20:06,499 INFO llm backend: none | workers: 6 x 2 threads | gpus: none
+2026-11-08 15:20:06,499 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-08 15:20:06,506 INFO [simulator] dataset 9b4282a010efda1c loaded from cache
+2026-11-08 15:20:06,559 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-08 15:20:08,483 INFO   exp-0001 idea-001  mean_baseline  f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (1.9s)
+2026-11-08 15:20:08,486 INFO baseline val rel_l2 = 0.3307
+2026-11-08 15:20:08,486 INFO === stage: ideation | compute used 2/400s | wall 2s
+2026-11-08 15:20:08,499 INFO 16 ideas proposed by 1 ideators
+2026-11-08 15:20:08,499 INFO === stage: prescreen | compute used 2/400s | wall 2s
+2026-11-08 15:20:08,505 INFO prescreen: 16/16 ideas approved
+2026-11-08 15:20:08,505 INFO === stage: screen | compute used 2/400s | wall 2s
+2026-11-08 15:20:10,616 INFO   exp-0003 idea-003  kernel_ridge   f=0.10 rel_l2=0.224 r2=0.5396 rmse=0.2955 (2.1s)
+2026-11-08 15:20:10,636 INFO   exp-0002 idea-002  kernel_ridge   f=0.10 rel_l2=0.1413 r2=0.8159 rmse=0.1863 (2.1s)
+2026-11-08 15:20:10,655 INFO   exp-0007 idea-007  pls            f=0.10 rel_l2=0.07975 r2=0.9414 rmse=0.1052 (2.1s)
+2026-11-08 15:20:10,655 INFO   exp-0005 idea-005  kernel_ridge   f=0.10 rel_l2=0.1124 r2=0.8838 rmse=0.1483 (2.1s)
+2026-11-08 15:20:11,072 INFO   exp-0004 idea-004  mlp_sklearn    f=0.10 rel_l2=0.2353 r2=0.4914 rmse=0.3103 (2.5s)
+2026-11-08 15:20:12,719 INFO   exp-0008 idea-008  kernel_ridge   f=0.10 rel_l2=0.2793 r2=0.285 rmse=0.3683 (2.1s)
+2026-11-08 15:20:12,722 INFO   exp-0009 idea-009  ridge          f=0.10 rel_l2=0.0716 r2=0.9528 rmse=0.09443 (2.1s)
+2026-11-08 15:20:12,763 INFO   exp-0010 idea-010  pls            f=0.10 rel_l2=0.0527 r2=0.9745 rmse=0.0695 (2.1s)
+2026-11-08 15:20:12,781 INFO   exp-0011 idea-011  kernel_ridge   f=0.10 rel_l2=0.05481 r2=0.9723 rmse=0.07227 (2.1s)
+2026-11-08 15:20:13,232 INFO   exp-0012 idea-012  knn            f=0.10 rel_l2=0.2189 r2=0.5592 rmse=0.2887 (2.1s)
+2026-11-08 15:20:14,885 INFO   exp-0015 idea-015  pls            f=0.10 rel_l2=0.06269 r2=0.9639 rmse=0.08267 (2.1s)
+2026-11-08 15:20:14,931 INFO   exp-0016 idea-016  kernel_ridge   f=0.10 rel_l2=0.04366 r2=0.9824 rmse=0.05758 (2.1s)
+2026-11-08 15:20:15,559 INFO   exp-0014 idea-014  mlp_sklearn    f=0.10 rel_l2=0.05916 r2=0.9678 rmse=0.07801 (2.8s)
+2026-11-08 15:20:15,688 INFO   exp-0017 idea-017  extra_trees    f=0.10 rel_l2=0.2405 r2=0.4698 rmse=0.3171 (2.4s)
+2026-11-08 15:20:20,484 INFO   exp-0006 idea-006  torch_mlp      f=0.10 rel_l2=0.07259 r2=0.9515 rmse=0.09573 (11.9s)
+2026-11-08 15:20:23,743 INFO   exp-0013 idea-013  torch_mlp      f=0.10 rel_l2=0.06959 r2=0.9554 rmse=0.09177 (11.0s)
+2026-11-08 15:20:23,746 INFO screen: 16/16 ideas survive the feasibility check
+2026-11-08 15:20:23,746 INFO === stage: halving | compute used 56/400s | wall 17s
+2026-11-08 15:20:25,855 INFO   exp-0022 idea-015  pls            f=0.33 rel_l2=0.05909 r2=0.968 rmse=0.07792 (2.1s)
+2026-11-08 15:20:25,892 INFO   exp-0019 idea-010  pls            f=0.33 rel_l2=0.0491 r2=0.9779 rmse=0.06476 (2.1s)
+2026-11-08 15:20:25,923 INFO   exp-0018 idea-016  kernel_ridge   f=0.33 rel_l2=0.03377 r2=0.9895 rmse=0.04454 (2.2s)
+2026-11-08 15:20:25,924 INFO   exp-0020 idea-011  kernel_ridge   f=0.33 rel_l2=0.03482 r2=0.9888 rmse=0.04592 (2.2s)
+2026-11-08 15:20:27,866 INFO   exp-0021 idea-014  mlp_sklearn    f=0.33 rel_l2=0.03899 r2=0.986 rmse=0.05142 (4.1s)
+2026-11-08 15:20:57,098 INFO   exp-0023 idea-013  torch_mlp      f=0.33 rel_l2=0.03684 r2=0.9875 rmse=0.04858 (33.3s)
+2026-11-08 15:20:57,099 INFO halving rung 0.33: 6 evaluated, best idea-016 0.033773
+2026-11-08 15:20:59,633 INFO   exp-0025 idea-011  kernel_ridge   f=1.00 rel_l2=0.03336 r2=0.9897 rmse=0.04399 (2.5s)
+2026-11-08 15:20:59,649 INFO   exp-0024 idea-016  kernel_ridge   f=1.00 rel_l2=0.02735 r2=0.9931 rmse=0.03606 (2.5s)
+2026-11-08 15:21:03,545 INFO   exp-0027 idea-014  mlp_sklearn    f=1.00 rel_l2=0.03163 r2=0.9908 rmse=0.04171 (6.4s)
+2026-11-08 15:22:21,120 INFO   exp-0026 idea-013  torch_mlp      f=1.00 rel_l2=0.02889 r2=0.9923 rmse=0.0381 (84.0s)
+2026-11-08 15:22:21,121 INFO halving rung 1.00: 4 evaluated, best idea-016 0.027347
+2026-11-08 15:22:21,121 INFO === stage: refine | compute used 197/400s | wall 135s
+2026-11-08 15:22:21,129 INFO refine: 6/6 ideas approved
+2026-11-08 15:22:23,340 INFO   exp-0028 idea-018  knn            f=1.00 rel_l2=0.1612 r2=0.7602 rmse=0.2126 (2.2s)
+2026-11-08 15:22:23,545 INFO   exp-0032 idea-022  extra_trees    f=1.00 rel_l2=0.1268 r2=0.8523 rmse=0.1672 (2.4s)
+2026-11-08 15:22:26,686 INFO   exp-0030 idea-020  extra_trees    f=1.00 rel_l2=0.1025 r2=0.9033 rmse=0.1351 (5.5s)
+2026-11-08 15:22:59,046 INFO   exp-0031 idea-021  hist_gbm       f=1.00 rel_l2=0.04715 r2=0.9795 rmse=0.06217 (37.9s)
+2026-11-08 15:23:17,615 INFO   exp-0033 idea-023  torch_mlp      f=1.00 rel_l2=0.0278 r2=0.9929 rmse=0.03666 (56.5s)
+2026-11-08 15:23:30,949 INFO   exp-0029 idea-019  torch_mlp      f=1.00 rel_l2=0.05241 r2=0.9748 rmse=0.06912 (69.8s)
+2026-11-08 15:23:30,954 INFO refine round 1: 6 children, best idea-016 rel_l2=0.027347 (gain 0.00%)
+2026-11-08 15:23:30,956 INFO === stage: final | compute used 371/400s | wall 204s
+2026-11-08 15:23:31,012 INFO greedy ensemble {'idea-016': 3, 'idea-013': 2, 'idea-023': 2, 'idea-011': 1}: val rel_l2=0.024059 vs best single 0.027347 (gain 12.02%) -> ensemble
+2026-11-08 15:26:12,345 INFO   exp-0034 ensemble  FINAL          f=1.00 rel_l2=0.02279 r2=0.9953 rmse=0.02999 (161.3s)
+2026-11-08 15:26:12,346 INFO FINAL ensemble ['idea-016', 'idea-013', 'idea-023', 'idea-011'] | val rel_l2=0.024059 | test {'rel_l2': 0.02279, 'r2': 0.99534, 'rmse': 0.02999}
+2026-11-08 15:26:12,348 INFO === stage: report | compute used 533/400s | wall 366s

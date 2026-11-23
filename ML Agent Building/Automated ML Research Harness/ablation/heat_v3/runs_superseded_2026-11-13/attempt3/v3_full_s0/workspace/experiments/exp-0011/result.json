@@ -1,0 +1,116 @@
+{
+ "exp_id": "exp-0011",
+ "idea_id": "idea-011",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.019329887361103953,
+  "r2": 0.9965586184347424,
+  "rmse": 0.02549102351946261
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 4.39705228805542,
+ "predict_seconds": 8.4268639087677,
+ "latency_ms_per_sample": 11.2358185450236,
+ "warnings": [],
+ "kind": "hybrid",
+ "family": "hybrid",
+ "label": "hybrid[extra_trees/raw+logy->LM15]",
+ "forward_evals": 103235,
+ "forward_evals_fit": 200,
+ "diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200,
+   "initializer_fit_seconds": 4.376848220825195
+  },
+  "last_chi2_per_dof": 0.9632136658291145,
+  "last_solve_seconds": 8.334463357925415,
+  "last_iters": 15
+ },
+ "val_per_target_rel_l2": [
+  0.026836492412397116,
+  0.0060405314376473,
+  0.004994703684646636,
+  0.026293105870037865
+ ],
+ "uncertainty": {
+  "coverage_1sigma": 0.7026666666666667,
+  "coverage_2sigma": 0.957,
+  "mean_std": 0.01900331930527174,
+  "z_rms": 0.9835370299766488
+ },
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794690756_exp-0011/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-002",
+ "arm_id": "S-Q1-002.hybrid_lm",
+ "claim_ids": [
+  "C-Q1-002.physics",
+  "C-Q1-002.hybrid",
+  "C-Q1-002.hybrid_equiv_physics"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "aef70d972622",
+ "effective_method": {
+  "kind": "hybrid",
+  "params": {
+   "transform": "log",
+   "iters": 15,
+   "tikhonov": 0.0,
+   "extra_starts": 1,
+   "estimator": "mode",
+   "posterior_samples": 128
+  },
+  "init": {
+   "kind": "library",
+   "method": "extra_trees",
+   "params": {
+    "n_estimators": 300,
+    "max_depth": null,
+    "max_features": 0.5,
+    "min_samples_leaf": 1
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 1.0
+  }
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 0,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200,
+   "initializer_fit_seconds": 4.376848220825195
+  },
+  "last_chi2_per_dof": 0.9632136658291145,
+  "last_solve_seconds": 8.334463357925415,
+  "last_iters": 15
+ },
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794690756_exp-0011/val_idx.npy",
+ "status": "ok",
+ "elapsed": 13.727699279785156
+}

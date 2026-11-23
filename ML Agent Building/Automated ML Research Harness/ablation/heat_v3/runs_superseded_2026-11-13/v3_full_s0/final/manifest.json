@@ -1,0 +1,83 @@
+{
+  "pipeline": "v3",
+  "schema_version": 3,
+  "members": [
+    {
+      "kind": "physics",
+      "params": {
+        "transform": "log",
+        "multistart": 6,
+        "iters": 30,
+        "tikhonov": 0.0,
+        "estimator": "mode",
+        "posterior_samples": 128
+      }
+    }
+  ],
+  "member_info": [
+    {
+      "label": "physics-MLE[log,ms=6,it=30]",
+      "kind": "physics",
+      "family": "physics",
+      "method_hash": "e2cbdefa8dea",
+      "source_hash": null,
+      "uses_forward": true,
+      "fit_diagnostics": {
+        "fit_report": {
+          "residual_std_at_truth": 0.0009994548867275769,
+          "nominal_noise_std": 0.001,
+          "model_mismatch": false,
+          "checked_samples": 200
+        }
+      }
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    true
+  ],
+  "research_lineage": {
+    "idea-003": {
+      "label": "physics-MLE[log,ms=6,it=30]",
+      "origin": "proposal",
+      "study_id": "S-1",
+      "arm_id": "S-1.physics_map",
+      "gate": "gate-00051",
+      "baseline_identity": false
+    }
+  },
+  "reproducibility": {
+    "seed": 0,
+    "data_seed": 5,
+    "data_cache_key": "346a0cfc9d47587b",
+    "spec_hash": "50877b0105",
+    "harness_version": "2.0.0",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    }
+  },
+  "model_sha256": "42847f60288ed9d139792f634d83ecc3380206a14862ea0e52800577f84dc38a"
+}

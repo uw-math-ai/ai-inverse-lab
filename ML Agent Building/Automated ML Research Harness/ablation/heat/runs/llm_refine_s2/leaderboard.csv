@@ -1,0 +1,9 @@
+rank,idea,persona,origin,parent,method,features,scaler,pca,params,val_rel_l2,val_r2,val_rmse,fit_seconds,wall_seconds
+1,idea-013,neural,llm,,custom,raw,standard,0,"{""n_models"": 3, ""hidden"": 256, ""epochs"": 150, ""lr"": 0.002, ""wd"": 0.0001, ""noise"": 0.05}",0.02621718479840955,0.9936698949480529,0.03457355243854809,91.42966938018799,96.966
+2,idea-020,domain,llm,idea-015,kernel_ridge,log,standard,0,"{""alpha"": 0.0003, ""gamma_mult"": 0.15}",0.026980723185667257,0.9932915003093807,0.03558045820183585,0.47547435760498047,2.64
+3,idea-015,domain,llm,,kernel_ridge,log,standard,0,"{""alpha"": 0.001, ""gamma_mult"": 0.3}",0.027905502262650428,0.9928236850463285,0.036799997910542066,0.4717116355895996,2.617
+4,idea-021,domain,llm,idea-015,kernel_ridge,log,standard,40,"{""alpha"": 0.001, ""gamma_mult"": 0.3}",0.02818099488573947,0.9926813365198283,0.03716330002417633,0.4657409191131592,2.627
+5,idea-002,classical,llm,,kernel_ridge,log,standard,0,"{""alpha"": 0.001, ""gamma_mult"": 0.5}",0.029797395767410393,0.9918180605433469,0.03929490649046463,0.4717116355895996,2.615
+6,idea-023,neural,llm,idea-013,torch_mlp,log,standard,0,"{""hidden"": [512, 512], ""dropout"": 0.1, ""lr"": 0.0015, ""weight_decay"": 0.0003, ""epochs"": 300, ""batch_size"": 64, ""activation"": ""silu""}",0.03058685530513742,0.991410242287675,0.04033599541498459,38.88419985771179,41.75
+7,idea-008,ensembles,llm,,custom,log,standard,30,"{""alpha"": 0.1, ""learning_rate"": 0.05, ""max_iter"": 400, ""max_leaf_nodes"": 15, ""l2_regularization"": 1.0}",0.0314607412605809,0.9908917874133978,0.04148842051852464,4.650354862213135,7.13
+8,idea-001,baseline,scheduler,,mean_baseline,raw,none,0,{},0.330697038745562,-0.0011333917959855389,0.4361021787143162,0.0010018348693847656,2.312

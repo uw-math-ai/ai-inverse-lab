@@ -1,0 +1,62 @@
+{
+  "members": [
+    {
+      "method": "custom",
+      "params": {},
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0,
+      "code_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness V1\\ablation\\heat\\runs\\full_s2\\workspace\\ideas\\idea-009\\model_v1.py"
+    },
+    {
+      "method": "torch_mlp",
+      "params": {
+        "hidden": [
+          512,
+          256,
+          128
+        ],
+        "dropout": 0.05,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "epochs": 200,
+        "batch_size": 128,
+        "activation": "silu"
+      },
+      "features": "log",
+      "scaler": "standard",
+      "pca": 0
+    },
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 0.003,
+        "gamma_mult": 0.3
+      },
+      "features": "sqrt",
+      "scaler": "standard",
+      "pca": 0
+    }
+  ],
+  "weights": [
+    2.0,
+    1.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.023177903035818324,
+    "r2": 0.9951851763186367,
+    "rmse": 0.030497577501401352
+  },
+  "custom_modules": [
+    {
+      "file": "member0_model.py",
+      "module_name": "mlh_final_member0_heat_full_s2_20261108_161319"
+    }
+  ],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ]
+}

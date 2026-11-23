@@ -1,0 +1,149 @@
+{
+  "pipeline": "v3",
+  "schema_version": 3,
+  "members": [
+    {
+      "kind": "physics",
+      "params": {
+        "transform": "log",
+        "multistart": 1,
+        "iters": 30,
+        "tikhonov": 0.0,
+        "estimator": "mode",
+        "posterior_samples": 128
+      }
+    }
+  ],
+  "member_info": [
+    {
+      "label": "physics-MLE[log,ms=1,it=30]",
+      "kind": "physics",
+      "family": "physics",
+      "method_hash": "74dff9ec37c0",
+      "source_hash": null,
+      "uses_forward": true,
+      "fit_diagnostics": {
+        "fit_report": {
+          "residual_std_at_truth": 0.0009994548867275769,
+          "nominal_noise_std": 0.001,
+          "model_mismatch": false,
+          "checked_samples": 200
+        }
+      }
+    }
+  ],
+  "weights": [
+    1.0
+  ],
+  "task": "regression",
+  "custom_modules": [],
+  "feature_dim": 80,
+  "target_shape": [
+    4
+  ],
+  "simulator": {
+    "name": "python",
+    "params": {
+      "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+      "function": "simulate",
+      "n_segments": 4,
+      "noise": 0.001
+    }
+  },
+  "simulator_copy": "simulator_heat_diffusion_simulator.py",
+  "forward_access_members": [
+    true
+  ],
+  "research_lineage": {
+    "idea-003": {
+      "label": "physics-MLE[log,ms=1,it=30]",
+      "origin": "baseline",
+      "study_id": "S-1",
+      "arm_id": "S-1.physics",
+      "gate": "gate-00039",
+      "baseline_identity": true
+    }
+  },
+  "reproducibility": {
+    "seed": 2,
+    "data_seed": 5,
+    "data_cache_key": "346a0cfc9d47587b",
+    "spec_hash": "f53e62fab6",
+    "harness_version": "2.0.0",
+    "versions": {
+      "python": "3.11.0",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "numpy": "2.3.5",
+      "scipy": "1.16.3",
+      "sklearn": "1.8.0",
+      "torch": "2.9.1+cpu"
+    },
+    "test_split_sha1": "5b49be1eb2715949"
+  },
+  "model_sha256": "d2cc1b2c8b23ba68b61745ef6b5a20ae242987b05906af7219e0fe8ae6bcc76b",
+  "export_certificate": {
+    "schema_version": 3,
+    "certified": true,
+    "passed": true,
+    "protocol": "pristine-repeat-reload-partition-v1",
+    "atol": 1e-10,
+    "rtol": 1e-08,
+    "checks": {
+      "finite_shape": true,
+      "repeat": true,
+      "reload": true,
+      "partition": true
+    },
+    "reasons": [],
+    "max_abs_differences": {
+      "repeat": 0.0,
+      "reload": 0.0,
+      "partition": 0.0
+    },
+    "input_role": "development",
+    "n_rows": 750,
+    "output_shape": [
+      750,
+      4
+    ]
+  },
+  "test": {
+    "rel_l2": 0.01841886806236584,
+    "r2": 0.9969618386959722,
+    "rmse": 0.024235620252272574
+  },
+  "shift": {
+    "k_low_0.3": {
+      "rel_l2": 0.12494414929093481,
+      "r2": 0.8926730245849349,
+      "rmse": 0.15560486806487978
+    },
+    "noise_x3": {
+      "rel_l2": 0.0520294521303912,
+      "r2": 0.97642188876497,
+      "rmse": 0.0693233392838876
+    }
+  },
+  "test_bootstrap": {
+    "mean": 0.018351365102252413,
+    "std": 0.0005877143444078948,
+    "ci95": [
+      0.0172478546722959,
+      0.019624648573606792
+    ],
+    "n_boot": 200
+  },
+  "test_per_target_rel_l2": [
+    0.0269799001673662,
+    0.006088333683040254,
+    0.005218525678847445,
+    0.02419188207713548
+  ],
+  "test_uncertainty": {
+    "coverage_1sigma": 0.701,
+    "coverage_2sigma": 0.956,
+    "mean_std": 0.018403128846459282,
+    "z_rms": 0.98157672398061
+  },
+  "final_evaluation_blocked": false
+}

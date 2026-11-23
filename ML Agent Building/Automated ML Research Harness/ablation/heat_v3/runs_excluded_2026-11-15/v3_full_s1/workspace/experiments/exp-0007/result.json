@@ -1,0 +1,97 @@
+{
+ "exp_id": "exp-0007",
+ "idea_id": "idea-007",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.019326870867746333,
+  "r2": 0.9965596890918234,
+  "rmse": 0.02548704556026973
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 0.020407438278198242,
+ "predict_seconds": 10.318296432495117,
+ "latency_ms_per_sample": 13.757728576660156,
+ "warnings": [],
+ "kind": "physics",
+ "family": "physics",
+ "label": "physics-MLE[log,ms=2,it=30]",
+ "forward_evals": 118031,
+ "forward_evals_fit": 200,
+ "diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200
+  },
+  "last_chi2_per_dof": 0.9632122477372906,
+  "last_solve_seconds": 10.270331859588623,
+  "last_iters": 30
+ },
+ "val_per_target_rel_l2": [
+  0.026840569983429572,
+  0.006039906308395673,
+  0.0049976708500861925,
+  0.026279861888379046
+ ],
+ "uncertainty": {
+  "coverage_1sigma": 0.7023333333333334,
+  "coverage_2sigma": 0.957,
+  "mean_std": 0.019003328845335413,
+  "z_rms": 0.983415827663955
+ },
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794714346_exp-0007/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-2",
+ "arm_id": "S-Q1-2.phys",
+ "claim_ids": [
+  "C-Q1-2-1",
+  "C-Q1-2-2"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "bf137cc3110b",
+ "effective_method": {
+  "kind": "physics",
+  "params": {
+   "transform": "log",
+   "multistart": 2,
+   "iters": 30,
+   "tikhonov": 0.0,
+   "estimator": "mode",
+   "posterior_samples": 128
+  }
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 1,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200
+  },
+  "last_chi2_per_dof": 0.9632122477372906,
+  "last_solve_seconds": 10.270331859588623,
+  "last_iters": 30
+ },
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794714346_exp-0007/val_idx.npy",
+ "status": "ok",
+ "elapsed": 10.944137573242188
+}

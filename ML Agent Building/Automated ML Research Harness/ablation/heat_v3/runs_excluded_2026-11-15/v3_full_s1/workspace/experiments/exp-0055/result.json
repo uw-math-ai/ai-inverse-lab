@@ -1,0 +1,63 @@
+{
+ "exp_id": "exp-0055",
+ "idea_id": "idea-055",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.3306557378688622,
+  "r2": -0.0008909775527933261,
+  "rmse": 0.4360477137503121
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 0.04655909538269043,
+ "predict_seconds": 2.7418136596679688e-05,
+ "latency_ms_per_sample": 3.6557515462239586e-05,
+ "warnings": [],
+ "kind": "custom_solver",
+ "family": "physics-custom",
+ "label": "custom-solver(fwd)",
+ "forward_evals": 387,
+ "forward_evals_fit": 387,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.326908622233761,
+  0.3291712609659281,
+  0.3397222221229271,
+  0.3268882738612822
+ ],
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794714896_exp-0055/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-4",
+ "arm_id": "S-Q1-4.verify",
+ "claim_ids": [],
+ "parent_task_id": "specialist-006",
+ "parent_agent_id": "researcher-003",
+ "method_hash": "f8c885b9f4ea",
+ "effective_method": {
+  "kind": "custom_solver",
+  "params": {},
+  "uses_forward": true,
+  "module_name": "mlh_code_exp_0055"
+ },
+ "source_hash": "b7578ca181a36cd186a0246605157160fa47adae977482c30ffc49c4a9daddeb",
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 1,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794714896_exp-0055/val_idx.npy",
+ "status": "ok",
+ "elapsed": 0.7052452564239502
+}

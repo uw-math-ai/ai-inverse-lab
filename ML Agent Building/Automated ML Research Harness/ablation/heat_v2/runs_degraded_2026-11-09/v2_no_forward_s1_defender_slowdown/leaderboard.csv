@@ -1,0 +1,10 @@
+idea,entry,proposal,origin,family,method,parent,val_rel_l2,val_r2,val_rmse,screen_val,fit_seconds,latency_ms,forward_evals
+idea-002,E-01,P-020,research,data-driven,custom-ml,,,,,,,,
+idea-003,E-02,P-022,research,data-driven,torch_mlp/raw+pca32+logy+aug2,,,,,0.031060051726778365,,,
+idea-004,E-03,P-024,research,data-driven,torch_mlp/raw+aug2,,,,,0.05126686880944226,,,
+idea-005,E-04,P-025,research,data-driven,custom-ml,,,,,,,,
+idea-007,E-06,P-021,research,data-driven,custom-ml,,,,,,,,
+idea-008,E-07,,baseline,data-driven,torch_mlp/raw,,,,,0.06722439167688275,,,
+idea-009,E-08,,baseline,data-driven,svm/log+pca8,,,,,,,,
+idea-010,E-08,,baseline,data-driven,extra_trees/sqrt,,,,,,,,
+idea-006,E-05,P-011,research,data-driven,ridge/raw+logy,,,,,0.07915359795911409,,,

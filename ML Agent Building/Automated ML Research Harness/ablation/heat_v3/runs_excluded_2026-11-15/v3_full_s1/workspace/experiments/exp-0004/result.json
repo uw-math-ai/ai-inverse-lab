@@ -1,0 +1,79 @@
+{
+ "exp_id": "exp-0004",
+ "idea_id": "idea-004",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.07710818941173594,
+  "r2": 0.9452383805062798,
+  "rmse": 0.10168536593714962
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 10.948559045791626,
+ "predict_seconds": 0.06984400749206543,
+ "latency_ms_per_sample": 0.0931253433227539,
+ "warnings": [],
+ "kind": "library",
+ "family": "data-driven",
+ "label": "extra_trees/raw+logy",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.11617506083248275,
+  0.027297565253868276,
+  0.02869821779086431,
+  0.09169160161096157
+ ],
+ "train": {
+  "rel_l2": 1.4616344018576002e-15
+ },
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s1\\workspace\\experiments\\exp-0004\\val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-2",
+ "arm_id": "S-Q1-2.et.s1",
+ "claim_ids": [
+  "C-Q1-2-1",
+  "C-Q1-2-2"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "b4d56e57bf4e",
+ "effective_method": {
+  "kind": "library",
+  "method": "extra_trees",
+  "params": {
+   "n_estimators": 300,
+   "max_depth": null,
+   "max_features": 0.5,
+   "min_samples_leaf": 1
+  },
+  "features": "raw",
+  "scaler": "standard",
+  "pca": 0,
+  "target_transform": "log",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 1,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s1\\workspace\\experiments\\exp-0004\\val_idx.npy",
+ "status": "ok",
+ "elapsed": 14.384881973266602
+}

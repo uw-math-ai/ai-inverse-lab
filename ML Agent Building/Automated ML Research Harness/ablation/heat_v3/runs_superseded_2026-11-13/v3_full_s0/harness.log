@@ -1,0 +1,17 @@
+2026-11-13 17:07:00,477 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-13 17:07:00,477 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-13 17:07:00,477 INFO llm backend: claude_code (claude-opus-5-5) | workers: 6 x 2 threads | gpus: none
+2026-11-13 17:07:00,477 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-13 17:07:00,493 INFO [simulator] dataset 346a0cfc9d47587b loaded from cache
+2026-11-13 17:07:00,743 INFO problem context: forward model: AVAILABLE via context.forward(theta) | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde
+2026-11-13 17:07:00,759 INFO identifiability: Fisher cond median 46.6, CRB rel_l2 floor ~0.01949, least determined ['k1', 'k4']
+2026-11-13 17:07:00,831 INFO === stage: program | compute used 0/400s | wall 0s
+2026-11-13 17:09:03,037 INFO   exp-0002 idea-002  kernel_ridge/raw+logy        f=1.00 rel_l2=0.03043 r2=0.9915 rmse=0.04013 (7.0s)
+2026-11-13 17:09:06,186 INFO   exp-0001 idea-001  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (10.2s)
+2026-11-13 17:09:31,723 INFO   exp-0003 idea-003  physics-MLE[log,ms=6,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (35.7s)
+2026-11-13 17:12:47,806 INFO   exp-0005 idea-005  kernel_ridge/raw+logy        f=1.00 rel_l2=0.03043 r2=0.9915 rmse=0.04013 (3.3s)
+2026-11-13 17:12:50,812 INFO   exp-0004 idea-004  extra_trees/raw+logy         f=1.00 rel_l2=0.07741 r2=0.9448 rmse=0.1021 (6.3s)
+2026-11-13 17:13:16,114 INFO   exp-0006 idea-006  physics-MLE[log,ms=6,it=30]  f=1.00 rel_l2=0.01933 r2=0.9966 rmse=0.02549 (31.6s)
+2026-11-13 17:15:44,890 INFO === stage: final | compute used 94/400s | wall 524s
+2026-11-13 17:17:24,971 INFO   exp-0007 idea-003  FINAL                        f=1.00 timeout: timeout after 100s (100.1s)
+2026-11-13 17:17:24,972 INFO === stage: report | compute used 194/400s | wall 625s

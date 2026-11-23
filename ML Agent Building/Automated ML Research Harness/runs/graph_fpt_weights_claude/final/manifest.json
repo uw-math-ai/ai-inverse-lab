@@ -1,0 +1,39 @@
+{
+  "members": [
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 0.004,
+        "gamma_mult": 0.09
+      },
+      "features": "log+fpt_summary",
+      "scaler": "standard",
+      "pca": 0
+    },
+    {
+      "method": "kernel_ridge",
+      "params": {
+        "alpha": 0.003,
+        "gamma_mult": 0.1
+      },
+      "features": "fpt_early",
+      "scaler": "standard",
+      "pca": 0
+    }
+  ],
+  "weights": [
+    2.0,
+    1.0
+  ],
+  "task": "regression",
+  "test": {
+    "rel_l2": 0.011943656404762963,
+    "r2": 0.9988793620402528,
+    "rmse": 0.0076401162583702225
+  },
+  "custom_modules": [],
+  "feature_dim": 576,
+  "target_shape": [
+    12
+  ]
+}

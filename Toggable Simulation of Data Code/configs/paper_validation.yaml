@@ -1,0 +1,34 @@
+# arXiv:2603.20710 Section 5: paper8 (Fig. 1) and paper9 (Fig. 4), q = 0, T_paper = 9 -> 17 steps.
+# The paper reports FRNE 0.248499 % (paper8) and 0.188348 % (paper9) at N = 1e6.
+run_name: paper_validation
+output_dir: results/paper_validation
+master_seed: 2026
+num_graphs: 2             # graph 0 = paper8, graph 1 = paper9
+device: auto
+backend: auto
+shard_size: 500
+log_interval_s: 15
+plot_sample: 2
+
+toggles:
+  compute_exact: true
+  run_monte_carlo: true
+  save_counts: true
+  save_r_tensors: true
+  save_ci: true
+  convergence_checkpoints: true
+  make_plots: true
+  resume: true
+
+graphs:
+  presets: [paper8, paper9]
+  q: {mode: zero}
+  dt: auto                # gives h = 1, i.e. the paper's P
+
+simulation:
+  T: 9
+  T_mode: paper           # 2 * 9 - 1 = 17 steps
+  N: 1_000_000
+  replicates: 5
+  N_checkpoints: [100, 1000, 10000, 100000, 1000000]
+  chunk_walks: 250_000

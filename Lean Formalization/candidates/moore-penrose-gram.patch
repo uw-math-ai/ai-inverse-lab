@@ -1,0 +1,23 @@
+diff --git a/TauCeti/Analysis/InnerProductSpace/MoorePenrose.lean b/TauCeti/Analysis/InnerProductSpace/MoorePenrose.lean
+index c0a2551c86..6ae660ec16 100644
+--- a/TauCeti/Analysis/InnerProductSpace/MoorePenrose.lean
++++ b/TauCeti/Analysis/InnerProductSpace/MoorePenrose.lean
+@@ -300,6 +300,18 @@ theorem moorePenroseInverse_adjoint :
+   ((isMoorePenroseInverse_iff_eq_moorePenroseInverse _).mp
+     A.isMoorePenroseInverse_moorePenroseInverse.adjoint).symm
+ 
++/-- Solving the consistent normal equations with the Moore–Penrose inverse of the Gram
++operator gives an exact preimage under the original operator, even when its kernel is nontrivial. -/
++theorem apply_gram_moorePenroseInverse_adjoint_of_mem_range {y : F} (hy : y ∈ A.range) :
++    A ((A.adjoint ∘ₗ A).moorePenroseInverse (A.adjoint y)) = y := by
++  obtain ⟨x, rfl⟩ := hy
++  have hnormal := (A.adjoint ∘ₗ A).isMoorePenroseInverse_moorePenroseInverse.apply_apply_apply x
++  have hker : (A.adjoint ∘ₗ A).moorePenroseInverse ((A.adjoint ∘ₗ A) x) - x ∈
++      (A.adjoint ∘ₗ A).ker := by
++    rw [mem_ker, map_sub, hnormal, sub_self]
++  rw [A.ker_adjoint_comp_self] at hker
++  simpa only [mem_ker, map_sub, sub_eq_zero, comp_apply] using hker
++
+ /-- The Moore–Penrose inverse of the zero map is zero. -/
+ @[simp]
+ theorem moorePenroseInverse_zero : (0 : E →ₗ[𝕜] F).moorePenroseInverse = 0 :=

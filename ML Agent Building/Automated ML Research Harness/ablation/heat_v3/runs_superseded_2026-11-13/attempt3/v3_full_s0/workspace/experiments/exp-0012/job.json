@@ -1,0 +1,160 @@
+{
+ "mode": "method_eval",
+ "exp_id": "exp-0012",
+ "idea_id": "idea-012",
+ "method": {
+  "kind": "library",
+  "method": "extra_trees",
+  "params": {
+   "n_estimators": 300,
+   "max_depth": null,
+   "max_features": 0.5,
+   "min_samples_leaf": 1
+  },
+  "features": "raw",
+  "scaler": "standard",
+  "pca": 0,
+  "target_transform": "log",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "fraction": 1.0,
+ "val_subsample": null,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 1,
+ "feature_shape": null,
+ "stage": "study",
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "simulator_hash": "d287f853686c",
+ "forward_access": false,
+ "max_forward_evals": 3000000,
+ "plan_artifact": "plan-00137",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0012",
+ "pipeline": "v3",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-002",
+ "arm_id": "S-Q1-002.control_et_seed1",
+ "claim_ids": [
+  "C-Q1-002.physics",
+  "C-Q1-002.hybrid",
+  "C-Q1-002.hybrid_equiv_physics"
+ ],
+ "diagnostic_requests": [
+  {
+   "id": "S-Q1-002.paired_physics",
+   "kind": "paired",
+   "required": true,
+   "treatment": "S-Q1-002.physics_mle",
+   "control": "S-Q1-002.control_et"
+  },
+  {
+   "id": "S-Q1-002.paired_hybrid",
+   "kind": "paired",
+   "required": true,
+   "treatment": "S-Q1-002.hybrid_lm",
+   "control": "S-Q1-002.control_et"
+  },
+  {
+   "id": "S-Q1-002.paired_hybrid_vs_physics",
+   "kind": "paired",
+   "required": true,
+   "treatment": "S-Q1-002.hybrid_lm",
+   "control": "S-Q1-002.physics_mle"
+  },
+  {
+   "id": "S-Q1-002.per_target_physics",
+   "kind": "per_target",
+   "required": true,
+   "treatment": "S-Q1-002.physics_mle",
+   "control": "S-Q1-002.control_et"
+  },
+  {
+   "id": "S-Q1-002.per_target_hybrid",
+   "kind": "per_target",
+   "required": true,
+   "treatment": "S-Q1-002.hybrid_lm",
+   "control": "S-Q1-002.control_et"
+  },
+  {
+   "id": "S-Q1-002.paired_seed_physics",
+   "kind": "paired",
+   "required": false,
+   "treatment": "S-Q1-002.physics_mle_seed1",
+   "control": "S-Q1-002.control_et_seed1"
+  }
+ ],
+ "method_contract": {
+  "schema_version": 3,
+  "requested": {
+   "kind": "library",
+   "method": "extra_trees",
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 1.0,
+   "params": {
+    "max_depth": null,
+    "max_features": 0.5,
+    "min_samples_leaf": 1,
+    "n_estimators": 300
+   }
+  },
+  "effective": {
+   "kind": "library",
+   "method": "extra_trees",
+   "params": {
+    "n_estimators": 300,
+    "max_depth": null,
+    "max_features": 0.5,
+    "min_samples_leaf": 1
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 1.0
+  },
+  "requested_hash": "170e334e7e1b33a1ecb71995d0e710e09c1676a5971c2c2a0bc978e6c2b8ab98",
+  "effective_hash": "170e334e7e1b33a1ecb71995d0e710e09c1676a5971c2c2a0bc978e6c2b8ab98",
+  "source_hash": null,
+  "normalization_changes": [],
+  "interface": {
+   "fit": "fit(X_train,y_train)",
+   "predict": "predict(X)->one finite prediction per row",
+   "factory": "method-kind-specific factory"
+  },
+  "diagnostics": {
+   "declared": [],
+   "observed": [],
+   "verified": false
+  },
+  "inference_policy": "repeatability requires exported-artifact certification"
+ },
+ "row_hash": "260db427b9210269aa3df7d5d3515f223aa5519cf0e75558d38942150f9295b2",
+ "parent_agent_id": "researcher-003",
+ "parent_task_id": null,
+ "budget_group": "study:S-Q1-002:5",
+ "timeout_seconds": 120.0,
+ "device": "remote"
+}

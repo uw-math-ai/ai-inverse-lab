@@ -1,0 +1,57 @@
+Updated: 2026-11-09, 3:37 PM (America/Los_Angeles)
+Goal: reusable Tau Ceti prerequisites for arXiv:2603.20710v1.
+Local scope: all task files, checkouts, tools and caches stay in Lean Formalization/.
+
+Opened PRs:
+- #34660 https://github.com/TauCetiProject/TauCeti/pull/34660
+  Finite-time first-passage factorization/convolution; commit c325d5de1d.
+  Local build, source guards, header/text style, 14 environment linters, and
+  local compiled axiom/module checks pass. Remote content build PASSED at
+  2026-11-09 11:19 AM Pacific (job 129361492766). No-stacking workflow failed on
+  a repository-wide 2000-open-PR pagination cap, not a detected stack.
+  Failure run: https://github.com/TauCetiProject/TauCeti/actions/runs/42677115064
+  Report: https://github.com/TauCetiProject/TauCeti/pull/34660#issuecomment-6748551062
+  Base: upstream main; this PR has exactly one new commit and one source file.
+  External scope review BLOCKS at current head:
+  https://github.com/TauCetiProject/TauCeti/pull/34660#discussion_r4516972396
+  Reviewer says cited Layer 1.3–4 is complete and requests an actual unfinished
+  consumer/target, or closure. Investigating suggestions; no scope bypass.
+Landed PRs: none.
+
+Completed preparation:
+- PROOF_AUDIT.md records dependencies, exact library pins, roadmap boundaries,
+  and three proof/coordinate issues in the paper (two checked rational examples).
+- Lean 4.36.0-rc2 installed locally; GitHub access verified and personal fork made.
+- FirstPassage.lean implements a checked finite-time entrance convolution.
+- A Gram Moore-Penrose exact-preimage candidate also compiles without warnings;
+  its integrated module passed all 14 environment linters and local axiom audit.
+  Independent review found no specific unfinished roadmap target authorizing
+  this added capability. Preserved in candidates/, not submitted upstream.
+- Good-citizen review posted on #34367:
+  https://github.com/TauCetiProject/TauCeti/pull/34367#issuecomment-6748371249
+  The suggested Mathlib simplification was separately checked by Lean.
+- TauCetiReview CLI requires POSIX fcntl and cannot run here. Local trusted Lean
+  checkers were invoked directly without changing their sources/settings.
+- The pagination bug is already fixed by merged TauCetiTools #210. Existing
+  consuming-workflow update PR #34081 is OPEN; do not duplicate it:
+  https://github.com/TauCetiProject/TauCeti/pull/34081
+
+In progress:
+- Monitor/fix CI and review feedback on #34660.
+- Preserve the checked Gram candidate pending a valid roadmap target.
+- Address the external scope block by checking concrete existing consumers.
+  Countdown/Mass's current recursion accepts arbitrary reset measures, whereas
+  the new first-passage theorem requires a Markov kernel; do not weaken that
+  existing result merely to introduce a consumer.
+- Remote content CI is green; address scope review before merge. No dependent PR opened.
+
+Central estimate: 2 further active working days for the remaining scope/consumer
+audit and a justified repair if one exists, plus external review/merge latency.
+The earlier November 16 completion forecast is superseded by the scope block;
+there is no defensible upstream completion date until an eligible target is
+established. Full graph/control/reconstruction formalization also needs suitable
+human-owned roadmap coverage and settled coordinate conventions. No roadmap
+exhaustion or complete formalization is claimed.
+
+Policy: one topic per PR; dependent PRs wait until prerequisites merge; no roadmap
+PRs/issues opened by the agent; no unverified proofs submitted as complete.

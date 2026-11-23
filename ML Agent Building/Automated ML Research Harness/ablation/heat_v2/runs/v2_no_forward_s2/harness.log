@@ -1,0 +1,50 @@
+2026-11-09 10:40:26,831 INFO === stage: spec | compute used 0/400s | wall 0s
+2026-11-09 10:40:26,834 INFO objective: Given noisy temperature measurements at four sensor locations over time, recover the four unknown piecewise-constant thermal conductivities of a 1-D rod governed by the heat equation.
+2026-11-09 10:40:26,835 INFO llm backend: claude_code | workers: 6 x 2 threads | gpus: none
+2026-11-09 10:40:26,836 INFO === stage: data | compute used 0/400s | wall 0s
+2026-11-09 10:40:26,850 INFO [simulator] dataset dbbb3d2541fda500 loaded from cache
+2026-11-09 10:40:26,969 INFO problem context: forward model: not available | parameters: ['k1', 'k2', 'k3', 'k4'] | bounds: lower=[0.5, 0.5, 0.5, 0.5] upper=[2.0, 2.0, 2.0, 2.0] | noise std: 0.001 (additive i.i.d. Gaussian on every sensor reading) | prior: i.i.d. uniform on [0.5, 2.0] per segment | facts: dimension=1; pde=parabolic (heat / diff
+2026-11-09 10:40:26,971 INFO === stage: baseline | compute used 0/400s | wall 0s
+2026-11-09 10:40:29,552 INFO   exp-0001 idea-001  mean_baseline                f=1.00 rel_l2=0.3307 r2=-0.001133 rmse=0.4361 (2.6s)
+2026-11-09 10:40:29,552 INFO baseline val rel_l2 = 0.3307
+2026-11-09 10:40:29,553 INFO === stage: research | compute used 3/400s | wall 3s
+2026-11-09 10:43:08,071 INFO research round 1: running 3 pilot experiment(s)
+2026-11-09 10:43:10,318 INFO   exp-0003 pilot-P-006 kernel_ridge/raw+pca30+logy+ f=0.10 rel_l2=0.07131 r2=0.9567 rmse=0.09159 (2.2s)
+2026-11-09 10:43:16,853 INFO   exp-0004 pilot-P-007 torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.0526 r2=0.9754 rmse=0.06756 (8.8s)
+2026-11-09 10:43:19,036 INFO   exp-0002 pilot-P-005 torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.05872 r2=0.9704 rmse=0.07542 (10.9s)
+2026-11-09 10:47:04,949 INFO research round 2: running 2 pilot experiment(s)
+2026-11-09 10:47:14,675 INFO   exp-0005 pilot-P-009 torch_mlp/log+logy           f=0.10 rel_l2=0.05416 r2=0.9726 rmse=0.06956 (9.7s)
+2026-11-09 10:51:16,787 INFO research loop: 3 rounds, 6 active, 4 abandoned — iteration cap reached (max_rounds=3); unresolved issues are documented
+2026-11-09 10:51:16,787 INFO === stage: portfolio | compute used 34/400s | wall 650s
+2026-11-09 10:51:16,791 INFO portfolio: E-01 torch_mlp/raw+logy, E-02 custom-solver, E-03 torch_mlp/raw+logy+aug2, E-04 custom-ml, E-05 kernel_ridge/raw+pca30+logy+aug1, E-06 custom-ml, E-07 torch_mlp/raw, E-08 random-search x2
+2026-11-09 10:51:16,791 INFO === stage: gate | compute used 34/400s | wall 650s
+2026-11-09 10:51:16,826 INFO gate: 9/9 executable methods approved
+2026-11-09 10:51:16,827 INFO === stage: screen | compute used 34/400s | wall 650s
+2026-11-09 10:51:19,537 INFO   exp-0011 idea-006  kernel_ridge/raw+pca30+logy+ f=0.10 rel_l2=0.04536 r2=0.9806 rmse=0.05893 (2.7s)
+2026-11-09 10:51:27,426 INFO   exp-0007 idea-002  torch_mlp/raw+logy           f=0.10 rel_l2=0.06243 r2=0.9634 rmse=0.08111 (10.6s)
+2026-11-09 10:51:30,061 INFO   exp-0013 idea-008  torch_mlp/raw                f=0.10 rel_l2=0.0605 r2=0.9656 rmse=0.0786 (10.5s)
+2026-11-09 10:51:30,171 INFO   exp-0014 idea-009  extra_trees/log+pca64        f=0.10 rel_l2=0.1898 r2=0.6635 rmse=0.2465 (2.7s)
+2026-11-09 10:51:30,172 INFO   exp-0009 idea-004  torch_mlp/raw+logy+aug2      f=0.10 rel_l2=0.04946 r2=0.9768 rmse=0.06425 (13.3s)
+2026-11-09 10:51:32,628 INFO   exp-0012 idea-007  custom-ml                    f=0.10 error: AttributeError: The following error was raised: 'NoiseFloorPCAEnsemble' object has no attr (15.8s)
+2026-11-09 10:51:32,975 INFO   exp-0015 idea-010  extra_trees/sqrt+pca16       f=0.10 rel_l2=0.1766 r2=0.707 rmse=0.2294 (2.9s)
+2026-11-09 10:51:34,607 INFO   exp-0008 idea-003  custom-solver                f=0.10 rel_l2=0.02753 r2=0.9928 rmse=0.03576 (17.8s)
+2026-11-09 10:51:34,760 INFO   exp-0010 idea-005  custom-ml                    f=0.10 error: AttributeError: The following error was raised: 'NoiseEnsMLP' object has no attribute '__s (17.9s)
+2026-11-09 10:52:25,231 INFO screen: 7/9 methods survive (no cross-family ranking at unequal fidelity)
+2026-11-09 10:52:25,231 INFO === stage: evaluate | compute used 128/400s | wall 718s
+2026-11-09 10:52:28,270 INFO   exp-0021 idea-009  extra_trees/log+pca64        f=1.00 rel_l2=0.1149 r2=0.8787 rmse=0.1515 (3.0s)
+2026-11-09 10:52:29,234 INFO   exp-0020 idea-010  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.1084 r2=0.8917 rmse=0.143 (4.0s)
+2026-11-09 10:52:31,566 INFO   exp-0019 idea-006  kernel_ridge/raw+pca30+logy+ f=1.00 rel_l2=0.02475 r2=0.9944 rmse=0.03264 (6.3s)
+2026-11-09 10:53:54,583 INFO   exp-0018 idea-003  custom-solver                f=1.00 rel_l2=0.02192 r2=0.9956 rmse=0.02891 (89.3s)
+2026-11-09 10:53:54,585 INFO evaluate: best idea-003 custom-solver val rel_l2=0.021924
+2026-11-09 10:53:54,585 INFO === stage: refine | compute used 231/400s | wall 808s
+2026-11-09 10:53:58,228 INFO   exp-0025 idea-014  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.1094 r2=0.8898 rmse=0.1443 (3.6s)
+2026-11-09 10:53:58,229 INFO   exp-0024 idea-013  extra_trees/sqrt+pca16       f=1.00 rel_l2=0.108 r2=0.8927 rmse=0.1424 (3.6s)
+2026-11-09 10:54:00,901 INFO   exp-0023 idea-012  kernel_ridge/log+pca30+logy+ f=1.00 rel_l2=0.08139 r2=0.9391 rmse=0.1073 (6.3s)
+2026-11-09 10:54:00,964 INFO   exp-0022 idea-011  kernel_ridge/log+pca30+logy+ f=1.00 rel_l2=0.05698 r2=0.9701 rmse=0.07514 (6.4s)
+2026-11-09 10:54:00,966 INFO refine round 1: 4 children, best gain 0.00%
+2026-11-09 10:54:00,966 INFO === stage: predictions | compute used 251/400s | wall 814s
+2026-11-09 10:54:00,970 INFO prediction checks: {'supported': 2, 'contradicted': 0, 'inconclusive': 4, 'untestable': 2}
+2026-11-09 10:54:00,970 INFO === stage: final | compute used 251/400s | wall 814s
+2026-11-09 10:55:32,759 INFO   exp-0026 idea-003  FINAL                        f=1.00 rel_l2=0.01952 r2=0.9966 rmse=0.02569 (91.7s)
+2026-11-09 10:55:32,762 INFO FINAL single ['custom-solver'] | val rel_l2=0.021924 | test {'rel_l2': 0.01952, 'r2': 0.99659, 'rmse': 0.02569} (95% CI [0.01822, 0.02052])
+2026-11-09 10:55:32,775 INFO === stage: report | compute used 343/400s | wall 906s

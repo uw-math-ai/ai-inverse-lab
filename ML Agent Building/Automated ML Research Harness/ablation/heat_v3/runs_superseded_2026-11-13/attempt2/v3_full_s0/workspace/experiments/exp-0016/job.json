@@ -1,0 +1,172 @@
+{
+ "mode": "method_eval",
+ "exp_id": "exp-0016",
+ "idea_id": "idea-016",
+ "method": {
+  "kind": "custom_solver",
+  "code": "import numpy as np\n\ndef build_method(params, context):\n    class FidelityCheck:\n        def fit(self, X, y):\n            X = np.asarray(X, dtype=float)\n            y = np.asarray(y, dtype=float)\n            lower = np.asarray(context.lower, dtype=float).ravel()\n            upper = np.asarray(context.upper, dtype=float).ravel()\n            if y.ndim != 2 or y.shape[1] != int(context.n_params):\n                raise RuntimeError('FIDELITY_ABORT unexpected y shape %s' % (y.shape,))\n            if (y < lower - 1e-9).any() or (y > upper + 1e-9).any():\n                raise RuntimeError('FIDELITY_ABORT y not within raw k bounds; log-transformed?')\n            col_mean = float(np.abs(X.mean(0)).max())\n            col_std = float(np.abs(X.std(0) - 1.0).max())\n            if col_mean < 1e-3 and col_std < 1e-3:\n                raise RuntimeError('FIDELITY_ABORT X appears standardised')\n            n = int(min(params.get('n_check', 200), len(y)))\n            m = int(X.shape[1])\n            sigma = float(context.noise_std)\n            pred = np.asarray(context.forward(y[:n]), dtype=float).reshape(n, -1)\n            sse_a = (((X[:n] - pred) / sigma) ** 2).sum(1)\n            if m % 4 == 0:\n                alt = pred.reshape(n, 4, m // 4).transpose(0, 2, 1).reshape(n, m)\n                sse_b = (((X[:n] - alt) / sigma) ** 2).sum(1)\n            else:\n                sse_b = np.full(n, np.inf)\n            ordering = 'as_returned' if sse_a.mean() <= sse_b.mean() else 'transposed_sensor_time'\n            sse = sse_a if ordering == 'as_returned' else sse_b\n            try:\n                from scipy.stats import chi2\n                qmax = float(chi2.ppf(1.0 - 0.01 / n, m))\n                med = float(chi2.ppf(0.5, m))\n            except Exception:\n                qmax = float(m + 4.2 * np.sqrt(2.0 * m))\n                med = float(m - 2.0 / 3.0)\n            pass_mean = bool(abs(sse.mean() - m) < 4.0)\n            pass_median = bool(abs(np.median(sse) - med) < 4.0)\n            pass_max = bool(sse.max() < qmax)\n            report = {\n                'n_rows': n,\n                'n_obs': m,\n                'expected_chi2_mean': m,\n                'ordering_used': ordering,\n                'sse_mean_as_returned': float(sse_a.mean()),\n                'sse_mean_transposed': float(sse_b.mean()) if np.isfinite(sse_b).all() else None,\n                'sse_mean': float(sse.mean()),\n                'sse_median': float(np.median(sse)),\n                'chi2_median_ref': med,\n                'sse_p05': float(np.percentile(sse, 5)),\n                'sse_p95': float(np.percentile(sse, 95)),\n                'sse_max': float(sse.max()),\n                'sse_max_threshold': qmax,\n                'pass_mean': pass_mean,\n                'pass_median': pass_median,\n                'pass_max': pass_max,\n                'fidelity_pass': bool(pass_mean and pass_median and pass_max),\n                'x_col_mean_absmax': col_mean,\n                'x_col_std_dev_from_1_max': col_std,\n                'y_min': float(y.min()),\n                'y_max': float(y.max()),\n                'noise_std': sigma,\n                'lower': list(map(float, lower)),\n                'upper': list(map(float, upper)),\n                'prior_center': list(map(float, np.ravel(context.prior_center()))),\n                'facts': context.facts,\n                'stability_note': 'dt, T and dx are not exposed by context.facts; dt*k_max/dx^2 is not computable here and no abort rule is enforced',\n                'val_check_note': 'val-split chi2 check not possible: predict receives no targets; see PHYSICS_LM_REPORT val_sse_median_mismatch_flag',\n            }\n            print('FORWARD_FIDELITY_REPORT', report)\n            self.report = report\n            return self\n\n        def predict(self, X):\n            c = np.asarray(context.prior_center(), dtype=float).ravel()\n            return np.tile(c, (len(X), 1))\n\n    return FidelityCheck()\n",
+  "params": {
+   "n_check": 200
+  },
+  "uses_forward": true
+ },
+ "fraction": 1.0,
+ "val_subsample": null,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 0,
+ "feature_shape": null,
+ "stage": "study",
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "simulator_hash": "d287f853686c",
+ "forward_access": true,
+ "max_forward_evals": 3000000,
+ "plan_artifact": "plan-00246",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0016",
+ "pipeline": "v3",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-6",
+ "arm_id": "S-Q1-6.fidelity",
+ "claim_ids": [
+  "C-Q1-6a",
+  "C-Q1-6b",
+  "C-Q1-6c",
+  "C-Q1-6d"
+ ],
+ "diagnostic_requests": [
+  {
+   "id": "S-Q1-6.paired_et",
+   "kind": "paired",
+   "treatment": "S-Q1-6.physics",
+   "control": "S-Q1-6.extra_trees",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.paired_mlp",
+   "kind": "paired",
+   "treatment": "S-Q1-6.physics",
+   "control": "S-Q1-6.torch_mlp",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_target_phys_et",
+   "kind": "per_target",
+   "treatment": "S-Q1-6.physics",
+   "control": "S-Q1-6.extra_trees",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_target_phys_mlp",
+   "kind": "per_target",
+   "treatment": "S-Q1-6.physics",
+   "control": "S-Q1-6.torch_mlp",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_target_et_mean",
+   "kind": "per_target",
+   "treatment": "S-Q1-6.extra_trees",
+   "control": "S-Q1-6.mean",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_target_mlp_mean",
+   "kind": "per_target",
+   "treatment": "S-Q1-6.torch_mlp",
+   "control": "S-Q1-6.mean",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_target_fidelity",
+   "kind": "per_target",
+   "treatment": "S-Q1-6.fidelity",
+   "control": "S-Q1-6.mean",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_sample_phys_et",
+   "kind": "per_sample",
+   "treatment": "S-Q1-6.physics",
+   "control": "S-Q1-6.extra_trees",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_sample_phys_mlp",
+   "kind": "per_sample",
+   "treatment": "S-Q1-6.physics",
+   "control": "S-Q1-6.torch_mlp",
+   "required": true
+  },
+  {
+   "id": "S-Q1-6.per_sample_et_seeds",
+   "kind": "per_sample",
+   "treatment": "S-Q1-6.extra_trees_seed1",
+   "control": "S-Q1-6.extra_trees",
+   "required": false
+  },
+  {
+   "id": "S-Q1-6.per_sample_mlp_seeds",
+   "kind": "per_sample",
+   "treatment": "S-Q1-6.torch_mlp_seed1",
+   "control": "S-Q1-6.torch_mlp",
+   "required": false
+  }
+ ],
+ "method_contract": {
+  "schema_version": 3,
+  "requested": {
+   "kind": "custom_solver",
+   "uses_forward": true,
+   "params": {
+    "n_check": 200
+   },
+   "code": "import numpy as np\n\ndef build_method(params, context):\n    class FidelityCheck:\n        def fit(self, X, y):\n            X = np.asarray(X, dtype=float)\n            y = np.asarray(y, dtype=float)\n            lower = np.asarray(context.lower, dtype=float).ravel()\n            upper = np.asarray(context.upper, dtype=float).ravel()\n            if y.ndim != 2 or y.shape[1] != int(context.n_params):\n                raise RuntimeError('FIDELITY_ABORT unexpected y shape %s' % (y.shape,))\n            if (y < lower - 1e-9).any() or (y > upper + 1e-9).any():\n                raise RuntimeError('FIDELITY_ABORT y not within raw k bounds; log-transformed?')\n            col_mean = float(np.abs(X.mean(0)).max())\n            col_std = float(np.abs(X.std(0) - 1.0).max())\n            if col_mean < 1e-3 and col_std < 1e-3:\n                raise RuntimeError('FIDELITY_ABORT X appears standardised')\n            n = int(min(params.get('n_check', 200), len(y)))\n            m = int(X.shape[1])\n            sigma = float(context.noise_std)\n            pred = np.asarray(context.forward(y[:n]), dtype=float).reshape(n, -1)\n            sse_a = (((X[:n] - pred) / sigma) ** 2).sum(1)\n            if m % 4 == 0:\n                alt = pred.reshape(n, 4, m // 4).transpose(0, 2, 1).reshape(n, m)\n                sse_b = (((X[:n] - alt) / sigma) ** 2).sum(1)\n            else:\n                sse_b = np.full(n, np.inf)\n            ordering = 'as_returned' if sse_a.mean() <= sse_b.mean() else 'transposed_sensor_time'\n            sse = sse_a if ordering == 'as_returned' else sse_b\n            try:\n                from scipy.stats import chi2\n                qmax = float(chi2.ppf(1.0 - 0.01 / n, m))\n                med = float(chi2.ppf(0.5, m))\n            except Exception:\n                qmax = float(m + 4.2 * np.sqrt(2.0 * m))\n                med = float(m - 2.0 / 3.0)\n            pass_mean = bool(abs(sse.mean() - m) < 4.0)\n            pass_median = bool(abs(np.median(sse) - med) < 4.0)\n            pass_max = bool(sse.max() < qmax)\n            report = {\n                'n_rows': n,\n                'n_obs': m,\n                'expected_chi2_mean': m,\n                'ordering_used': ordering,\n                'sse_mean_as_returned': float(sse_a.mean()),\n                'sse_mean_transposed': float(sse_b.mean()) if np.isfinite(sse_b).all() else None,\n                'sse_mean': float(sse.mean()),\n                'sse_median': float(np.median(sse)),\n                'chi2_median_ref': med,\n                'sse_p05': float(np.percentile(sse, 5)),\n                'sse_p95': float(np.percentile(sse, 95)),\n                'sse_max': float(sse.max()),\n                'sse_max_threshold': qmax,\n                'pass_mean': pass_mean,\n                'pass_median': pass_median,\n                'pass_max': pass_max,\n                'fidelity_pass': bool(pass_mean and pass_median and pass_max),\n                'x_col_mean_absmax': col_mean,\n                'x_col_std_dev_from_1_max': col_std,\n                'y_min': float(y.min()),\n                'y_max': float(y.max()),\n                'noise_std': sigma,\n                'lower': list(map(float, lower)),\n                'upper': list(map(float, upper)),\n                'prior_center': list(map(float, np.ravel(context.prior_center()))),\n                'facts': context.facts,\n                'stability_note': 'dt, T and dx are not exposed by context.facts; dt*k_max/dx^2 is not computable here and no abort rule is enforced',\n                'val_check_note': 'val-split chi2 check not possible: predict receives no targets; see PHYSICS_LM_REPORT val_sse_median_mismatch_flag',\n            }\n            print('FORWARD_FIDELITY_REPORT', report)\n            self.report = report\n            return self\n\n        def predict(self, X):\n            c = np.asarray(context.prior_center(), dtype=float).ravel()\n            return np.tile(c, (len(X), 1))\n\n    return FidelityCheck()\n"
+  },
+  "effective": {
+   "kind": "custom_solver",
+   "code": "import numpy as np\n\ndef build_method(params, context):\n    class FidelityCheck:\n        def fit(self, X, y):\n            X = np.asarray(X, dtype=float)\n            y = np.asarray(y, dtype=float)\n            lower = np.asarray(context.lower, dtype=float).ravel()\n            upper = np.asarray(context.upper, dtype=float).ravel()\n            if y.ndim != 2 or y.shape[1] != int(context.n_params):\n                raise RuntimeError('FIDELITY_ABORT unexpected y shape %s' % (y.shape,))\n            if (y < lower - 1e-9).any() or (y > upper + 1e-9).any():\n                raise RuntimeError('FIDELITY_ABORT y not within raw k bounds; log-transformed?')\n            col_mean = float(np.abs(X.mean(0)).max())\n            col_std = float(np.abs(X.std(0) - 1.0).max())\n            if col_mean < 1e-3 and col_std < 1e-3:\n                raise RuntimeError('FIDELITY_ABORT X appears standardised')\n            n = int(min(params.get('n_check', 200), len(y)))\n            m = int(X.shape[1])\n            sigma = float(context.noise_std)\n            pred = np.asarray(context.forward(y[:n]), dtype=float).reshape(n, -1)\n            sse_a = (((X[:n] - pred) / sigma) ** 2).sum(1)\n            if m % 4 == 0:\n                alt = pred.reshape(n, 4, m // 4).transpose(0, 2, 1).reshape(n, m)\n                sse_b = (((X[:n] - alt) / sigma) ** 2).sum(1)\n            else:\n                sse_b = np.full(n, np.inf)\n            ordering = 'as_returned' if sse_a.mean() <= sse_b.mean() else 'transposed_sensor_time'\n            sse = sse_a if ordering == 'as_returned' else sse_b\n            try:\n                from scipy.stats import chi2\n                qmax = float(chi2.ppf(1.0 - 0.01 / n, m))\n                med = float(chi2.ppf(0.5, m))\n            except Exception:\n                qmax = float(m + 4.2 * np.sqrt(2.0 * m))\n                med = float(m - 2.0 / 3.0)\n            pass_mean = bool(abs(sse.mean() - m) < 4.0)\n            pass_median = bool(abs(np.median(sse) - med) < 4.0)\n            pass_max = bool(sse.max() < qmax)\n            report = {\n                'n_rows': n,\n                'n_obs': m,\n                'expected_chi2_mean': m,\n                'ordering_used': ordering,\n                'sse_mean_as_returned': float(sse_a.mean()),\n                'sse_mean_transposed': float(sse_b.mean()) if np.isfinite(sse_b).all() else None,\n                'sse_mean': float(sse.mean()),\n                'sse_median': float(np.median(sse)),\n                'chi2_median_ref': med,\n                'sse_p05': float(np.percentile(sse, 5)),\n                'sse_p95': float(np.percentile(sse, 95)),\n                'sse_max': float(sse.max()),\n                'sse_max_threshold': qmax,\n                'pass_mean': pass_mean,\n                'pass_median': pass_median,\n                'pass_max': pass_max,\n                'fidelity_pass': bool(pass_mean and pass_median and pass_max),\n                'x_col_mean_absmax': col_mean,\n                'x_col_std_dev_from_1_max': col_std,\n                'y_min': float(y.min()),\n                'y_max': float(y.max()),\n                'noise_std': sigma,\n                'lower': list(map(float, lower)),\n                'upper': list(map(float, upper)),\n                'prior_center': list(map(float, np.ravel(context.prior_center()))),\n                'facts': context.facts,\n                'stability_note': 'dt, T and dx are not exposed by context.facts; dt*k_max/dx^2 is not computable here and no abort rule is enforced',\n                'val_check_note': 'val-split chi2 check not possible: predict receives no targets; see PHYSICS_LM_REPORT val_sse_median_mismatch_flag',\n            }\n            print('FORWARD_FIDELITY_REPORT', report)\n            self.report = report\n            return self\n\n        def predict(self, X):\n            c = np.asarray(context.prior_center(), dtype=float).ravel()\n            return np.tile(c, (len(X), 1))\n\n    return FidelityCheck()\n",
+   "params": {
+    "n_check": 200
+   },
+   "uses_forward": true
+  },
+  "requested_hash": "2e2c6157d50337dff422b9229f0639bafe053e0f2b2dacb17187c2f8c64129ba",
+  "effective_hash": "2e2c6157d50337dff422b9229f0639bafe053e0f2b2dacb17187c2f8c64129ba",
+  "source_hash": "5e4bb2f2a62fd5597354a88e916b9cb720b4a4cb8c9ebb2badc93e5bcb13480e",
+  "normalization_changes": [],
+  "interface": {
+   "fit": "fit(X_train,y_train)",
+   "predict": "predict(X)->one finite prediction per row",
+   "factory": "build_method(params,context)"
+  },
+  "diagnostics": {
+   "declared": [],
+   "observed": [],
+   "verified": false
+  },
+  "inference_policy": "repeatability requires exported-artifact certification"
+ },
+ "row_hash": "260db427b9210269aa3df7d5d3515f223aa5519cf0e75558d38942150f9295b2",
+ "parent_agent_id": "researcher-003",
+ "parent_task_id": null,
+ "budget_group": "study:S-Q1-6:10",
+ "timeout_seconds": 120.0,
+ "device": "remote"
+}

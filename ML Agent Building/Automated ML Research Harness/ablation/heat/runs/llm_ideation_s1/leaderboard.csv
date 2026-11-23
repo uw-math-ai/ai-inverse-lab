@@ -1,0 +1,6 @@
+rank,idea,persona,origin,parent,method,features,scaler,pca,params,val_rel_l2,val_r2,val_rmse,fit_seconds,wall_seconds
+1,idea-016,domain,llm,,torch_mlp,log,standard,0,"{""hidden"": [512, 256, 128], ""dropout"": 0.05, ""lr"": 0.001, ""weight_decay"": 0.0001, ""epochs"": 200, ""batch_size"": 128, ""activation"": ""gelu""}",0.028390249816004333,0.9925781531742635,0.03743925208997464,19.752727508544922,22.237
+2,idea-002,classical,llm,,kernel_ridge,log,standard,0,"{""alpha"": 0.001, ""gamma_mult"": 0.5}",0.029797395767410393,0.9918180605433469,0.03929490649046463,0.4938693046569824,2.732
+3,idea-017,domain,llm,,custom,raw,none,0,"{""ridge_alpha"": 0.001, ""krr_alpha"": 0.001, ""gamma_mult"": 0.5}",0.02991931796923112,0.9917548592953195,0.039455689719880165,0.5121004581451416,2.693
+4,idea-009,ensembles,llm,,custom,log,standard,0,"{""alpha"": 0.01, ""learning_rate"": 0.05, ""max_iter"": 300, ""max_leaf_nodes"": 15}",0.03713293874936889,0.9873101596471341,0.048968553066253764,3.8401501178741455,6.029
+5,idea-001,baseline,scheduler,,mean_baseline,raw,none,0,{},0.330697038745562,-0.0011333917959855389,0.4361021787143162,0.0011823177337646484,2.123

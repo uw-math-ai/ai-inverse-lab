@@ -1,0 +1,85 @@
+{
+ "exp_id": "exp-0017",
+ "idea_id": "idea-017",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cuda:0",
+ "val": {
+  "rel_l2": 0.030156978716347062,
+  "r2": 0.9916315078180268,
+  "rmse": 0.03976910156658218
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 9.141102075576782,
+ "predict_seconds": 0.007826805114746094,
+ "latency_ms_per_sample": 0.010435740152994791,
+ "warnings": [],
+ "kind": "library",
+ "family": "data-driven",
+ "label": "torch_mlp/raw+logy",
+ "forward_evals": 0,
+ "forward_evals_fit": 0,
+ "diagnostics": {},
+ "val_per_target_rel_l2": [
+  0.04206844470938896,
+  0.01594739289966917,
+  0.015706153775342322,
+  0.03642477571800519
+ ],
+ "train": {
+  "rel_l2": 0.017465917650388053
+ },
+ "val_pred_path": "/home/kushalk3/.mlharness_remote/jobs/1794714441_exp-0017/val_pred.npy",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-Q1-2",
+ "arm_id": "S-Q1-2.mlp.s1",
+ "claim_ids": [
+  "C-Q1-2-1",
+  "C-Q1-2-2"
+ ],
+ "parent_task_id": null,
+ "parent_agent_id": "researcher-003",
+ "method_hash": "6347432c5bd6",
+ "effective_method": {
+  "kind": "library",
+  "method": "torch_mlp",
+  "params": {
+   "hidden": [
+    256,
+    256
+   ],
+   "dropout": 0.0,
+   "lr": 0.001,
+   "weight_decay": 0.0001,
+   "epochs": 150,
+   "batch_size": 128,
+   "activation": "gelu"
+  },
+  "features": "raw",
+  "scaler": "standard",
+  "pca": 0,
+  "target_transform": "log",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "source_hash": null,
+ "row_hash": "46eee6288dc831b95b363a52167dcc2ec0f648ce60ec51c10c40697a834b4aed",
+ "train_row_hash": "4dea572e22323dcd01014c5c827cd0981a4a51921a2216b2b932b5006bc4fa7f",
+ "seed": 1,
+ "data_seed": 5,
+ "fidelity": 1.0,
+ "verification": {
+  "factory_fit_predict": true,
+  "finite": true,
+  "shape": true,
+  "passed": true,
+  "intervention_verified": false,
+  "diagnostic_gates_verified": false
+ },
+ "runtime_diagnostics": {},
+ "val_idx_path": "/home/kushalk3/.mlharness_remote/jobs/1794714441_exp-0017/val_idx.npy",
+ "status": "ok",
+ "elapsed": 9.797584533691406
+}

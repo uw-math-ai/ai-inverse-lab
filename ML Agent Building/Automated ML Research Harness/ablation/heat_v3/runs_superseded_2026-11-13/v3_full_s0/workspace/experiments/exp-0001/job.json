@@ -1,0 +1,138 @@
+{
+ "mode": "method_eval",
+ "exp_id": "exp-0001",
+ "idea_id": "idea-001",
+ "method": {
+  "kind": "library",
+  "method": "extra_trees",
+  "params": {
+   "n_estimators": 300,
+   "max_depth": null,
+   "max_features": 0.5,
+   "min_samples_leaf": 1
+  },
+  "features": "raw",
+  "scaler": "standard",
+  "pca": 0,
+  "target_transform": "log",
+  "noise_aug": 0,
+  "noise_scale": 1.0
+ },
+ "fraction": 1.0,
+ "val_subsample": null,
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\data\\dataset.npz",
+ "data_seed": 5,
+ "seed": 0,
+ "feature_shape": null,
+ "stage": "study",
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "simulator_hash": "d287f853686c",
+ "forward_access": false,
+ "max_forward_evals": 3000000,
+ "plan_artifact": "plan-00053",
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0001",
+ "pipeline": "v3",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "study_id": "S-1",
+ "arm_id": "S-1.library_et",
+ "claim_ids": [
+  "C-1",
+  "C-2"
+ ],
+ "diagnostic_requests": [
+  {
+   "id": "S-1.paired",
+   "kind": "paired",
+   "treatment": "S-1.physics_map",
+   "control": "S-1.library_et",
+   "required": true
+  },
+  {
+   "id": "S-1.paired_kr",
+   "kind": "paired",
+   "treatment": "S-1.physics_map",
+   "control": "S-1.library_kr",
+   "required": true
+  },
+  {
+   "id": "S-1.per_target",
+   "kind": "per_target",
+   "treatment": "S-1.physics_map",
+   "control": "S-1.library_et",
+   "required": true
+  }
+ ],
+ "method_contract": {
+  "schema_version": 3,
+  "requested": {
+   "kind": "library",
+   "method": "extra_trees",
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 1.0,
+   "params": {
+    "n_estimators": 300,
+    "max_features": 0.5,
+    "min_samples_leaf": 1,
+    "max_depth": null
+   }
+  },
+  "effective": {
+   "kind": "library",
+   "method": "extra_trees",
+   "params": {
+    "n_estimators": 300,
+    "max_depth": null,
+    "max_features": 0.5,
+    "min_samples_leaf": 1
+   },
+   "features": "raw",
+   "scaler": "standard",
+   "pca": 0,
+   "target_transform": "log",
+   "noise_aug": 0,
+   "noise_scale": 1.0
+  },
+  "requested_hash": "170e334e7e1b33a1ecb71995d0e710e09c1676a5971c2c2a0bc978e6c2b8ab98",
+  "effective_hash": "170e334e7e1b33a1ecb71995d0e710e09c1676a5971c2c2a0bc978e6c2b8ab98",
+  "source_hash": null,
+  "normalization_changes": [],
+  "interface": {
+   "fit": "fit(X_train,y_train)",
+   "predict": "predict(X)->one finite prediction per row",
+   "factory": "method-kind-specific factory"
+  },
+  "diagnostics": {
+   "declared": [],
+   "observed": [],
+   "verified": false
+  },
+  "inference_policy": "repeatability requires exported-artifact certification"
+ },
+ "row_hash": "260db427b9210269aa3df7d5d3515f223aa5519cf0e75558d38942150f9295b2",
+ "parent_agent_id": "researcher-003",
+ "parent_task_id": null,
+ "budget_group": "study:S-1:4",
+ "timeout_seconds": 120.0,
+ "device": "remote"
+}

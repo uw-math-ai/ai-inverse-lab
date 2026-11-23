@@ -1,0 +1,65 @@
+2026-11-07 15:45:19,453 INFO === stage: spec | compute used 0/900s | wall 0s
+2026-11-07 15:45:19,459 INFO objective: Recover the edge weights of a weighted 3x3 grid graph from empirical first-passage-time distributions r'(t, x, y) of random walks observed only on the boundary vertices (inverse problem for discrete h
+2026-11-07 15:45:19,459 INFO llm backend: none | workers: 6 x 2 threads | gpus: none
+2026-11-07 15:45:19,462 INFO === stage: data | compute used 0/900s | wall 0s
+2026-11-07 15:45:19,481 INFO [simulator] dataset 526bb37927b3f495 loaded from cache
+2026-11-07 15:45:19,709 INFO === stage: baseline | compute used 0/900s | wall 0s
+2026-11-07 15:45:21,667 INFO   exp-0001 idea-001  mean_baseline  f=1.00 rel_l2=0.3591 r2=-0.001718 rmse=0.2305 (1.9s)
+2026-11-07 15:45:21,670 INFO baseline val rel_l2 = 0.35913
+2026-11-07 15:45:21,670 INFO === stage: ideation | compute used 2/900s | wall 2s
+2026-11-07 15:45:21,687 INFO 16 ideas proposed by 4 ideators
+2026-11-07 15:45:21,687 INFO === stage: prescreen | compute used 2/900s | wall 2s
+2026-11-07 15:45:21,693 INFO prescreen: 16/16 ideas approved
+2026-11-07 15:45:21,693 INFO === stage: screen | compute used 2/900s | wall 2s
+2026-11-07 15:45:23,773 INFO   exp-0002 idea-002  ridge          f=0.10 rel_l2=0.03231 r2=0.9919 rmse=0.02074 (2.1s)
+2026-11-07 15:45:23,832 INFO   exp-0004 idea-005  kernel_ridge   f=0.10 rel_l2=0.08603 r2=0.9424 rmse=0.05522 (2.1s)
+2026-11-07 15:45:23,942 INFO   exp-0003 idea-003  pls            f=0.10 rel_l2=0.1687 r2=0.7768 rmse=0.1083 (2.2s)
+2026-11-07 15:45:26,260 INFO   exp-0005 idea-007  svm            f=0.10 rel_l2=0.08968 r2=0.9374 rmse=0.05756 (4.5s)
+2026-11-07 15:45:26,796 INFO   exp-0009 idea-013  extra_trees    f=0.10 rel_l2=0.2616 r2=0.4677 rmse=0.1679 (3.0s)
+2026-11-07 15:45:28,112 INFO   exp-0007 idea-009  random_forest  f=0.10 rel_l2=0.2365 r2=0.5651 rmse=0.1518 (6.4s)
+2026-11-07 15:45:28,798 INFO   exp-0006 idea-004  extra_trees    f=0.10 rel_l2=0.224 r2=0.6098 rmse=0.1437 (7.1s)
+2026-11-07 15:45:30,685 INFO   exp-0011 idea-010  mlp_sklearn    f=0.10 rel_l2=0.098 r2=0.9252 rmse=0.0629 (4.4s)
+2026-11-07 15:45:31,035 INFO   exp-0014 idea-008  ridge          f=0.10 rel_l2=0.04535 r2=0.984 rmse=0.02911 (2.2s)
+2026-11-07 15:45:32,058 INFO   exp-0010 idea-006  torch_mlp      f=0.10 rel_l2=0.06969 r2=0.9622 rmse=0.04473 (8.1s)
+2026-11-07 15:45:32,962 INFO   exp-0015 idea-011  kernel_ridge   f=0.10 rel_l2=0.07733 r2=0.9534 rmse=0.04963 (2.3s)
+2026-11-07 15:45:33,149 INFO   exp-0013 idea-015  mlp_sklearn    f=0.10 rel_l2=0.09582 r2=0.9286 rmse=0.0615 (5.0s)
+2026-11-07 15:45:35,726 INFO   exp-0017 idea-017  extra_trees    f=0.10 rel_l2=0.2231 r2=0.6123 rmse=0.1432 (3.7s)
+2026-11-07 15:45:37,907 INFO   exp-0012 idea-014  torch_mlp      f=0.10 rel_l2=0.06398 r2=0.9682 rmse=0.04106 (11.1s)
+2026-11-07 15:45:42,093 INFO   exp-0016 idea-016  torch_mlp      f=0.10 rel_l2=0.06399 r2=0.9682 rmse=0.04107 (11.0s)
+2026-11-07 15:45:44,753 INFO   exp-0008 idea-012  hist_gbm       f=0.10 rel_l2=0.05685 r2=0.9747 rmse=0.03649 (21.0s)
+2026-11-07 15:45:44,760 INFO screen: 16/16 ideas survive the feasibility check
+2026-11-07 15:45:44,760 INFO === stage: halving | compute used 98/900s | wall 25s
+2026-11-07 15:45:46,865 INFO   exp-0018 idea-002  ridge          f=0.33 rel_l2=0.01642 r2=0.9979 rmse=0.01054 (2.1s)
+2026-11-07 15:45:46,885 INFO   exp-0019 idea-008  ridge          f=0.33 rel_l2=0.03155 r2=0.9922 rmse=0.02025 (2.1s)
+2026-11-07 15:46:01,339 INFO   exp-0023 idea-006  torch_mlp      f=0.33 rel_l2=0.03648 r2=0.9896 rmse=0.02341 (16.5s)
+2026-11-07 15:46:02,003 INFO   exp-0022 idea-016  torch_mlp      f=0.33 rel_l2=0.03242 r2=0.9918 rmse=0.02081 (17.2s)
+2026-11-07 15:46:05,863 INFO   exp-0021 idea-014  torch_mlp      f=0.33 rel_l2=0.03186 r2=0.9921 rmse=0.02045 (21.1s)
+2026-11-07 15:46:40,492 INFO   exp-0020 idea-012  hist_gbm       f=0.33 rel_l2=0.04103 r2=0.9868 rmse=0.02633 (55.7s)
+2026-11-07 15:46:40,495 INFO halving rung 0.33: 6 evaluated, best idea-002 0.016424
+2026-11-07 15:46:42,700 INFO   exp-0024 idea-002  ridge          f=1.00 rel_l2=0.0138 r2=0.9985 rmse=0.008859 (2.2s)
+2026-11-07 15:46:42,750 INFO   exp-0025 idea-008  ridge          f=1.00 rel_l2=0.02658 r2=0.9945 rmse=0.01706 (2.2s)
+2026-11-07 15:47:06,829 INFO   exp-0027 idea-016  torch_mlp      f=1.00 rel_l2=0.01855 r2=0.9973 rmse=0.0119 (26.3s)
+2026-11-07 15:47:10,245 INFO   exp-0026 idea-014  torch_mlp      f=1.00 rel_l2=0.02067 r2=0.9967 rmse=0.01326 (29.7s)
+2026-11-07 15:47:10,248 INFO halving rung 1.00: 4 evaluated, best idea-002 0.013803
+2026-11-07 15:47:10,248 INFO === stage: refine | compute used 273/900s | wall 111s
+2026-11-07 15:47:10,257 INFO refine: 6/6 ideas approved
+2026-11-07 15:47:12,564 INFO   exp-0029 idea-019  ridge          f=1.00 rel_l2=0.01379 r2=0.9985 rmse=0.008851 (2.3s)
+2026-11-07 15:47:12,565 INFO   exp-0028 idea-018  ridge          f=1.00 rel_l2=0.01381 r2=0.9985 rmse=0.008864 (2.3s)
+2026-11-07 15:47:32,656 INFO   exp-0030 idea-020  torch_mlp      f=1.00 rel_l2=0.01958 r2=0.997 rmse=0.01256 (22.4s)
+2026-11-07 15:47:37,634 INFO   exp-0032 idea-021  torch_mlp      f=1.00 rel_l2=0.02256 r2=0.996 rmse=0.01448 (27.4s)
+2026-11-07 15:47:39,006 INFO   exp-0033 idea-023  torch_mlp      f=1.00 rel_l2=0.01908 r2=0.9972 rmse=0.01225 (28.7s)
+2026-11-07 15:47:39,204 INFO   exp-0031 idea-022  torch_mlp      f=1.00 rel_l2=0.01622 r2=0.998 rmse=0.01041 (28.9s)
+2026-11-07 15:47:39,205 INFO refine round 1: 6 children, best idea-019 rel_l2=0.013792 (gain 0.08%)
+2026-11-07 15:47:39,213 INFO refine: 6/6 ideas approved
+2026-11-07 15:47:41,644 INFO   exp-0037 idea-027  ridge          f=1.00 rel_l2=0.01383 r2=0.9985 rmse=0.008877 (2.4s)
+2026-11-07 15:47:41,646 INFO   exp-0038 idea-028  ridge          f=1.00 rel_l2=0.01383 r2=0.9985 rmse=0.008878 (2.4s)
+2026-11-07 15:47:41,653 INFO   exp-0039 idea-029  ridge          f=1.00 rel_l2=0.0138 r2=0.9985 rmse=0.008856 (2.4s)
+2026-11-07 15:47:41,695 INFO   exp-0035 idea-025  ridge          f=1.00 rel_l2=0.0266 r2=0.9945 rmse=0.01707 (2.5s)
+2026-11-07 15:47:41,727 INFO   exp-0036 idea-026  ridge          f=1.00 rel_l2=0.03175 r2=0.9921 rmse=0.02038 (2.5s)
+2026-11-07 15:47:41,729 INFO   exp-0034 idea-024  ridge          f=1.00 rel_l2=0.03175 r2=0.9921 rmse=0.02038 (2.5s)
+2026-11-07 15:47:41,730 INFO refine round 2: 6 children, best idea-019 rel_l2=0.013792 (gain 0.00%)
+2026-11-07 15:47:41,731 INFO === stage: final | compute used 400/900s | wall 142s
+2026-11-07 15:47:41,818 INFO greedy ensemble {'idea-019': 1}: val rel_l2=0.013792 vs best single 0.013792 (gain 0.00%) -> single
+2026-11-07 15:47:44,215 INFO   exp-0040 idea-019  FINAL          f=1.00 rel_l2=0.01383 r2=0.9985 rmse=0.008845 (2.4s)
+2026-11-07 15:47:44,223 INFO FINAL single ['idea-019'] | val rel_l2=0.013792 | test {'rel_l2': 0.01383, 'r2': 0.99849, 'rmse': 0.00885}
+2026-11-07 15:47:44,223 INFO === stage: report | compute used 402/900s | wall 145s

@@ -1,0 +1,86 @@
+{
+ "mode": "final_v3",
+ "exp_id": "exp-0009",
+ "idea_id": "idea-004",
+ "pipeline": "v3",
+ "members_v2": [
+  {
+   "kind": "physics",
+   "params": {
+    "transform": "log",
+    "multistart": 4,
+    "iters": 30,
+    "tikhonov": 0.0,
+    "estimator": "mode",
+    "posterior_samples": 128
+   }
+  }
+ ],
+ "member_ids": [
+  "idea-004"
+ ],
+ "forward_access_members": [
+  true
+ ],
+ "weights": [
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_smoke_s0\\data\\dataset.npz",
+ "seed": 0,
+ "data_seed": 1302,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_smoke_s0\\final",
+ "run_id": "heat_v3_smoke_s0_20261113_163324",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 6,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 2,
+   "noise": 0.001,
+   "n_grid": 20,
+   "n_steps": 60,
+   "sensors": [
+    3,
+    8,
+    12,
+    17
+   ],
+   "every": 6
+  }
+ },
+ "max_forward_evals": null,
+ "bootstrap": 200,
+ "data_cache_key": "8b070c356b0637da",
+ "spec_hash": "34d78fb50a",
+ "harness_version": "2.0.0",
+ "lineage": {
+  "idea-004": {
+   "label": "physics-MLE[log,ms=4,it=30]",
+   "origin": "proposal",
+   "study_id": "S-Q1-002",
+   "arm_id": "S-Q1-002.physics",
+   "gate": "gate-00062",
+   "baseline_identity": false
+  }
+ },
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_smoke_s0\\workspace\\experiments\\exp-0009",
+ "plan_artifact": "plan-00189",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "budget_group": "final-export",
+ "timeout_seconds": 30.0,
+ "selection_hash": "015b97ec32d0057006cc5285b9aee4665ba69e0a4a070c68eae35e5b57040296",
+ "exposure_token": "exposure-dfd3481540674041b825f23b6d8f16aa",
+ "device": "cpu"
+}

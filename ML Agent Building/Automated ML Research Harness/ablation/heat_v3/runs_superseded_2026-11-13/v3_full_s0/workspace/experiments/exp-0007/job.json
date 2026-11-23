@@ -1,0 +1,77 @@
+{
+ "mode": "final_v3",
+ "exp_id": "exp-0007",
+ "idea_id": "idea-003",
+ "pipeline": "v3",
+ "members_v2": [
+  {
+   "kind": "physics",
+   "params": {
+    "transform": "log",
+    "multistart": 6,
+    "iters": 30,
+    "tikhonov": 0.0,
+    "estimator": "mode",
+    "posterior_samples": 128
+   }
+  }
+ ],
+ "member_ids": [
+  "idea-003"
+ ],
+ "forward_access_members": [
+  true
+ ],
+ "weights": [
+  1.0
+ ],
+ "task": "regression",
+ "primary": "rel_l2",
+ "secondary": [
+  "r2",
+  "rmse"
+ ],
+ "data_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\data\\dataset.npz",
+ "seed": 0,
+ "data_seed": 5,
+ "feature_shape": null,
+ "final_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\final",
+ "run_id": "heat_v3_full_s0_20261113_170700",
+ "stage": "final",
+ "fraction": 1.0,
+ "threads": 2,
+ "wants_gpu": false,
+ "simulator": {
+  "name": "python",
+  "params": {
+   "path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\examples\\heat_diffusion_simulator.py",
+   "function": "simulate",
+   "n_segments": 4,
+   "noise": 0.001
+  }
+ },
+ "max_forward_evals": null,
+ "bootstrap": 200,
+ "data_cache_key": "346a0cfc9d47587b",
+ "spec_hash": "50877b0105",
+ "harness_version": "2.0.0",
+ "lineage": {
+  "idea-003": {
+   "label": "physics-MLE[log,ms=6,it=30]",
+   "origin": "proposal",
+   "study_id": "S-1",
+   "arm_id": "S-1.physics_map",
+   "gate": "gate-00051",
+   "baseline_identity": false
+  }
+ },
+ "job_dir": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v3\\runs\\v3_full_s0\\workspace\\experiments\\exp-0007",
+ "plan_artifact": "plan-00161",
+ "schema_version": 3,
+ "protocol_version": 3,
+ "budget_group": "final-export",
+ "timeout_seconds": 100.0,
+ "selection_hash": "edd4620ddad4ad934a8e89caca7c00560b8fc7ae274d65b45ee705f5ca177ebc",
+ "exposure_token": "exposure-a32be3087fdb478d96ecfea51b3d5c09",
+ "device": "cpu"
+}

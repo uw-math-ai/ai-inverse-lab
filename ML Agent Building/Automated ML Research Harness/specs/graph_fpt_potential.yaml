@@ -1,0 +1,20 @@
+# Harder variant: recover both edge weights and a sparse vertex potential (killing) from boundary data.
+name: graph_fpt_potential
+problem: >
+  Jointly recover the edge weights and the sparse vertex potential q of a weighted 3x3 grid graph
+  from noisy first-passage-time distributions observed on the boundary vertices.
+simulator:
+  name: graph_fpt
+  params:
+    graph: {family: grid, rows: 3, cols: 3}
+    observed: boundary
+    T: 9
+    walks_per_pair: 10000
+    weights: {low: 0.2, high: 1.0}
+    potential: {mode: uniform, low: 0.0, high: 0.5}
+    target: both
+data: {n_train: 4000, n_val: 1000, n_test: 1000, seed: 11}
+metrics: {primary: rel_l2, secondary: [r2, rmse]}
+success: {threshold: 0.10}
+budget: {compute_seconds: 900, max_ideas: 40, experiment_timeout: 240, llm_calls: 30}
+llm: {backend: auto}

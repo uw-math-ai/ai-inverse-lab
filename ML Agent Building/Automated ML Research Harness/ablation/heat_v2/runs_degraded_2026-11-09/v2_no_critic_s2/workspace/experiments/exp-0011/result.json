@@ -1,0 +1,50 @@
+{
+ "exp_id": "exp-0011",
+ "idea_id": "idea-007",
+ "mode": "method_eval",
+ "fraction": 1.0,
+ "device": "cpu",
+ "val": {
+  "rel_l2": 0.01899651148656789,
+  "r2": 0.9966763109559733,
+  "rmse": 0.02505138866283534
+ },
+ "n_train_used": 3000,
+ "n_val_used": 750,
+ "fit_seconds": 0.009517431259155273,
+ "predict_seconds": 6.8140869140625,
+ "latency_ms_per_sample": 9.08544921875,
+ "warnings": [],
+ "kind": "physics",
+ "family": "physics",
+ "label": "physics-MMSE[log,ms=1,it=30]",
+ "forward_evals": 151083,
+ "forward_evals_fit": 200,
+ "diagnostics": {
+  "fit_report": {
+   "residual_std_at_truth": 0.0009947749143547069,
+   "nominal_noise_std": 0.001,
+   "model_mismatch": false,
+   "checked_samples": 200
+  },
+  "last_chi2_per_dof": 0.9632355590239717,
+  "last_solve_seconds": 6.8140869140625,
+  "last_iters": 30,
+  "last_ess": 57.85114126169586
+ },
+ "val_per_target_rel_l2": [
+  0.026394023856753664,
+  0.0060097948646381655,
+  0.004991107125147138,
+  0.025787279073668637
+ ],
+ "uncertainty": {
+  "coverage_1sigma": 0.6896666666666667,
+  "coverage_2sigma": 0.952,
+  "mean_std": 0.018329149176538304,
+  "z_rms": 1.0086684526783087
+ },
+ "val_pred_path": "C:\\Users\\kusha\\Research Code\\UW Math AI Lab\\ai-inverse-lab\\ML Agent Building\\Automated ML Research Harness\\ablation\\heat_v2\\runs\\v2_no_critic_s2\\workspace\\experiments\\exp-0011\\val_pred.npy",
+ "status": "ok",
+ "elapsed": 8.410659790039062
+}
