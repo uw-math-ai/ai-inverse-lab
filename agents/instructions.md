@@ -13,6 +13,7 @@ What an agent can use, and the manifest setting that enables each feature:
 | Input form generated from a JSON Schema | `inputs_schema` | 2 |
 | Live logs, progress bar, downloadable artifacts | always on | 3 |
 | Model providers: Codex, Claude Code, OpenRouter, OpenAI API | `connection`, `network`, `providers` | 5 |
+| Internet access (web APIs, papers, packages, datasets) | `"network": "internet"` | 5 |
 | Automatic choice of the cheapest suitable plan | `tier` | 6 |
 | Usage reporting and handoff notes when a plan runs low | always on, via `agents/shared/platform_usage.py` | 6 |
 | Shared datasets from the lab OneDrive folder, mounted read-only | `datasets` | 7 |
@@ -97,11 +98,11 @@ Use strict JSON: no comments, trailing commas, duplicate keys or unknown fields 
 | `command` | yes | Argv array, 1–32 items, such as `["python", "run.py"]`. No shell: pipes, `&&` and `$VAR` do not work inside an argument. |
 | `inputs_schema` | no | Inline JSON Schema (2020-12) with root `"type": "object"`, at most 16 KiB and 20 levels deep. `$ref` and `$dynamicRef` are rejected. Default: an object with no inputs. |
 | `connection` | no | `"none"` (default), `"optional"` or `"required"`: whether the run takes a provider credential (section 5). |
-| `network` | no | `"none"` (default), `"provider"` or the legacy `"openai"` (section 5). `"provider"` requires `"connection": "required"`. |
+| `network` | no | `"none"` (default), `"internet"`, `"provider"` or the legacy `"openai"` (section 5). `"internet"` reaches any public website and also the model providers. `"provider"` requires `"connection": "required"`. |
 | `providers` | no | 1–4 of `"openai"`, `"codex"`, `"claude"`, `"openrouter"`. Restricts which saved credentials can be chosen. Omit to accept any compatible one. |
 | `tier` | no | Plan tier the model router must satisfy, currently `"sol"` or `"astra"` (section 6). |
 | `timeout_seconds` | no | Integer, 1–86,400. Default 3,600. |
-| `cpu` | no | Number, 0.1–4. Default 1. |
+| `cpu` | no | Number, 0.1–256. Omit it (recommended) to let the job use every CPU core on its server. Set it only to cap the job deliberately. |
 | `memory_mb` | no | Integer, 128–4,096. Default 512. |
 | `gpus` | no | Integer, 0–8. Default 0. NVIDIA GPUs the job needs. A nonzero value runs only on a worker server with GPUs (section 9). |
 | `datasets` | no | Up to 16 unique dataset folder names to mount read-only (section 7). Default: none. |
@@ -109,7 +110,7 @@ Use strict JSON: no comments, trailing commas, duplicate keys or unknown fields 
 
 Notes:
 
-- The worker caps resources below the manifest values, by default at **2 CPUs and 2,048 MiB** per job. The VPS itself has only 1 CPU and 2 GB, and runs at most 2 jobs at once. Declare modest values and run heavy work on an AMATH worker server (section 9).
+- Jobs have **no CPU cap** unless the manifest sets `cpu`: they can use every core of the server they run on (24 on americano). They run at a slightly lower scheduling priority than the website itself, which only matters when the CPU is busy. Memory is still capped at **2,048 MiB** per job by default, whatever the manifest says. The VPS has only 1 CPU and 2 GB and runs at most 2 jobs at once, so run heavy work on an AMATH worker server (section 9).
 - Inputs must be finite JSON, at most 64 KiB, and pass the schema before the run is queued. Use `"additionalProperties": false` to reject unexpected inputs.
 - Schema `default` values are **not** inserted into the input file. Apply defaults in your code (`inputs.get("seconds", 3)`).
 - `title` and `description` on each property label the website's form.
@@ -178,7 +179,7 @@ Further variables appear for provider credentials (section 5), plan tiers (6), d
 - Write reports, plots and structured results under `AGENT_OUTPUT_DIR`. Files elsewhere are not collected. Write regular files with ordinary names: no symlinks, and no credentials in contents or filenames.
 - Log to stdout/stderr with `flush=True`. A line that is exactly a JSON object like `{"progress": 0.5}` (a number from 0 to 1) sets the progress bar.
 - Exit 0 on success and nonzero on failure. Do not hide a failed task behind exit code 0.
-- Jobs have no host filesystem, Docker socket, website database, GitHub credential or internet access. They keep running after the researcher closes the browser. A researcher can cancel a run at any time, which kills the container immediately.
+- Jobs have no host filesystem, Docker socket, website database or GitHub credential. They reach the internet only with `"network": "internet"` (section 5). They keep running after the researcher closes the browser. A researcher can cancel a run at any time, which kills the container immediately.
 
 ### Shared code
 
@@ -215,13 +216,13 @@ import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # keep a CPU fallback for local tests
 ```
 
-Inside a GPU job, the assigned GPUs appear as CUDA devices `0..N-1`, and `AGENT_GPUS` holds N. Each GPU job gets whole GPUs to itself. Every job has `OMP_NUM_THREADS`, `OPENBLAS_NUM_THREADS` and `MKL_NUM_THREADS` set to its CPU limit, so NumPy and PyTorch do not start one thread per host core.
+Inside a GPU job, the assigned GPUs appear as CUDA devices `0..N-1`, and `AGENT_GPUS` holds N. Each GPU job gets whole GPUs to itself. Without a `cpu` cap, NumPy, scikit-learn and PyTorch use every core. If you do set `cpu`, `OMP_NUM_THREADS`, `OPENBLAS_NUM_THREADS` and `MKL_NUM_THREADS` are set to it.
 
-Neither image includes pandas, matplotlib, the OpenAI or Anthropic Python SDKs, or Node.js for your own scripts. A `requirements.txt`, `pyproject.toml` or Dockerfile next to an agent is not installed or built. `pip install` during a job fails, because there is no internet access, and model weights cannot be downloaded during a job.
+Neither image includes pandas, matplotlib, the OpenAI or Anthropic Python SDKs, or Node.js for your own scripts. A `requirements.txt`, `pyproject.toml` or Dockerfile next to an agent is not installed or built. With `"network": "internet"`, a job can download files, model weights and packages, but the root filesystem is read-only and the only writable scratch is `/work` and `/tmp`, 64 MiB each and in memory. So `pip install --target /work/pkgs <small-package>` works for small pure-Python packages only, and large downloads must be streamed or processed in chunks. Ask the operator to add any package you need regularly to the image instead.
 
 For more packages, the website operator must rebuild the runtime image, load it on the VPS and every worker server, and list it in `APPROVED_IMAGES`. Only then can a manifest name it. Until then, use what the images contain, and document any other dependencies in the agent's README for the operator. A manifest naming an unapproved image breaks the whole catalog refresh.
 
-Bundle small inputs inside `agents/`, take them as JSON inputs, or use shared datasets (section 7). External websites, GitHub, package registries and other APIs cannot be reached.
+Bundle small inputs inside `agents/`, take them as JSON inputs, or use shared datasets (section 7). External websites, GitHub, package registries and other APIs are reachable only with `"network": "internet"` (section 5).
 
 ## 5. Model providers
 
@@ -239,7 +240,8 @@ A researcher saves provider credentials ("connections") on the website and picks
 | Goal | `connection` | `network` | Notes |
 | --- | --- | --- | --- |
 | No model calls | `"none"` | `"none"` | Default. |
-| Codex CLI, Claude Code CLI, OpenRouter, or the OpenAI API over HTTPS | `"required"` | `"provider"` | Recommended. Add `providers` to restrict the choice. |
+| Codex CLI, Claude Code CLI, OpenRouter, or the OpenAI API over HTTPS | `"required"` | `"provider"` | Recommended when the agent needs nothing but the model. Add `providers` to restrict the choice. |
+| Internet access, with or without a model provider (web search APIs, arXiv, GitHub, package and dataset downloads) | `"none"`, `"optional"` or `"required"` | `"internet"` | Reaches any public host, including the providers above, so model calls work too. |
 | OpenAI API key through the plain-HTTP gateway | `"required"` | `"openai"` | Legacy. Only `openai` API-key connections qualify. |
 | Swarm parent with no model calls of its own, whose subagents reuse the chosen account | `"optional"` | `"none"` | The credential variables are set, but the parent cannot reach the provider. |
 
@@ -252,7 +254,25 @@ Example for an agent that works with any of the three CLI-style providers:
 "tier": "sol"
 ```
 
-On the `provider` network, the job gets `HTTPS_PROXY`/`HTTP_PROXY` set to a gateway that reaches **only the selected provider's hosts**. Python's `urllib.request`, `codex` and `claude` use the proxy automatically. A Codex sign-in file (`auth.json`) works only on the `provider` network.
+On the `provider` network, the job gets `HTTPS_PROXY`/`HTTP_PROXY` set to a gateway that reaches **only the selected provider's hosts**. Python's `urllib.request`, `codex` and `claude` use the proxy automatically. A Codex sign-in file (`auth.json`) works only on the `provider` and `internet` networks.
+
+### Internet access (`"network": "internet"`)
+
+The job gets `HTTPS_PROXY`/`HTTP_PROXY` (and lowercase variants) set to `http://egress:8080`, an internet gateway that connects to **any public host and port** except SMTP (25), and forwards plain `http://` requests too. Python's `urllib.request` and `requests`, `pip`, `git` over HTTPS, `curl`, `codex` and `claude` all use the proxy automatically:
+
+```python
+import json, urllib.request
+with urllib.request.urlopen("https://export.arxiv.org/api/query?search_query=all:inverse+problems&max_results=5", timeout=60) as response:
+    feed = response.read().decode()
+```
+
+Rules and limits:
+
+- Always go through the proxy. The job has no direct route out and cannot resolve external hostnames itself. The gateway resolves them, so clients that pass the hostname to the proxy (all of those above) work. Code that calls `socket.getaddrinfo` or opens raw sockets does not. Neither do SSH, FTP or other non-HTTP protocols, so use HTTPS URLs (for example `https://github.com/...` rather than `git@github.com:...`).
+- Private, university-LAN, loopback, Tailscale and cloud-metadata addresses are always refused. A job cannot reach the VPS, the worker server it runs on, or other lab machines, even by IP address.
+- Each tunnel is closed after 6 hours.
+- Downloads land in 64 MiB in-memory scratch (section 3). Stream large files, or use shared datasets (section 7) for big inputs.
+- An internet job can send anything it reads, including its provider credential, to any website. Never print, log or upload credentials, and only fetch from sources you trust. Treat downloaded content as untrusted input, and never execute it without review.
 
 ### Variables injected with a credential
 
@@ -431,7 +451,7 @@ Rules and behavior:
 - **Wait for subagents before the parent exits.** When the parent ends, its queued subagents are cancelled and running ones are stopped.
 - Each finished child's folder `/swarm/results/<id>/` holds `output/`, `run.log` and `result.json`. `result.json` is written last. It contains status, error, server, account, provider, model, commit, image, usage, inputs, command, and each artifact's path, size and SHA-256. Copy what you want to keep into the parent's `/output`.
 - Inside a subagent, `AGENT_SWARM_CHILD_ID` and `AGENT_PARENT_RUN_ID` are set, plus `AGENT_PARENT_FILES_DIR` when files were handed over. `swarm.child_id()` and `swarm.parent_files()` read them. One script can act as both parent and child by branching on `swarm.child_id()`.
-- Plan resources: 20 children at 1 CPU and 512 MiB each need 20 CPUs and 10 GiB. Send children to AMATH workers, not the VPS.
+- Plan resources: children have no CPU cap by default, so 20 children on one server share all of its cores, and at 512 MiB each they need 10 GiB of memory. Pass `cpu=` to `spawn` to cap a child. Send children to AMATH workers, not the VPS.
 
 The platform's swarm demo (`examples/agents/swarm-demo/` in the platform repository) is a complete orchestrator that spreads shards over servers and accounts and gathers their results.
 
@@ -452,7 +472,7 @@ The researcher chooses the execution server at launch: the VPS (default) or a re
 | Logs per run | 1 MiB (redacted) |
 | Artifacts per run | 50 MiB and 100 files |
 | Scratch (`/work`, `/tmp`) | 64 MiB each |
-| CPU and memory | 2 CPUs and 2,048 MiB per job by default, whatever the manifest says |
+| CPU and memory | No CPU cap (every core of the server) unless the manifest sets `cpu`; 2,048 MiB of memory per job by default, whatever the manifest says |
 | Datasets per run | 4 GiB |
 | Subagents | 20 at once per parent; 1 GiB of child results delivered per parent |
 
