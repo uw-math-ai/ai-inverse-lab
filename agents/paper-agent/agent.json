@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "name": "Research paper from a harness run",
+  "description": "Generate an evidence-linked English manuscript from a mounted V1 or V3 harness run. Uses an OpenAI API connection.",
+  "image": "research-agent-runtime:v1",
+  "command": ["python", "website.py"],
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "run_folder": {
+        "type": "string",
+        "minLength": 1,
+        "title": "Run folder within selected datasets",
+        "description": "Enter the mounted dataset name, optionally followed by the subfolder containing the raw, complete harness run."
+      }
+    },
+    "required": ["run_folder"],
+    "additionalProperties": false
+  },
+  "connection": "required",
+  "network": "provider",
+  "providers": ["openai"],
+  "tier": "sol",
+  "timeout_seconds": 1800
+}
