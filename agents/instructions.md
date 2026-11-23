@@ -18,6 +18,7 @@ What an agent can use, and the manifest setting that enables each feature:
 | Shared datasets from the lab OneDrive folder, mounted read-only | `datasets` | 7 |
 | Subagents: up to 20 child containers on other servers and accounts | `swarm`, via `agents/shared/platform_swarm.py` | 8 |
 | Running on an AMATH worker server instead of the VPS | chosen by the researcher at launch | 9 |
+| NVIDIA GPUs (americano) | `gpus` and the `research-agent-runtime-gpu:v1` image | 4, 9 |
 
 ## 1. Repository layout
 
@@ -85,14 +86,14 @@ A complete starting manifest for an agent with no model calls (`agents/test-agen
 }
 ```
 
-Use strict JSON: no comments, trailing commas, duplicate keys or unknown fields (an unknown field such as `"gpu"` invalidates the manifest). Types are strict too: write `"timeout_seconds": 180`, not `"180"`. A manifest is at most 16 KiB.
+Use strict JSON: no comments, trailing commas, duplicate keys or unknown fields (an unknown field such as `"gpu"` instead of `"gpus"` invalidates the manifest). Types are strict too: write `"timeout_seconds": 180`, not `"180"`. A manifest is at most 16 KiB.
 
 | Field | Required | Contract |
 | --- | --- | --- |
 | `version` | yes | Exactly `1`. |
 | `name` | yes | Display name, 1–100 characters. |
 | `description` | no | Up to 2,000 characters. Say what the agent does and whether it incurs model charges. |
-| `image` | yes | An operator-approved image already present on the worker. Use `research-agent-runtime:v1` (section 4). |
+| `image` | yes | An operator-approved image already present on the worker: `research-agent-runtime:v1`, or `research-agent-runtime-gpu:v1` for GPU agents (section 4). |
 | `command` | yes | Argv array, 1–32 items, such as `["python", "run.py"]`. No shell: pipes, `&&` and `$VAR` do not work inside an argument. |
 | `inputs_schema` | no | Inline JSON Schema (2020-12) with root `"type": "object"`, at most 16 KiB and 20 levels deep. `$ref` and `$dynamicRef` are rejected. Default: an object with no inputs. |
 | `connection` | no | `"none"` (default), `"optional"` or `"required"`: whether the run takes a provider credential (section 5). |
@@ -102,6 +103,7 @@ Use strict JSON: no comments, trailing commas, duplicate keys or unknown fields 
 | `timeout_seconds` | no | Integer, 1–86,400. Default 3,600. |
 | `cpu` | no | Number, 0.1–4. Default 1. |
 | `memory_mb` | no | Integer, 128–4,096. Default 512. |
+| `gpus` | no | Integer, 0–8. Default 0. NVIDIA GPUs the job needs. A nonzero value runs only on a worker server with GPUs (section 9). |
 | `datasets` | no | Up to 16 unique dataset folder names to mount read-only (section 7). Default: none. |
 | `swarm` | no | `{"max_children": 1–20, "max_total": 1–500}` lets the agent start subagents (section 8). Absent means no subagents. |
 
@@ -197,15 +199,27 @@ Do not add any path outside `agents/`.
 
 ## 4. Runtime image and dependencies
 
-The only approved image is **`research-agent-runtime:v1`**. It contains:
+There are two approved images.
+
+**`research-agent-runtime:v1`** (the default, on the VPS and every worker server) contains:
 
 - Python 3.12 and its standard library;
+- NumPy 2.5.4, SciPy 1.18.1, scikit-learn 1.9.1 (with joblib and threadpoolctl) and PyYAML 6.0.3;
 - the `codex` CLI (OpenAI Codex, pinned 0.169.0) and the `claude` CLI (Claude Code, pinned 2.1.326);
 - `rg` (ripgrep).
 
-It does **not** include NumPy, SciPy, PyTorch, the OpenAI or Anthropic Python SDKs, or Node.js for your own scripts. A `requirements.txt`, `pyproject.toml` or Dockerfile next to an agent is not installed or built. `pip install` during a job fails, because there is no internet access.
+**`research-agent-runtime-gpu:v1`** (GPU worker servers only, currently americano) contains everything above plus PyTorch 2.14.1 built for CUDA 12.6. Use it with `"gpus": 1` (or more) in the manifest:
 
-For more packages, the website operator must build a new runtime image, load it on the VPS and every worker server, and add it to `APPROVED_IMAGES`. Only then can a manifest name it. Until then, write standard-library code, and document any needed dependencies in the agent's README for the operator. A manifest naming an unapproved image breaks the whole catalog refresh.
+```python
+import torch
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # keep a CPU fallback for local tests
+```
+
+Inside a GPU job, the assigned GPUs appear as CUDA devices `0..N-1`, and `AGENT_GPUS` holds N. Each GPU job gets whole GPUs to itself. Every job has `OMP_NUM_THREADS`, `OPENBLAS_NUM_THREADS` and `MKL_NUM_THREADS` set to its CPU limit, so NumPy and PyTorch do not start one thread per host core.
+
+Neither image includes pandas, matplotlib, the OpenAI or Anthropic Python SDKs, or Node.js for your own scripts. A `requirements.txt`, `pyproject.toml` or Dockerfile next to an agent is not installed or built. `pip install` during a job fails, because there is no internet access, and model weights cannot be downloaded during a job.
+
+For more packages, the website operator must rebuild the runtime image, load it on the VPS and every worker server, and list it in `APPROVED_IMAGES`. Only then can a manifest name it. Until then, use what the images contain, and document any other dependencies in the agent's README for the operator. A manifest naming an unapproved image breaks the whole catalog refresh.
 
 Bundle small inputs inside `agents/`, take them as JSON inputs, or use shared datasets (section 7). External websites, GitHub, package registries and other APIs cannot be reached.
 
@@ -425,6 +439,8 @@ The platform's swarm demo (`examples/agents/swarm-demo/` in the platform reposit
 
 The researcher chooses the execution server at launch: the VPS (default) or a registered AMATH Docker worker such as **doppio**. Agent code does not choose, except for subagents (section 8). The same container, paths and environment apply on every server, so do not hard-code hostnames or assume host software. The VPS is small (1 CPU, 2 GB, 2 jobs at once), so put CPU-heavy, memory-heavy or large-dataset work on a worker server, and say so in the README.
 
+**GPU agents** (`"gpus"` above 0) can only be launched on a worker server whose test found NVIDIA GPUs, such as **americano** (2× TITAN RTX, 24 GiB each). The launch form preselects such a server, and the website refuses the VPS or a server without enough GPUs. The same applies to GPU subagents (section 8). A GPU run waits in the queue while all of its server's GPUs are in use. Host memory is still capped at 2,048 MiB per job by default, and CUDA PyTorch needs about 1–2 GiB just to start, so declare `"memory_mb": 4096` for GPU agents and ask the operator to raise the cap for heavy work.
+
 ## 10. Limits
 
 | Limit | Value |
@@ -456,7 +472,7 @@ Operators can change these values. Keep generated results, large datasets (use s
 
    On Windows PowerShell, set the variables with `$env:AGENT_INPUT_PATH = "..."`.
 4. Success produces readable logs, progress lines and regular files in the output folder. Invalid input or failed work exits nonzero.
-5. The code uses only Python 3.12's standard library plus the `codex`/`claude` CLIs, unless the operator has approved a richer image. A pass in a richer local environment proves nothing.
+5. The code uses only Python 3.12's standard library, NumPy, SciPy, scikit-learn, PyYAML and the `codex`/`claude` CLIs (plus PyTorch for GPU agents on `research-agent-runtime-gpu:v1`). A pass in a richer local environment proves nothing.
 6. Tests make no paid model requests unless the user explicitly asks for one.
 7. Each agent folder has a short README covering purpose, inputs, sample input JSON, outputs, required connection/provider/tier, datasets, swarm use, recommended server, dependencies and whether it incurs charges.
 
