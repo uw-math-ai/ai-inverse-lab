@@ -23,3 +23,39 @@ If the run files are at the dataset root, enter just the dataset name. Keep the 
 For V2, evidence extraction and prompt preparation were checked on 17 archived heat runs. The reader uses the baseline, selection, final checkpoint, and audit records shared with V1. It does not read the separate V2 research trace. Full manuscript generation on V2 has yet to be verified.
 
 Download `paper.md` for the reader-facing manuscript, `outline.md` for the evidence-linked outline, and `run.json` for the generation and validation record.
+
+## Debug locally
+
+From the repository root, start with an outline-only run on the same raw harness folder.
+Use a local OpenRouter API key. If `OPENROUTER_API_KEY` is unset, the terminal
+prompts for it with input hidden. Use `--model` to match a model configured on
+the website. The default `openrouter/free` may route different requests to
+different models.
+
+```sh
+python3 agents/paper-agent/run.py \
+  --run-dir /path/to/graph_fpt_weights_claude \
+  --output-dir /tmp/paper-agent-debug \
+  --provider openrouter --outline-only
+```
+
+The command prints a new output directory. Its `run.json` records each attempt,
+validation errors, and the stage where the run stopped. When OpenRouter rejects
+or stops a draft, the error records the available HTTP status or response
+details, including the returned model and finish reason where present.
+Completed model responses are saved as `outline_response_1.txt`,
+`outline_response_2.txt`, and their `paper_response_*.txt` counterparts.
+
+Reuse the saved evidence and response to test changes to the outline validator
+without calling a model. Set `RUN_OUTPUT` to the directory printed by the command.
+
+```sh
+python3 agents/paper-agent/outline.py "$RUN_OUTPUT/paper_input.json" \
+  --response "$RUN_OUTPUT/outline_response_1.txt"
+```
+
+Remove `--outline-only` for a local run that also generates and validates the manuscript.
+Pass `--outline-response "$RUN_OUTPUT/outline_response_1.txt"` to `run.py` to
+revalidate a saved outline and continue to manuscript generation without
+calling the model for the outline again. Combine it with `--outline-only`
+to validate the saved response without making any model calls.
