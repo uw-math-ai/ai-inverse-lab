@@ -5,35 +5,9 @@ from functools import partial
 from pathlib import Path
 from shutil import copyfile
 from tempfile import TemporaryDirectory
-from urllib.error import HTTPError
-from urllib.request import Request, urlopen
 
 from run import run_pipeline, write_json
-from writing_test import MODEL, generate_api
-
-
-def generate_openrouter(prompt, *, env):
-    key = env.get("OPENROUTER_API_KEY")
-    if not key:
-        raise ValueError("Select a validated OpenRouter connection.")
-    base = env.get("OPENROUTER_BASE_URL") or "https://openrouter.ai/api/v1"
-    model = env.get("AGENT_MODEL") or env.get("OPENROUTER_MODEL") or "openrouter/free"
-    body = {"model": model, "messages": [{"role": "user", "content": prompt}]}
-    request = Request(base.rstrip("/") + "/chat/completions", data=json.dumps(body).encode(),
-                      headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
-    try:
-        with urlopen(request, timeout=300) as response:
-            result = json.load(response)
-    except HTTPError as error:
-        raise RuntimeError(f"OpenRouter returned HTTP {error.code}.") from error
-    choices = result.get("choices")
-    if not choices or choices[0].get("finish_reason") != "stop":
-        raise RuntimeError("OpenRouter did not return a complete draft.")
-    text = choices[0]["message"].get("content")
-    if not isinstance(text, str) or not text.strip():
-        raise RuntimeError("OpenRouter returned an empty draft.")
-    return text, {"usage": result.get("usage"), "model_returned": result.get("model"),
-                  "response_id": result.get("id")}
+from writing_test import MODEL, generate_api, generate_openrouter
 
 
 def run_job(env, generate=None):
