@@ -57,7 +57,11 @@ When reporting whether a held-out result met its prespecified target, use the jo
 measurement containing both the score and the target. If no such entry exists,
 report the verified score alone and leave target attainment open.
 When the catalog does not cover a quantity, describe the finding qualitatively
-and cite the original facts. Use descriptive titles without measured values.
+and cite the original facts. For fixed design details such as grid dimensions
+or the number of parameters, use a matching catalog token if available.
+Otherwise, spell out the design detail in words and cite the exact run source
+that establishes it. Never spell out a measured result to bypass its token.
+Use descriptive titles without measured values.
 A single study can have a single Results point. Multiple studies need not each
 get a heading. Give each finding a primary home; repeat only to add interpretation.
 Never transfer methods, data or findings from an example paper into the outline.
@@ -111,8 +115,16 @@ def expand_measurements(text, refs, entries):
                     seeds.add(match[1])
         plain = re.sub(r"\bseed (\d+)\b(?![.,]\d|%)",
                        lambda m: "seed" if m[1] in seeds else m[0], plain, flags=re.I)
-    if "{{" in plain or "}}" in plain or NUMBER.search(plain):
-        raise ValueError("Use a verified measurement token for numeric claims: " + text)
+    if "{{" in plain or "}}" in plain:
+        raise ValueError("Malformed measurement token. Copy the complete {{E...}} token from the catalog: " + text)
+    numbers = NUMBER.findall(plain)
+    if numbers:
+        raise ValueError(
+            f"Found digits outside verified tokens ({', '.join(numbers)}). "
+            "For a fixed design detail, use its catalog token or spell it out in words "
+            "and cite the run source. For a measurement or threshold, use its catalog "
+            "token with all required sources, or omit the value. Check this text: " + text
+        )
     # "Supported accurate recovery" describes prediction quality. A verdict such
     # as "the registered claim was supported" still needs its own verified token.
     verdict_text = plain
