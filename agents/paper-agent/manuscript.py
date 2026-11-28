@@ -19,8 +19,10 @@ token carrying the joint finding. Name the shared setting once. Bring an interva
 prose where it changes what can be concluded. Keep exact arm values in the table.
 For measured numbers use the supplied {{E...}} tokens verbatim. Insert the complete phrase
 naturally and list all its sources for that paragraph. When a joint score-and-target token is available, use it
-in a results-role section. Put available split-size tokens in a methods-role section. For discrete design details such as grid
-dimensions use ordinary English words and cite the simulator description. For a recorded
+in a results-role section. Put available split-size tokens in a methods-role section.
+For design details without a catalog token, such as grid dimensions, simulation
+counts, and input weight ranges, write the values in words and cite the simulator
+evidence. For a recorded
 verdict use its verified token. Use a descriptive title without measured values. No tools."""
 
 
@@ -36,7 +38,8 @@ def make_manuscript_prompt(evidence, outline, guide):
 def manuscript(raw, evidence, catalog):
     # Reuse the outline validator for section order, sources, numbers and units.
     layout = PaperLayout(evidence)
-    verified = render(raw, evidence, entries=catalog, table_renderer=layout.table, evidence_comments=False)
+    verified = render(raw, evidence, entries=catalog, table_renderer=layout.table,
+                      evidence_comments=False, allow_cited_design=False)
     lines = verified.splitlines()
     lines.remove("Run: " + evidence["run_id"]["value"])
     paper = "\n".join("\n" + line[2:] if line.startswith("- ") else line for line in lines).replace("\n\n\n##", "\n\n##") + "\n"

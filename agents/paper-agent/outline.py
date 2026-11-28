@@ -3,9 +3,10 @@ import argparse
 import json
 import re
 import sys
+from decimal import Decimal
 from pathlib import Path
 
-from outline_evidence import measurements
+from outline_evidence import measurements, numeric, reference
 from writing_test import generate_api, generate_codex
 
 ROOT = Path(__file__).resolve().parent
@@ -56,11 +57,12 @@ paraphrase. For a derived comparison select a matching entry with both sources.
 When reporting whether a held-out result met its prespecified target, use the joint
 measurement containing both the score and the target. If no such entry exists,
 report the verified score alone and leave target attainment open.
-When the catalog does not cover a quantity, describe the finding qualitatively
-and cite the original facts. For fixed design details such as grid dimensions
-or the number of parameters, use a matching catalog token if available.
-Otherwise, spell out the design detail in words and cite the exact run source
-that establishes it. Never spell out a measured result to bypass its token.
+Fixed design details can use digits when the exact detail appears in a cited
+run source, such as grid dimensions, feature counts, walk sampling counts,
+the simulated time-step range, or the simulator's input weight range.
+For other design details use a catalog token if available or spell out the detail
+and cite its run source. For a measurement or decision threshold without a
+matching token, describe the finding qualitatively and omit the value.
 Use descriptive titles without measured values.
 A single study can have a single Results point. Multiple studies need not each
 get a heading. Give each finding a primary home; repeat only to add interpretation.
@@ -95,9 +97,96 @@ def make_prompt(data, guide):
 # names are identifiers. Ordinary counts in the experimental setup can use words.
 TOKEN = re.compile(r"\{\{(E[0-9a-f]+)\}\}")
 NUMBER = re.compile(r"(?<![\w])(?:[+-]?(?:\d[\d,]*(?:\.\d+)?|\.\d+))(?:[eE][+-]?\d+)?(?![\w])")
+GRID_DIMENSIONS = r"(?<![\w.])\d+\s*[×xX]\s*\d+\b"
+OUTLINE_NUMBER = re.compile(GRID_DIMENSIONS + "|" + NUMBER.pattern)
+COUNT = r"(?:\d{1,3}(?:,\d{3})+|\d+)"
+DECIMAL = r"(?:\d+(?:\.\d+)?|\.\d+)"
+DESIGN_DETAIL = re.compile(
+    rf"(?<![\w.,+/−-])(?:{GRID_DIMENSIONS}\s+grids?\b|"
+    rf"{COUNT}\s+(?:vertices|nodes?|edge weights?|edges?(?!\s+weights?\b)|parameters?|(?:input )?features?|"
+    r"time steps?|(?:simulated )?walks per (?:ordered )?(?:boundary )?pair)\b|"
+    r"(?:time )?steps (?P<first_step>\d+)\s*(?:through|to|[-–])\s*(?P<last_step>\d+)\b|"
+    rf"(?:edge )?weights (?:sampled (?:uniformly )?)?(?:between|from) (?P<low>{DECIMAL})"
+    rf"\s+(?:and|to)\s+(?P<high>{DECIMAL})\b)(?![/×%]|[.,]\d)",
+    re.IGNORECASE,
+)
+MEASUREMENT_PREFIX = re.compile(
+    r"\b(?:(?:error(?: rate)?|score|threshold|target|cutoff|criterion|limit|minimum|maximum)"
+    r"\s*(?:of|is|was|=|:)?\s*(?:exactly)?|at (?:most|least)|(?:less|more|fewer) than)\s*$|[<>=≤≥]\s*$",
+    re.IGNORECASE,
+)
 
 
-def expand_measurements(text, refs, entries):
+def design_key(match):
+    if match["first_step"]:
+        return f"steps {int(match['first_step'])} through {int(match['last_step'])}"
+    if match["low"]:
+        return weight_range_key(match["low"], match["high"])
+    phrase = match[0].lower().replace(",", "").replace(" simulated walks", " walks")
+    phrase = phrase.replace(" input features", " features")
+    normalized = re.sub(r"\s*[×x]\s*(?=\d)", "x", phrase)
+    return " ".join(normalized.split())
+
+
+def weight_range_key(low, high):
+    return ("weight range", Decimal(str(low)), Decimal(str(high)))
+
+
+def design_details_by_source(data):
+    details = {}
+    for name in ("objective", "task_description"):
+        fact = data.get(name)
+        if fact and isinstance(fact["value"], str):
+            details[reference(fact)] = {design_key(m) for m in DESIGN_DETAIL.finditer(fact["value"])}
+    simulator = data.get("simulator")
+    if simulator and isinstance(simulator["value"], dict):
+        params = simulator["value"].get("params")
+        params = params if isinstance(params, dict) else {}
+        simulator_details = details.setdefault(reference(simulator), set())
+        graph = params.get("graph")
+        if isinstance(graph, dict) and graph.get("family") == "grid":
+            rows, cols = graph.get("rows"), graph.get("cols")
+            if all(type(size) is int and size > 0 for size in (rows, cols)):
+                simulator_details.add(f"{rows}x{cols} grid")
+        walks = params.get("walks_per_pair")
+        if type(walks) is int and walks > 0:
+            simulator_details.add(f"{walks} walks per pair")
+            if simulator["value"].get("name") == "graph_fpt" and params.get("observed") == "boundary":
+                simulator_details.add(f"{walks} walks per ordered boundary pair")
+                simulator_details.add(f"{walks} walks per boundary pair")
+        weights = params.get("weights")
+        if isinstance(weights, dict):
+            low, high = weights.get("low"), weights.get("high")
+            if numeric(low) and numeric(high) and low <= high:
+                simulator_details.add(weight_range_key(low, high))
+    description = data.get("task_description")
+    if description and isinstance(description["value"], str):
+        text = description["value"]
+        source_details = details[reference(description)]
+        target = re.search(r"\bTarget:\s+weights\s*\((\d+)\s+values\)", text, re.I)
+        if target and f"{target[1]} edges" in source_details and "edge weights" in text.lower():
+            source_details.add(f"{target[1]} edge weights")
+        time_range = re.search(r"\bt\s*=\s*(\d+)\s*\.\.\s*(\d+)\b", text)
+        if time_range:
+            first, last = map(int, time_range.groups())
+            source_details.add(f"steps {first} through {last}")
+    return details
+
+
+def mask_cited_design(text, refs, design_sources):
+    allowed = {detail for ref in refs for detail in design_sources.get(ref, ())}
+
+    def mask(match):
+        detail = design_key(match)
+        prefix = text[max(0, match.start() - 48):match.start()]
+        if detail in allowed and not MEASUREMENT_PREFIX.search(prefix):
+            return " "
+        return match[0]
+
+    return DESIGN_DETAIL.sub(mask, text)
+
+
+def expand_measurements(text, refs, entries, *, design_sources=None):
     # A complete, verbatim catalog sentence is equivalent to its token. Expansion
     # below still checks the aggregate source, including for a literal numeric count.
     for key, entry in entries.items():
@@ -117,19 +206,22 @@ def expand_measurements(text, refs, entries):
                        lambda m: "seed" if m[1] in seeds else m[0], plain, flags=re.I)
     if "{{" in plain or "}}" in plain:
         raise ValueError("Malformed measurement token. Copy the complete {{E...}} token from the catalog: " + text)
-    numbers = NUMBER.findall(plain)
+    if design_sources is None:
+        numbers = NUMBER.findall(plain)
+    else:
+        numbers = OUTLINE_NUMBER.findall(mask_cited_design(plain, refs, design_sources))
     if numbers:
         raise ValueError(
-            f"Found digits outside verified tokens ({', '.join(numbers)}). "
-            "For a fixed design detail, use its catalog token or spell it out in words "
-            "and cite the run source. For a measurement or threshold, use its catalog "
+            f"Found unverified numbers ({', '.join(numbers)}). "
+            "For a fixed design detail, cite the exact run source and use its wording in the outline, "
+            "or spell out the detail in words. For a measurement or threshold, use its catalog "
             "token with all required sources, or omit the value. Check this text: " + text
         )
     # "Supported accurate recovery" describes prediction quality. A verdict such
     # as "the registered claim was supported" still needs its own verified token.
     verdict_text = plain
     if any("held-out" in entries.get(key, {}).get("text", "") for key in TOKEN.findall(text)):
-        verdict_text = re.sub(r"\bsupported(?= accurate (?:[\w-]+ ){0,3}recovery\b)",
+        verdict_text = re.sub(r"\bsupported(?= accurate (?:[\w-]+ ){0,3}(?:recovery|estimates?)\b)",
                               "enabled", plain, flags=re.I)
     if re.search(r"\b(inconclusive|contradicted|untestable|supported)\b", verdict_text, re.I):
         raise ValueError("Use the recorded claim token to state a verdict: " + text)
@@ -224,7 +316,7 @@ def literature_by_id(records):
     return result
 
 
-def render(response, data, *, entries=None, table_renderer=None, evidence_comments=True):
+def render(response, data, *, entries=None, table_renderer=None, evidence_comments=True, allow_cited_design=True):
     plan = json.loads(response)
     sections = plan["sections"]
     headings = structure(sections)
@@ -237,6 +329,7 @@ def render(response, data, *, entries=None, table_renderer=None, evidence_commen
     check_result_headings(sections, entries)
     facts = set()
     collect_facts(data, facts)
+    design_sources = design_details_by_source(data) if allow_cited_design else None
     title = expand_measurements(plan["title"].strip(), set(), {})
     lines = ["# " + title, "", "Run: " + data["run_id"]["value"]]
     for index, section in enumerate(sections):
@@ -257,7 +350,7 @@ def render(response, data, *, entries=None, table_renderer=None, evidence_commen
             ids = point.get("citations", [])
             if not isinstance(ids, list) or any(key not in literature for key in ids):
                 raise ValueError("Unknown literature citation in " + section["name"])
-            sentence = expand_measurements(point["text"].strip(), set(refs), entries)
+            sentence = expand_measurements(point["text"].strip(), set(refs), entries, design_sources=design_sources)
             if ids:
                 numbers = [str(cited.setdefault(key, len(cited) + 1)) for key in dict.fromkeys(ids)]
                 stop = sentence[-1] if sentence[-1] in ".!?" else ""
