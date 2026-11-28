@@ -48,6 +48,48 @@ def generate_api(prompt, *, model=MODEL):
                               "response_id": result.get("id")}
 
 
+def openrouter_model(env):
+    return env.get("AGENT_MODEL") or env.get("OPENROUTER_MODEL") or "openrouter/free"
+
+
+def generate_openrouter(prompt, *, env):
+    key = env.get("OPENROUTER_API_KEY")
+    if not key:
+        raise ValueError("Set OPENROUTER_API_KEY locally or select a validated OpenRouter connection on the website.")
+    base = env.get("OPENROUTER_BASE_URL") or "https://openrouter.ai/api/v1"
+    model = openrouter_model(env)
+    body = {"model": model, "messages": [{"role": "user", "content": prompt}]}
+    request = Request(base.rstrip("/") + "/chat/completions", data=json.dumps(body).encode(),
+                      headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
+    try:
+        with urlopen(request, timeout=300) as response:
+            result = json.load(response)
+    except HTTPError as error:
+        raise RuntimeError(f"OpenRouter returned HTTP {error.code} (requested model {model}).") from error
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"OpenRouter returned invalid JSON (requested model {model}).") from error
+
+    choices = result.get("choices") or []
+    details = f"model={result.get('model') or model!r}, response_id={result.get('id')!r}"
+    if not choices:
+        error = result.get("error")
+        code = error.get("code") if isinstance(error, dict) else None
+        raise RuntimeError(f"OpenRouter returned no choices ({details}, error_code={code!r}).")
+    choice = choices[0]
+    reason = choice.get("finish_reason")
+    if reason != "stop":
+        native_reason = choice.get("native_finish_reason")
+        raise RuntimeError(
+            f"OpenRouter did not return a complete draft ({details}, finish_reason={reason!r}, "
+            f"native_finish_reason={native_reason!r})."
+        )
+    text = (choice.get("message") or {}).get("content")
+    if not isinstance(text, str) or not text.strip():
+        raise RuntimeError(f"OpenRouter returned an empty draft ({details}, finish_reason={reason!r}).")
+    return text, {"usage": result.get("usage"), "model_returned": result.get("model"),
+                  "response_id": result.get("id"), "finish_reason": reason}
+
+
 def generate_codex(prompt):
     # An empty working directory keeps repository files out of the writing context.
     with tempfile.TemporaryDirectory() as empty:
